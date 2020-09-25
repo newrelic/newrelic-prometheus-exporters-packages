@@ -1,0 +1,44 @@
+# Exporter yml variables
+NAME ?= githubactions
+VERSION ?= v1.2
+EXPORTER_REPO_URL ?= https://github.com/Spendesk/github-actions-exporter
+EXPORTER_TAG ?= v1.2
+EXPORTER_COMMIT ?= 5ab74d5af9eb533e6564996bde43528175092591
+EXPORTER_HEAD := $(if $(EXPORTER_TAG),$(EXPORTER_TAG),$(EXPORTER_COMMIT))
+
+IMPORT_PATH := $(subst https://,,$(EXPORTER_REPO_URL))
+CLONED_REPO := $(GOPATH)/src/$(IMPORT_PATH)
+WORK_DIR := cd $(CLONED_REPO) &&
+BINARY_NAME := $(NAME)-exporter
+
+TARGET_DIR = $(shell pwd)/target
+BINS_DIR = $(TARGET_DIR)/bin/linux_amd64
+
+
+all: clean clone-repo build package
+
+clean: 
+	@echo "=== $(NAME) === [ clean ]: Removing cloned folder"
+	@if [ ! -d $(GOPATH) ]; then \
+		echo "GOPATH is empty" ;\
+		exit 1 ;\
+	fi
+	rm -rf $(CLONED_REPO) $(TARGET_DIR)
+
+clone-repo: clean
+	@echo "=== $(NAME) === [ clone-repo ]:"
+	git clone $(EXPORTER_REPO_URL) $(CLONED_REPO)
+	$(WORK_DIR) git checkout $(EXPORTER_HEAD)
+
+build: clone-repo deps-only
+	@echo "=== $(NAME) === [ build ]:"
+	$(WORK_DIR) go build -v -o $(BINS_DIR)/$(BINARY_NAME)
+
+deps-only: clone-repo
+	@echo "=== $(NAME) === [ deps ]: Installing package dependencies required by the project..."
+	$(WORK_DIR) go mod download
+
+# Import fragments
+include ../package.mk
+
+.PHONY: all build clone-repo clean deps-only

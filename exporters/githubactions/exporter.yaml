@@ -1,0 +1,6 @@
+NAME: github-actions
+version: v1.2
+exporter_repo_url: https://github.com/Spendesk/github-actions-exporter
+exporter_tag: v1.2
+exporter_commit: 5ab74d5af9eb533e6564996bde43528175092591
+exporter_changelog: "fix structure runners - github api changed"
