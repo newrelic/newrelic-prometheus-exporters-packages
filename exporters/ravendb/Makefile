@@ -20,6 +20,10 @@ all: clean clone-repo build package
 
 clean: 
 	@echo "=== $(NAME) === [ clean ]: Removing cloned folder"
+	@if [ ! -d $(GOPATH) ]; then \
+		echo "GOPATH is empty" ;\
+		exit 1 ;\
+	fi
 	rm -rf $(CLONED_REPO) $(TARGET_DIR)
 
 clone-repo:
@@ -34,4 +38,4 @@ build: clone-repo
 # Import fragments
 include ../package.mk
 
-.PHONY: clone-repo build 
+.PHONY: clone-repo build clean all

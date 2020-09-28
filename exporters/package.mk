@@ -22,9 +22,9 @@ FPM_RPM_OPTIONS    = -t rpm -p $(PACKAGES_DIR)/rpm/ --epoch 0 --rpm-summary $(SU
 package: $(PACKAGE_TYPES)
 
 
-prep-pkg-env:
+prep-pkg-env: 
 	@if [ ! -d $(BINS_DIR) ]; then \
-		echo "=== Main === [ prep-pkg-env ]: no built binaries found. Run 'make create-bins'" ;\
+		echo "=== Main === [ prep-pkg-env ]: no built binaries found. Run make build" ;\
 		exit 1 ;\
 	fi
 	@echo "=== Main === [ prep-pkg-env ]: preparing a clean packaging environment..."
