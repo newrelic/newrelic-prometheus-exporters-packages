@@ -1,0 +1,8 @@
+name: githubactions
+version: 1.2.0
+exporter_repo_url: https://github.com/Spendesk/github-actions-exporter
+exporter_tag: v1.2
+exporter_commit: ifTagIsSetThisIsNotUsed
+exporter_changelog: "Changelog for the current version, nothing relly changed, just testing pipeline"
+package_linux: true
+package_windows: true

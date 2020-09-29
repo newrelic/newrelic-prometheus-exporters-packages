@@ -2,9 +2,7 @@
 NAME ?= ravendb
 VERSION ?= 0.3.0
 EXPORTER_REPO_URL ?= https://github.com/marcinbudny/ravendb_exporter
-EXPORTER_TAG ?= 0.3.0
-EXPORTER_COMMIT ?= e778e0cb4adc11dfb72dda6cbb4229a652c92c2d
-EXPORTER_HEAD := $(if $(EXPORTER_TAG),$(EXPORTER_TAG),$(EXPORTER_COMMIT))
+EXPORTER_HEAD ?= 0.3.0
 
 IMPORT_PATH := $(subst https://,,$(EXPORTER_REPO_URL))
 CLONED_REPO := $(GOPATH)/src/$(IMPORT_PATH)
@@ -24,6 +22,9 @@ clean:
 		echo "GOPATH is empty" ;\
 		exit 1 ;\
 	fi
+	@CLONED_REPO="$(echo -e "${CLONED_REPO}" | tr -d '[:space:]')"
+	@TARGET_DIR="$(echo -e "${TARGET_DIR}" | tr -d '[:space:]')"
+
 	rm -rf $(CLONED_REPO) $(TARGET_DIR)
 
 clone-repo:

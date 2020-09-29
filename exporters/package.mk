@@ -6,7 +6,7 @@ TARBALL_DIR       ?= $(PACKAGES_DIR)/tarball
 PKG_TARBALL       ?= true
 GOARCH            ?= amd64
 VERSION           ?= 0.0.0
-RELEASE           ?= $(VERSION)
+RELEASE           ?= 1
 
 LICENSE            = "https://newrelic.com/terms (also see LICENSE.txt installed with this package)"
 VENDOR             = "New Relic, Inc."
