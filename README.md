@@ -2,7 +2,7 @@
 
 # Prometheus Exporter Packages
 
-This project packages several Prometheus exporters together as native operating system packages, with the goal of providing a better installation experience for Prometheus exporters.
+This project packages several Prometheus exporters as native operating system packages, with the goal of providing a better installation experience for Prometheus exporters.
 
 All native packages are available for installation in New Relic's public repositories.
 
