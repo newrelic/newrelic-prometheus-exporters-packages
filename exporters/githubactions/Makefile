@@ -39,6 +39,6 @@ deps-only: clone-repo
 	$(WORK_DIR) go mod download
 
 # Import fragments
-include ../package.mk
+include ../../scripts/package.mk
 
 .PHONY: all build clone-repo clean deps-only

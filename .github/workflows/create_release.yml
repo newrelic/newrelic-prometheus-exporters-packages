@@ -15,8 +15,8 @@
 ### |                       |             |                  +---------------------------+
 ### +-----------------------+             |                  |                           | _
 ###                                       |                  |  BUILD AND PUSHES WINDOWS |  |
-###                                       +----------------- |  PACKAGES TO GITHUB       |  |
-###                                                          |                           |  |
+###                                       +----------------- |  PACKAGES TO GITHUB       |  | Executed once per 
+###                                                          |                           |  | architecture (32-64)
 ###                                                          |   Possibly executed twice |  | 
 ###                                                          +---------------------------+  |
 ###                                                             |___________________________|
@@ -49,7 +49,7 @@ jobs:
         id: check
         run : |
           git fetch -at origin --unshallow
-          source ./exporters/common_functions.sh
+          source ./scripts/common_functions.sh
           getExporterPath
           loadVariables
           setStepOutput
@@ -102,7 +102,7 @@ jobs:
         run : |
           export GOPATH=$(go env GOPATH)
           export EXPORTER_PATH=${{ needs.create_release.outputs.EXPORTER_PATH }}
-          source ././exporters/common_functions.sh
+          source ./scripts/common_functions.sh
           loadVariables
           packageLinux
           setStepOutput
@@ -169,14 +169,13 @@ jobs:
         run: |
           choco install yq
           export EXPORTER_PATH=${{ needs.create_release.outputs.EXPORTER_PATH }}
-          source ././exporters/common_functions.sh
+          source ./scripts/common_functions.sh
           loadVariables
-          setStepOutput 
+          setStepOutput
       - name : CreateMSI
         shell: pwsh
         run: |
-          .\exporters\${{ steps.load_variables.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.load_variables.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.load_variables.outputs.NAME }} -exporterURL ${{ steps.load_variables.outputs.EXPORTER_REPO_URL }}
-          .\exporters\win_msi_build.ps1 -arch ${{ matrix.goarch }} -exporterName ${{ steps.load_variables.outputs.NAME }} -version ${{ steps.load_variables.outputs.VERSION }}
+          .\exporters\${{ steps.load_variables.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.load_variables.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.load_variables.outputs.NAME }} -exporterURL ${{ steps.load_variables.outputs.EXPORTER_REPO_URL }} -version ${{ steps.load_variables.outputs.VERSION }} -exporterGUID ${{ steps.load_variables.outputs.EXPORTER_GUID }} -licenseGUID ${{ steps.load_variables.outputs.LICENSE_GUID }} 
         # -pfx_certificate_base64 "$env:PFX_CERTIFICATE_BASE64" -pfx_passphrase "$env:PFX_PASSPHRASE"
       - name: Upload Release Asset MSI
         uses: actions/upload-release-asset@v1
@@ -184,7 +183,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_release.outputs.UPLOAD_URL }} 
-          asset_path: ${{ github.workspace }}/src/github.com/newrelic/newrelic-prometheus-exporters-packages/exporters/${{ steps.load_variables.outputs.NAME }}/target/packages/msi/${{ steps.load_variables.outputs.NAME }}-${{ matrix.goarch }}.msi
-          asset_name: ${{ steps.load_variables.outputs.NAME }}-${{ matrix.goarch }}.msi
+          asset_path: ${{ github.workspace }}/src/github.com/newrelic/newrelic-prometheus-exporters-packages/exporters/${{ steps.load_variables.outputs.NAME }}/target/packages/msi/${{ steps.load_variables.outputs.NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
+          asset_name: ${{ steps.load_variables.outputs.NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
           asset_content_type: msi package
       

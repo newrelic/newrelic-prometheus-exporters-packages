@@ -14,7 +14,7 @@
                  InstallerVersion="200"
                  Compressed="yes"
                  InstallScope="perMachine"
-                 Platform="x86"
+                 Platform="x64"
                  Manufacturer="New Relic, Inc."
                  Comments="(c) {Year} New Relic, Inc."
                  Keywords="infrastructure,MSI,on-host,{IntegrationName}"/>
@@ -24,19 +24,15 @@
 
         <Feature Id="ProductFeature" Title="New Relic Infrastructure Integration, nri-{IntegrationName}" Level="1">
             <ComponentRef Id="CMP_V1_CUSTOM_PLUGINS_BIN"/>
-            <ComponentGroupRef Id="CustomPluginsBinComponent"/>
+            <ComponentGroupRef Id="PrometheusPluginsBinComponent"/>
         </Feature>
     </Product>
 
     <Fragment>
         <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="ProgramFilesFolder">
-                <Directory Id="CompanyFolder" Name="New Relic">
-                    <Directory Id="AgentBinaryFolder" Name="newrelic-infra">
-                        <Directory Id="CustomPluginsFolder" Name="newrelic-integrations">
-                            <Directory Id="CustomPluginsBinFolder" Name="bin"/>
-                        </Directory>
-                    </Directory>
+            <Directory Id="ProgramFiles64Folder">
+                <Directory Id="CompanyFolder" Name="Prometheus-exporters">
+                    <Directory Id="CustomPluginsBinFolder" Name="bin"/>
                 </Directory>
             </Directory>
         </Directory>
@@ -51,10 +47,15 @@
     </Fragment>
 
     <Fragment>
-        <ComponentGroup Id="CustomPluginsBinComponent" Directory="CustomPluginsBinFolder">
-            <Component Id="CMP_NRI_VSPHERE_EXE" Guid="69c26416-b13a-466c-a656-5d2ffeca561c" Win64="no">
-                <File Id="FILE_NRI_VSPHERE_EXE"
+        <ComponentGroup Id="PrometheusPluginsBinComponent" Directory="CustomPluginsBinFolder">
+            <Component Id="CMP_NRI_EXPORTER_EXE" Guid="{exporterBinGUID}" Win64="yes">
+                <File Id="FILE_NRI_EXPORTER_EXE"
                       Source="$(var.BinariesPath){IntegrationExe}"
+                      KeyPath="yes"/>
+            </Component>
+            <Component Id="CMP_NRI_LICENSE" Guid="{licenseGUID}" Win64="yes">
+                <File Id="FILE_NRI_LICENSE"
+                      Source="$(var.BinariesPath){IntegrationName}-LICENSE"
                       KeyPath="yes"/>
             </Component>
         </ComponentGroup>

@@ -8,7 +8,10 @@ param (
     [string]$arch="amd64",
     [string]$exporterName="",
     [string]$exporterURL="",
-    [string]$exporterHead=""
+    [string]$exporterHead="",
+    [string]$exporterGUID="",
+    [string]$licenseGUID="",
+    [string]$version=""
 )
 
 $env:GOPATH = go env GOPATH
@@ -19,6 +22,7 @@ $env:GO111MODULE = "auto"
 $exporterBinaryName = "$exporterName-exporter.exe"
 $exporterRepo =  [string]"$exporterURL" -replace 'https?://(www.)?'
 
+$projectRootPath = pwd
 
 echo "--- Cloning exporter Repo"
 Push-Location $env:GOPATH\src
@@ -55,3 +59,12 @@ if (-not $?)
     echo "Failed building exporter"
     exit -1
 }
+
+Copy-Item "$env:GOPATH\src\$exporterRepo\LICENSE" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-LICENSE" -Force 
+{
+    echo "Failed building exporter"
+    exit -1
+}
+
+$win_msi_build = Join-Path -Path $projectRootPath -ChildPath "\scripts\win_msi_build.ps1"
+& $win_msi_build -arch $arch -exporterName $exporterName -version $version -exporterGUID $exporterGUID -licenseGUID $licenseGUID

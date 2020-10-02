@@ -37,6 +37,6 @@ build: clone-repo
 	$(WORK_DIR) go build -v -o $(BINS_DIR)/$(BINARY_NAME)
 
 # Import fragments
-include ../package.mk
+include ../../scripts/package.mk
 
 .PHONY: clone-repo build clean all

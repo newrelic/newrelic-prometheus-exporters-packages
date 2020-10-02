@@ -3,6 +3,8 @@ param (
 	 [int]$minor = $(throw "-minor is required"),
 	 [int]$patch = $(throw "-patch is required"),
 	 [string]$exporterName="",
+	 [string]$exporterGUID="",
+	 [string]$licenseGUID="",
 	 [int]$build = 0
 )
 
@@ -30,8 +32,8 @@ $versionInfo = $versionInfo -replace "{IntegrationExe}", $executable
 $versionInfo = $versionInfo -replace "{Year}", (Get-Date).year
 Set-Content -Path $versionInfoPath -Value $versionInfo
 
-$wix386Path = Join-Path -Path $projectRootPath -ChildPath "exporters\$exporterName\pkg\windows\nri-386-installer\Product.wxs"
-$wixAmd64Path = Join-Path -Path $projectRootPath -ChildPath "exporters\$exporterName\pkg\windows\nri-amd64-installer\Product.wxs"
+$wix386Path = Join-Path -Path $projectRootPath -ChildPath "scripts\pkg\windows\nri-386-installer\Product.wxs"
+$wixAmd64Path = Join-Path -Path $projectRootPath -ChildPath "scripts\pkg\windows\nri-amd64-installer\Product.wxs"
 
 Function ProcessProductFile($productPath) {
 	if ((Test-Path "$productPath.template" -PathType Leaf) -eq $False) {
@@ -44,6 +46,8 @@ Function ProcessProductFile($productPath) {
 	$product = $product -replace "{Year}", (Get-Date).year
 	$product = $product -replace "{IntegrationExe}", $executable
 	$product = $product -replace "{IntegrationName}", $exporterName
+	$product = $product -replace "{exporterBinGUID}", $exporterGUID
+	$product = $product -replace "{licenseGUID}", $licenseGUID
 	Set-Content -Value $product -Path $productPath
 }
 

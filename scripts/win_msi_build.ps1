@@ -9,6 +9,8 @@ param (
     [string]$pfx_certificate_base64="none",
     [string]$pfx_passphrase="none",
     [string]$exporterName="",
+    [string]$exporterGUID="",
+    [string]$licenseGUID="",   
     [string]$version=""
 )
 
@@ -37,9 +39,8 @@ if ($wrong.Length  -ne 0) {
 echo "===> Configuring version $version for artifacts in $exporterName"
 
 $projectRootPath = pwd
-$windows_set_version = Join-Path -Path $projectRootPath -ChildPath "\exporters\windows_set_version.ps1"
-echo  $windows_set_version
-& $windows_set_version -major $v[0] -minor $v[1] -patch $v[2] -exporterName $exporterName
+$windows_set_version = Join-Path -Path $projectRootPath -ChildPath "\scripts\windows_set_version.ps1"
+& $windows_set_version -major $v[0] -minor $v[1] -patch $v[2] -exporterName $exporterName -exporterGUID $exporterGUID -licenseGUID $licenseGUID
 
 echo "===> Checking MSBuild.exe..."
 $msBuild = (Get-ItemProperty hklm:\software\Microsoft\MSBuild\ToolsVersions\4.0).MSBuildToolsPath
@@ -53,7 +54,7 @@ $env:GOOS="windows"
 $env:GOARCH=$arch
 
 echo "===> Building Installer"
-Push-Location -Path "exporters\$exporterName\pkg\windows\nri-$arch-installer"
+Push-Location -Path "scripts\pkg\windows\nri-$arch-installer"
 
 $env:exporterName = $exporterName
 . $msBuild/MSBuild.exe nri-installer.wixproj
@@ -67,6 +68,6 @@ if (-not $?)
 
 echo "===> Making versioned installed copy moving it to $projectRootPath\exporters\$exporterName\target\packages\msi\$exporterName-$arch.msi"
 New-item -type directory -path "$projectRootPath\exporters\$exporterName\target\packages\msi" -Force
-cp ".\bin\Release\$exporterName-$arch.msi" "$projectRootPath\exporters\$exporterName\target\packages\msi\$exporterName-$arch.msi"
+cp ".\bin\Release\$exporterName-$arch.msi" "$projectRootPath\exporters\$exporterName\target\packages\msi\$exporterName-$arch.$version.msi"
 
 Pop-Location
