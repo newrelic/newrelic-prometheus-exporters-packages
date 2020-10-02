@@ -1,5 +1,5 @@
 name: githubactions
-version: 1.2.1
+version: 1.2.3
 exporter_repo_url: https://github.com/Spendesk/github-actions-exporter
 exporter_tag: v1.2
 exporter_commit: ifTagIsSetThisIsNotUsed
