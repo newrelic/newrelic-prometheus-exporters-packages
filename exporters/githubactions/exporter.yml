@@ -1,10 +1,20 @@
+# name of the exporter, should mach with the folder name
 name: githubactions
-version: 1.2.3
+# version of the package created
+version: 1.2.0
+# URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/Spendesk/github-actions-exporter
+# Tag of the exporter to checkout
 exporter_tag: v1.2
-exporter_commit: ifTagIsSetThisIsNotUsed
-exporter_changelog: "Changelog for the current version, nothing relly changed, just testing pipeline"
+# Commit of the exporter to checkout (used if tag property is empty)
+exporter_commit: 
+# Changelog to add to the new release
+exporter_changelog: https://github.com/Spendesk/github-actions-exporter/releases
+# Enable packages for Linux
 package_linux: true
+# Enable packages for Windows
 package_windows: true
+# Exporter GUID used in the msi package Requiered if package_windows is set to true
 exporter_guid: 7B629E90-530F-4FAA-B7FE-1F1B30A95714
+# Lincense GUID used in the msi package Requiered if package_windows is set to true
 license_guid: 95E897AC-895A-43BE-A5EF-D72AD58E4ED1

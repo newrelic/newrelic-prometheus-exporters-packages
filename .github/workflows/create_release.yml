@@ -22,7 +22,6 @@
 ###                                                             |___________________________|
 
 on: 
-#pull_request
   push:
     branches:
       - master
@@ -40,16 +39,13 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v2
-        with:
-          go-version: '^1.13.1' 
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install dependencies
         run: |
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/3.3.0/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
-      - name: Check exporters have been modified
+      - name: Check if exporters have been modified
         id: check
         run : |
           git fetch -at origin --unshallow
@@ -57,7 +53,7 @@ jobs:
           getExporterPath
           loadVariables
           setStepOutput
-      - name: Create Release
+      - name: Create Release for the exporter modified
         id: create_release
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: actions/create-release@v1
@@ -176,11 +172,10 @@ jobs:
           source ./scripts/common_functions.sh
           loadVariables
           setStepOutput
-      - name : CreateMSI
+      - name : Create MSI installer
         shell: pwsh
         run: |
           .\exporters\${{ steps.load_variables.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.load_variables.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.load_variables.outputs.NAME }} -exporterURL ${{ steps.load_variables.outputs.EXPORTER_REPO_URL }} -version ${{ steps.load_variables.outputs.VERSION }} -exporterGUID ${{ steps.load_variables.outputs.EXPORTER_GUID }} -licenseGUID ${{ steps.load_variables.outputs.LICENSE_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
-        # -pfx_certificate_base64 "$env:PFX_CERTIFICATE_BASE64" -pfx_passphrase "$env:PFX_PASSPHRASE"
       - name: Upload Release Asset MSI
         uses: actions/upload-release-asset@v1
         env:

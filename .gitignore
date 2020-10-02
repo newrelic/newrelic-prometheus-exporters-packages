@@ -30,3 +30,6 @@
 **/Product.wxs
 
 **/versioninfo.json
+
+.DS_Store 
+**/.DS_Store 
