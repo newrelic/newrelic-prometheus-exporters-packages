@@ -6,6 +6,7 @@ param (
     # Target architecture: amd64 (default) or 386
     [ValidateSet("amd64", "386")]
     [string]$arch="amd64",
+    [string]$pfx_passphrase="none",
     [string]$exporterName="",
     [string]$exporterURL="",
     [string]$exporterHead="",
@@ -67,4 +68,4 @@ Copy-Item "$env:GOPATH\src\$exporterRepo\LICENSE" -Destination ".\exporters\$exp
 }
 
 $win_msi_build = Join-Path -Path $projectRootPath -ChildPath "\scripts\win_msi_build.ps1"
-& $win_msi_build -arch $arch -exporterName $exporterName -version $version -exporterGUID $exporterGUID -licenseGUID $licenseGUID
+& $win_msi_build -arch $arch -exporterName $exporterName -version $version -exporterGUID $exporterGUID -licenseGUID $licenseGUID -pfx_passphrase $pfx_passphrase 

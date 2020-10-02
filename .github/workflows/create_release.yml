@@ -27,6 +27,10 @@ on:
     branches:
       - master
 
+env:
+  PFX_CERTIFICATE_BASE64: ${{ secrets.PFX_CERTIFICATE_BASE64 }} # base64 encoded
+  PFX_PASSPHRASE:  ${{ secrets.PFX_PASSPHRASE }}
+
 ###
 ###   RELEASE CREATION # Creates a release if needed and loads variables for next jobs
 ###
@@ -160,9 +164,9 @@ jobs:
       - uses: actions/setup-go@v2
         with:
           go-version: '^1.13.1'
-      #- name: Get PFX certificate from GH secrets
-      #  shell: bash
-      #  run: printf "%s" "$PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
+      - name: Get PFX certificate from GH secrets
+        shell: bash
+        run: printf "%s" "$PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
       - name: Load Variables
         id: load_variables
         shell: bash
@@ -175,7 +179,7 @@ jobs:
       - name : CreateMSI
         shell: pwsh
         run: |
-          .\exporters\${{ steps.load_variables.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.load_variables.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.load_variables.outputs.NAME }} -exporterURL ${{ steps.load_variables.outputs.EXPORTER_REPO_URL }} -version ${{ steps.load_variables.outputs.VERSION }} -exporterGUID ${{ steps.load_variables.outputs.EXPORTER_GUID }} -licenseGUID ${{ steps.load_variables.outputs.LICENSE_GUID }} 
+          .\exporters\${{ steps.load_variables.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.load_variables.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.load_variables.outputs.NAME }} -exporterURL ${{ steps.load_variables.outputs.EXPORTER_REPO_URL }} -version ${{ steps.load_variables.outputs.VERSION }} -exporterGUID ${{ steps.load_variables.outputs.EXPORTER_GUID }} -licenseGUID ${{ steps.load_variables.outputs.LICENSE_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
         # -pfx_certificate_base64 "$env:PFX_CERTIFICATE_BASE64" -pfx_passphrase "$env:PFX_PASSPHRASE"
       - name: Upload Release Asset MSI
         uses: actions/upload-release-asset@v1
