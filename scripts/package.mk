@@ -6,7 +6,7 @@ TARBALL_DIR       ?= $(PACKAGES_DIR)/tarball
 PKG_TARBALL       ?= true
 GOARCH            ?= amd64
 VERSION           ?= 0.0.0
-RELEASE           ?= $(VERSION)
+RELEASE           ?= 1
 
 LICENSE            = "https://newrelic.com/terms (also see LICENSE.txt installed with this package)"
 VENDOR             = "New Relic, Inc."
@@ -21,6 +21,20 @@ FPM_RPM_OPTIONS    = -t rpm -p $(PACKAGES_DIR)/rpm/ --epoch 0 --rpm-summary $(SU
 
 package: $(PACKAGE_TYPES)
 
+clean: 
+	@echo "=== $(NAME) === [ clean ]: Removing cloned folder"
+	@if [ ! -d $(GOPATH) ]; then \
+		echo "GOPATH is empty" ;\
+		exit 1 ;\
+	fi
+	@CLONED_REPO="$(echo -e "${CLONED_REPO}" | tr -d '[:space:]')"
+	@TARGET_DIR="$(echo -e "${TARGET_DIR}" | tr -d '[:space:]')"
+	rm -rf $(CLONED_REPO) $(TARGET_DIR)
+
+clone-repo: clean
+	@echo "=== $(NAME) === [ clone-repo ]:"
+	git clone $(EXPORTER_REPO_URL) $(CLONED_REPO)
+	$(WORK_DIR) git checkout $(EXPORTER_HEAD)
 
 prep-pkg-env: 
 	@if [ ! -d $(BINS_DIR) ]; then \
@@ -29,12 +43,12 @@ prep-pkg-env:
 	fi
 	@echo "=== Main === [ prep-pkg-env ]: preparing a clean packaging environment..."
 	@rm -rf $(SOURCE_DIR)
-	@mkdir -p $(SOURCE_DIR)/usr/local/prometheus-exporters/$(NAME) $(SOURCE_DIR)/etc/newrelic-infra/integrations.d
+	@mkdir -p $(SOURCE_DIR)/usr/local/prometheus-exporters/bin $(SOURCE_DIR)/etc/newrelic-infra/integrations.d
 	@echo "=== Main === [ prep-pkg-env ]: adding built binaries and configuration and definition files..."
-	@cp $(BINS_DIR)/* $(SOURCE_DIR)/usr/local/prometheus-exporters/$(NAME)
-	@chmod 755 $(SOURCE_DIR)/usr/local/prometheus-exporters/$(NAME)/*
+	@cp $(BINS_DIR)/* $(SOURCE_DIR)/usr/local/prometheus-exporters/bin
+	@chmod 755 $(SOURCE_DIR)/usr/local/prometheus-exporters/bin/*
 	@echo "=== Main === [ prep-pkg-env ]: adding license..."
-	@cp LICENSE $(SOURCE_DIR)/usr/local/prometheus-exporters/$(NAME)
+	@cp LICENSE $(SOURCE_DIR)/usr/local/prometheus-exporters/bin/$(NAME)-LICENSE
 
 deb: prep-pkg-env
 	@echo "=== Main === [ deb ]: building DEB package..."
