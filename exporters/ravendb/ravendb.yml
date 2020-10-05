@@ -1,6 +1,0 @@
-name: ravendb
-version: 0.3.0
-exporter_repo_url: https://github.com/marcinbudny/ravendb_exporter
-exporter_tag: 0.3.0
-exporter_commit: 
-exporter_changelog: https://github.com/marcinbudny/ravendb_exporter#030

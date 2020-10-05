@@ -1,0 +1,22 @@
+# name of the exporter, should match with the folder name
+name: ravendb
+# version of the package created
+version: 0.3.0
+# URL to the git project hosting the exporter
+exporter_repo_url: https://github.com/marcinbudny/ravendb_exporter
+# Tag of the exporter to checkout
+exporter_tag: 0.3.0
+# Commit of the exporter to checkout (used if tag property is empty)
+exporter_commit: 
+# Changelog to add to the new release
+exporter_changelog: https://github.com/marcinbudny/ravendb_exporter#030
+# Enable packages for Linux
+package_linux: true
+# Enable packages for Windows
+package_windows: true
+# Exporter GUID used in the msi package. Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+exporter_guid: <insert guid>
+# License GUID used in the msi package. Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+license_guid: <insert guid>
