@@ -15,57 +15,12 @@ param (
     [string]$version=""
 )
 
-$env:GOPATH = go env GOPATH
-$env:GOOS = "windows"
-$env:GOARCH = $arch
-$env:GO111MODULE = "auto"
-
-$exporterBinaryName = "$exporterName-exporter.exe"
-$exporterRepo =  [string]"$exporterURL" -replace 'https?://(www.)?'
-
 $projectRootPath = pwd
 
 
-echo "--- Cloning exporter Repo"
-Push-Location $env:GOPATH\src
-$ErrorActionPreference = "SilentlyContinue"
-git clone $exporterURL $exporterRepo
-$ErrorActionPreference = "Stop"
-Set-Location "$env:GOPATH\src\$exporterRepo"
+$win_build = Join-Path -Path $projectRootPath -ChildPath "\scripts\win_exe_build.ps1"
+& $win_build -arch $arch -exporterName $exporterName -exporterHead $exporterHead  -exporterURL $exporterURL -dependencyManager "modules"
 
-
-$ErrorActionPreference = "SilentlyContinue"
-git fetch -at
-git checkout "$exporterHead"
-$ErrorActionPreference = "Stop"
-
-echo "--- Downloading dependencies"
-$ErrorActionPreference = "SilentlyContinue"
-go mod download
-$ErrorActionPreference = "Stop"
-
-
-echo "--- Compiling exporter"
-go build -v -o $exporterBinaryName
-if (-not $?)
-{
-    echo "Failed building exporter"
-    exit -1
-}
-
-Pop-Location
-New-item -type directory -path .\exporters\$exporterName\target\bin\windows_$arch\ -Force
-Copy-Item "$env:GOPATH\src\$exporterRepo\$exporterBinaryName" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\" -Force 
-if (-not $?)
-{
-    echo "Failed building exporter"
-    exit -1
-}
-Copy-Item "$env:GOPATH\src\$exporterRepo\LICENSE" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-LICENSE" -Force 
-{
-    echo "Failed building exporter"
-    exit -1
-}
 
 $win_msi_build = Join-Path -Path $projectRootPath -ChildPath "\scripts\win_msi_build.ps1"
 & $win_msi_build -arch $arch -exporterName $exporterName -version $version -exporterGUID $exporterGUID -licenseGUID $licenseGUID -pfx_passphrase $pfx_passphrase 
