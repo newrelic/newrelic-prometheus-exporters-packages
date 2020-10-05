@@ -1,7 +1,7 @@
 # name of the exporter, should mach with the folder name
 name: githubactions
 # version of the package created
-version: 1.2.0
+version: 1.2.2
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/Spendesk/github-actions-exporter
 # Tag of the exporter to checkout
