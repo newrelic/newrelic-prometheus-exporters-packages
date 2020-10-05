@@ -21,6 +21,20 @@ FPM_RPM_OPTIONS    = -t rpm -p $(PACKAGES_DIR)/rpm/ --epoch 0 --rpm-summary $(SU
 
 package: $(PACKAGE_TYPES)
 
+clean: 
+	@echo "=== $(NAME) === [ clean ]: Removing cloned folder"
+	@if [ ! -d $(GOPATH) ]; then \
+		echo "GOPATH is empty" ;\
+		exit 1 ;\
+	fi
+	@CLONED_REPO="$(echo -e "${CLONED_REPO}" | tr -d '[:space:]')"
+	@TARGET_DIR="$(echo -e "${TARGET_DIR}" | tr -d '[:space:]')"
+	rm -rf $(CLONED_REPO) $(TARGET_DIR)
+
+clone-repo: clean
+	@echo "=== $(NAME) === [ clone-repo ]:"
+	git clone $(EXPORTER_REPO_URL) $(CLONED_REPO)
+	$(WORK_DIR) git checkout $(EXPORTER_HEAD)
 
 prep-pkg-env: 
 	@if [ ! -d $(BINS_DIR) ]; then \
