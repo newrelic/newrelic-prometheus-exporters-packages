@@ -24,7 +24,7 @@
 on: 
   push:
     branches:
-      - fix/GHApipeline
+      - main
 
 env:
   PFX_CERTIFICATE_BASE64: ${{ secrets.PFX_CERTIFICATE_BASE64 }} # base64 encoded
