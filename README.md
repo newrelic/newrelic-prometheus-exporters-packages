@@ -108,7 +108,7 @@ In each folder we expect to find:
   - `LICENSE`: license of the exporter taken from its repository
   - `exporter.yml`: definition of the exporter
   - `Makefile` a makefile having the target `all` that builds the exporter and the installation packages
-  - `win_build.ps1` a powershell script building the exporter and creating the `msi` package.
+  - `win_build.ps1` a powershell script calling the scripts in charge to build the executable and the `msi` package.
 
 The definition file requieres the following fields:
 ``` yaml
