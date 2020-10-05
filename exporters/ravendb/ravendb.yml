@@ -4,7 +4,3 @@ exporter_repo_url: https://github.com/marcinbudny/ravendb_exporter
 exporter_tag: 0.3.0
 exporter_commit: 
 exporter_changelog: https://github.com/marcinbudny/ravendb_exporter#030
-package_linux: true
-package_windows: true
-exporter_guid: B5CC9E39-EE3B-4529-848D-DB46CBAC1140
-license_guid: 35AE15D2-825F-44E0-9122-33624154870A
