@@ -66,6 +66,7 @@ if (-not $?)
     exit -1
 }
 Copy-Item "$env:GOPATH\src\$exporterRepo\LICENSE" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-LICENSE" -Force 
+if (-not $?)
 {
     echo "Failed building exporter"
     exit -1
