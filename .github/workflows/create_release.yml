@@ -1,4 +1,4 @@
-### ON MERGE TO MASTER   
+### ON MERGE TO MAIN   
 ###                                                            build_push_linux_artifacts  
 ###                                                           +-------------------------+ 
 ###                                                           |                         | 
@@ -24,7 +24,7 @@
 on: 
   push:
     branches:
-      - master
+      - main
 
 env:
   PFX_CERTIFICATE_BASE64: ${{ secrets.PFX_CERTIFICATE_BASE64 }} # base64 encoded
