@@ -1,0 +1,13 @@
+integrations:
+    - name: nri-prometheus
+      config:
+        standalone: false
+        targets:
+          - description: "ravendb"
+             urls: ["http://localhost:9440"]
+    - name: ravendb
+       exec: /usr/local/prometheus-exporters/ravendb-exporter
+      timeout: 0
+      integration: false
+      env:
+        RAVENDB_URL: <RAVENDB_URL>
