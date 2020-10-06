@@ -1,0 +1,14 @@
+integrations:
+    - name: nri-prometheus
+      config:
+        standalone: false
+        targets:
+          - description: "githubactions"
+             urls: ["http://localhost:9999"]
+    - name: githubactions
+       exec: /usr/local/prometheus-exporters/githubactions-exporter
+      timeout: 0
+      integration: false
+      env:
+        GITHUB_TOKEN: <TOKEN>
+        GIHUB_REPOS: <list of comma-separated github repos in org/repo format>
