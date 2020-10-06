@@ -48,7 +48,7 @@ prep-pkg-env:
 	@cp $(BINS_DIR)/* $(SOURCE_DIR)/usr/local/prometheus-exporters/bin
 	@chmod 755 $(SOURCE_DIR)/usr/local/prometheus-exporters/bin/*
 	@echo "=== Main === [ prep-pkg-env ]: adding license..."
-	@cp LICENSE $(SOURCE_DIR)/usr/local/prometheus-exporters/bin/$(NAME)-LICENSE
+	@cp LICENSE $(SOURCE_DIR)/usr/local/share/doc/prometheus-exporters/$(NAME)-LICENSE
 
 deb: prep-pkg-env
 	@echo "=== Main === [ deb ]: building DEB package..."
