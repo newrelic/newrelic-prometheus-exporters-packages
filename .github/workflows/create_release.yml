@@ -61,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.check.outputs.NAME }}-${{ steps.check.outputs.VERSION }}
-          release_name: Release ${{ steps.check.outputs.NAME }} exporter version ${{ steps.check.outputs.VERSION }}
+          release_name: ${{ steps.check.outputs.NAME }} exporter ${{ steps.check.outputs.VERSION }}
           body: |
             Changes in ${{ steps.check.outputs.NAME }} exporter version ${{ steps.check.outputs.VERSION }}
               - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
