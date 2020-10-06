@@ -16,7 +16,7 @@ package_linux: true
 package_windows: true
 # Exporter GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-exporter_guid: <insert guid>
+exporter_guid: 384DEA56-0A36-483D-B946-6B41AEF70EF2
 # License GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-license_guid: <insert guid>
+license_guid: 2810AFB4-E6AD-496E-BC03-70B15AF2125F
