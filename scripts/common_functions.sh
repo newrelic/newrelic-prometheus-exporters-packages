@@ -39,6 +39,87 @@ setStepOutput(){
     echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
 }
 
+# checkExporter runs a series of tests to find common issues
+checkExporter(){
+
+    ERRORS=""
+    
+    # checking variables in the yaml file
+    if [ -z "$NAME" ];then
+        ERRORS=ERRORS+" - name is missing from exporter.yml"
+    fi
+    if [ -z "$EXPORTER_HEAD" ];then
+        ERRORS=ERRORS+" - exporter_tag and exporter_commit are missing from exporter.yml"
+    fi
+    if [ -z "$EXPORTER_REPO_URL" ];then
+        ERRORS=ERRORS+" - exporter_repo_url is missing from exporter.yml"
+    fi
+    if [ -z "$VERSION" ];then
+        ERRORS=ERRORS+" - version is missing from exporter.yml"
+    fi
+    if [ -z "$PACKAGE_LINUX" ];then
+        ERRORS=ERRORS+" - package_linux is missing from exporter.yml"
+    fi
+    if [ -z "$PACKAGE_WINDOWS" ];then
+        ERRORS=ERRORS+" - package_windows is missing from exporter.yml"
+    fi
+
+    # checking if the linux packaging is required if the file are present
+    if [ "$PACKAGE_LINUX" = "true" ];then
+        if [ ! -f "./exporters/$NAME/$NAME-exporter.yml.sample" ]; then
+            ERRORS=ERRORS+" - the file ./exporters/$NAME/$NAME-exporter.yml.sample should exist"
+        fi
+        if [ ! -f "./exporters/$NAME/Makefile" ]; then
+            ERRORS=ERRORS+" - the file ./exporters/$NAME/Makefile should exist"
+        fi
+    fi
+
+    # checking if the windows packaging is required if the file and GUIID are present
+    if [ "$PACKAGE_WINDOWS" = "true" ];then
+        if [ -z "$EXPORTER_GUID" ];then
+            ERRORS=ERRORS+" - exporter_guid is missing from exporter.yml"
+        else
+            if [ $(grep $EXPORTER_GUID exporters/*/exporter.yml | wc -l)!=1];then
+                ERRORS=ERRORS+" - exporter_guid was already used in a different exporter"
+            fi
+        fi
+        if [ -z "$LICENSE_GUID" ];then
+            ERRORS=ERRORS+" - license_guid is missing from exporter.yml"
+        else
+            if [ $(grep $LICENSE_GUID exporters/*/exporter.yml | wc -l)!=1];then
+                ERRORS=ERRORS+" - license_guid was already used in a different exporter"
+            fi
+        fi
+        if [ -z "$CONFIG_GUID" ];then
+            ERRORS=ERRORS+" - config_guid is missing from exporter.yml"
+        else
+            if [ $(grep $CONFIG_GUID exporters/*/exporter.yml | wc -l)!=1];then
+                ERRORS=ERRORS+" - config_guid was already used in a different exporter"
+            fi
+        fi
+        if [ ! -f "./exporters/$NAME/$NAME-exporter-windows.yml.sample" ]; then
+            ERRORS=ERRORS+" - the file ./exporters/$NAME/$NAME-exporter-windows.yml.sample should exist"
+        fi
+        if [ ! -f "./exporters/$NAME/win_build.ps1" ]; then
+            ERRORS=ERRORS+" - the file ./exporters/$NAME/win_build.ps1 should exist"
+        fi
+    fi
+
+    IFS="/" read tmp exporter_name exporter_yaml <<< $EXPORTER_PATH 
+    if [ $exporter_name != $NAME ]; then
+        ERRORS=ERRORS+" - The exporter.yml is in a wrong folder"
+    fi
+
+    if [ ! -f "./exporters/$NAME/LICENSE" ]; then
+        ERRORS=ERRORS+" - the file ./exporters/$NAME/LICENSE should exist"
+    fi
+    
+
+
+
+
+}
+
 # packageLinux runs the makefile with target all int the EXPORTER_PATH repo
 packageLinux(){
     IFS="/" read tmp exporter_name exporter_yaml <<< $EXPORTER_PATH 
