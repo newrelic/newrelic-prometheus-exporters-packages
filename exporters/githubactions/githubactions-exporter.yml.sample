@@ -1,0 +1,27 @@
+integrations:
+    - name: nri-prometheus
+      config:
+        standalone: false
+        targets:
+          - description: "githubactions"
+             urls: ["http://localhost:9999"]
+    - name: githubactions
+       exec: /usr/local/prometheus-exporters/githubactions-exporter
+      timeout: 0
+      integration: false
+      env:
+        # Personnal Access Token 
+        # The minimu access required is repo scope or public_repo scope for public repositories
+        # https://developer.github.com/v3/actions/
+        GITHUB_TOKEN: xxxxxxxxxxxxxxxxx
+        
+        # List of Github repositories to monitor
+        # List all repositories you want get informations. Format <orga>/<repo>,<orga>/<repo2>,<orga>/<repo3> (like test/test)
+        GIHUB_REPOS: <orga>/<repo>,<orga>/<repo2>
+
+        # Refresh time Github Actions status in seconds. By default 30 seconds
+        # GITHUB_REFRESH: 30
+
+        # Exporter Port. Default value 9999
+        # PORT: 9999
+        

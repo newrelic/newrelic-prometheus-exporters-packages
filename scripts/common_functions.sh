@@ -9,6 +9,7 @@ loadVariables(){
     export EXPORTER_COMMIT=$(yq read $EXPORTER_PATH exporter_commit)
     export EXPORTER_CHANGELOG=$(yq read $EXPORTER_PATH exporter_changelog)
     export EXPORTER_GUID=$(yq read $EXPORTER_PATH exporter_guid)
+    export CONFIG_GUID=$(yq read $EXPORTER_PATH config_guid)
     export LICENSE_GUID=$(yq read $EXPORTER_PATH license_guid)
     export PACKAGE_LINUX=$(yq read $EXPORTER_PATH package_linux)
     export PACKAGE_WINDOWS=$(yq read $EXPORTER_PATH package_windows)
@@ -33,6 +34,7 @@ setStepOutput(){
     echo "::set-output name=PACKAGE_WINDOWS::${PACKAGE_WINDOWS}"
     echo "::set-output name=EXPORTER_GUID::${EXPORTER_GUID}"
     echo "::set-output name=LICENSE_GUID::${LICENSE_GUID}"
+    echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
 
 }
 

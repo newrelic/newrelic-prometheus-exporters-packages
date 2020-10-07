@@ -134,6 +134,9 @@ exporter_guid: 7B629E90-530F-4FAA-B7FE-1F1B30A95714
 # Lincense GUID used in the msi package Requiered if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 license_guid: 95E897AC-895A-43BE-A5EF-D72AD58E4ED1
+# Config GUID used in the msi package Requiered if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+config_guid: 45C8D11D-57DB-4C0A-AB5E-61B6A7D3DBC0
 ```
 
 When added open a PR and once merged to master a github action workflow will start building and uploading packages to Github. 

@@ -5,6 +5,7 @@ param (
 	 [string]$exporterName="",
 	 [string]$exporterGUID="",
 	 [string]$licenseGUID="",
+	 [string]$configGUID="",
 	 [int]$build = 0
 )
 
@@ -48,6 +49,8 @@ Function ProcessProductFile($productPath) {
 	$product = $product -replace "{IntegrationName}", $exporterName
 	$product = $product -replace "{exporterBinGUID}", $exporterGUID
 	$product = $product -replace "{licenseGUID}", $licenseGUID
+	$product = $product -replace "{configGUID}", $configGUID
+
 	Set-Content -Value $product -Path $productPath
 }
 

@@ -24,7 +24,7 @@
 on: 
   push:
     branches:
-      - main
+      - feat/ghaExporterConfig
 
 env:
   PFX_CERTIFICATE_BASE64: ${{ secrets.PFX_CERTIFICATE_BASE64 }} # base64 encoded
@@ -50,6 +50,7 @@ jobs:
         run : |
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
+        # With this command we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true
           getExporterPath
           loadVariables
           setStepOutput
@@ -175,7 +176,7 @@ jobs:
       - name : Create MSI installer
         shell: pwsh
         run: |
-          .\exporters\${{ steps.load_variables.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.load_variables.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.load_variables.outputs.NAME }} -exporterURL ${{ steps.load_variables.outputs.EXPORTER_REPO_URL }} -version ${{ steps.load_variables.outputs.VERSION }} -exporterGUID ${{ steps.load_variables.outputs.EXPORTER_GUID }} -licenseGUID ${{ steps.load_variables.outputs.LICENSE_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
+          .\exporters\${{ steps.load_variables.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.load_variables.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.load_variables.outputs.NAME }} -exporterURL ${{ steps.load_variables.outputs.EXPORTER_REPO_URL }} -version ${{ steps.load_variables.outputs.VERSION }} -exporterGUID ${{ steps.load_variables.outputs.EXPORTER_GUID }} -licenseGUID ${{ steps.load_variables.outputs.LICENSE_GUID }} -configGUID ${{ steps.load_variables.outputs.CONFIG_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
       - name: Upload Release Asset MSI
         uses: actions/upload-release-asset@v1
         env:

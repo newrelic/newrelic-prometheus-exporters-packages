@@ -24,15 +24,22 @@
 
         <Feature Id="ProductFeature" Title="New Relic Infrastructure Integration, nri-{IntegrationName}" Level="1">
             <ComponentRef Id="CMP_V1_CUSTOM_PLUGINS_BIN"/>
+            <ComponentRef Id="CMP_V1_PLUGIN_CONFIGS"/>
             <ComponentGroupRef Id="PrometheusPluginsBinComponent"/>
+            <ComponentGroupRef Id="PluginConfigsComponent"/>
         </Feature>
     </Product>
 
     <Fragment>
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFiles64Folder">
-                <Directory Id="CompanyFolder" Name="Prometheus-exporters">
+                <Directory Id="PrometheusFolder" Name="Prometheus-exporters">
                     <Directory Id="CustomPluginsBinFolder" Name="bin"/>
+                </Directory>
+                <Directory Id="CompanyFolder" Name="New Relic">
+                    <Directory Id="AgentBinaryFolder" Name="newrelic-infra">
+                        <Directory Id="PluginConfigsFolder" Name="integrations.d"/>
+                    </Directory>
                 </Directory>
             </Directory>
         </Directory>
@@ -41,6 +48,11 @@
     <Fragment>
         <DirectoryRef Id="CustomPluginsBinFolder">
             <Component Id="CMP_V1_CUSTOM_PLUGINS_BIN" Guid="2244c368-dd8b-404a-bdc0-67c525d7422f" KeyPath="yes">
+                <CreateFolder/>
+            </Component>
+        </DirectoryRef>
+        <DirectoryRef Id="PluginConfigsFolder">
+            <Component Id="CMP_V1_PLUGIN_CONFIGS" Guid="803C978C-B2A1-47C7-BB17-A2DE9E6D3145" KeyPath="yes">
                 <CreateFolder/>
             </Component>
         </DirectoryRef>
@@ -56,6 +68,14 @@
             <Component Id="CMP_NRI_LICENSE" Guid="{licenseGUID}" Win64="yes">
                 <File Id="FILE_NRI_LICENSE"
                       Source="$(var.BinariesPath){IntegrationName}-LICENSE"
+                      KeyPath="yes"/>
+            </Component>
+        </ComponentGroup>
+        <ComponentGroup Id="PluginConfigsComponent" Directory="PluginConfigsFolder">
+            <Component Id="CMP_NRI_EXPORTER_CONFIG" Guid="{configGUID}" Win64="yes">
+                <File Id="CMP_NRI_EXPORTER_CONFIG"
+                      Name="{IntegrationName}-exporter.yml.sample"
+                      Source="$(var.BinariesPath){IntegrationName}-exporter-windows.yml.sample"
                       KeyPath="yes"/>
             </Component>
         </ComponentGroup>
