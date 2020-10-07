@@ -1,0 +1,54 @@
+###  On Pr creation against main
+###
+###        checking_pr                 
+###   +-----------------------+          
+###   |                       |                                                       
+###   | Runs sanity checks    |                                                         
+###   |                       |                                                          
+###   | Tests Packages linux  |                      
+###   | if enabled            |                            
+###   |                       | 
+###   +-----------------------+      
+
+on: 
+  pull_request:
+    branches: [ main ]
+
+###
+###   Checking PR # Checks the file and the info provided when an exporter is modified
+###
+name: Checking PR
+jobs:
+  checking_pr:
+    name: Checking PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.13.1' 
+      - name: Install dependencies
+        run: |
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/3.3.0/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+          sudo apt-get install rpm ruby ruby-dev rubygems build-essential
+          sudo gem install --no-document fpm
+      - name: Check if exporters have been modified and if so run checks
+        id: check
+        run : |
+          git fetch -at origin --unshallow
+          source ./scripts/common_functions.sh
+          shouldDoRelease
+          loadVariables
+          checkExporter
+          if [ "$ERRORS" != "" ];then 
+            echo Following errors have been found: $ERRORS
+            exit 1
+          fi
+
+          if [ "$PACKAGE_LINUX" = "true" ];then
+            export GOPATH=$(go env GOPATH)
+            packageLinux
+          fi
+          
