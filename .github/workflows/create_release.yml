@@ -50,7 +50,7 @@ jobs:
         run : |
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
-        # With this command we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true
+# With this command we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true
           getExporterPath
           loadVariables
           setStepOutput
