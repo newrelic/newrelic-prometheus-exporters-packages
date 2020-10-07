@@ -6,7 +6,7 @@ integrations:
           - description: "github"
             urls: ["http://localhost:9171"]
     - name: ravendb
-      exec: C:\Program Files\Prometheus-exporters\bin\github-exporter
+      exec: C:\Program Files\Prometheus-exporters\bin\github-exporter.exe
       timeout: 0
       integration: false
       env:
