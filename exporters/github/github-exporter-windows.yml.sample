@@ -23,7 +23,7 @@ integrations:
         # If supplied instead of GITHUB_TOKEN, enables the user to supply a path to a file containing a github authentication token that allows the API to be queried more often. Optional, but recommended
         # GITHUB_TOKEN_FILE:
         # The port you wish to run the exporter on
-        # LISTEN_PORT: 9171
+        LISTEN_PORT: 9171
         # The metrics URL path you wish to use
         # METRICS_PATH: /metrics
         # The level of logging the exporter will run with
