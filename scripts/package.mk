@@ -47,7 +47,7 @@ prep-pkg-env:
 	@echo "=== Main === [ prep-pkg-env ]: adding built binaries and configuration and definition files..."
 	@cp $(BINS_DIR)/* $(SOURCE_DIR)/usr/local/prometheus-exporters/bin/
 	@chmod 755 $(SOURCE_DIR)/usr/local/prometheus-exporters/bin/*
-	@cp *exporter.yml.sample $(SOURCE_DIR)/etc/newrelic-infra/integrations.d
+	@cp $(NAME)-exporter.yml.sample $(SOURCE_DIR)/etc/newrelic-infra/integrations.d
 	@echo "=== Main === [ prep-pkg-env ]: adding license..."
 	@cp LICENSE $(SOURCE_DIR)/usr/local/share/doc/prometheus-exporters/$(NAME)-LICENSE
 

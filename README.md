@@ -109,8 +109,8 @@ In each folder we expect to find:
   - `exporter.yml`: definition of the exporter
   - `Makefile` a makefile having the target `all` that builds the exporter and the installation packages
   - `win_build.ps1` a powershell script calling the scripts in charge to build the executable and the `msi` package.
-  - `{exporterName}-exporter-windows.yml.sample` containig the windows configuration
-  - `{exporterName}-exporter.yml.sample` containig the linux configuration
+  - `{exporterName}-exporter-windows.yml.sample` containing the windows configuration
+  - `{exporterName}-exporter.yml.sample` containing the linux configuration
 
 The definition file requieres the following fields:
 ``` yaml
@@ -130,13 +130,13 @@ exporter_changelog: "Changelog for the current version, nothing relly changed, j
 package_linux: true
 # Enable packages for Windows
 package_windows: true
-# Exporter GUID used in the msi package Requiered if package_windows is set to true
+# Exporter GUID used in the msi package Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 exporter_guid: 7B629E90-530F-4FAA-B7FE-1F1B30A95714
-# Lincense GUID used in the msi package Requiered if package_windows is set to true
+# Lincense GUID used in the msi package Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 license_guid: 95E897AC-895A-43BE-A5EF-D72AD58E4ED1
-# Config GUID used in the msi package Requiered if package_windows is set to true
+# Config GUID used in the msi package Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 config_guid: 45C8D11D-57DB-4C0A-AB5E-61B6A7D3DBC0
 ```

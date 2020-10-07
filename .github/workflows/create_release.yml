@@ -47,12 +47,12 @@ jobs:
           sudo chmod +x /usr/local/bin/yq
       - name: Check if exporters have been modified
         id: check
-        # Running getExporterPath we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true
+        # Running shouldDoRelease we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
         # Tha variable is used by the following step and jobs
         run : |
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
-          getExporterPath
+          shouldDoRelease
           loadVariables
           setStepOutput
       - name: Create Release for the exporter modified

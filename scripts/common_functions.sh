@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# loadVariables reads with yq the exporter definition in EXPORTER_PATH and exports the variables
 loadVariables(){
 
     export NAME=$(yq read $EXPORTER_PATH name)
@@ -22,6 +23,7 @@ loadVariables(){
     fi
 }
 
+# setStepOutput exposes the environment variables needed by next github actions steps steps
 setStepOutput(){
     echo "::set-output name=NAME::${NAME}"
     echo "::set-output name=EXPORTER_HEAD::${EXPORTER_HEAD}"
@@ -35,9 +37,9 @@ setStepOutput(){
     echo "::set-output name=EXPORTER_GUID::${EXPORTER_GUID}"
     echo "::set-output name=LICENSE_GUID::${LICENSE_GUID}"
     echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
-
 }
 
+# packageLinux runs the makefile with target all int the EXPORTER_PATH repo
 packageLinux(){
     IFS="/" read tmp exporter_name exporter_yaml <<< $EXPORTER_PATH 
 
@@ -51,7 +53,8 @@ packageLinux(){
     cd $current_pwd
 }
 
-getExporterPath(){
+# shouldDoRelease checks if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
+shouldDoRelease(){
     old=$(git describe --tags --abbrev=0)
     export EXPORTER_PATH=$(git --no-pager diff  --name-only $old "exporters/**/exporter.yml")
     CREATE_RELEASE=false
