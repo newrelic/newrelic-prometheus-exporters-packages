@@ -1,15 +1,26 @@
+###  On Pr creation against main
+###
+###        checking_pr                 
+###   +-----------------------+          
+###   |                       |                                                       
+###   | Runs sanity checks    |                                                         
+###   |                       |                                                          
+###   | Tests Packages linux  |                      
+###   | if enabled            |                            
+###   |                       | 
+###   +-----------------------+      
 
 on: 
   pull_request:
     branches: [ main ]
 
 ###
-###   RELEASE CREATION # Creates a release if needed and loads variables for next jobs
+###   Checking PR # Checks the file and the info provided when an exporter is modified
 ###
-name: Create Release
+name: Checking PR
 jobs:
-  create_release:
-    name: Create Release
+  checking_pr:
+    name: Checking PR
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,10 +34,8 @@ jobs:
           sudo chmod +x /usr/local/bin/yq
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential
           sudo gem install --no-document fpm
-      - name: Check if exporters have been modified
+      - name: Check if exporters have been modified and if so run checks
         id: check
-        # Running shouldDoRelease we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
-        # Tha variable is used by the following step and jobs
         run : |
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
