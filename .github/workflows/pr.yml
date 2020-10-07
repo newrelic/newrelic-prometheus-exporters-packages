@@ -21,6 +21,8 @@ jobs:
         run: |
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/3.3.0/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
+          sudo apt-get install rpm ruby ruby-dev rubygems build-essential
+          sudo gem install --no-document fpm
       - name: Check if exporters have been modified
         id: check
         # Running shouldDoRelease we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
@@ -37,6 +39,7 @@ jobs:
           fi
 
           if [ "$PACKAGE_LINUX" = "true" ];then
+            export GOPATH=$(go env GOPATH)
             packageLinux
           fi
           
