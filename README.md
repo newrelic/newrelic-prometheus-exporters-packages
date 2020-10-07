@@ -109,6 +109,8 @@ In each folder we expect to find:
   - `exporter.yml`: definition of the exporter
   - `Makefile` a makefile having the target `all` that builds the exporter and the installation packages
   - `win_build.ps1` a powershell script calling the scripts in charge to build the executable and the `msi` package.
+  - `{exporterName}-exporter-windows.yml.sample` containig the windows configuration
+  - `{exporterName}-exporter.yml.sample` containig the linux configuration
 
 The definition file requieres the following fields:
 ``` yaml

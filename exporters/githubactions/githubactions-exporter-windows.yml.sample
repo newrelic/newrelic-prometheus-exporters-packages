@@ -6,12 +6,12 @@ integrations:
           - description: "githubactions"
              urls: ["http://localhost:9999"]
     - name: githubactions
-       exec: C:\Program Files\Prometheus-exporters\bin\githubactions-exporter
+      exec: C:\Program Files\Prometheus-exporters\bin\githubactions-exporter
       timeout: 0
       integration: false
       env:
         # Personnal Access Token 
-        # The minimu access required is repo scope or public_repo scope for public repositories
+        # The repo scope should be granged and public_repo one for public repositories
         # https://developer.github.com/v3/actions/
         GITHUB_TOKEN: xxxxxxxxxxxxxxxxx
         
