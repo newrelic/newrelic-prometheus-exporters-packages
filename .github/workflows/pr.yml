@@ -31,5 +31,12 @@ jobs:
           shouldDoRelease
           loadVariables
           checkExporter
-          if [ "$PACKAGE_LINUX" = "true" ];then packageLinux; fi
+          if [ "$ERRORS" != "" ];then 
+            echo Following errors have been found: $ERRORS
+            exit 1
+          fi
+
+          if [ "$PACKAGE_LINUX" = "true" ];then
+            packageLinux
+          fi
           
