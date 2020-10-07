@@ -24,7 +24,7 @@
 on: 
   push:
     branches:
-      - feat/ghaExporterConfig
+      - main
 
 env:
   PFX_CERTIFICATE_BASE64: ${{ secrets.PFX_CERTIFICATE_BASE64 }} # base64 encoded

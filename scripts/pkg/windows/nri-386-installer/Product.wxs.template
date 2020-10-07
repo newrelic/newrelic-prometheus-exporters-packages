@@ -5,7 +5,7 @@
     <?define UpgradeCode = "{27cf7682-b909-4940-8368-ce4719af1b82}" ?>
 
     <Product Id="$(var.ProductId)"
-             Name="New Relic Infrastructure Integration, nri-{IntegrationName}"
+             Name="New Relic Prometheus Exporter Integration, {IntegrationName}"
              Language="1033"
              Version="$(var.Version)"
              Manufacturer="New Relic, Inc."
@@ -22,7 +22,7 @@
         <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
         <MediaTemplate EmbedCab="yes"/>
 
-        <Feature Id="ProductFeature" Title="New Relic Infrastructure Integration, nri-{IntegrationName}" Level="1">
+        <Feature Id="ProductFeature" Title="New Relic Prometheus Exporter Integration, {IntegrationName}" Level="1">
             <ComponentRef Id="CMP_V1_CUSTOM_PLUGINS_BIN"/>
             <ComponentRef Id="CMP_V1_PLUGIN_CONFIGS"/>
             <ComponentGroupRef Id="PrometheusPluginsBinComponent"/>
