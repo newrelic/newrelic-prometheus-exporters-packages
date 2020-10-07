@@ -4,7 +4,7 @@ integrations:
         standalone: false
         targets:
           - description: "github"
-             urls: ["http://localhost:9171"]
+            urls: ["http://localhost:9171"]
     - name: ravendb
        exec: C:\Program Files\Prometheus-exporters\bin\github-exporter
       timeout: 0
