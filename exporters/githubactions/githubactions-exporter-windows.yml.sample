@@ -6,7 +6,7 @@ integrations:
           - description: "githubactions"
              urls: ["http://localhost:9999"]
     - name: githubactions
-      exec: C:\Program Files\Prometheus-exporters\bin\githubactions-exporter
+      exec: C:\Program Files\Prometheus-exporters\bin\githubactions-exporter.exe
       timeout: 0
       integration: false
       env:
