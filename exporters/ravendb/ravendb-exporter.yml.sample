@@ -6,7 +6,7 @@ integrations:
           - description: "ravendb"
              urls: ["http://localhost:9440"]
     - name: ravendb
-       exec: /usr/local/prometheus-exporters/bin/ravendb-exporter
+      exec: /usr/local/prometheus-exporters/bin/ravendb-exporter
       timeout: 0
       integration: false
       env:
