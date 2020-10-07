@@ -26,7 +26,7 @@
 		"FileDescription": "",
 		"FileVersion": "{MajorVersion}.{MinorVersion}.{PatchVersion}.{BuildVersion}",
 		"InternalName": "{Integration}",
-		"LegalCopyright": "(c) 2020 Spendesk",
+		"LegalCopyright": "Check {Integration}-LICENSE",
 		"LegalTrademarks": "",
 		"OriginalFilename": "{IntegrationExe}",
 		"PrivateBuild": "",
