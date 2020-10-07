@@ -11,8 +11,8 @@ integrations:
       integration: false
       env:
         # Github API URL, shouldn't need to change this
-        API_URL: https://api.github.com
-        #  If supplied, the exporter will enumerate all repositories for that organization. Expected in the format "org1, org2"
+        # API_URL: https://api.github.com
+        # If supplied, the exporter will enumerate all repositories for that organization. Expected in the format "org1, org2"
         # ORGS:
         # If supplied, The repos you wish to monitor, expected in the format "user/repo1, user/repo2". Can be across different Github users/orgs
         # REPOS:
