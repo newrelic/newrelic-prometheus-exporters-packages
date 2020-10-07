@@ -43,7 +43,7 @@ prep-pkg-env:
 	fi
 	@echo "=== Main === [ prep-pkg-env ]: preparing a clean packaging environment..."
 	@rm -rf $(SOURCE_DIR)
-	@mkdir -p $(SOURCE_DIR)/usr/local/prometheus-exporters/bin $(SOURCE_DIR)/etc/newrelic-infra/integrations.d
+	@mkdir -p $(SOURCE_DIR)/usr/local/prometheus-exporters/bin $(SOURCE_DIR)/etc/newrelic-infra/integrations.d $(SOURCE_DIR)/usr/local/share/doc/prometheus-exporters/
 	@echo "=== Main === [ prep-pkg-env ]: adding built binaries and configuration and definition files..."
 	@cp $(BINS_DIR)/* $(SOURCE_DIR)/usr/local/prometheus-exporters/bin/
 	@chmod 755 $(SOURCE_DIR)/usr/local/prometheus-exporters/bin/*
