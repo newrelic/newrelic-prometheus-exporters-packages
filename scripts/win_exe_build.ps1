@@ -65,9 +65,15 @@ if (-not $?)
     echo "Failed building exporter"
     exit -1
 }
-Copy-Item "$env:GOPATH\src\$exporterRepo\LICENSE" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-LICENSE" -Force 
+Copy-Item ".\exporters\$exporterName\LICENSE" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-LICENSE" -Force 
 if (-not $?)
 {
-    echo "Failed building exporter"
+    echo "Failed copying license"
+    exit -1
+}
+Copy-Item ".\exporters\$exporterName\$exporterName-exporter-windows.yml.sample" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-exporter-windows.yml.sample" -Force 
+if (-not $?)
+{
+    echo "Failed compying config file"
     exit -1
 }

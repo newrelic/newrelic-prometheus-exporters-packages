@@ -5,7 +5,7 @@
     <?define UpgradeCode = "{27cf7682-b909-4940-8368-ce4719af1b82}" ?>
 
     <Product Id="$(var.ProductId)"
-             Name="New Relic Infrastructure Integration, nri-{IntegrationName}"
+             Name="New Relic Prometheus Exporter Integration, {IntegrationName}"
              Language="1033"
              Version="$(var.Version)"
              Manufacturer="New Relic, Inc."
@@ -22,17 +22,24 @@
         <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
         <MediaTemplate EmbedCab="yes"/>
 
-        <Feature Id="ProductFeature" Title="New Relic Infrastructure Integration, nri-{IntegrationName}" Level="1">
+        <Feature Id="ProductFeature" Title="New Relic Prometheus Exporter Integration, {IntegrationName}" Level="1">
             <ComponentRef Id="CMP_V1_CUSTOM_PLUGINS_BIN"/>
+            <ComponentRef Id="CMP_V1_PLUGIN_CONFIGS"/>
             <ComponentGroupRef Id="PrometheusPluginsBinComponent"/>
+            <ComponentGroupRef Id="PluginConfigsComponent"/>
         </Feature>
     </Product>
 
     <Fragment>
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder">
-                <Directory Id="CompanyFolder" Name="Prometheus-exporters">
+                <Directory Id="PrometheusFolder" Name="Prometheus-exporters">
                     <Directory Id="CustomPluginsBinFolder" Name="bin"/>
+                </Directory>
+                <Directory Id="CompanyFolder" Name="New Relic">
+                    <Directory Id="AgentBinaryFolder" Name="newrelic-infra">
+                        <Directory Id="PluginConfigsFolder" Name="integrations.d"/>
+                    </Directory>
                 </Directory>
             </Directory>
         </Directory>
@@ -41,6 +48,11 @@
     <Fragment>
         <DirectoryRef Id="CustomPluginsBinFolder">
             <Component Id="CMP_V1_CUSTOM_PLUGINS_BIN" Guid="2244c368-dd8b-404a-bdc0-67c525d7422f" KeyPath="yes">
+                <CreateFolder/>
+            </Component>
+        </DirectoryRef>
+        <DirectoryRef Id="PluginConfigsFolder">
+            <Component Id="CMP_V1_PLUGIN_CONFIGS" Guid="803C978C-B2A1-47C7-BB17-A2DE9E6D3145" KeyPath="yes">
                 <CreateFolder/>
             </Component>
         </DirectoryRef>
@@ -56,6 +68,14 @@
             <Component Id="CMP_NRI_LICENSE" Guid="{licenseGUID}" Win64="no">
                 <File Id="FILE_NRI_LICENSE"
                       Source="$(var.BinariesPath){IntegrationName}-LICENSE"
+                      KeyPath="yes"/>
+            </Component>
+        </ComponentGroup>
+        <ComponentGroup Id="PluginConfigsComponent" Directory="PluginConfigsFolder">
+            <Component Id="CMP_NRI_EXPORTER_CONFIG" Guid="{configGUID}" Win64="no">
+                <File Id="CMP_NRI_EXPORTER_CONFIG"
+                      Name="{IntegrationName}-exporter.yml.sample"
+                      Source="$(var.BinariesPath){IntegrationName}-exporter-windows.yml.sample"
                       KeyPath="yes"/>
             </Component>
         </ComponentGroup>
