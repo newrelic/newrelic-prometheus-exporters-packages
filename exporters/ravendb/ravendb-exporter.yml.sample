@@ -8,7 +8,6 @@ integrations:
     - name: ravendb
       exec: /usr/local/prometheus-exporters/bin/ravendb-exporter
       timeout: 0
-      integration: false
       env:
         # Url to connect to your RavenDb instance
         RAVENDB_URL: http://localhost:8080
