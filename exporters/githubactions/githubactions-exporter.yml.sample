@@ -8,7 +8,6 @@ integrations:
     - name: githubactions
       exec: /usr/local/prometheus-exporters/bin/githubactions-exporter
       timeout: 0
-      integration: false
       env:
         # Personnal Access Token 
         # The repo scope should be granged and public_repo one for public repositories
