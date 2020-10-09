@@ -1,4 +1,4 @@
-PROJECT_NAME       = $(NAME)
+PROJECT_NAME       = $(NAME)-exporter
 PACKAGE_TYPES     ?= deb rpm tarball
 SOURCE_DIR         = $(TARGET_DIR)/source
 PACKAGES_DIR       = $(TARGET_DIR)/packages
