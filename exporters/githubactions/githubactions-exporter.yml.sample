@@ -4,7 +4,7 @@ integrations:
         standalone: false
         targets:
           - description: "githubactions"
-             urls: ["http://localhost:9999"]
+            urls: ["http://localhost:9999"]
     - name: githubactions
       exec: /usr/local/prometheus-exporters/bin/githubactions-exporter
       timeout: 0
