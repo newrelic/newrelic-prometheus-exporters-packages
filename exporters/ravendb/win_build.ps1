@@ -12,6 +12,8 @@ param (
     [string]$exporterHead="",
     [string]$exporterGUID="",
     [string]$licenseGUID="",
+    [string]$configGUID="",
+    [string]$definitionGUID="",
     [string]$version=""
 )
 
@@ -23,4 +25,4 @@ $win_build = Join-Path -Path $projectRootPath -ChildPath "\scripts\win_exe_build
 
 
 $win_msi_build = Join-Path -Path $projectRootPath -ChildPath "\scripts\win_msi_build.ps1"
-& $win_msi_build -arch $arch -exporterName $exporterName -version $version -exporterGUID $exporterGUID -licenseGUID $licenseGUID -pfx_passphrase $pfx_passphrase 
+& $win_msi_build -arch $arch -exporterName $exporterName -version $version -exporterGUID $exporterGUID -licenseGUID $licenseGUID -configGUID $configGUID -definitionGUID $definitionGUID  -pfx_passphrase $pfx_passphrase 
