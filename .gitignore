@@ -16,6 +16,7 @@
 **/target/**
 **/bin/**
 **/obj/**
+**/definitions/**
 
 **/*-cloned/**
 **/*-cloned/.*
