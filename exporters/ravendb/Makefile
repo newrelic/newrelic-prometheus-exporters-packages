@@ -14,7 +14,7 @@ TARGET_DIR = $(shell pwd)/target
 BINS_DIR = $(TARGET_DIR)/bin/linux_amd64
 
 
-all: clean clone-repo build package
+all: clean clone-repo get-definition-file build package
 
 build: clone-repo
 	@echo "=== $(NAME) === [ build ]:"

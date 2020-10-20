@@ -11,6 +11,7 @@ param (
     [string]$exporterGUID="",
     [string]$licenseGUID="",   
     [string]$configGUID="",
+    [string]$definitionGUID="",
     [string]$version=""
 )
 
@@ -40,7 +41,7 @@ echo "===> Configuring version $version for artifacts in $exporterName"
 
 $projectRootPath = pwd
 $windows_set_version = Join-Path -Path $projectRootPath -ChildPath "\scripts\windows_set_version.ps1"
-& $windows_set_version -major $v[0] -minor $v[1] -patch $v[2] -exporterName $exporterName -exporterGUID $exporterGUID -licenseGUID $licenseGUID -configGUID $configGUID
+& $windows_set_version -major $v[0] -minor $v[1] -patch $v[2] -exporterName $exporterName -exporterGUID $exporterGUID -licenseGUID $licenseGUID -configGUID $configGUID -definitionGUID $definitionGUID
 
 echo "===> Checking MSBuild.exe..."
 $msBuild = (Get-ItemProperty hklm:\software\Microsoft\MSBuild\ToolsVersions\4.0).MSBuildToolsPath

@@ -11,6 +11,7 @@ loadVariables(){
     export EXPORTER_CHANGELOG=$(yq read $EXPORTER_PATH exporter_changelog)
     export EXPORTER_GUID=$(yq read $EXPORTER_PATH exporter_guid)
     export CONFIG_GUID=$(yq read $EXPORTER_PATH config_guid)
+    export DEFINITION_GUID=$(yq read $EXPORTER_PATH definition_guid)
     export LICENSE_GUID=$(yq read $EXPORTER_PATH license_guid)
     export PACKAGE_LINUX=$(yq read $EXPORTER_PATH package_linux)
     export PACKAGE_WINDOWS=$(yq read $EXPORTER_PATH package_windows)
@@ -37,6 +38,7 @@ setStepOutput(){
     echo "::set-output name=EXPORTER_GUID::${EXPORTER_GUID}"
     echo "::set-output name=LICENSE_GUID::${LICENSE_GUID}"
     echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
+    echo "::set-output name=DEFINITION_GUID::${DEFINITION_GUID}"
 }
 
 
@@ -145,7 +147,18 @@ checkExporter(){
                 ERRORS=$ERRORS" - config_guid was already used in a different exporter"
             fi
             if [[ ! $CONFIG_GUID =~ ^\{?[A-F0-9a-f]{8}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{12}\}?$ ]]; then
-                ERRORS=$ERRORS" - license_guid is not a GUID"
+                ERRORS=$ERRORS" - config_guid is not a GUID"
+            fi
+        fi
+
+        if [ -z "$DEFINITION_GUID" ];then
+            ERRORS=$ERRORS" - definition_guid is missing from exporter.yml"
+        else
+            if [ $(grep $DEFINITION_GUID exporters/*/exporter.yml | wc -l) != 1 ];then
+                ERRORS=$ERRORS" - definition_guid was already used in a different exporter"
+            fi
+            if [[ ! $DEFINITION_GUID =~ ^\{?[A-F0-9a-f]{8}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{12}\}?$ ]]; then
+                ERRORS=$ERRORS" - definition_guid is not a GUID"
             fi
         fi
 

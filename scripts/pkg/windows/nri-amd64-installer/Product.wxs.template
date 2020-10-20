@@ -25,8 +25,10 @@
         <Feature Id="ProductFeature" Title="New Relic Prometheus Exporter Integration, {IntegrationName}" Level="1">
             <ComponentRef Id="CMP_V1_CUSTOM_PLUGINS_BIN"/>
             <ComponentRef Id="CMP_V1_PLUGIN_CONFIGS"/>
+            <ComponentRef Id="CMP_V1_DEFINITION_FILES"/>
             <ComponentGroupRef Id="PrometheusPluginsBinComponent"/>
             <ComponentGroupRef Id="PluginConfigsComponent"/>
+            <ComponentGroupRef Id="DefinitionFilesComponent"/>
         </Feature>
     </Product>
 
@@ -39,6 +41,7 @@
                 <Directory Id="CompanyFolder" Name="New Relic">
                     <Directory Id="AgentBinaryFolder" Name="newrelic-infra">
                         <Directory Id="PluginConfigsFolder" Name="integrations.d"/>
+                        <Directory Id="DefinitionFilesFolder" Name="definition-files"/>
                     </Directory>
                 </Directory>
             </Directory>
@@ -53,6 +56,11 @@
         </DirectoryRef>
         <DirectoryRef Id="PluginConfigsFolder">
             <Component Id="CMP_V1_PLUGIN_CONFIGS" Guid="803C978C-B2A1-47C7-BB17-A2DE9E6D3145" KeyPath="yes">
+                <CreateFolder/>
+            </Component>
+        </DirectoryRef>
+        <DirectoryRef Id="DefinitionFilesFolder">
+            <Component Id="CMP_V1_DEFINITION_FILES" Guid="863851FB-89F7-4242-9945-40A0327F03A9" KeyPath="yes">
                 <CreateFolder/>
             </Component>
         </DirectoryRef>
@@ -76,6 +84,14 @@
                 <File Id="CMP_NRI_EXPORTER_CONFIG"
                       Name="{IntegrationName}-exporter.yml.sample"
                       Source="$(var.BinariesPath){IntegrationName}-exporter-windows.yml.sample"
+                      KeyPath="yes"/>
+            </Component>
+        </ComponentGroup>
+        <ComponentGroup Id="DefinitionFilesComponent" Directory="DefinitionFilesFolder">
+            <Component Id="CMP_NRI_DEFINITION_FILES" Guid="{definitionGUID}" Win64="yes">
+                <File Id="CMP_NRI_DEFINITION_FILES"
+                      Name="prometheus_{IntegrationName}.yml"
+                      Source="$(var.BinariesPath)prometheus_{IntegrationName}.yml"
                       KeyPath="yes"/>
             </Component>
         </ComponentGroup>

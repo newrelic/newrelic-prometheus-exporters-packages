@@ -22,3 +22,5 @@ exporter_guid: 384DEA56-0A36-483D-B946-6B41AEF70EF2
 license_guid: 2810AFB4-E6AD-496E-BC03-70B15AF2125F
 # This GUID should be generated and be unique across all exporters in the repository
 config_guid: 54030FC4-E2DB-4EDD-8704-1F7E403D82A2
+# This GUID should be generated and be unique across all exporters in the repository
+definition_guid: 3F17F653-8B95-4C33-AAA2-E7636875050D

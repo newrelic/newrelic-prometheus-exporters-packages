@@ -20,8 +20,23 @@ $env:GO111MODULE = "auto"
 $exporterBinaryName = "$exporterName-exporter.exe"
 $exporterRepo =  [string]"$exporterURL" -replace 'https?://(www.)?'
 
+$defRepoURL= "https://github.com/newrelic/nr-integration-definitions"
+$defFileName = "prometheus_$exporterName.yml"
+$defRepoPath = "definitions"
+$defFilePath = "$defRepoPath\\definitions\\prometheus_exporters"
+
 $projectRootPath = pwd
 
+echo "--- Cloning definitions files Repo"
+$ErrorActionPreference = "SilentlyContinue"
+git clone $defRepoURL $defRepoPath
+$ErrorActionPreference = "Stop"
+$defFileExists = Test-Path $defFilePath\\$defFileName
+if ($defFileExists -eq $False)
+{
+    echo "Cannot find a definition file called $defFileName in the definitions repo"
+    exit -1
+}
 
 echo "--- Cloning exporter Repo"
 Push-Location $env:GOPATH\src
@@ -74,6 +89,12 @@ if (-not $?)
 Copy-Item ".\exporters\$exporterName\$exporterName-exporter-windows.yml.sample" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-exporter-windows.yml.sample" -Force 
 if (-not $?)
 {
-    echo "Failed compying config file"
+    echo "Failed copying config file"
+    exit -1
+}
+Copy-Item "$defFilePath\\$defFileName" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$defFileName" -Force 
+if (-not $?)
+{
+    echo "Failed copying definition file"
     exit -1
 }
