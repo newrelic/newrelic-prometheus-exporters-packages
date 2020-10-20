@@ -114,8 +114,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_release.outputs.UPLOAD_URL }} 
-          asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/deb/${{ steps.package.outputs.NAME }}_${{ steps.package.outputs.VERSION }}-1_amd64.deb
-          asset_name: ${{ steps.package.outputs.NAME }}_${{ steps.package.outputs.VERSION }}-1_amd64.deb
+          asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/deb/${{ steps.package.outputs.PACKAGE_NAME }}_${{ steps.package.outputs.VERSION }}-1_amd64.deb
+          asset_name: ${{ steps.package.outputs.PACKAGE_NAME }}_${{ steps.package.outputs.VERSION }}-1_amd64.deb
           asset_content_type: deb package
       - name: Upload Release Asset TAR
         uses: actions/upload-release-asset@v1
@@ -123,8 +123,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_release.outputs.UPLOAD_URL }}
-          asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/tarball/${{ steps.package.outputs.NAME }}_linux_${{ steps.package.outputs.VERSION }}_amd64.tar.gz
-          asset_name: ${{ steps.package.outputs.NAME }}_linux_${{ steps.package.outputs.VERSION }}_amd64.tar.gz
+          asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/tarball/${{ steps.package.outputs.PACKAGE_NAME }}_linux_${{ steps.package.outputs.VERSION }}_amd64.tar.gz
+          asset_name: ${{ steps.package.outputs.PACKAGE_NAME }}_linux_${{ steps.package.outputs.VERSION }}_amd64.tar.gz
           asset_content_type: tarball
       - name: Upload Release Asset RPM
         uses: actions/upload-release-asset@v1
@@ -132,8 +132,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_release.outputs.UPLOAD_URL }} 
-          asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/rpm/${{ steps.package.outputs.NAME }}-${{ steps.package.outputs.VERSION }}-1.x86_64.rpm
-          asset_name: ${{ steps.package.outputs.NAME }}-${{ steps.package.outputs.VERSION }}-1.x86_64.rpm
+          asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/rpm/${{ steps.package.outputs.PACKAGE_NAME }}-${{ steps.package.outputs.VERSION }}-1.x86_64.rpm
+          asset_name: ${{ steps.package.outputs.PACKAGE_NAME }}-${{ steps.package.outputs.VERSION }}-1.x86_64.rpm
           asset_content_type: rpm package
 
 
@@ -184,7 +184,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_release.outputs.UPLOAD_URL }} 
-          asset_path: ${{ github.workspace }}/src/repo/exporters/${{ steps.load_variables.outputs.NAME }}/target/packages/msi/${{ steps.load_variables.outputs.NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
-          asset_name: ${{ steps.load_variables.outputs.NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
+          asset_path: ${{ github.workspace }}/src/repo/exporters/${{ steps.load_variables.outputs.NAME }}/target/packages/msi/${{ steps.load_variables.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
+          asset_name: ${{ steps.load_variables.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
           asset_content_type: msi package
       
