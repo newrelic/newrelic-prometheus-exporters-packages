@@ -9,6 +9,7 @@ loadVariables(){
     export EXPORTER_TAG=$(yq read $EXPORTER_PATH exporter_tag)
     export EXPORTER_COMMIT=$(yq read $EXPORTER_PATH exporter_commit)
     export EXPORTER_CHANGELOG=$(yq read $EXPORTER_PATH exporter_changelog)
+    export UPGRADE_GUID=$(yq read $EXPORTER_PATH upgrade_guid)
     export EXPORTER_GUID=$(yq read $EXPORTER_PATH exporter_guid)
     export CONFIG_GUID=$(yq read $EXPORTER_PATH config_guid)
     export DEFINITION_GUID=$(yq read $EXPORTER_PATH definition_guid)
@@ -36,6 +37,7 @@ setStepOutput(){
     echo "::set-output name=EXPORTER_PATH::${EXPORTER_PATH}"
     echo "::set-output name=PACKAGE_LINUX::${PACKAGE_LINUX}"
     echo "::set-output name=PACKAGE_WINDOWS::${PACKAGE_WINDOWS}"
+    echo "::set-output name=UPGRADE_GUID::${UPGRADE_GUID}"
     echo "::set-output name=EXPORTER_GUID::${EXPORTER_GUID}"
     echo "::set-output name=LICENSE_GUID::${LICENSE_GUID}"
     echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
@@ -119,6 +121,17 @@ checkExporter(){
 
     # checking if the windows packaging is required if the file and GUIID are present and not reused
     if [ "$PACKAGE_WINDOWS" = "true" ];then
+        if [ -z "$UPGRADE_GUID" ];then
+            ERRORS=$ERRORS" - upgrade_guid is missing from exporter.yml"
+        else
+            if [ $(grep $UPGRADE_GUID exporters/*/exporter.yml | wc -l) != 1 ];then
+                ERRORS=$ERRORS" - upgrade_guid was already used in a different exporter"
+            fi
+            if [[ ! $UPGRADE_GUID =~ ^\{?[A-F0-9a-f]{8}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{12}\}?$ ]]; then
+                ERRORS=$ERRORS" - upgrade_guid is not a GUID"
+            fi
+        fi
+        
         if [ -z "$EXPORTER_GUID" ];then
             ERRORS=$ERRORS" - exporter_guid is missing from exporter.yml"
         else
