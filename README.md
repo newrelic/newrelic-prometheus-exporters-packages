@@ -130,6 +130,9 @@ exporter_changelog: "Changelog for the current version, nothing relly changed, j
 package_linux: true
 # Enable packages for Windows
 package_windows: true
+# Upgrade GUID used in the msi package. Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+upgrade_guid: 58F31C6C-DB0A-455E-9E4C-5C9AD4A8932B
 # Exporter GUID used in the msi package Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 exporter_guid: 7B629E90-530F-4FAA-B7FE-1F1B30A95714

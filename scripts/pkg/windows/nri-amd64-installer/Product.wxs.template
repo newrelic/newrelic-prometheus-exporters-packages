@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <?define Version = "{IntegrationVersion}" ?>
     <?define ProductId = "*" ?>
-    <?define UpgradeCode = "{27cf7682-b909-4940-8368-ce4719af1b82}" ?>
+    <?define UpgradeCode = "{upgradeGUID}" ?>
 
     <Product Id="$(var.ProductId)"
              Name="New Relic Prometheus Exporter Integration, {IntegrationName}"

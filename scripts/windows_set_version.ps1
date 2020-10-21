@@ -4,6 +4,7 @@ param (
 	 [int]$patch = $(throw "-patch is required"),
 	 [string]$exporterName="",
 	 [string]$exporterGUID="",
+	 [string]$upgradeGUID="",
 	 [string]$licenseGUID="",
 	 [string]$configGUID="",
 	 [string]$definitionGUID="",
@@ -49,6 +50,7 @@ Function ProcessProductFile($productPath) {
 	$product = $product -replace "{IntegrationExe}", $executable
 	$product = $product -replace "{IntegrationName}", $exporterName
 	$product = $product -replace "{exporterBinGUID}", $exporterGUID
+	$product = $product -replace "{upgradeGUID}", $upgradeGUID
 	$product = $product -replace "{licenseGUID}", $licenseGUID
 	$product = $product -replace "{configGUID}", $configGUID
 	$product = $product -replace "{definitionGUID}", $definitinoGUID
