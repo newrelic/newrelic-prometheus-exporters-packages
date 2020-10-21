@@ -1,7 +1,7 @@
 # name of the exporter, should mach with the folder name
 name: github
 # version of the package created
-version: 2.0.2
+version: 2.0.3
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/infinityworks/github-exporter
 # Tag of the exporter to checkout
@@ -23,3 +23,6 @@ license_guid: 68C1E509-840A-41AC-B4A5-FE84772F15B3
 # Config GUID used in the msi package Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 config_guid: F10B3F27-FB2C-481D-8585-553DBE130FB4
+# Definition GUID used in the msi package Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+definition_guid: 9B4D93EB-A484-4079-AFFA-43EAAB65BA3E
