@@ -1,0 +1,26 @@
+{
+    "name": "ravendb-exporter",
+    "timeout": 0,
+    "env": {
+        {{if .config.use_auth}}
+            "USE_AUTH": "{{.config.use_auth}}",
+        {{end}}
+        {{if .config.client_cert}}
+            "CLIENT_CERT": "{{.config.client_cert}}",
+        {{end}}
+        {{if .config.client_key}}
+            "CLIENT_KEY": "{{.config.client_key}}",
+        {{end}}
+        {{if .config.client_key_password}}
+            "CLIENT_KEY_PASSWORD": "{{.config.client_key_password}}",
+        {{end}}
+        {{if .config.timeout}}
+            "TIMEOUT": "{{.config.timeout}}",
+        {{end}}
+        {{if .env.VERBOSE}}
+            "VERBOSE": {{.env.VERBOSE}},
+        {{end}}
+        "RAVENDB_URL":  "{{.config.ravendb_url}}",
+        "PORT": "{{.exporter_port}}"
+    }
+}

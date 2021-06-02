@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/newrelic/infra-integrations-sdk/v4/log"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
@@ -51,7 +52,7 @@ const configRavenDBTemplate = `
 func callGeneratorConfig(integration string, args []string, env []string) ([]byte, error) {
 	executable := fmt.Sprintf("nri-%s", integration)
 	cmd := &exec.Cmd{
-		Path: filepath.Join(rootDir(), "dist", executable),
+		Path: filepath.Join(rootDir(), "bin", executable),
 		Args: args,
 		Env:  env,
 	}
@@ -84,6 +85,7 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	server := &http.Server{Addr: fmt.Sprintf(":%s", defaultPort)}
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
+			log.Warn(err.Error())
 		}
 	}()
 	defer func() {
@@ -149,6 +151,7 @@ func TestGeneratorConfigWithExporterPortInConfigFileButItsInUse(t *testing.T) {
 	server := &http.Server{Addr: fmt.Sprintf(":%s", "9911")}
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
+			log.Warn(err.Error())
 		}
 	}()
 	defer func() {

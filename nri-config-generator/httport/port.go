@@ -44,29 +44,17 @@ func findAvailablePort() (int, error) {
 
 func isPortAvailable(port string) bool {
 	conn, err := net.DialTimeout(tcp, net.JoinHostPort("", port), 1*time.Second)
-	if err != nil {
-		if isConnectionRefusedError(err) {
-			return true
-		}
-	}
 	if conn != nil {
 		conn.Close()
 		return false
 	}
-	return true
+	return !isConnectionRefusedError(err)
 }
 
 func isConnectionRefusedError(err error) bool {
-	if netError, ok := err.(net.Error); ok && netError.Timeout() {
-		return false
-	}
 	switch t := err.(type) {
 	case *net.OpError:
-		if t.Op == "dial" {
-			return false
-		} else if t.Op == "read" {
-			return true
-		}
+		return t.Op == "read"
 	case *os.SyscallError:
 		if (*t).Err == syscall.ECONNREFUSED {
 			return true
