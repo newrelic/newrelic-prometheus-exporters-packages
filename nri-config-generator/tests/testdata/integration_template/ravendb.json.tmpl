@@ -1,0 +1,8 @@
+{
+  "name": "prometheus-exporter-ravendb",
+  "timeout": 0,
+  "env": {
+      "RAVENDB_URL": "{{.config.ravendb_url}}",
+      "PORT": "{{.exporter_port}}"
+  }
+}
