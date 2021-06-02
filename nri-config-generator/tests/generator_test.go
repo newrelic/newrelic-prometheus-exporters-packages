@@ -57,7 +57,9 @@ func callGeneratorConfig(integration string, args []string, env []string) ([]byt
 	}
 	return cmd.Output()
 }
-
+/**
+Happy path
+ */
 func TestGeneratorConfig(t *testing.T) {
 	integration := "ravendb"
 	defaultPort := "3333"
@@ -71,6 +73,9 @@ func TestGeneratorConfig(t *testing.T) {
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
+/**
+The default port is already in use, the config generator must find and available one and set the config
+ */
 func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	integration := "ravendb"
 	defaultPort := "3333"
@@ -96,7 +101,9 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", assignedPort, assignedPort)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
-
+/**
+The env var interval is provided
+ */
 func TestGeneratorConfigWithInterval(t *testing.T) {
 	integration := "ravendb"
 	defaultPort := "3333"
