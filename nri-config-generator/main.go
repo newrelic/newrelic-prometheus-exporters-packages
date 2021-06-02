@@ -37,8 +37,8 @@ func main() {
 	cfgPort := ""
 	if cfg, ok := vars[args.PrefixCfg]; ok {
 		cfgVars := cfg.(map[string]interface{})
-		if cfgVars[varExporterPort] != nil {
-			cfgPort = cfgVars[varExporterPort].(string)
+		if cfgPortPtr := cfgVars[varExporterPort]; cfgPortPtr != nil {
+			cfgPort = fmt.Sprintf("%v", cfgPortPtr)
 		}
 	}
 	port, err := httport.GetAvailablePort(cfgPort, defPort)
