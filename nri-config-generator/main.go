@@ -31,16 +31,24 @@ var (
 )
 
 func main() {
-	port, err := httport.GetAvailablePort(defPort)
+	if err := args.PopulateVars(vars); err != nil {
+		panic(err)
+	}
+	cfgPort := ""
+	if cfg, ok := vars[args.PrefixCfg]; ok {
+		cfgVars := cfg.(map[string]interface{})
+		if cfgVars[varExporterPort] != nil {
+			cfgPort = cfgVars[varExporterPort].(string)
+		}
+	}
+	port, err := httport.GetAvailablePort(cfgPort, defPort)
 	if err != nil {
 		panic(err)
 	}
 
 	vars[varExporterPort] = port
 	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
-	if err := args.PopulateVars(vars); err != nil {
-		panic(err)
-	}
+
 	t, err := template.ParseFS(integrationTemplate, integrationTemplatePattern)
 	if err != nil {
 		panic(err)

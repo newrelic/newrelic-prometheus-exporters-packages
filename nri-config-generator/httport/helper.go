@@ -12,7 +12,13 @@ import (
 
 const tcp = "tcp"
 
-func GetAvailablePort(defPort string) (int, error) {
+func GetAvailablePort(configPort string, defPort string) (int, error) {
+	if configPort != "" {
+		port, err := strconv.Atoi(configPort)
+		if err == nil && isPortAvailable(configPort) {
+			return port, nil
+		}
+	}
 	port, err := strconv.Atoi(defPort)
 	if err == nil && isPortAvailable(defPort) {
 		return port, nil

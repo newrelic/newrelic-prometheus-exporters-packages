@@ -7,7 +7,7 @@ import (
 
 const (
 	prefixEnv     = "env"
-	prefixCfg     = "config"
+	PrefixCfg     = "config"
 	prefixCLI     = "cli"
 	envConfigPath = "CONFIG_PATH"
 )
@@ -15,7 +15,7 @@ const (
 func PopulateVars(vars map[string]interface{}) (err error) {
 	vars[prefixEnv] = envVars()
 	vars[prefixCLI] = cliVars()
-	vars[prefixCfg], err = argVars()
+	vars[PrefixCfg], err = argVars()
 	return
 }
 
