@@ -33,4 +33,13 @@
 **/versioninfo.json
 
 .DS_Store 
-**/.DS_Store 
+**/.DS_Store
+
+nri-config-generator/dist/*
+nri-config-generator/vendor
+nri-config-generator/templates/*
+!nri-config-generator/templates/config.json.tmpl
+.env
+dist
+
+tests/dist

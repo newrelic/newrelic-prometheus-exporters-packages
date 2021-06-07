@@ -2,6 +2,8 @@
 name: ravendb
 # version of the package created
 version: 0.3.2
+# Relative path to the License path from the repository root
+exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/marcinbudny/ravendb_exporter
 # Tag of the exporter to checkout
@@ -27,3 +29,4 @@ license_guid: 2810AFB4-E6AD-496E-BC03-70B15AF2125F
 config_guid: 54030FC4-E2DB-4EDD-8704-1F7E403D82A2
 # This GUID should be generated and be unique across all exporters in the repository
 definition_guid: 3F17F653-8B95-4C33-AAA2-E7636875050D
+

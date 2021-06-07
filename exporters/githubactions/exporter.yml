@@ -2,6 +2,8 @@
 name: githubactions
 # version of the package created
 version: 1.2.6
+# Relative path to the License path from the repository root
+exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/Spendesk/github-actions-exporter
 # Tag of the exporter to checkout

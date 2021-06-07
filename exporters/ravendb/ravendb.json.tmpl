@@ -1,0 +1,12 @@
+{
+    "env": {
+        {{set "USE_AUTH" .config.use_auth}}
+        {{set "CLIENT_CERT" .config.client_cert}}
+        {{set "CLIENT_KEY" .config.client_key}}
+        {{set "CLIENT_KEY_PASSWORD" .config.client_key_password}}
+        {{set "TIMEOUT" .config.timeout}}
+        {{set "VERBOSE" .env.VERBOSE}}
+        {{set "RAVENDB_URL" .config.ravendb_url}}
+        {{set "PORT" .exporter_port}}
+    }
+}

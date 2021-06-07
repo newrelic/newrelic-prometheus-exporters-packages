@@ -1,34 +1,24 @@
 integrations:
-    - name: nri-prometheus
+    - name: nri-ravendb
+      #interval: 15s
       config:
-        standalone: false
-        targets:
-          - description: "ravendb"
-            urls: ["http://localhost:9440"]
-    - name: ravendb
-      exec: /usr/local/prometheus-exporters/bin/ravendb-exporter
-      timeout: 0
-      env:
         # Url to connect to your RavenDb instance
-        RAVENDB_URL: http://localhost:8080
+        ravendb_url: http://ravendb:8080
+
+        # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
+        exporter_port: 9440
 
         # If set, connection to RavenDB will be authenticated with a client certificate
-        # USE_AUTH: <true/false>
+        # use_auth: <true/false>
 
         # Path to client public certificate used for authentication
-        # CLIENT_CERT:
+        # client_cert:
 
         # Path to client private key used for authentication
-        # CLIENT_KEY:
+        # client_key:
 
         # Password for the client key (if it is encrypted)
-        # CLIENT_KEY_PASSWORD:
+        # client_key_password:
 
         # Timeout when calling RavenDB
-        # TIMEOUT: 10s
-
-        # Port to expose scrape endpoint on
-        # PORT: 9440
-
-        # Enable verbose logging
-        # VERBOSE: false
+        # timeout: 10s

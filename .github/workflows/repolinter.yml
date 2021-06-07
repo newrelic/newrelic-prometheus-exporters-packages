@@ -1,0 +1,16 @@
+name: Repolinter Action
+
+on: [push, workflow_dispatch]
+
+jobs:
+  repolint:
+    name: Run Repolinter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Self
+        uses: actions/checkout@v2
+      - name: Run Repolinter
+        uses: newrelic/repolinter-action@v1
+        with:
+          config_url: https://raw.githubusercontent.com/newrelic/.github/main/repolinter-rulesets/community-plus.yml
+          output_type: issue
