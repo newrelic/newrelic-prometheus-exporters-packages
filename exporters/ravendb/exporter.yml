@@ -2,7 +2,7 @@
 name: ravendb
 # version of the package created
 version: 0.3.2
-# License path
+# Relative path to the License path from the repository root
 exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/marcinbudny/ravendb_exporter

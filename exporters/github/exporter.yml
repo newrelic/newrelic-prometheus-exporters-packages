@@ -2,7 +2,7 @@
 name: github
 # version of the package created
 version: 2.0.4
-# License path
+# Relative path to the License path from the repository root
 exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/infinityworks/github-exporter
