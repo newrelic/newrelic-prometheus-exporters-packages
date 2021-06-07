@@ -22,15 +22,6 @@ test:
 	@go test -race ./... -count=1
 
 
-nri-config-generator/snyk-test:
-	@docker run --rm -t \
-			--name "nri-config-generator-snyk-test" \
-			-v $(CURDIR):/go/src/github.com/newrelic/nri-config-generator \
-			-w /go/src/github.com/newrelic/nri-config-generator \
-			-e SNYK_TOKEN \
-			-e GO111MODULE=auto \
-			snyk/snyk:golang snyk test --severity-threshold=high
-
 
 INTEGRATION_NAME=
 compile:
