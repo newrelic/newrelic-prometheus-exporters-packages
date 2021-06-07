@@ -6,12 +6,11 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GO_VERSION: '1.16'
-  DEFAULT_OS: 'ubuntu-20.04'
 
 jobs:
   golangci-lint:
     name: Validate code via golangci
-    runs-on: "${{env.DEFAULT_OS}}"
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - name: golangci-lint
@@ -22,7 +21,7 @@ jobs:
 
   snyk:
     name: Run security checks via snyk
-    runs-on: "${{env.DEFAULT_OS}}"
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - name: Login to DockerHub
