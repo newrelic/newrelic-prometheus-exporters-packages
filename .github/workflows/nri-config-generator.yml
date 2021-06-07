@@ -1,7 +1,6 @@
 name: nri-config-generator pipeline
 
-on:
-  pull_request:
+on: [push, workflow_dispatch]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
