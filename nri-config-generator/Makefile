@@ -1,4 +1,4 @@
-INTEGRATION      = nri-cpmfoggenerator
+INTEGRATION      = nri-config-generator
 TARGET          := target
 GOFLAGS          = -mod=readonly
 GOLANGCI_LINT	 = github.com/golangci/golangci-lint/cmd/golangci-lint
@@ -20,6 +20,17 @@ validate:
 test:
 	@echo "=== nri-config-generator === [ test ]: running unit tests..."
 	@go test -race ./... -count=1
+
+
+nri-config-generator/snyk-test:
+	@docker run --rm -t \
+			--name "nri-config-generator-snyk-test" \
+			-v $(CURDIR):/go/src/github.com/newrelic/nri-config-generator \
+			-w /go/src/github.com/newrelic/nri-config-generator \
+			-e SNYK_TOKEN \
+			-e GO111MODULE=auto \
+			snyk/snyk:golang snyk test --severity-threshold=high
+
 
 INTEGRATION_NAME=
 compile:

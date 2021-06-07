@@ -26,3 +26,5 @@ all:
 run:
 	sh scripts/run.sh $(PWD)
 	docker-compose up
+
+include $(CURDIR)/nri-config-generator/Makefile
