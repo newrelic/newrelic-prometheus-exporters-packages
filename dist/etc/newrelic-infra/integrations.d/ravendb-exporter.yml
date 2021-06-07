@@ -39,4 +39,4 @@ integrations:
 
         # Port to expose scrape endpoint on
         exporter_port: 9442
-        
+
