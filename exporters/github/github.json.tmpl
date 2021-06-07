@@ -1,0 +1,13 @@
+{
+    "env": {
+        {{set "ORGS" .config.github_orgs}}
+        {{set "REPOS" .config.github_repos}}
+        {{set "USERS" .config.github_users}}
+        {{set "GITHUB_TOKEN" .config.github_token}}
+        {{set "GITHUB_TOKEN_FILE" .config.github_token_file}}
+        {{set "API_URL" .config.api_url}}
+        {{set "LISTEN_PORT" .exporter_port}}
+        {{set "METRICS_PATH" .config.metrics_path}}
+        {{set "LOG_LEVEL" .config.log_level}}
+    }
+}

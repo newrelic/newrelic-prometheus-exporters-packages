@@ -1,41 +1,80 @@
 package main
 
 import (
-	"bytes"
 	"embed"
 	"fmt"
-	"strings"
 	"text/template"
+	"time"
 
 	"github.com/newrelic/infra-integrations-sdk/v4/log"
 	"github.com/newrelic/nri-config-generator/args"
+	"github.com/newrelic/nri-config-generator/generator"
 	"github.com/newrelic/nri-config-generator/httport"
+	"github.com/pkg/errors"
 )
 
 const (
 	varIntegrationName    = "integration"
 	varExporterPort       = "exporter_port"
 	varExporterDefinition = "exporter_definition"
+	sleepTime             = 30 * time.Second
 )
 
 var (
 	integration string
-	defPort     string
 	//go:embed templates
 	integrationTemplate embed.FS
 	//go:embed templates/config.json.tmpl
 	configTemplateContent string
-	configTemplate        = template.New("")
 	vars                  = map[string]interface{}{
 		varIntegrationName: integration,
 	}
 )
 
 func main() {
-	if err := args.PopulateVars(vars); err != nil {
-		log.Error("error populating vars: '%s'", err.Error())
+	err := args.PopulateVars(vars)
+	panicErr(err)
+	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
+
+	content, err := integrationTemplate.ReadFile(integrationTemplatePattern)
+	panicErr(err)
+
+	integrationTemplate, err := loadIntegrationTemplate(content)
+	panicErr(err)
+	exporterGenerator := generator.NewExporter(integration, integrationTemplate)
+	configTemplate, err := loadConfigTemplate()
+	panicErr(err)
+	configGenerator := generator.NewConfig(configTemplate)
+	port, err := findExporterPort()
+	panicErr(err)
+	vars[varExporterPort] = port
+	exporterText, err := exporterGenerator.Generate(vars)
+	panicErr(err)
+	vars[varExporterDefinition] = exporterText
+	output, err := configGenerator.Generate(vars)
+	panicErr(err)
+	print(output)
+	httport.SetPrometheusExporterPort("localhost", port)
+	/** repeat **/
+	for {
+		time.Sleep(sleepTime) // 10 *time.Seconds
+		if !httport.IsPrometheusExporterRunning() {
+			panic(errors.New("there is not a prometheus exporter in the assigned port"))
+		}
+		print("{}")
+		print(output)
+	}
+	/** until **/
+
+}
+
+func panicErr(err error) {
+	if err != nil {
 		panic(err)
 	}
+}
+
+func findExporterPort() (int, error) {
 	cfgPort := ""
 	if cfg, ok := vars[args.PrefixCfg]; ok {
 		cfgVars := cfg.(map[string]interface{})
@@ -43,35 +82,28 @@ func main() {
 			cfgPort = fmt.Sprintf("%v", cfgPortPtr)
 		}
 	}
-	port, err := httport.GetAvailablePort(cfgPort, defPort)
+	port, err := httport.GetAvailablePort(cfgPort)
 	if err != nil {
 		log.Error("error obtaining the port for the exporter: '%s'", err.Error())
-		panic(err)
+		return -1, err
 	}
+	return port, nil
+}
 
-	vars[varExporterPort] = port
-	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
-
-	t, err := template.ParseFS(integrationTemplate, integrationTemplatePattern)
+func loadIntegrationTemplate(content []byte) (*template.Template, error) {
+	t, err := template.New("").Funcs(generator.TemplatesFunc).Parse(string(content))
 	if err != nil {
 		log.Error("error parsing the integration template: '%s'", err.Error())
-		panic(err)
+		return nil, err
 	}
-	var tpl bytes.Buffer
-	if err := t.Execute(&tpl, vars); err != nil {
-		log.Error("error executing the template for the integration: '%s'", err.Error())
-		panic(err)
-	}
-	vars[varExporterDefinition] = tpl.String()
-	t, err = configTemplate.Parse(configTemplateContent)
+	return t, nil
+}
+
+func loadConfigTemplate() (*template.Template, error) {
+	t, err := template.New("").Funcs(generator.TemplatesFunc).Parse(configTemplateContent)
 	if err != nil {
 		log.Error("error parsing the template for the config: '%s'", err.Error())
-		panic(err)
+		return nil, err
 	}
-	var output bytes.Buffer
-	if err := t.Execute(&output, vars); err != nil {
-		log.Error("error executing the template for the config: '%s'", err.Error())
-		panic(err)
-	}
-	fmt.Println(strings.ReplaceAll(output.String(), "\n", ""))
+	return t, nil
 }

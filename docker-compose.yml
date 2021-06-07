@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  agent:
+    container_name: newrelic-infra
+    image: newrelic/infrastructure:latest
+    cap_add:
+      - SYS_PTRACE
+    network_mode: host
+    pid: host
+    privileged: true
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/:/host:ro"
+      - "./dist/etc/newrelic-infra/integrations.d:/etc/newrelic-infra/integrations.d"
+      - "./dist/etc/newrelic-infra/definition-files:/etc/newrelic-infra/definition-files:ro"
+      - "./dist/var/db/newrelic-infra/newrelic-integrations/bin:/var/db/newrelic-infra/newrelic-integrations/bin"
+      - "./dist/usr/local/prometheus-exporters/bin:/usr/local/prometheus-exporters/bin:ro"
+    restart: unless-stopped
+    environment:
+      NRIA_VERBOSE: 0
+      NRIA_LICENSE_KEY: ${NRIA_LICENSE_KEY}
+      NRIA_STAGING: "true"
+
+  ravendb:
+    image: ravendb/ravendb
+    container_name: ravendb
+    ports:
+      - 8080:8080
+    environment:
+      - RAVEN_Security_UnsecuredAccessAllowed=PublicNetwork
+      - RAVEN_Setup_Mode=None
+      - RAVEN_License_Eula_Accepted=true
+      - "RAVEN_ServerUrl=http://0.0.0.0:8080"
+      - "RAVEN_ServerUrl_Tcp=tcp://0.0.0.0:38888"

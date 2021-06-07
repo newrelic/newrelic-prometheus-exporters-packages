@@ -6,25 +6,16 @@ import (
 	"strconv"
 	"syscall"
 	"time"
-
-	"github.com/newrelic/infra-integrations-sdk/v4/log"
 )
 
 const tcp = "tcp"
 
-func GetAvailablePort(configPort string, defPort string) (int, error) {
+func GetAvailablePort(configPort string) (int, error) {
 	if configPort != "" {
 		port, err := strconv.Atoi(configPort)
 		if err == nil && isPortAvailable(configPort) {
 			return port, nil
 		}
-	}
-	port, err := strconv.Atoi(defPort)
-	if err == nil && isPortAvailable(defPort) {
-		return port, nil
-	}
-	if err != nil {
-		log.Warn(err.Error())
 	}
 	return findAvailablePort()
 }

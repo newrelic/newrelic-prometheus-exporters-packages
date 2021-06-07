@@ -2,6 +2,8 @@
 name: github
 # version of the package created
 version: 2.0.4
+# License path
+exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/infinityworks/github-exporter
 # Tag of the exporter to checkout
@@ -10,6 +12,8 @@ exporter_tag: 2.0.1-alpha
 exporter_commit: 
 # Changelog to add to the new release
 exporter_changelog: https://github.com/infinityworks/github-exporter/releases
+# Default port for the exporter
+exporter_default_port: 9171
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows

@@ -50,16 +50,25 @@ func Test_GetAvailablePort(t *testing.T) {
 	availablePort, err := findAvailablePort()
 	assert.Nil(t, err)
 	portStr := fmt.Sprintf("%v", availablePort)
-	port, err := GetAvailablePort("", portStr)
+	port, err := GetAvailablePort(portStr)
 	assert.Nil(t, err)
 	assert.Equal(t, availablePort, port)
-	port, err = GetAvailablePort(portStr, "9999")
+	port, err = GetAvailablePort("9999")
 	assert.Nil(t, err)
 	assert.Equal(t, availablePort, port)
 	server := launchServerOn(portStr)
-	port, err = GetAvailablePort(portStr, "9999")
+	port, err = GetAvailablePort("9999")
 	assert.Nil(t, err)
 	assert.NotEqual(t, availablePort, port)
 	assert.Nil(t, server.Shutdown(context.Background()))
 
+}
+
+func Test_isPortAvailable2(t *testing.T) {
+	port, err := findAvailablePort()
+	assert.Nil(t, err)
+	port2, err := findAvailablePort()
+	assert.NotEqual(t, port, port2)
+	port3, err := findAvailablePort()
+	assert.NotEqual(t, port, port3)
 }

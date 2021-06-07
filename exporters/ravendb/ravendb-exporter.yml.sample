@@ -1,10 +1,9 @@
 integrations:
-    - name: nri-ravendbs
-
+    - name: nri-ravendb
       #interval: 15s
       config:
         # Url to connect to your RavenDb instance
-        ravendb_url: http://localhost:8080
+        ravendb_url: http://ravendb:8080
 
         # If set, connection to RavenDB will be authenticated with a client certificate
         # use_auth: <true/false>

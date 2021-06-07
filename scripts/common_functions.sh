@@ -2,20 +2,21 @@
 
 # loadVariables reads with yq the exporter definition in EXPORTER_PATH and exports the variables
 loadVariables(){
-
-    export NAME=$(yq read $EXPORTER_PATH name)
-    export VERSION=$(yq read $EXPORTER_PATH version)
-    export EXPORTER_REPO_URL=$(yq read $EXPORTER_PATH exporter_repo_url)
-    export EXPORTER_TAG=$(yq read $EXPORTER_PATH exporter_tag)
-    export EXPORTER_COMMIT=$(yq read $EXPORTER_PATH exporter_commit)
-    export EXPORTER_CHANGELOG=$(yq read $EXPORTER_PATH exporter_changelog)
-    export UPGRADE_GUID=$(yq read $EXPORTER_PATH upgrade_guid)
-    export EXPORTER_GUID=$(yq read $EXPORTER_PATH exporter_guid)
-    export CONFIG_GUID=$(yq read $EXPORTER_PATH config_guid)
-    export DEFINITION_GUID=$(yq read $EXPORTER_PATH definition_guid)
-    export LICENSE_GUID=$(yq read $EXPORTER_PATH license_guid)
-    export PACKAGE_LINUX=$(yq read $EXPORTER_PATH package_linux)
-    export PACKAGE_WINDOWS=$(yq read $EXPORTER_PATH package_windows)
+    export NAME=$(cat $EXPORTER_PATH | yq e .name -)
+    export VERSION=$(cat $EXPORTER_PATH | yq e .version -)
+    export EXPORTER_REPO_URL=$(cat $EXPORTER_PATH | yq e .exporter_repo_url -)
+    export EXPORTER_DEFAULT_PORT=$(cat $EXPORTER_PATH | yq e .exporter_default_port -)
+    export EXPORTER_LICENSE_PATH=$(cat $EXPORTER_PATH | yq e .exporter_license_path -)
+    export EXPORTER_TAG=$(cat $EXPORTER_PATH | yq e .exporter_tag -)
+    export EXPORTER_COMMIT=$(cat $EXPORTER_PATH | yq e .exporter_commit -)
+    export EXPORTER_CHANGELOG=$(cat $EXPORTER_PATH | yq e .exporter_changelog -)
+    export UPGRADE_GUID=$(cat $EXPORTER_PATH | yq e .upgrade_guid -)
+    export EXPORTER_GUID=$(cat $EXPORTER_PATH | yq e .exporter_guid -)
+    export CONFIG_GUID=$(cat $EXPORTER_PATH | yq e .config_guid -)
+    export DEFINITION_GUID=$(cat $EXPORTER_PATH | yq e .definition_guid -)
+    export LICENSE_GUID=$(cat $EXPORTER_PATH | yq e .license_guid -)
+    export PACKAGE_LINUX=$(cat $EXPORTER_PATH | yq e .package_linux -)
+    export PACKAGE_WINDOWS=$(cat $EXPORTER_PATH | yq e .package_windows -)
 
     if [[ -z $EXPORTER_TAG ]]
     then
@@ -31,6 +32,8 @@ setStepOutput(){
     echo "::set-output name=PACKAGE_NAME::${NAME}-exporter"
     echo "::set-output name=EXPORTER_HEAD::${EXPORTER_HEAD}"
     echo "::set-output name=EXPORTER_REPO_URL::${EXPORTER_REPO_URL}"
+    echo "::set-output name=EXPORTER_DEFAULT_PORT::${EXPORTER_DEFAULT_PORT}"
+    echo "::set-output name=EXPORTER_LICENSE_PATH::${EXPORTER_LICENSE_PATH}"
     echo "::set-output name=VERSION::${VERSION}"
     echo "::set-output name=EXPORTER_CHANGELOG::${EXPORTER_CHANGELOG}"
     echo "::set-output name=CREATE_RELEASE::${CREATE_RELEASE}"
@@ -98,6 +101,12 @@ checkExporter(){
     fi
     if [ -z "$EXPORTER_REPO_URL" ];then
         ERRORS=$ERRORS" - exporter_repo_url is missing from exporter.yml"
+    fi
+    if [ -z "$EXPORTER_DEFAULT_PORT" ];then
+        ERRORS=$ERRORS" - exporter_default_port is missing from exporter.yml"
+    fi
+    if [ -z "$EXPORTER_LICENSE_PATH" ];then
+        ERRORS=$ERRORS" - exporter_license_path is missing from exporter.yml"
     fi
     if [ -z "$VERSION" ];then
         ERRORS=$ERRORS" - version is missing from exporter.yml"

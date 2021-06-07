@@ -1,0 +1,111 @@
+provider: prometheus
+service: ravendb
+display_name: Ravendb
+entities:
+- name: node
+  metrics:
+  - provider_name: ravendb_document_put_bytes_total
+    description: Server-wide document put bytes
+    type: counter
+    unit: Bytes
+  - provider_name: ravendb_document_put_total
+    description: Server-wide document puts count
+    type: counter
+    unit: Count
+  - provider_name: ravendb_cpu_time_seconds_total
+    description: CPU time
+    type: counter
+    unit: Seconds
+  - provider_name: ravendb_is_leader
+    description: If 1, then node is the cluster leader, otherwise 0
+    type: gauge
+    unit: Count
+  - provider_name: ravendb_mapindex_indexed_total
+    description: Server-wide map index indexed count
+    type: counter
+    unit: Count
+  - provider_name: ravendb_mapreduceindex_mapped_total
+    description: Server-wide map-reduce index mapped count
+    type: counter
+    unit: Count
+  - provider_name: ravendb_mapreduceindex_reduced_total
+    description: Server-wide map-reduce index reduced count
+    type: counter
+    unit: Count
+  - provider_name: ravendb_request_total
+    description: Server-wide request count
+    type: counter
+    unit: Count
+  - provider_name: ravendb_up
+    description: Whether the RavenDB scrape was successful
+    type: gauge
+    unit: Count
+  - provider_name: ravendb_working_set_bytes
+    description: Process working set
+    type: gauge
+    unit: Count
+- name: database
+  properties:
+    labels: [database]
+  metrics:
+  - provider_name: ravendb_database_document_put_bytes_total
+    description: Database document put bytes
+    type: counter
+    unit: Bytes
+    labels:
+    - database
+  - provider_name: ravendb_database_document_put_total
+    description: Database document puts count
+    type: counter
+    unit: Count
+    labels:
+    - database
+  - provider_name: ravendb_database_documents
+    description: Count of documents in a database
+    type: gauge
+    unit: Count
+    labels:
+    - database
+  - provider_name: ravendb_database_indexes
+    description: Count of indexes in a database
+    type: gauge
+    unit: Count
+    labels:
+    - database
+  - provider_name: ravendb_database_mapindex_indexed_total
+    description: Database map index indexed count
+    type: counter
+    unit: Count
+    labels:
+    - database
+  - provider_name: ravendb_database_mapreduceindex_mapped_total
+    description: Database map-reduce index mapped count
+    type: counter
+    unit: Count
+    labels:
+    - database
+  - provider_name: ravendb_database_mapreduceindex_reduced_total
+    description: Database map-reduce index reduced count
+    type: counter
+    unit: Count
+    labels:
+    - database
+  - provider_name: ravendb_database_request_total
+    description: Database request count
+    type: counter
+    unit: Count
+    labels:
+    - database
+  - provider_name: ravendb_database_size_bytes
+    description: Database size in bytes
+    type: gauge
+    unit: Count
+    labels:
+    - database
+  - provider_name: ravendb_database_stale_indexes
+    description: Count of stale indexes in a database
+    type: gauge
+    unit: Count
+    labels:
+    - database
+

@@ -2,6 +2,8 @@
 name: githubactions
 # version of the package created
 version: 1.2.6
+# License path
+exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/Spendesk/github-actions-exporter
 # Tag of the exporter to checkout
@@ -10,6 +12,8 @@ exporter_tag: v1.2
 exporter_commit: 
 # Changelog to add to the new release
 exporter_changelog: https://github.com/Spendesk/github-actions-exporter/releases
+# Default port for the exporter
+exporter_default_port: 9999
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows

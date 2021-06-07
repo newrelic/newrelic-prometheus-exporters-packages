@@ -7,11 +7,10 @@
     "integrations": [
          {
             "name": "nri-prometheus",
-            {{if .env.interval}}
-                "interval": "{{.env.interval}}",
-            {{end}}
+            {{set "interval" .env.interval}}
             "config": {
                 "standalone": false,
+                {{set "verbose" .env.VERBOSE}}
                 "targets": [
                     {
                         "urls": [
