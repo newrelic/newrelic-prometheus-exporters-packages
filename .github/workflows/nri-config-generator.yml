@@ -11,7 +11,7 @@ env:
 jobs:
   golangci-lint:
     name: Validate code via golangci
-    runs-on: ${{ DEFAULT_OS }}
+    runs-on: ${DEFAULT_OS }
     steps:
       - uses: actions/checkout@v2
       - name: golangci-lint
@@ -22,7 +22,7 @@ jobs:
 
   snyk:
     name: Run security checks via snyk
-    runs-on: ${{ DEFAULT_OS }}
+    runs-on: ${DEFAULT_OS }
     steps:
       - uses: actions/checkout@v2
       - name: Login to DockerHub
