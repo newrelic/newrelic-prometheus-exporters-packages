@@ -16,7 +16,6 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
         with:
-          only-new-issues: true
           working-directory: nri-config-generator
 
   snyk:
