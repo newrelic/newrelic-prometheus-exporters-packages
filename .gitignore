@@ -41,3 +41,5 @@ nri-config-generator/templates/*
 !nri-config-generator/templates/config.json.tmpl
 .env
 dist
+
+tests/dist

@@ -7,20 +7,20 @@ integrations:
         exporter_port: 9171
 
         # If supplied, the exporter will enumerate all repositories for that organization.
-        github_orgs: <org1>, <org2>
+        orgs: <org1>, <org2>
 
         # If supplied, The repos you wish to monitor. Can be across different Github users/orgs
-        # github_repos: <user/repo1>, <user/repo2>
+        # repos: <user/repo1>, <user/repo2>
 
         # If supplied, the exporter will enumerate all repositories for that users.
-        # github_users: <user1>, <user2>
+        # users: <user1>, <user2>
 
         # If supplied, enables the user to supply a github authentication token that allows the API to be queried more often. Optional, but recommended
-        # github_token:
+        # token:
 
         # If supplied instead of GITHUB_TOKEN, enables the user to supply a path to a file containing a github authentication token that
         # allows the API to be queried more often. Optional, but recommended
-        # github_token_file:
+        # token_file:
 
         # Github API URL, shouldn't need to change this
         # api_url: <https://api.github.com>
