@@ -6,7 +6,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GO_VERSION: '1.16'
-  DEFAULT_OS: ubuntu-20.04
+  DEFAULT_OS: 'ubuntu-20.04'
 
 jobs:
   golangci-lint:
