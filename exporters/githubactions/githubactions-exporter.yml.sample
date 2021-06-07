@@ -6,7 +6,7 @@ integrations:
         # https://developer.github.com/v3/actions/
         token: *******
 
-        # Port to expose scrape endpoint on
+        # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
         exporter_port: 9999
 
         # List of Github repositories to monitor

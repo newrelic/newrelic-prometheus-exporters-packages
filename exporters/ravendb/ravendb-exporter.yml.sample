@@ -5,7 +5,7 @@ integrations:
         # Url to connect to your RavenDb instance
         ravendb_url: http://ravendb:8080
 
-        # Port to expose scrape endpoint on
+        # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
         exporter_port: 9440
 
         # If set, connection to RavenDB will be authenticated with a client certificate
