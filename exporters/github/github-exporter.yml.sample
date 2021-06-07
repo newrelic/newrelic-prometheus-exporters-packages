@@ -2,6 +2,10 @@ integrations:
     - name: nri-github
       #interval: 15s
       config:
+
+        # Port to expose scrape endpoint on
+        exporter_port: 9171
+
         # If supplied, the exporter will enumerate all repositories for that organization.
         github_orgs: <org1>, <org2>
 

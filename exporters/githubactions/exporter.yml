@@ -12,8 +12,6 @@ exporter_tag: v1.2
 exporter_commit: 
 # Changelog to add to the new release
 exporter_changelog: https://github.com/Spendesk/github-actions-exporter/releases
-# Default port for the exporter
-exporter_default_port: 9999
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows

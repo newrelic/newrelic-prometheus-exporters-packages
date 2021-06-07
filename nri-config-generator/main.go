@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"errors"
 	"fmt"
 	"text/template"
 	"time"
@@ -10,7 +11,6 @@ import (
 	"github.com/newrelic/nri-config-generator/args"
 	"github.com/newrelic/nri-config-generator/generator"
 	"github.com/newrelic/nri-config-generator/httport"
-	"github.com/pkg/errors"
 )
 
 const (
@@ -47,24 +47,23 @@ func main() {
 	configGenerator := generator.NewConfig(configTemplate)
 	port, err := findExporterPort()
 	panicErr(err)
-	vars[varExporterPort] = port
+	vars[varExporterPort] = fmt.Sprintf("%v",port)
 	exporterText, err := exporterGenerator.Generate(vars)
 	panicErr(err)
 	vars[varExporterDefinition] = exporterText
 	output, err := configGenerator.Generate(vars)
 	panicErr(err)
-	print(output)
+	fmt.Println(output)
 	httport.SetPrometheusExporterPort("localhost", port)
-	/** repeat **/
 	for {
-		time.Sleep(sleepTime) // 10 *time.Seconds
+		time.Sleep(sleepTime)
+
 		if !httport.IsPrometheusExporterRunning() {
 			panic(errors.New("there is not a prometheus exporter in the assigned port"))
 		}
-		print("{}")
-		print(output)
+		fmt.Println("{}")
+		fmt.Println(output)
 	}
-	/** until **/
 
 }
 

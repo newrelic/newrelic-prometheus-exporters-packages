@@ -29,9 +29,10 @@ func SetPrometheusExporterPort(hostname string, port int) {
 }
 
 func IsPrometheusExporterRunning() bool {
+	log.Debug("check if prometheus exporter is running on %s", exporterURL)
 	resp, err := httpPrometheusExporterClient.Get(exporterURL)
 	if err != nil {
-		log.Error("error while checking the prometheus exporter 'health check'")
+		log.Error("error while checking the prometheus exporter 'health check': %s",err.Error())
 		return false
 	}
 	io.Copy(ioutil.Discard, resp.Body) // <= NOTE

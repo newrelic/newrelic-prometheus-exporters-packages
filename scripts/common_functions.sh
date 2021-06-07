@@ -5,7 +5,6 @@ loadVariables(){
     export NAME=$(cat $EXPORTER_PATH | yq e .name -)
     export VERSION=$(cat $EXPORTER_PATH | yq e .version -)
     export EXPORTER_REPO_URL=$(cat $EXPORTER_PATH | yq e .exporter_repo_url -)
-    export EXPORTER_DEFAULT_PORT=$(cat $EXPORTER_PATH | yq e .exporter_default_port -)
     export EXPORTER_LICENSE_PATH=$(cat $EXPORTER_PATH | yq e .exporter_license_path -)
     export EXPORTER_TAG=$(cat $EXPORTER_PATH | yq e .exporter_tag -)
     export EXPORTER_COMMIT=$(cat $EXPORTER_PATH | yq e .exporter_commit -)
@@ -32,7 +31,6 @@ setStepOutput(){
     echo "::set-output name=PACKAGE_NAME::${NAME}-exporter"
     echo "::set-output name=EXPORTER_HEAD::${EXPORTER_HEAD}"
     echo "::set-output name=EXPORTER_REPO_URL::${EXPORTER_REPO_URL}"
-    echo "::set-output name=EXPORTER_DEFAULT_PORT::${EXPORTER_DEFAULT_PORT}"
     echo "::set-output name=EXPORTER_LICENSE_PATH::${EXPORTER_LICENSE_PATH}"
     echo "::set-output name=VERSION::${VERSION}"
     echo "::set-output name=EXPORTER_CHANGELOG::${EXPORTER_CHANGELOG}"
@@ -101,9 +99,6 @@ checkExporter(){
     fi
     if [ -z "$EXPORTER_REPO_URL" ];then
         ERRORS=$ERRORS" - exporter_repo_url is missing from exporter.yml"
-    fi
-    if [ -z "$EXPORTER_DEFAULT_PORT" ];then
-        ERRORS=$ERRORS" - exporter_default_port is missing from exporter.yml"
     fi
     if [ -z "$EXPORTER_LICENSE_PATH" ];then
         ERRORS=$ERRORS" - exporter_license_path is missing from exporter.yml"

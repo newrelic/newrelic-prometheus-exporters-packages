@@ -36,7 +36,6 @@ func buildGeneratorConfig(integration string, defaultExporterPort string) error 
 			"make",
 			"compile",
 			fmt.Sprintf("INTEGRATION_NAME=%s", integration),
-			fmt.Sprintf("EXPORTER_DEFAULT_PORT=%s", defaultExporterPort),
 		},
 		Dir: rootDir(),
 	}

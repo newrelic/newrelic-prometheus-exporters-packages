@@ -40,4 +40,4 @@ nri-config-generator/vendor
 nri-config-generator/templates/*
 !nri-config-generator/templates/config.json.tmpl
 .env
-dis
+dist

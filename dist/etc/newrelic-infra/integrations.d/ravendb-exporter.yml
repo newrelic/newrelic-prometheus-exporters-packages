@@ -3,7 +3,10 @@ integrations:
       #interval: 15s
       config:
         # Url to connect to your RavenDb instance
-        ravendb_url: http://ravendb:8080
+        ravendb_url: http://localhost:8080
+
+        # Port to expose scrape endpoint on
+        exporter_port: 9440
 
         # If set, connection to RavenDB will be authenticated with a client certificate
         # use_auth: <true/false>
@@ -19,9 +22,21 @@ integrations:
 
         # Timeout when calling RavenDB
         # timeout: 10s
+    - name: nri-ravendb
+      #interval: 15s
+      config:
+        # Url to connect to your RavenDb instance
+        ravendb_url: http://localhost:8080
 
         # Port to expose scrape endpoint on
-        # exporter_port: 9440
+        exporter_port: 9441
 
-        # Enable verbose logging
-        # VERBOSE: false
+    - name: nri-ravendb
+      #interval: 15s
+      config:
+        # Url to connect to your RavenDb instance
+        ravendb_url: http://localhost:8080
+
+        # Port to expose scrape endpoint on
+        exporter_port: 9442
+        

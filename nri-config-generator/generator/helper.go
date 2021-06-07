@@ -26,7 +26,7 @@ func compactTextInOneLine(content string) string {
 
 func prometheusExportersBinPath(name string) string {
 	if runtime.GOOS == "windows" {
-		return filepath.Join("C:\\Program Files\\Prometheus-exporters\\bin", fmt.Sprintf("%s.exe", name))
+		return filepath.Join("C:\\Program Files\\Prometheus-exporters\\bin", fmt.Sprintf("%s-exporter.exe", name))
 	}
-	return filepath.Join(nixExportsBinPath, name)
+	return filepath.Join(nixExportsBinPath, fmt.Sprintf("%s-exporter", name))
 }

@@ -9,11 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var integrationDetailsAttributes = `
-	"name": "%s-exporter",
-	"exec": [%s],
-	"timeout": 0,
-`
+var integrationDetailsAttributes = `"name": "%s-exporter","exec": ["%s"],"timeout": 0,`
 
 type Exporter interface {
 	Generate(vars map[string]interface{}) (string, error)
@@ -38,8 +34,10 @@ func (g *exporter) Generate(vars map[string]interface{}) (string, error) {
 		log.Error("error executing the template for the integration: '%s'", err.Error())
 		return "", err
 	}
-	content := compactTextInOneLine(templateOut.String())
-	return removeTrailingCommas(content), nil
+	content := g.appendIntegrationDetails(templateOut.String())
+	content = compactTextInOneLine(content)
+	content = removeTrailingCommas(content)
+	return content, nil
 }
 
 func (g *exporter) appendIntegrationDetails(content string) string {

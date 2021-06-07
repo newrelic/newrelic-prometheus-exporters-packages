@@ -6,6 +6,9 @@ integrations:
         # https://developer.github.com/v3/actions/
         token: *******
 
+        # Port to expose scrape endpoint on
+        exporter_port: 9999
+
         # List of Github repositories to monitor
         # List all repositories you want get information. Format <org>/<repo>,<org>/<repo2>,<org>/<repo3> (like test/test)
         repositories:

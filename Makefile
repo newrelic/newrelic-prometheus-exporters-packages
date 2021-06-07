@@ -3,8 +3,6 @@ NRI_GENERATOR_PATH="$(PWD)/nri-config-generator"
 INTEGRATIONS=ravendb github githubactions
 
 
-
-
 build-%:
 	sh scripts/clean.sh $(PWD) $*
 	sh exporters/$*/build.sh $(PWD)
@@ -24,8 +22,6 @@ all:
 		make 	build-$${integration}; \
 		make 	package-$${integration}; \
 	done;
-
-
 
 run:
 	sh scripts/run.sh $(PWD)
