@@ -21,8 +21,6 @@ test:
 	@echo "=== nri-config-generator === [ test ]: running unit tests..."
 	@go test -race ./... -count=1
 
-
-
 INTEGRATION_NAME=
 compile:
 ifeq (nri-config-generator,)
