@@ -15,9 +15,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
         with:
-          working-directory:
-            - nri-config-generator
-
+          working-directory: nri-config-generator
   snyk:
     name: Run security checks via snyk
     runs-on: ubuntu-20.04
