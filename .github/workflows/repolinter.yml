@@ -14,4 +14,3 @@ jobs:
         with:
           config_url: https://raw.githubusercontent.com/newrelic/.github/main/repolinter-rulesets/community-plus.yml
           output_type: issue
-          directory: nri-config-generator

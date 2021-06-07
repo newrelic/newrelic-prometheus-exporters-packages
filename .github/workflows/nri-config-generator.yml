@@ -1,0 +1,21 @@
+name: Prerelease pipeline
+
+on:
+  pull_request:
+    branches: [ * ]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GO_VERSION: '1.16'
+
+jobs:
+  golangci-lint:
+    name: Validate code via golangci
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          only-new-issues: true
+          working-directory: nri-config-generator
