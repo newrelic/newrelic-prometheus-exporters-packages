@@ -33,8 +33,8 @@ jobs:
   check_exporter:
     needs: fetch_exporters
     runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJson(needs.fetch_exporters.outputs.matrix) }}
+    #strategy:
+    #  matrix: ${{ fromJson(needs.fetch_exporters.outputs.matrix) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -50,9 +50,10 @@ jobs:
       - name: Check if exporters have been modified and if so run checks
         id: check
         run : |
+          echo "${{ needs.fetch_exporters.outputs.matrix }}"
           echo "${{ matrix }}"
 
-    
+
 
 #  checking_pr:
 #    name: Checking PR
