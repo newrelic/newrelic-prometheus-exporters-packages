@@ -34,14 +34,8 @@ ci/test: ci/deps
 
 .PHONY : ci/build
 ci/build: ci/deps
-ifdef TAG
 	@docker run --rm -t \
 		--name "nri-$(INTEGRATION)-build" \
 		-v $(CURDIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
 		-w /go/src/github.com/newrelic/nri-$(INTEGRATION) \
-		-e INTEGRATION \
-		-e TAG
-else
-	@echo "===> $(INTEGRATION) ===  [ci/build] TAG env variable expected to be set"
-	exit 1
-endif
+		-e INTEGRATION
