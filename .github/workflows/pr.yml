@@ -46,10 +46,11 @@ jobs:
       continue: ${{ steps.generate-matrix.outputs.continue }}
 
   check_exporter:
+    if: needs.metadata.outputs.continue == 'yes'
     needs: fetch_changed_exporters
     runs-on: ubuntu-latest
-    #strategy:
-    #  matrix: ${{ fromJSON(needs.fetch_changed_exporters.outputs.matrix) }}
+    strategy:
+      matrix: ${{ fromJSON(needs.fetch_changed_exporters.outputs.matrix) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
