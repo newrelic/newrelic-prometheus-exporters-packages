@@ -27,6 +27,7 @@ jobs:
       - name: generate matrix
         id: generate-matrix
         run: |
+          git fetch -at origin --unshallow
           old=$(git describe --tags --abbrev=0)
           MATRIX_INCLUDE_JSON="["
           for exporter_path in exporters/* ; do
