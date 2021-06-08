@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const tcp = "tcp"
@@ -29,14 +31,20 @@ func findAvailablePort() (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	defer l.Close()
+	defer func() {
+		if err := l.Close(); err != nil {
+			log.Warn(err)
+		}
+	}()
 	return l.Addr().(*net.TCPAddr).Port, nil
 }
 
 func isPortAvailable(port string) bool {
 	conn, err := net.DialTimeout(tcp, net.JoinHostPort("", port), 1*time.Second)
 	if conn != nil {
-		conn.Close()
+		if err := conn.Close(); err != nil {
+			log.Warn(err)
+		}
 		return false
 	}
 	return !isConnectionRefusedError(err)
