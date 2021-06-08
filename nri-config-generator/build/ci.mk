@@ -36,6 +36,6 @@ ci/test: ci/deps
 ci/build: ci/deps
 	@docker run --rm -t \
 		--name "nri-$(INTEGRATION)-build" \
-		-v $(CURDIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
+		-v $(SRC_DIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
 		-w /go/src/github.com/newrelic/nri-$(INTEGRATION) \
 		-e INTEGRATION
