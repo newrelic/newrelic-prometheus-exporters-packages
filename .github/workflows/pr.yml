@@ -25,10 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: set-matrix
-        run: echo "::set-output name=matrix::$(ls -d exporters/* | jq -R -s -c 'split(\"\n\")[:-1]')"
+        run: echo "::set-output name=matrix::$(ls -d exporters/* | jq -R -s -c 'split("\n")[:-1]')"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-
 
   check_exporter:
     needs: fetch_exporters
