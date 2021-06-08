@@ -31,3 +31,8 @@ ci/test: ci/deps
 		-v $(SRC_DIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
 		-w /go/src/github.com/newrelic/nri-$(INTEGRATION) \
 		$(BUILDER_TAG) make test
+
+.PHONY : ci/integration-test
+ci/integration-test:
+	@echo "=== $(INTEGRATION) === [ test ]: running integration tests..."
+	@go test -v -tags=integration ./tests/.
