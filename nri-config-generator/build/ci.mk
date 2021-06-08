@@ -31,11 +31,3 @@ ci/test: ci/deps
 		-v $(SRC_DIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
 		-w /go/src/github.com/newrelic/nri-$(INTEGRATION) \
 		$(BUILDER_TAG) make test
-
-.PHONY : ci/build
-ci/build: ci/deps
-	@docker run --rm -t \
-		--name "nri-$(INTEGRATION)-build" \
-		-v $(SRC_DIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
-		-w /go/src/github.com/newrelic/nri-$(INTEGRATION) \
-		-e INTEGRATION
