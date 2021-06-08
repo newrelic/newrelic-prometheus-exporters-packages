@@ -35,4 +35,8 @@ ci/test: ci/deps
 .PHONY : ci/integration-test
 ci/integration-test:
 	@echo "=== $(INTEGRATION) === [ test ]: running integration tests..."
-	@go test -v -tags=integration ./tests/.
+	@docker run --rm -t \
+		--name "nri-$(INTEGRATION)-validate" \
+		-v $(SRC_DIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
+		-w /go/src/github.com/newrelic/nri-$(INTEGRATION) \
+		$(BUILDER_TAG)  go test -v -tags=integration ./tests/.
