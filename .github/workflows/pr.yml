@@ -19,9 +19,22 @@ on:
 ###
 name: Checking PR
 jobs:
-  checking_pr:
-    name: Checking PR
+
+  fetch_exporters:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-matrix
+        run: echo "::set-output name=matrix::$(ls -d exporters/*)"
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+
+  check_exporter:
+    needs: fetch_exporters
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.fetch_exporters.outputs.matrix) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -37,22 +50,47 @@ jobs:
       - name: Check if exporters have been modified and if so run checks
         id: check
         run : |
-          git fetch -at origin --unshallow
-          source ./scripts/common_functions.sh
-          shouldDoRelease
-          old=$(git describe --tags --abbrev=0)
-          for exporter_path in exporters/* ; do
-            EXPORTER_PATH=$(git diff --name-only $old "${exporter_path}/exporter.yml")
-            if [[ "$EXPORTER_PATH" == "${exporter_path}/exporter.yml" ]]; then
-              loadVariables
-              checkExporter
-              if [ "$ERRORS" != "" ];then
-                echo Following errors have been found: $ERRORS
-                exit 1
-              fi
-              if [ "$PACKAGE_LINUX" = "true" ];then
-                export GOPATH=$(go env GOPATH)
-                packageLinux
-              fi
-            fi
-          done
+          echo "${{ matrix }}"
+
+    
+
+#  checking_pr:
+#    name: Checking PR
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        node: [ 10, 12, 14 ]
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#      - uses: actions/setup-go@v2
+#        with:
+#          go-version: '^1.16'
+#      - name: Install dependencies
+#        run: |
+#          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
+#          sudo chmod +x /usr/local/bin/yq
+#          sudo apt-get install rpm ruby ruby-dev rubygems build-essential
+#          sudo gem install --no-document fpm
+#      - name: Check if exporters have been modified and if so run checks
+#        id: check
+#        run : |
+ #         git fetch -at origin --unshallow
+ #         source ./scripts/common_functions.sh
+ #         shouldDoRelease
+ #         old=$(git describe --tags --abbrev=0)
+ #         for exporter_path in exporters/* ; do
+ #           EXPORTER_PATH=$(git diff --name-only $old "${exporter_path}/exporter.yml")
+ #           if [[ "$EXPORTER_PATH" == "${exporter_path}/exporter.yml" ]]; then
+ #             loadVariables
+ #             checkExporter
+ #             if [ "$ERRORS" != "" ];then
+ #               echo Following errors have been found: $ERRORS
+ #               exit 1
+ #             fi
+ #             if [ "$PACKAGE_LINUX" = "true" ];then
+ #               export GOPATH=$(go env GOPATH)
+ #               packageLinux
+ ##             fi
+  #          fi
+  #        done
