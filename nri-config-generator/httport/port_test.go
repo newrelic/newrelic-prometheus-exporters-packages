@@ -6,6 +6,7 @@ import (
 	"net"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
@@ -26,6 +27,7 @@ func launchServerOn(port string) *http.Server {
 			log.Warn(err.Error())
 		}
 	}()
+	time.Sleep(2*time.Second)
 	return server
 }
 
