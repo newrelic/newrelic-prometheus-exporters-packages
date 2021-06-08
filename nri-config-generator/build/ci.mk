@@ -33,7 +33,7 @@ ci/test: ci/deps
 		$(BUILDER_TAG) make test
 
 .PHONY : ci/integration-test
-ci/integration-test:
+ci/integration-test: ci/deps
 	@echo "=== $(INTEGRATION) === [ test ]: running integration tests..."
 	@docker run --rm -t \
 		--name "nri-$(INTEGRATION)-validate" \
