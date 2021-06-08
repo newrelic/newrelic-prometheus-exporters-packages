@@ -49,8 +49,8 @@ jobs:
   check_exporter:
     needs: fetch_exporters
     runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJSON(needs.fetch_exporters.outputs.matrix) }}
+    #strategy:
+    #  matrix: ${{ fromJSON(needs.fetch_exporters.outputs.matrix) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -59,6 +59,7 @@ jobs:
           go-version: '^1.16'
       - name: Install dependencies
         run: |
+          echo "${{ needs.fetch_exporters.outputs.matrix }}"
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential
