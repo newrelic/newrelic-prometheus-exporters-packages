@@ -55,7 +55,7 @@ func Test_GetAvailablePort(t *testing.T) {
 	assert.Equal(t, availablePort, port)
 	port, err = GetAvailablePort("9999")
 	assert.Nil(t, err)
-	assert.Equal(t, availablePort, port)
+	assert.Equal(t, 9999, port)
 	server := launchServerOn(portStr)
 	port, err = GetAvailablePort("9999")
 	assert.Nil(t, err)
