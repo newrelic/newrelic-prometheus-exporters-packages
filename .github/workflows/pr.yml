@@ -41,8 +41,9 @@ jobs:
           if [[ "${MATRIX_EXPORTERS_JSON}" != "[]" ]]; then
             CONTINUE_DOCKER_JOB="yes"
           fi
+          MATRIX_JSON="{\"exporters\": ${MATRIX_EXPORTERS_JSON}}"
           echo "::set-output name=continue::${CONTINUE_DOCKER_JOB}"
-          echo "::set-output name=matrix::${MATRIX_EXPORTERS_JSON}"
+          echo "::set-output name=matrix::${MATRIX_JSON}"
     outputs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
       continue: ${{ steps.generate-matrix.outputs.continue }}
