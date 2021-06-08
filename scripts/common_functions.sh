@@ -57,7 +57,7 @@ packageLinux(){
     fi
 
     current_pwd=$(pwd)
-    cd  ./exporters/"$exporter_name" && make all 
+    cd  ./exporters/"$exporter_name" && sh build.sh
     cd $current_pwd
 }
 
@@ -193,5 +193,5 @@ checkExporter(){
         ERRORS=$ERRORS" - The exporter.yml is in a wrong folder"
     fi
 
-   
+
 }
