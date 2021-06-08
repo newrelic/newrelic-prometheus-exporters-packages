@@ -1,6 +1,5 @@
 echo "--- Running tests"
-
-go mod vendor
+ls
 go test ./...
 if (-not $?)
 {
