@@ -14,13 +14,11 @@ on:
   pull_request:
     branches: [ main ]
 
-###
-###   Checking PR # Checks the file and the info provided when an exporter is modified
-###
+
 name: Checking PR
 jobs:
 
-  fetch_exporters:
+  fetch_changed_exporters:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -47,10 +45,10 @@ jobs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
 
   check_exporter:
-    needs: fetch_exporters
+    needs: fetch_changed_exporters
     runs-on: ubuntu-latest
     #strategy:
-    #  matrix: ${{ fromJSON(needs.fetch_exporters.outputs.matrix) }}
+    #  matrix: ${{ fromJSON(needs.fetch_changed_exporters.outputs.matrix) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -59,7 +57,7 @@ jobs:
           go-version: '^1.16'
       - name: Install dependencies
         run: |
-          echo "${{ needs.fetch_exporters.outputs.matrix }}"
+          echo "${{ needs.fetch_changed_exporters }}"
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential
@@ -67,8 +65,6 @@ jobs:
       - name: Check if exporters have been modified and if so run checks
         id: check
         run : |
-          echo "${{ needs.fetch_exporters.outputs.matrix }}"
-          echo "${{ matrix }}"
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
           shouldDoRelease
