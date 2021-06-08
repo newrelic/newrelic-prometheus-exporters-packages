@@ -39,7 +39,7 @@ jobs:
         run : |
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
-          shouldDoRelease
+          #shouldDoRelease
           loadVariables
           checkExporter
           if [ "$ERRORS" != "" ];then 

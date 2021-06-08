@@ -82,7 +82,6 @@ shouldDoRelease(){
         exit 1
     fi
     CREATE_RELEASE=true
-
 }
 
 
