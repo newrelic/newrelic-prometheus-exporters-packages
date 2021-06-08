@@ -24,10 +24,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - id: set-matrix
-        run: echo "::set-output name=matrix::$(ls -d exporters/* | jq -R -s -c 'split("\n")[:-1]')"
+      - name: generate matrix
+        id: generate-matrix
+        run: |
+          old=$(git describe --tags --abbrev=0)
+          MATRIX_INCLUDE_JSON="["
+          for exporter_path in exporters/* ; do
+            EXPORTER_PATH=$(git diff --name-only $old "${exporter_path}/exporter.yml")
+            if [[ "$EXPORTER_PATH" == "${exporter_path}/exporter.yml" ]]; then
+                MATRIX_INCLUDE_JSON+="{\"exporter_path\": \"${exporter_path}/exporter.yml\"}"
+            fi
+          done
+          echo "${MATRIX_JSON}"
+          CONTINUE_DOCKER_JOB="no"
+          if [[ "${MATRIX_PROJECTS_JSON}" != "[]" ]]; then
+            CONTINUE_DOCKER_JOB="yes"
+          fi
+          echo "::set-output name=continue::${CONTINUE_DOCKER_JOB}"
+          echo "::set-output name=matrix::${MATRIX_JSON}"
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix: ${{ steps.generate-matrix.outputs.matrix }}
 
   check_exporter:
     needs: fetch_exporters
