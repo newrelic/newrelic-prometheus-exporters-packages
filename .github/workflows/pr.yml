@@ -46,7 +46,7 @@ jobs:
       continue: ${{ steps.generate-matrix.outputs.continue }}
 
   check_exporter:
-    if: needs.metadata.outputs.continue == 'yes'
+    if: needs.fetch_changed_exporters.outputs.continue == 'yes'
     needs: fetch_changed_exporters
     runs-on: ubuntu-latest
     strategy:
