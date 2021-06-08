@@ -43,6 +43,7 @@ jobs:
           echo "::set-output name=matrix::${MATRIX_JSON}"
     outputs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
+      continue: ${{ steps.generate-matrix.outputs.continue }}
 
   check_exporter:
     needs: fetch_changed_exporters
