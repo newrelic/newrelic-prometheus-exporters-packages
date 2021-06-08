@@ -74,13 +74,15 @@ shouldDoRelease(){
         exit 0
     fi
 
-    if (( $(git --no-pager diff  --name-only $old "exporters/**/exporter.yml"| wc -l) > 1 ))
-    then
-        echo "Only one definition should be modified at the same time"
-        git --no-pager diff  --name-only $old "exporters/**/exporter.yml"
-        echo "::set-output name=CREATE_RELEASE::${CREATE_RELEASE}"
-        exit 1
-    fi
+
+    #git --no-pager diff  --name-only $old "exporters/**/exporter.yml"
+    #if (( $(git --no-pager diff  --name-only $old "exporters/**/exporter.yml"| wc -l) > 1 ))
+    #then
+    #    echo "Only one definition should be modified at the same time"
+    #    git --no-pager diff  --name-only $old "exporters/**/exporter.yml"
+    #    echo "::set-output name=CREATE_RELEASE::${CREATE_RELEASE}"
+        #exit 1
+    #fi
     CREATE_RELEASE=true
 }
 

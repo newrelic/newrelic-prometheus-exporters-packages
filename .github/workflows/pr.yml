@@ -39,16 +39,20 @@ jobs:
         run : |
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
-          #shouldDoRelease
-          loadVariables
-          checkExporter
-          if [ "$ERRORS" != "" ];then 
-            echo Following errors have been found: $ERRORS
-            exit 1
-          fi
-
-          if [ "$PACKAGE_LINUX" = "true" ];then
-            export GOPATH=$(go env GOPATH)
-            packageLinux
-          fi
-          
+          shouldDoRelease
+          old=$(git describe --tags --abbrev=0)
+          for exporter_path in exporters/* ; do
+            EXPORTER_PATH=$(git diff --name-only $old "${exporter_path}/exporter.yml")
+            if [[ "$EXPORTER_PATH" == "${exporter_path}/exporter.yml" ]]; then
+              loadVariables
+              checkExporter
+              if [ "$ERRORS" != "" ];then
+                echo Following errors have been found: $ERRORS
+                exit 1
+              fi
+              if [ "$PACKAGE_LINUX" = "true" ];then
+                export GOPATH=$(go env GOPATH)
+                packageLinux
+              fi
+            fi
+          done
