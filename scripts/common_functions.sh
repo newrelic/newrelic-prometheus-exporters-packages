@@ -119,8 +119,8 @@ checkExporter(){
         if [ ! -f "./exporters/$NAME/$NAME-exporter.yml.sample" ]; then
             ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-exporter.yml.sample should exist"
         fi
-        if [ ! -f "./exporters/$NAME/Makefile" ]; then
-            ERRORS=$ERRORS" - the file ./exporters/$NAME/Makefile should exist"
+        if [ ! -f "./exporters/$NAME/build.sh" ]; then
+            ERRORS=$ERRORS" - the file ./exporters/$NAME/build.sh should exist"
         fi
     fi
 
