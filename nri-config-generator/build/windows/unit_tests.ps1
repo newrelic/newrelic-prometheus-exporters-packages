@@ -1,5 +1,5 @@
 echo "--- Running tests"
-ls
+cd nri-config-generator
 go test ./...
 if (-not $?)
 {

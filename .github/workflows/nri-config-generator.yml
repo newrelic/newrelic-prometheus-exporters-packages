@@ -51,12 +51,12 @@ jobs:
       GOPATH: ${{ github.workspace }}/nri-config-generator
     defaults:
       run:
-        working-directory: src/github.com/nri-config-generator
+        working-directory: src/github.com/newrelic/nri-config-generator
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          path: src/github.com/nri-config-generator
+          path: src/github.com/newrelic/nri-config-generator
       - name: Install Go
         uses: actions/setup-go@v2
         with:
