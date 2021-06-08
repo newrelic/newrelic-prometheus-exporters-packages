@@ -33,7 +33,7 @@ jobs:
     needs: fetch_exporters
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ needs.fetch_exporters.outputs.matrix }}
+      matrix: ${{ fromJSON(needs.fetch_exporters.outputs.matrix) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
