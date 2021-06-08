@@ -27,20 +27,22 @@ jobs:
         run: |
           git fetch -at origin --unshallow
           old=$(git describe --tags --abbrev=0)
-          MATRIX_INCLUDE_JSON="["
+          MATRIX_EXPORTERS_JSON="["
           for exporter_path in exporters/* ; do
             EXPORTER_PATH=$(git diff --name-only $old "${exporter_path}/exporter.yml")
             if [[ "$EXPORTER_PATH" == "${exporter_path}/exporter.yml" ]]; then
-                MATRIX_INCLUDE_JSON+="{\"exporter_path\": \"${exporter_path}/exporter.yml\"}"
+                MATRIX_EXPORTERS_JSON+="{\"exporter_path\": \"${exporter_path}/exporter.yml\"}"
             fi
           done
-          echo "${MATRIX_JSON}"
+          MATRIX_EXPORTERS_JSON="${MATRIX_EXPORTERS_JSON//\}\{/\}, \{}"
+          MATRIX_EXPORTERS_JSON+="]"
+          echo "${MATRIX_EXPORTERS_JSON}"
           CONTINUE_DOCKER_JOB="no"
-          if [[ "${MATRIX_PROJECTS_JSON}" != "[]" ]]; then
+          if [[ "${MATRIX_EXPORTERS_JSON}" != "[]" ]]; then
             CONTINUE_DOCKER_JOB="yes"
           fi
           echo "::set-output name=continue::${CONTINUE_DOCKER_JOB}"
-          echo "::set-output name=matrix::${MATRIX_JSON}"
+          echo "::set-output name=matrix::${MATRIX_EXPORTERS_JSON}"
     outputs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
       continue: ${{ steps.generate-matrix.outputs.continue }}
