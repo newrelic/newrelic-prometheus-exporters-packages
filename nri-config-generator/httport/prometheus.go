@@ -41,5 +41,5 @@ func IsPrometheusExporterRunning() bool {
 			log.Error(err.Error())
 		}
 	}()
-	return err != nil
+	return err == nil
 }

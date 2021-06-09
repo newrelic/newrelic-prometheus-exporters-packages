@@ -12,16 +12,16 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/:/host:ro"
-      - "./dist/etc/newrelic-infra/integrations.d:/etc/newrelic-infra/integrations.d"
-      - "./dist/etc/newrelic-infra/definition-files:/etc/newrelic-infra/definition-files:ro"
-      - "./dist/var/db/newrelic-infra/newrelic-integrations/bin/nri-ravendb:/var/db/newrelic-infra/newrelic-integrations/bin/nri-ravendb"
-      - "./dist/var/db/newrelic-infra/newrelic-integrations/bin/nri-github:/var/db/newrelic-infra/newrelic-integrations/bin/nri-github"
-      - "./dist/var/db/newrelic-infra/newrelic-integrations/bin/nri-githubactions:/var/db/newrelic-infra/newrelic-integrations/bin/nri-githubactions"
-      - "./dist/usr/local/prometheus-exporters/bin:/usr/local/prometheus-exporters/bin:ro"
+      - "./../dist/etc/newrelic-infra/integrations.d:/etc/newrelic-infra/integrations.d"
+      - "./../dist/etc/newrelic-infra/definition-files:/etc/newrelic-infra/definition-files:ro"
+      - "./../dist/var/db/newrelic-infra/newrelic-integrations/bin/nri-ravendb:/var/db/newrelic-infra/newrelic-integrations/bin/nri-ravendb"
+      - "./../dist/var/db/newrelic-infra/newrelic-integrations/bin/nri-github:/var/db/newrelic-infra/newrelic-integrations/bin/nri-github"
+      - "./../dist/var/db/newrelic-infra/newrelic-integrations/bin/nri-githubactions:/var/db/newrelic-infra/newrelic-integrations/bin/nri-githubactions"
+      - "./../dist/usr/local/prometheus-exporters/bin:/usr/local/prometheus-exporters/bin:ro"
     restart: unless-stopped
     environment:
-      NRIA_VERBOSE: 0
-      NRIA_LICENSE_KEY: "******"
+      NRIA_VERBOSE: 1
+      NRIA_LICENSE_KEY: "****"
       NRIA_STAGING: "true"
 
   ravendb:
