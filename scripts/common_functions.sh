@@ -118,8 +118,8 @@ checkExporter(){
         if [ ! -f "./exporters/$NAME/$NAME-exporter.yml.sample" ]; then
             ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-exporter.yml.sample should exist"
         fi
-        if [ ! -f "./exporters/$NAME/Makefile" ]; then
-            ERRORS=$ERRORS" - the file ./exporters/$NAME/Makefile should exist"
+        if [ ! -f "./exporters/$NAME/build.sh" ]; then
+            ERRORS=$ERRORS" - the file ./exporters/$NAME/build.sh should exist"
         fi
     fi
 
@@ -180,9 +180,6 @@ checkExporter(){
             fi
         fi
 
-        if [ ! -f "./exporters/$NAME/$NAME-exporter-windows.yml.sample" ]; then
-            ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-exporter-windows.yml.sample should exist"
-        fi
 
         if [ ! -f "./exporters/$NAME/win_build.ps1" ]; then
             ERRORS=$ERRORS" - the file ./exporters/$NAME/win_build.ps1 should exist"
@@ -195,7 +192,5 @@ checkExporter(){
         ERRORS=$ERRORS" - The exporter.yml is in a wrong folder"
     fi
 
-    if [ ! -f "./exporters/$NAME/LICENSE" ]; then
-        ERRORS=$ERRORS" - the file ./exporters/$NAME/LICENSE should exist"
-    fi
+
 }
