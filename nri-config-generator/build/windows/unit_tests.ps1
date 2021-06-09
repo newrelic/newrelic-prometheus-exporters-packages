@@ -1,6 +1,6 @@
 echo "--- Running tests"
-
-go test ./src/...
+cd nri-config-generator
+go test ./...
 if (-not $?)
 {
     echo "Failed running tests"

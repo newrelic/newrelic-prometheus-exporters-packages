@@ -27,4 +27,4 @@ run:
 	sh scripts/run.sh $(PWD)
 	docker-compose -f tests/docker-compose.yml up
 
-include $(CURDIR)/nri-config-generator/Makefile
+include $(CURDIR)/nri-config-generator/build/ci.mk

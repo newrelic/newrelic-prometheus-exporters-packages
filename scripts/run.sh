@@ -9,7 +9,6 @@ mkdir -p dist/var/db/newrelic-infra/newrelic-integrations/bin
 mkdir -p dist/usr/local/prometheus-exporters/bin
 
 integrations=(ravendb github githubactions)
-#integrations=(ravendb)
 
 for integration in "${integrations[@]}"
 do

@@ -21,12 +21,10 @@ test:
 	@echo "=== nri-config-generator === [ test ]: running unit tests..."
 	@go test -race ./... -count=1
 
-
-
 INTEGRATION_NAME=
 compile:
 ifeq (nri-config-generator,)
 	$(error Missing required argument INTEGRATION_NAME.)
 endif
-	go build -ldflags "-X main.integration=$(INTEGRATION_NAME) -o bin/nri-$(INTEGRATION_NAME) github.com/newrelic/nri-config-generator"
+	go build -ldflags "-X main.integration=$(INTEGRATION_NAME)" -o bin/nri-$(INTEGRATION_NAME) github.com/newrelic/nri-config-generator
 	echo "created executable nri-$(INTEGRATION_NAME)"
