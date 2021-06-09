@@ -48,6 +48,10 @@ jobs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
       continue: ${{ steps.generate-matrix.outputs.continue }}
 
+
+
+
+
   check_exporter:
     if: needs.fetch_changed_exporters.outputs.continue == 'yes'
     needs: fetch_changed_exporters
@@ -62,30 +66,24 @@ jobs:
           go-version: '^1.16'
       - name: Install dependencies
         run: |
-          echo "${{ needs.fetch_changed_exporters }}"
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential
           sudo gem install --no-document fpm
-      - name: Check if exporters have been modified and if so run checks
+      - name: Validate exporter configuration
         id: check
         run : |
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
-          shouldDoRelease
-          old=$(git describe --tags --abbrev=0)
-          EXPORTER_PATH=$(git diff --name-only $old "${exporter_path}/exporter.yml")
-          if [[ "$EXPORTER_PATH" == "${exporter_path}/exporter.yml" ]]; then
-            loadVariables
-            checkExporter
-            if [ "$ERRORS" != "" ];then
-              echo Following errors have been found: $ERRORS
-              exit 1
-            fi
-            if [ "$PACKAGE_LINUX" = "true" ];then
-              export GOPATH=$(go env GOPATH)
-              packageLinux
-            fi
+          loadVariables
+          checkExporter
+          if [ "$ERRORS" != "" ];then
+            echo Following errors have been found: $ERRORS
+            exit 1
+          fi
+          if [ "$PACKAGE_LINUX" = "true" ];then
+            export GOPATH=$(go env GOPATH)
+            packageLinux
           fi
 
 
