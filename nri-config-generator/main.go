@@ -4,6 +4,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	"os"
 	"text/template"
 	"time"
 
@@ -59,7 +60,7 @@ func main() {
 		time.Sleep(sleepTime)
 
 		if !httport.IsPrometheusExporterRunning() {
-			panic(errors.New("there is not a prometheus exporter in the assigned port"))
+			panicErr(errors.New("there is not a prometheus exporter in the assigned port"))
 		}
 		fmt.Println("{}")
 		fmt.Println(output)
@@ -69,7 +70,8 @@ func main() {
 
 func panicErr(err error) {
 	if err != nil {
-		panic(err)
+		log.Error(err.Error())
+		os.Exit(1)
 	}
 }
 
