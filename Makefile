@@ -1,15 +1,16 @@
 SHELL := /bin/bash
 NRI_GENERATOR_PATH="$(PWD)/nri-config-generator"
-INTEGRATIONS="ravendb github githubactions"
-
 
 clean:
 	rm -rf dist
 
 build-all:
-	for integration in "$(INTEGRATIONS)"; do \
-		make 	build-$${integration}; \
-	done;
+	@cd exporters; \
+	for name in $$(ls -d *) ; do \
+		cd $(PWD); \
+		make	build-$${name}; \
+	done
+
 
 build-%:
 	sh scripts/clean.sh $(PWD) $*
@@ -17,21 +18,16 @@ build-%:
 	sh scripts/build_generator.sh $(PWD) $*
 	sh scripts/copy_resources.sh $(PWD) $*
 
-
-
 package-%:
 	sh scripts/package.sh $(PWD) $*
 
 all:
-	for integration in "$(INTEGRATIONS)"; do \
-		make	build-$${integration}; \
-		make 	package-$${integration}; \
-	done;
-
-print:
-	@for i in $$(ls -d exporters/*); do \
-  		echo $${exporters%"$$i"}; \
-    done
+	@cd exporters; \
+	for name in $$(ls -d *) ; do \
+		cd $(PWD); \
+		make	build-$${name}; \
+		make 	package-$${name}; \
+	done
 
 run:
 	sh scripts/run.sh $(PWD)
