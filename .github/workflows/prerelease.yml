@@ -63,9 +63,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.check.outputs.NRI_NAME }}-${{ steps.check.outputs.VERSION }}
-          release_name: ${{ steps.check.outputs.NRI_NAME }} exporter ${{ steps.check.outputs.VERSION }}
+          release_name: ${{ steps.check.outputs.NRI_NAME }} ${{ steps.check.outputs.VERSION }}
           body: |
-            Changes in ${{ steps.check.outputs.NRI_NAME }} exporter version ${{ steps.check.outputs.VERSION }}
+            Changes in ${{ steps.check.outputs.NRI_NAME }} version ${{ steps.check.outputs.VERSION }}
               - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
               - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}  
               - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}  

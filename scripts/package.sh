@@ -14,7 +14,7 @@ rpm_dir="${packages_dir}/rpm"
 deb_dir="${packages_dir}/deb"
 tarball_dir="${packages_dir}/tarball"
 
-PROJECT_NAME="${integration}-exporter"
+PROJECT_NAME="nri-${integration}"
 LICENSE="https://newrelic.com/terms (also see LICENSE.txt installed with this package)"
 VENDOR="New Relic, Inc."
 PACKAGER="New Relic, Inc."
