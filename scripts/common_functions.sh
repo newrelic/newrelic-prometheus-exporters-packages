@@ -58,7 +58,8 @@ packageLinux(){
     fi
 
     current_pwd=$(pwd)
-    cd  ./exporters/"$exporter_name" && sh build.sh
+    make build-$exporter_name
+    #cd  ./exporters/"$exporter_name" && sh build.sh
     cd $current_pwd
 }
 
