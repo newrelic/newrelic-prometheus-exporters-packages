@@ -8,17 +8,28 @@ build-all:
 	@cd exporters; \
 	for name in $$(ls -d *) ; do \
 		cd $(PWD); \
-		make	build-$${name}; \
+		make build-$${name}; \
 	done
 
+demo:
+	source scripts/common_functions.sh; \
+	EXPORTER_PATH=exporters/ravendb/exporter.yml; \
+	loadVariables; \
+	sh exporters/ravendb/build.sh $(PWD);
 
 build-%:
-	sh scripts/clean.sh $(PWD) $*
-	sh exporters/$*/build.sh $(PWD)
-	sh scripts/build_generator.sh $(PWD) $*
+	source scripts/common_functions.sh; \
+	EXPORTER_PATH=exporters/$*/exporter.yml; \
+	loadVariables; \
+	sh scripts/clean.sh $(PWD) $*; \
+	sh exporters/$*/build.sh $(PWD); \
+	sh scripts/build_generator.sh $(PWD) $*; \
 	sh scripts/copy_resources.sh $(PWD) $*
 
 package-%:
+	source scripts/common_functions.sh; \
+	EXPORTER_PATH=exporters/$*/exporter.yml; \
+	loadVariables; \
 	sh scripts/package.sh $(PWD) $*
 
 all:

@@ -3,11 +3,6 @@ root_dir=$1
 integration=$2
 integration_dir="${root_dir}/exporters/${integration}"
 
-source ${root_dir}/scripts/common_functions.sh
-EXPORTER_PATH="${integration_dir}/exporter.yml"
-loadVariables
-
-
 repository_definitions="https://github.com/newrelic/nr-integration-definitions"
 
 target_dir="${integration_dir}/target"
