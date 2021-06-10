@@ -62,10 +62,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.check.outputs.NAME }}-${{ steps.check.outputs.VERSION }}
-          release_name: ${{ steps.check.outputs.NAME }} exporter ${{ steps.check.outputs.VERSION }}
+          tag_name: ${{ steps.check.outputs.NRI_NAME }}-${{ steps.check.outputs.VERSION }}
+          release_name: ${{ steps.check.outputs.NRI_NAME }} exporter ${{ steps.check.outputs.VERSION }}
           body: |
-            Changes in ${{ steps.check.outputs.NAME }} exporter version ${{ steps.check.outputs.VERSION }}
+            Changes in ${{ steps.check.outputs.NRI_NAME }} exporter version ${{ steps.check.outputs.VERSION }}
               - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
               - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}  
               - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}  
@@ -76,7 +76,7 @@ jobs:
       EXPORTER_PATH: ${{ steps.check.outputs.EXPORTER_PATH }}
       PACKAGE_LINUX: ${{ steps.check.outputs.PACKAGE_LINUX }}
       PACKAGE_WINDOWS: ${{ steps.check.outputs.PACKAGE_WINDOWS }}
-      UPLOAD_URL: ${{ steps.create_prerelease.outputs.upload_url }}
+      UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
 
 ###
 ###   LINUX PACKAGING # In case a new release has been created and linux packages are needed build and push DEB, RPM, TAR 

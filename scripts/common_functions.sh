@@ -29,6 +29,7 @@ loadVariables(){
 setStepOutput(){
     echo "::set-output name=NAME::${NAME}"
     echo "::set-output name=PACKAGE_NAME::${NAME}-exporter"
+    echo "::set-output name=NRI_NAME::nri-${NAME}"
     echo "::set-output name=EXPORTER_HEAD::${EXPORTER_HEAD}"
     echo "::set-output name=EXPORTER_REPO_URL::${EXPORTER_REPO_URL}"
     echo "::set-output name=EXPORTER_LICENSE_PATH::${EXPORTER_LICENSE_PATH}"
@@ -43,6 +44,7 @@ setStepOutput(){
     echo "::set-output name=LICENSE_GUID::${LICENSE_GUID}"
     echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
     echo "::set-output name=DEFINITION_GUID::${DEFINITION_GUID}"
+
 }
 
 
