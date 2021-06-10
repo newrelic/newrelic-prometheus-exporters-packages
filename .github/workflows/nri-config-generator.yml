@@ -1,5 +1,15 @@
 name: nri-config-generator pipeline
 
+# Pipeline: nri-config-generator
+# The purpose of this pipeline is guarantee that the code in the config-generator is correct
+# Actually this project is used to build different executables depending on the integrations
+# Although this code doesn't create a excutable at all, we need to ensure the following steps:
+#  - golang-lint: Static analysis of the code
+#  - snyk: Guarantee that our base code doesn't contain security issues
+#  - test-nix: Run unit tests in a *nix environment
+#  - test-windows: Run unit tests in a windows environment
+#  - test-integration-nix: Run integration tests in a *nix environment
+
 on: [push, workflow_dispatch]
 
 env:
