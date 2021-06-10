@@ -28,8 +28,7 @@ loadVariables(){
 # setStepOutput exposes the environment variables needed by next github actions steps steps
 setStepOutput(){
     echo "::set-output name=NAME::${NAME}"
-    echo "::set-output name=PACKAGE_NAME::${NAME}-exporter"
-    echo "::set-output name=NRI_NAME::nri-${NAME}"
+    echo "::set-output name=PACKAGE_NAME::nri-${NAME}"
     echo "::set-output name=EXPORTER_HEAD::${EXPORTER_HEAD}"
     echo "::set-output name=EXPORTER_REPO_URL::${EXPORTER_REPO_URL}"
     echo "::set-output name=EXPORTER_LICENSE_PATH::${EXPORTER_LICENSE_PATH}"
