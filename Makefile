@@ -28,6 +28,11 @@ all:
 		make 	package-$${integration}; \
 	done;
 
+print:
+	@for i in $$(ls -d exporters/*); do \
+  		echo $${exporters%"$$i"}; \
+    done
+
 run:
 	sh scripts/run.sh $(PWD)
 	docker-compose -f tests/docker-compose.yml up
