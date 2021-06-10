@@ -24,7 +24,7 @@
 on: 
   push:
     branches:
-      - main
+      - feature/ci
 
 env:
   PFX_CERTIFICATE_BASE64: ${{ secrets.PFX_CERTIFICATE_BASE64 }} # base64 encoded
@@ -33,10 +33,10 @@ env:
 ###
 ###   RELEASE CREATION # Creates a release if needed and loads variables for next jobs
 ###
-name: Create Release
+name: Create Pre-release
 jobs:
-  create_release:
-    name: Create Release
+  creatE_prerelease:
+    name: Create Pre-release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -70,7 +70,7 @@ jobs:
               - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}  
               - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}  
           draft: false
-          prerelease: false
+          prerelease: true
     outputs:
       CREATE_RELEASE: ${{ steps.check.outputs.CREATE_RELEASE }}
       EXPORTER_PATH: ${{ steps.check.outputs.EXPORTER_PATH }}
