@@ -35,7 +35,7 @@ env:
 ###
 name: Create Pre-release
 jobs:
-  creatE_prerelease:
+  create_prerelease:
     name: Create Pre-release
     runs-on: ubuntu-latest
     steps:
@@ -76,17 +76,17 @@ jobs:
       EXPORTER_PATH: ${{ steps.check.outputs.EXPORTER_PATH }}
       PACKAGE_LINUX: ${{ steps.check.outputs.PACKAGE_LINUX }}
       PACKAGE_WINDOWS: ${{ steps.check.outputs.PACKAGE_WINDOWS }}
-      UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
+      UPLOAD_URL: ${{ steps.create_prerelease.outputs.upload_url }}
 
 ###
 ###   LINUX PACKAGING # In case a new release has been created and linux packages are needed build and push DEB, RPM, TAR 
 ###
 
   build_push_linux_artifacts:
-    needs: [create_release]
+    needs: [create_prerelease]
     name: Push Linux Artifacts
     runs-on: ubuntu-latest
-    if: ${{ needs.create_release.outputs.CREATE_RELEASE == 'true' && needs.create_release.outputs.PACKAGE_LINUX == 'true'}}
+    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
     steps:
       - uses: actions/setup-go@v2
         with:
@@ -103,7 +103,7 @@ jobs:
         id: package
         run : |
           export GOPATH=$(go env GOPATH)
-          export EXPORTER_PATH=${{ needs.create_release.outputs.EXPORTER_PATH }}
+          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables
           packageLinux
@@ -113,7 +113,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputs.UPLOAD_URL }} 
+          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
           asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/deb/${{ steps.package.outputs.PACKAGE_NAME }}_${{ steps.package.outputs.VERSION }}-1_amd64.deb
           asset_name: ${{ steps.package.outputs.PACKAGE_NAME }}_${{ steps.package.outputs.VERSION }}-1_amd64.deb
           asset_content_type: deb package
@@ -122,7 +122,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputs.UPLOAD_URL }}
+          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
           asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/tarball/${{ steps.package.outputs.PACKAGE_NAME }}_linux_${{ steps.package.outputs.VERSION }}_amd64.tar.gz
           asset_name: ${{ steps.package.outputs.PACKAGE_NAME }}_linux_${{ steps.package.outputs.VERSION }}_amd64.tar.gz
           asset_content_type: tarball
@@ -131,7 +131,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputs.UPLOAD_URL }} 
+          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
           asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/rpm/${{ steps.package.outputs.PACKAGE_NAME }}-${{ steps.package.outputs.VERSION }}-1.x86_64.rpm
           asset_name: ${{ steps.package.outputs.PACKAGE_NAME }}-${{ steps.package.outputs.VERSION }}-1.x86_64.rpm
           asset_content_type: rpm package
@@ -144,8 +144,8 @@ jobs:
   build_push_windows_artifacts:
     name: Create MSI
     runs-on: windows-2019
-    needs: [create_release]
-    if: ${{ needs.create_release.outputs.CREATE_RELEASE == 'true' && needs.create_release.outputs.PACKAGE_WINDOWS == 'true' }}
+    needs: [create_prerelease]
+    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
     defaults:
@@ -170,7 +170,7 @@ jobs:
         shell: bash
         run: |
           choco install yq
-          export EXPORTER_PATH=${{ needs.create_release.outputs.EXPORTER_PATH }}
+          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables
           setStepOutput
@@ -183,7 +183,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputs.UPLOAD_URL }} 
+          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
           asset_path: ${{ github.workspace }}/src/repo/exporters/${{ steps.load_variables.outputs.NAME }}/target/packages/msi/${{ steps.load_variables.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
           asset_name: ${{ steps.load_variables.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
           asset_content_type: msi package
