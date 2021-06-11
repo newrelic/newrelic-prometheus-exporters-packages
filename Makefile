@@ -11,12 +11,6 @@ build-all:
 		make build-$${name}; \
 	done
 
-demo:
-	source scripts/common_functions.sh; \
-	EXPORTER_PATH=exporters/ravendb/exporter.yml; \
-	loadVariables; \
-	sh exporters/ravendb/build.sh $(PWD);
-
 build-%:
 	source scripts/common_functions.sh; \
 	EXPORTER_PATH=exporters/$*/exporter.yml; \
