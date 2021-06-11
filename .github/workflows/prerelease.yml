@@ -99,7 +99,7 @@ jobs:
           sudo gem install --no-document fpm
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
-      - name: locad variables
+      - name: Load variables
         id: vars
         run : |
           export GOPATH=$(go env GOPATH)
@@ -107,11 +107,11 @@ jobs:
           source ./scripts/common_functions.sh
           loadVariables
           setStepOutput
-      - name: package linux
+      - name: Package linux
         id: package
         run : |
-          make  build-${{ steps.vars.outputs.PACKAGE_NAME }}
-          make  package-${{ steps.vars.outputs.PACKAGE_NAME }}
+          make  build-${{ steps.vars.outputs.NAME }}
+          make  package-${{ steps.vars.outputs.NAME }}
       - name: Upload Release Asset DEB
         uses: actions/upload-release-asset@v1
         env:
