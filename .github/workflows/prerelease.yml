@@ -110,7 +110,7 @@ jobs:
           path: exporters/${{ steps.vars.outputs.NAME }}/target/source
 
   build_push_linux_artifacts:
-    needs: [create_prerelease]
+    needs: [create_prerelease, fetch_external_resources]
     name: Push Linux Artifacts
     runs-on: ubuntu-latest
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
@@ -179,7 +179,7 @@ jobs:
   build_push_windows_artifacts:
     name: Create MSI
     runs-on: windows-2019
-    needs: [create_prerelease]
+    needs: [create_prerelease, fetch_external_resources]
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
