@@ -52,8 +52,8 @@ jobs:
         run : |
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
-          loadVariables
           shouldDoRelease
+          loadVariables
           setStepOutput
       - name: Create Release for the exporter modified
         id: create_release
@@ -160,7 +160,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/tarball/${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
+            asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/tarball/${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
           asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
           asset_content_type: tarball
       - name: Upload Release Asset RPM
@@ -181,7 +181,7 @@ jobs:
   build_push_windows_artifacts:
     name: Create MSI
     runs-on: windows-2019
-      needs: [create_prerelease, fetch_external_resources]
+    needs: [create_prerelease]
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
