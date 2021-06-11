@@ -52,8 +52,8 @@ jobs:
         run : |
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
-          shouldDoRelease
           loadVariables
+          shouldDoRelease
           setStepOutput
       - name: Create Release for the exporter modified
         id: create_release
