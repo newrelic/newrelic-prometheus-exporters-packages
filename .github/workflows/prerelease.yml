@@ -230,6 +230,3 @@ jobs:
           asset_path: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\msi\${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
           asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
           asset_content_type: msi package
-
-    attach_artifacts_to_release:
-
