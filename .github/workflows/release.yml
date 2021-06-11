@@ -18,6 +18,7 @@ jobs:
           version=$(echo ${github.event.release.name#* })
           echo "::set-output name=version::${version}"
 
+
           isPrerelease=$(echo ${{ github.event.release.prerelease }})
           echo "::set-output name=isPrerelease::${isPrerelease}"
 
