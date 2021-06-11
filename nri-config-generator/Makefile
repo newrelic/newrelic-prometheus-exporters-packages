@@ -21,6 +21,10 @@ test:
 	@echo "=== nri-config-generator === [ test ]: running unit tests..."
 	@go test -race ./... -count=1
 
+integration-test:
+	@echo "=== nri-config-generator === [ test ]: running integration tests..."
+	@go test -v -tags=integration ./tests/.
+
 INTEGRATION_NAME=
 compile:
 ifeq (nri-config-generator,)

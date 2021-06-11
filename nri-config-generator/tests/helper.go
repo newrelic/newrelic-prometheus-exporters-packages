@@ -1,11 +1,13 @@
 package test
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 )
 
 func rootDir() string {
@@ -56,10 +58,8 @@ func clean() error {
 
 func callGeneratorConfig(integration string, args []string, env []string) ([]byte, error) {
 	executable := fmt.Sprintf("nri-%s", integration)
-	cmd := &exec.Cmd{
-		Path: filepath.Join(rootDir(), "bin", executable),
-		Args: args,
-		Env:  env,
-	}
+	ctx, _ := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	cmd := exec.CommandContext(ctx, filepath.Join(rootDir(), "bin", executable), args...)
+	cmd.Env = env
 	return cmd.Output()
 }
