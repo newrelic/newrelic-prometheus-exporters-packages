@@ -106,8 +106,7 @@ jobs:
           export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables
-
-          packageLinux
+          make  package-${{ steps.package.outputs.PACKAGE_NAME }}
           setStepOutput
       - name: Upload Release Asset DEB
         uses: actions/upload-release-asset@v1
