@@ -106,8 +106,8 @@ jobs:
           export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables
-          make  build-${{ PACKAGE_NAME }}
-          make  package-${{ PACKAGE_NAME }}
+          make  build-${{ outputs.PACKAGE_NAME }}
+          make  package-${{ outputs.PACKAGE_NAME }}
           setStepOutput
       - name: Upload Release Asset DEB
         uses: actions/upload-release-asset@v1
@@ -162,7 +162,7 @@ jobs:
           path: src/repo
       - uses: actions/setup-go@v2
         with:
-          go-version: '^1.13.1'
+          go-version: '^1.16'
       - name: Get PFX certificate from GH secrets
         shell: bash
         run: printf "%s" "$PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
