@@ -181,7 +181,7 @@ jobs:
   build_push_windows_artifacts:
     name: Create MSI
     runs-on: windows-2019
-    needs: [create_prerelease]
+    needs: [create_prerelease, fetch_external_resources]
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
