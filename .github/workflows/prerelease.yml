@@ -134,7 +134,9 @@ jobs:
           source ./scripts/common_functions.sh
           loadVariables
           setStepOutput
-      - uses: actions/download-artifact@v2
+      - id: download_artifacts
+        name: Download stashed folders
+        uses: actions/download-artifact@v2
         with:
           name: SOURCE_DIR
           path: exporters/${{ steps.vars.outputs.NAME }}/target/source
@@ -179,7 +181,7 @@ jobs:
   build_push_windows_artifacts:
     name: Create MSI
     runs-on: windows-2019
-    needs: [create_prerelease, fetch_external_resources]
+      needs: [create_prerelease, fetch_external_resources]
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}

@@ -25,5 +25,4 @@ copy_resources() {
   cp "${integration_sample}" "${integrations_config_dir}"
 }
 
-create_folders_structure
 copy_resources
