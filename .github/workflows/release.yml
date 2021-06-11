@@ -1,9 +1,9 @@
 
+name: Release
+
 on:
   release:
-    types: [published]
-
-name: Create Release
+  types: [published]
 
 jobs:
   publish-to-s3:
