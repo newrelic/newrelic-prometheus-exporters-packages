@@ -70,6 +70,6 @@ if (-not $?)
 
 echo "===> Making versioned installed copy moving it to $projectRootPath\exporters\$exporterName\target\packages\msi\$exporterName-$arch.msi"
 New-item -type directory -path "$projectRootPath\exporters\$exporterName\target\packages\msi" -Force
-cp ".\bin\Release\$exporterName-$arch.msi" "$projectRootPath\exporters\$exporterName\target\packages\msi\$exporterName-exporter-$arch.$version.msi"
+cp ".\bin\Release\nri-$exporterName-$arch.msi" "$projectRootPath\exporters\$exporterName\target\packages\msi\$exporterName-exporter-$arch.$version.msi"
 
 Pop-Location
