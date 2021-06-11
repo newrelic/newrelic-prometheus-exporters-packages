@@ -3,7 +3,7 @@ name: Release
 
 on:
   release:
-    types: [updated]
+    types: [edited]
 
 jobs:
   publish-to-s3:
