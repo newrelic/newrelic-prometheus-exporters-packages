@@ -80,7 +80,7 @@ jobs:
 
   fetch_external_resources:
     needs: [ create_prerelease ]
-    name: Fetch resources from other repositories
+    name: Fetch definition file & LICENSE
     runs-on: ubuntu-latest
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
     steps:
