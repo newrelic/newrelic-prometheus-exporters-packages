@@ -236,7 +236,7 @@ jobs:
   publish-to-s3:
     name: Send release assets to S3
     runs-on: ubuntu-20.04
-    needs: [ build_push_linux_artifacts, build_push_windows_artifacts ]
+    needs: [ create_prerelease, build_push_linux_artifacts, build_push_windows_artifacts ]
     steps:
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -275,4 +275,3 @@ jobs:
           packageLocation: repo
           stagingRepo: true
           upgrade: false
-          
