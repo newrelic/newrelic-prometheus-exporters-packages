@@ -15,7 +15,6 @@ build-%:
 	source scripts/common_functions.sh; \
 	EXPORTER_PATH=exporters/$*/exporter.yml; \
 	loadVariables; \
-	sh scripts/clean.sh $(PWD) $*; \
 	sh exporters/$*/build.sh $(PWD); \
 	sh scripts/build_generator.sh $(PWD) $*;
 

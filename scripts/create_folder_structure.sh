@@ -17,7 +17,7 @@ exporters_doc_dir="${source_dir}/usr/local/share/doc/prometheus-exporters"
 
 create_folders_structure() {
   rm -rf "${source_dir}"
-	mkdir -p  "${exporters_exec_dir}" \
+	mkdir -p "${exporters_exec_dir}" \
 	  "${integrations_exec_dir}" \
 	  "${integrations_config_dir}" \
 	  "${exporters_doc_dir}" \
