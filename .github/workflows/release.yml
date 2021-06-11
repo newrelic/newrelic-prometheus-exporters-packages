@@ -10,5 +10,4 @@ jobs:
     name: Send release assets to S3
     runs-on: ubuntu-20.04
     steps:
-      - run: echo "${github.event.release}"
-        
+      - run: echo "${{ github.event.release }}"
