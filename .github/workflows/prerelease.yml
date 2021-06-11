@@ -69,7 +69,7 @@ jobs:
               - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
               - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}  
               - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}  
-          draft: false
+          draft: true
           prerelease: true
     outputs:
       CREATE_RELEASE: ${{ steps.check.outputs.CREATE_RELEASE }}
