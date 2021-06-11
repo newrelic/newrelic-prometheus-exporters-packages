@@ -19,11 +19,14 @@ param (
 )
 
 $projectRootPath = pwd
-
+echo "--- projectRootPath $projectRootPath"
 
 $win_build = Join-Path -Path $projectRootPath -ChildPath "\scripts\win_exe_build.ps1"
 & $win_build -arch $arch -exporterName $exporterName -exporterHead $exporterHead  -exporterURL $exporterURL -dependencyManager "dep"
 
+echo "--- win_build $win_build"
 
 $win_msi_build = Join-Path -Path $projectRootPath -ChildPath "\scripts\win_msi_build.ps1"
 & $win_msi_build -arch $arch -exporterName $exporterName -version $version -exporterGUID $exporterGUID -upgradeGUID $upgradeGUID -licenseGUID $licenseGUID -configGUID $configGUID -definitionGUID $definitionGUID  -pfx_passphrase $pfx_passphrase 
+
+echo "--- win_msi_build $win_msi_build"
