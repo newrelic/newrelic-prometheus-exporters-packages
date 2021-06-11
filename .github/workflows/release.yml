@@ -10,7 +10,17 @@ jobs:
     name: Send release assets to S3
     runs-on: ubuntu-20.04
     steps:
-      - run: echo "${{ github.event.release.tag_name }}"
-      - run: echo "${{ github.event.release.prerelease }}"
-      - run: echo "${{ github.event.release.name }}"
-
+      - id: release_details
+        run: |
+          integration=$(echo ${{ github.event.release.name }}% *)
+          echo "::set-output name=integration::$integration"
+          version=$(echo ${{ github.event.release.name }}#* )
+          echo "::set-output name=version::$version"
+          isPrerelease=$(echo ${{ github.event.release.prerelease }}#* )
+          echo "::set-output name=isPrerelease::$isPrerelease"
+      - run: echo "${{ steps.release_details.outputs.integration }}
+      - run: echo "${{ steps.release_details.outputs.version }}
+      - if: ${{ steps.release_details.outputs.isPrerelease == 'true'}}
+        run: echo "Is prerelease"
+      - if: ${{ steps.release_details.outputs.isPrerelease != 'true'}}
+        run: echo "Is NOT prerelease"
