@@ -160,7 +160,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-            asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/tarball/${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
+          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/tarball/${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
           asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
           asset_content_type: tarball
       - name: Upload Release Asset RPM
