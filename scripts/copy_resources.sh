@@ -18,16 +18,16 @@ definition_files_dir="${source_dir}/etc/newrelic-infra/definition-files"
 integration_sample="${integration_dir}/${integration}-exporter.yml.sample"
 integration_license="${integration_dir}/LICENSE"
 
-function create_folders_structure {
-  rm -rf "${source_dir}"
+create_folders_structure() {
+  rm -rf "${source_dir}";
 	mkdir -p  "${exporters_exec_dir}" \
 	  "${integrations_exec_dir}" \
 	  "${integrations_config_dir}" \
 	  "${exporters_doc_dir}" \
-	  "${definition_files_dir}"
+	  "${definition_files_dir}";
 }
 
-function copy_resources {
+copy_resources() {
   echo "copying binaries..."
   cp "${binaries_dir}/${integration}-exporter" "${exporters_exec_dir}/${integration}-exporter"
 	chmod 755 "${exporters_exec_dir}/${integration}-exporter"
@@ -37,7 +37,7 @@ function copy_resources {
   cp "${integration_sample}" "${integrations_config_dir}"
 }
 
-function fetch_definition_file {
+fetch_definition_file() {
   tmp_dir=$(mktemp -d)
 
 
@@ -54,7 +54,7 @@ function fetch_definition_file {
   rm -rf "${tmp_dir}"
 }
 
-function fetch_license {
+fetch_license() {
   tmp_dir=$(mktemp -d)
 
   filename="${EXPORTER_LICENSE_PATH}"
