@@ -1,11 +1,13 @@
 package test
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 )
 
 func rootDir() string {
@@ -40,4 +42,24 @@ func buildGeneratorConfig(integration string, defaultExporterPort string) error 
 		Dir: rootDir(),
 	}
 	return cmd.Run()
+}
+
+func clean() error {
+	cmd := &exec.Cmd{
+		Path: "/usr/bin/make",
+		Args: []string{
+			"make",
+			"clean",
+		},
+		Dir: rootDir(),
+	}
+	return cmd.Run()
+}
+
+func callGeneratorConfig(integration string, args []string, env []string) ([]byte, error) {
+	executable := fmt.Sprintf("nri-%s", integration)
+	ctx, _ := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	cmd := exec.CommandContext(ctx, filepath.Join(rootDir(), "bin", executable), args...)
+	cmd.Env = env
+	return cmd.Output()
 }

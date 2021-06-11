@@ -1,13 +1,14 @@
 package test
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os/exec"
 	"path/filepath"
 	"testing"
+	"text/template"
 
 	"github.com/newrelic/infra-integrations-sdk/v4/log"
 	"github.com/pkg/errors"
@@ -16,61 +17,56 @@ import (
 
 const configRavenDBTemplate = `
 {
-	  "config_protocol_version": "1",
-	  "action": "register_config",
-	  "config_name": "cfg-ravendb",
-	  "config": {
-		"variables": {},
-		"integrations": [
-		  {
-			"name": "nri-prometheus",
-			%s
-			"config": {
-			  "standalone": false,
-			  "targets": [
-				{
-				  "urls": [
-					"http://localhost:%s"
-				  ]
-				}
-			  ]
-			}
-		  },
-		  {
-			"name": "prometheus-exporter-ravendb",
-			"timeout": 0,
-			"env": {
-			  "RAVENDB_URL": "http://live-test.ravendb.net",
-			  "PORT": "%s"
-			}
-		  }
-		]
-	  }
-	}
-`
-
-func callGeneratorConfig(integration string, args []string, env []string) ([]byte, error) {
-	executable := fmt.Sprintf("nri-%s", integration)
-	cmd := &exec.Cmd{
-		Path: filepath.Join(rootDir(), "bin", executable),
-		Args: args,
-		Env:  env,
-	}
-	return cmd.Output()
+  "config_protocol_version": "1",
+  "action": "register_config",
+  "config_name": "cfg-ravendb",
+  "config": {
+    "variables": {},
+    "integrations": [
+      {
+        "name": "nri-prometheus",
+		{{ or .pomiInterval "" }}
+        "config": {
+          "standalone": false,
+		  {{ or .pomiVerbose "" }}
+          "targets": [
+            {
+              "urls": [
+                "http://localhost:{{ .exporterPort }}"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "prometheus-exporter-ravendb",
+        "exec": [
+          "/usr/local/prometheus-exporters/bin/ravendb-exporter"
+        ],
+        "timeout": 0,
+        "env": {
+		  {{ or .ravenVerbose "" }}
+          "RAVENDB_URL": "http://live-test.ravendb.net",
+          "PORT": "{{ .exporterPort }}"
+        }
+      }
+    ]
+  }
 }
+`
 
 /**
 Happy path
 */
 func TestGeneratorConfig(t *testing.T) {
 	integration := "ravendb"
-	defaultPort := "3333"
-	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", defaultPort, defaultPort)
-	assert.Nil(t, buildGeneratorConfig(integration, defaultPort))
+	vars := map[string]string{
+		"exporterPort": "3333",
+	}
+	expectedResponse := getExpectedJson(t, configRavenDBTemplate, vars)
 	configPath := filepath.Join(rootDir(), "tests", "testdata", "config.yml")
 	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	stdout, err := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
-	assert.Nil(t, err)
+	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
 	assert.NotEmpty(t, stdout)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
@@ -81,7 +77,6 @@ The default port is already in use, the config generator must find and available
 func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	integration := "ravendb"
 	defaultPort := "3333"
-
 	server := &http.Server{Addr: fmt.Sprintf(":%s", defaultPort)}
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
@@ -101,7 +96,10 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	assert.NotEmpty(t, stdout)
 	assignedPort, err := getAssignedPortToExporter(stdout)
 	assert.Nil(t, err)
-	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", assignedPort, assignedPort)
+	vars := map[string]string{
+		"exporterPort": assignedPort,
+	}
+	expectedResponse := getExpectedJson(t, configRavenDBTemplate, vars)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
@@ -120,7 +118,33 @@ func TestGeneratorConfigWithInterval(t *testing.T) {
 	assert.NotEmpty(t, stdout)
 	assignedPort, err := getAssignedPortToExporter(stdout)
 	assert.Nil(t, err)
-	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "\"interval\":\"10s\",", assignedPort, assignedPort)
+	vars := map[string]string{
+		"exporterPort": assignedPort,
+		"pomiInterval": "\"interval\":\"10s\",",
+	}
+	expectedResponse := getExpectedJson(t, configRavenDBTemplate, vars)
+	assert.JSONEq(t, expectedResponse, string(stdout))
+}
+
+/**
+The verbose mode of the Agent gets propagated to exporter and prometheus
+*/
+func TestGeneratorVerboseMode(t *testing.T) {
+	integration := "ravendb"
+
+	configPath := filepath.Join(rootDir(), "tests", "testdata", "config.yml")
+	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
+	verboseEnvVar := "VERBOSE=1"
+	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar, verboseEnvVar})
+	assert.NotEmpty(t, stdout)
+	assignedPort, err := getAssignedPortToExporter(stdout)
+	assert.Nil(t, err)
+	vars := map[string]string{
+		"exporterPort": assignedPort,
+		"ravenVerbose": "\"VERBOSE\":\"1\",",
+		"pomiVerbose":  "\"verbose\":\"1\",",
+	}
+	expectedResponse := getExpectedJson(t, configRavenDBTemplate, vars)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
@@ -129,9 +153,10 @@ The export port is defined by the user
 */
 func TestGeneratorConfigWithExporterPortInConfigFile(t *testing.T) {
 	integration := "ravendb"
-	defaultPort := "3333"
-	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", "9911", "9911")
-	assert.Nil(t, buildGeneratorConfig(integration, defaultPort))
+	vars := map[string]string{
+		"exporterPort": "3333",
+	}
+	expectedResponse := getExpectedJson(t, configRavenDBTemplate, vars)
 	configPath := filepath.Join(rootDir(), "tests", "testdata", "config_with_port.yml")
 	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
 	stdout, err := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
@@ -139,7 +164,6 @@ func TestGeneratorConfigWithExporterPortInConfigFile(t *testing.T) {
 	assert.NotEmpty(t, stdout)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
-
 
 /**
 The export port is defined by the user but it's already in use
@@ -160,13 +184,22 @@ func TestGeneratorConfigWithExporterPortInConfigFileButItsInUse(t *testing.T) {
 		}
 	}()
 
-	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", "3333", "3333")
-	assert.Nil(t, buildGeneratorConfig(integration, defaultPort))
 	configPath := filepath.Join(rootDir(), "tests", "testdata", "config_with_port.yml")
 	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
 	stdout, err := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
 	assert.Nil(t, err)
 	assert.NotEmpty(t, stdout)
+	out := make(map[string]interface{})
+	json.Unmarshal(stdout, &out)
+	cfg := out["config"].(map[string]interface{})
+	integrations := cfg["integrations"].([]interface{})
+	env := integrations[1].(map[string]interface{})["env"].(map[string]interface{})
+	port := env["PORT"]
+	// expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", port, port, "")
+	vars := map[string]string{
+		"exporterPort": fmt.Sprintf("%s", port),
+	}
+	expectedResponse := getExpectedJson(t, configRavenDBTemplate, vars)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
@@ -191,4 +224,16 @@ func getAssignedPortToExporter(content []byte) (string, error) {
 		return "", errors.New("missing attribute config/integrations[1].env")
 	}
 	return fmt.Sprintf("%v", env["PORT"]), nil
+}
+
+func getExpectedJson(t *testing.T, jsonTemplate string, vars map[string]string) string {
+	tmpl, err := template.New("response").Parse(jsonTemplate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var tpl bytes.Buffer
+	if err := tmpl.Execute(&tpl, vars); err != nil {
+		t.Fatal(err)
+	}
+	return tpl.String()
 }
