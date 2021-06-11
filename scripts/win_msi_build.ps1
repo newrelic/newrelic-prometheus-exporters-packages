@@ -68,8 +68,8 @@ if (-not $?)
     exit -1
 }
 
-echo "===> Making versioned installed copy moving it to $projectRootPath\exporters\$exporterName\target\packages\msi\nri-$exporterName-$arch.msi"
+echo "===> Making versioned installed copy moving it to $projectRootPath\exporters\$exporterName\target\packages\msi\nri-$exporterName-$arch.$version.msi"
 New-item -type directory -path "$projectRootPath\exporters\$exporterName\target\packages\msi" -Force
-cp ".\bin\Release\nri-$exporterName-$arch.msi" "$projectRootPath\exporters\$exporterName\target\packages\msi\nri-$exporterName-exporter-$arch.$version.msi"
+cp ".\bin\Release\nri-$exporterName-$arch.msi" "$projectRootPath\exporters\$exporterName\target\packages\msi\nri-$exporterName-$arch.$version.msi"
 
 Pop-Location
