@@ -12,10 +12,15 @@ jobs:
     steps:
       - id: release_details
         run: |
+          echo "1"
           integration=$(echo ${{ github.event.release.name}})
-          integration=$(echo ${integration% *})
+          echo "2"
+          integration=${integration% *}
+          echo "3"
           echo "${integration}"
+          echo "4"
           echo "::set-output name=integration::${integration}"
+          echo "5"
 
           version=$(echo ${{ github.event.release.name}})
           version=$(echo ${version#* })
