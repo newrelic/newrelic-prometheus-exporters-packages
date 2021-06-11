@@ -78,9 +78,36 @@ jobs:
       PACKAGE_WINDOWS: ${{ steps.check.outputs.PACKAGE_WINDOWS }}
       UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
 
-###
-###   LINUX PACKAGING # In case a new release has been created and linux packages are needed build and push DEB, RPM, TAR 
-###
+  fetch_external_resources:
+    needs: [ create_prerelease ]
+    name: Fetch resources from other repositories
+    runs-on: ubuntu-latest
+    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt-get install rpm ruby ruby-dev rubygems build-essential
+          sudo gem install --no-document fpm
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+      - name: Load variables
+        id: vars
+        run : |
+          export GOPATH=$(go env GOPATH)
+          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
+          source ./scripts/common_functions.sh
+          loadVariables
+          setStepOutput
+      - name: Package linux
+        id: package
+        run : |
+          make  fetch-resources-${{ steps.vars.outputs.NAME }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: SOURCE_DIR
+          path: exporters/${{ steps.vars.outputs.NAME }}/target/source
 
   build_push_linux_artifacts:
     needs: [create_prerelease]
@@ -107,6 +134,10 @@ jobs:
           source ./scripts/common_functions.sh
           loadVariables
           setStepOutput
+      - uses: actions/download-artifact@v2
+        with:
+          name: SOURCE_DIR
+          path: exporters/${{ steps.vars.outputs.NAME }}/target/source
       - name: Package linux
         id: package
         run : |
@@ -170,7 +201,7 @@ jobs:
         shell: bash
         run: printf "%s" "$PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
       - name: Load Variables
-        id: load_variables
+        id: vars
         shell: bash
         run: |
           choco install yq
@@ -178,17 +209,21 @@ jobs:
           source ./scripts/common_functions.sh
           loadVariables
           setStepOutput
+      - uses: actions/download-artifact@v2
+        with:
+          name: SOURCE_DIR
+          path: exporters\${{ steps.vars.outputs.NAME }}\target\source
       - name : Create MSI installer
         shell: pwsh
         run: |
-          .\exporters\${{ steps.load_variables.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.load_variables.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.load_variables.outputs.NAME }} -exporterURL ${{ steps.load_variables.outputs.EXPORTER_REPO_URL }} -version ${{ steps.load_variables.outputs.VERSION }} -exporterGUID ${{ steps.load_variables.outputs.EXPORTER_GUID }} -upgradeGUID ${{ steps.load_variables.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.load_variables.outputs.LICENSE_GUID }} -configGUID ${{ steps.load_variables.outputs.CONFIG_GUID }} -definitionGUID ${{ steps.load_variables.outputs.DEFINITION_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
+          .\exporters\${{ steps.vars.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.vars.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.vars.outputs.NAME }} -exporterURL ${{ steps.vars.outputs.EXPORTER_REPO_URL }} -version ${{ steps.vars.outputs.VERSION }} -exporterGUID ${{ steps.vars.outputs.EXPORTER_GUID }} -upgradeGUID ${{ steps.vars.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.vars.outputs.LICENSE_GUID }} -configGUID ${{ steps.vars.outputs.CONFIG_GUID }} -definitionGUID ${{ steps.vars.outputs.DEFINITION_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
       - name: Upload Release Asset MSI
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ${{ github.workspace }}/src/repo/exporters/${{ steps.load_variables.outputs.NAME }}/target/packages/msi/${{ steps.load_variables.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
-          asset_name: ${{ steps.load_variables.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.load_variables.outputs.VERSION }}.msi
+          asset_path: ${{ github.workspace }}/src/repo/exporters/${{ steps.vars.outputs.NAME }}/target/packages/msi/${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
+          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
           asset_content_type: msi package
       
