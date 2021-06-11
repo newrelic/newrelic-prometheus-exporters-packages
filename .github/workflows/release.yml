@@ -14,14 +14,15 @@ jobs:
         run: |
           integration=echo ${{ github.event.release.name}}
           integration=$(echo ${integration% *})
-          echo "::set-output name=integration::$integration"
+          echo "${integration}"
+          echo "::set-output name=integration::${integration}"
 
           version=echo ${{ github.event.release.name}}
           version=$(echo ${version#* })
-          echo "::set-output name=version::$version"
+          echo "::set-output name=version::${version}"
 
           isPrerelease=$(echo ${{ github.event.release.prerelease }})
-          echo "::set-output name=isPrerelease::$isPrerelease"
+          echo "::set-output name=isPrerelease::${isPrerelease}"
 
       - run: echo "${{ steps.release_details.outputs.integration }}
       - run: echo "${{ steps.release_details.outputs.version }}
