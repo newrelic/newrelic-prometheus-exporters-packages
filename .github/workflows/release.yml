@@ -12,18 +12,10 @@ jobs:
     steps:
       - id: release_details
         run: |
-          echo "1"
-          integration=${{ github.event.release.name}}
-          echo "2"
-          integration=${integration% *}
-          echo "3"
-          echo "${integration}"
-          echo "4"
+          integration=$(echo ${integration% *})
           echo "::set-output name=integration::${integration}"
-          echo "5"
 
-          version=$(echo ${{ github.event.release.name}})
-          version=$(echo ${version#* })
+          version=$(echo ${github.event.release.name#* })
           echo "::set-output name=version::${version}"
 
           isPrerelease=$(echo ${{ github.event.release.prerelease }})
