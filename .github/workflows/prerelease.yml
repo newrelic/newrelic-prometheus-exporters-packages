@@ -107,8 +107,8 @@ jobs:
           source ./scripts/common_functions.sh
           loadVariables
           setStepOutput
-          make  build-${{ outputs.PACKAGE_NAME }}
-          make  package-${{ outputs.PACKAGE_NAME }}
+          make  build-${{ PACKAGE_NAME }}
+          make  package-${{ PACKAGE_NAME }}
       - name: Upload Release Asset DEB
         uses: actions/upload-release-asset@v1
         env:
