@@ -211,10 +211,12 @@ jobs:
           source ./scripts/common_functions.sh
           loadVariables
           setStepOutput
-      - uses: actions/download-artifact@v2
+      - id: download_artifacts
+        name: Download stashed folders
+        uses: actions/download-artifact@v2
         with:
           name: SOURCE_DIR
-          path: exporters\${{ steps.vars.outputs.NAME }}\target\source
+          path: src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\source
       - name : Create MSI installer
         shell: pwsh
         run: |
