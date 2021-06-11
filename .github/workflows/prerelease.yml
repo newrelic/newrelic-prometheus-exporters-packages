@@ -99,24 +99,27 @@ jobs:
           sudo gem install --no-document fpm
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
-      - name: package linux
-        id: package
+      - name: locad variables
+        id: vars
         run : |
           export GOPATH=$(go env GOPATH)
           export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables
           setStepOutput
-          make  build-${{ PACKAGE_NAME }}
-          make  package-${{ PACKAGE_NAME }}
+      - name: package linux
+        id: package
+        run : |
+          make  build-${{ steps.vars.outputs.PACKAGE_NAME }}
+          make  package-${{ steps.vars.outputs.PACKAGE_NAME }}
       - name: Upload Release Asset DEB
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/deb/${{ steps.package.outputs.PACKAGE_NAME }}_${{ steps.package.outputs.VERSION }}-1_amd64.deb
-          asset_name: ${{ steps.package.outputs.PACKAGE_NAME }}_${{ steps.package.outputs.VERSION }}-1_amd64.deb
+          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/deb/${{ steps.vars.outputs.PACKAGE_NAME }}_${{ steps.vars.outputs.VERSION }}-1_amd64.deb
+          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}_${{ steps.vars.outputs.VERSION }}-1_amd64.deb
           asset_content_type: deb package
       - name: Upload Release Asset TAR
         uses: actions/upload-release-asset@v1
@@ -124,8 +127,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/tarball/${{ steps.package.outputs.PACKAGE_NAME }}_linux_${{ steps.package.outputs.VERSION }}_amd64.tar.gz
-          asset_name: ${{ steps.package.outputs.PACKAGE_NAME }}_linux_${{ steps.package.outputs.VERSION }}_amd64.tar.gz
+          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/tarball/${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
+          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
           asset_content_type: tarball
       - name: Upload Release Asset RPM
         uses: actions/upload-release-asset@v1
@@ -133,8 +136,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ./exporters/${{ steps.package.outputs.NAME }}/target/packages/rpm/${{ steps.package.outputs.PACKAGE_NAME }}-${{ steps.package.outputs.VERSION }}-1.x86_64.rpm
-          asset_name: ${{ steps.package.outputs.PACKAGE_NAME }}-${{ steps.package.outputs.VERSION }}-1.x86_64.rpm
+          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/rpm/${{ steps.vars.outputs.PACKAGE_NAME }}-${{ steps.vars.outputs.VERSION }}-1.x86_64.rpm
+          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ steps.vars.outputs.VERSION }}-1.x86_64.rpm
           asset_content_type: rpm package
 
 
