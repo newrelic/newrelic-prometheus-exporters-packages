@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
     environment:
       NRIA_VERBOSE: 1
-      NRIA_LICENSE_KEY: "****"
+      NRIA_LICENSE_KEY: "<ADD_NRI_LICENSE_KEY>"
       NRIA_STAGING: "true"
 
   ravendb:
