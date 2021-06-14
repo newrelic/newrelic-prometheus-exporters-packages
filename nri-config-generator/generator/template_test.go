@@ -62,13 +62,13 @@ func Test_CustomFunctions(t *testing.T) {
 
 	tmpl, err = template.New("").
 		Funcs(TemplatesFunc).
-		Parse(`{{set "verbose" .env.VERBOSE false}}`)
+		Parse(`{{set "verbose" .env.VERBOSE}}`)
 	assert.Nil(t, err)
 	assert.NotNil(t, tmpl)
 	assert.Equal(t, expand(tmpl, map[string]interface{}{
 		"env": map[string]interface{}{
 			"VERBOSE": false,
 		},
-	}), "\"verbose\":false")
+	}), "\"verbose\":false,")
 
 }

@@ -83,7 +83,7 @@
             <Component Id="CMP_NRI_EXPORTER_CONFIG" Guid="{configGUID}" Win64="yes">
                 <File Id="CMP_NRI_EXPORTER_CONFIG"
                       Name="{IntegrationName}-exporter.yml.sample"
-                      Source="$(var.BinariesPath){IntegrationName}-exporter-windows.yml.sample"
+                      Source="$(var.BinariesPath){IntegrationName}-exporter.yml.sample"
                       KeyPath="yes"/>
             </Component>
         </ComponentGroup>

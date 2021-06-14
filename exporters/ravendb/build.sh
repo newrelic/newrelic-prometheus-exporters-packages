@@ -2,11 +2,6 @@
 root_dir=$1
 integration_dir="${root_dir}/exporters/ravendb"
 
-source ${root_dir}/scripts/common_functions.sh
-EXPORTER_PATH="${integration_dir}/exporter.yml"
-loadVariables
-
-
 if [ ! -d "${GOPATH}" ]; then
   echo "GOPATH is empty" ;
 	exit 1 ;

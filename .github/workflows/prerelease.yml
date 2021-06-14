@@ -1,0 +1,277 @@
+### ON MERGE TO MAIN   
+###                                                            build_push_linux_artifacts  
+###                                                           +-------------------------+ 
+###                                                           |                         | 
+###                                                           |  BUILD AND PUSH LINUX   | 
+###                                       +-----------------  |  PACKAGES TO GITHUB     | 
+###                                       |                   |                         | 
+###      create_release                   |                   |                         | 
+### +-----------------------+             |                   +-------------------------+ 
+### |                       |             |                                               
+### | CREATE A NEW RELEASE  |             |                                               
+### | IN CASE ONE DEFINITION|             |                                               
+### | HAS BEEN MODIFIED     |  -----------+                      
+### | OR ADDED              |             |                    build_push_windows_artifacts                          
+### |                       |             |                  +---------------------------+
+### +-----------------------+             |                  |                           | _
+###                                       |                  |  BUILD AND PUSHES WINDOWS |  |
+###                                       +----------------- |  PACKAGES TO GITHUB       |  | Executed once per 
+###                                                          |                           |  | architecture (32-64)
+###                                                          |   Possibly executed twice |  | 
+###                                                          +---------------------------+  |
+###                                                             |___________________________|
+
+on: 
+  push:
+    branches:
+      - main
+
+env:
+  PFX_CERTIFICATE_BASE64: ${{ secrets.PFX_CERTIFICATE_BASE64 }} # base64 encoded
+  PFX_PASSPHRASE:  ${{ secrets.PFX_PASSPHRASE }}
+
+###
+###   RELEASE CREATION # Creates a release if needed and loads variables for next jobs
+###
+name: Create Pre-release
+jobs:
+  create_prerelease:
+    name: Create Pre-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+      - name: Check if exporters have been modified
+        id: check
+        # Running shouldDoRelease we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
+        # Tha variable is used by the following step and jobs
+        run : |
+          git fetch -at origin --unshallow
+          source ./scripts/common_functions.sh
+          shouldDoRelease
+          loadVariables
+          setStepOutput
+      - name: Create Release for the exporter modified
+        id: create_release
+        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
+          release_name: ${{ steps.check.outputs.PACKAGE_NAME }} ${{ steps.check.outputs.VERSION }}
+          body: |
+            Changes in ${{ steps.check.outputs.PACKAGE_NAME }} version ${{ steps.check.outputs.VERSION }}
+              - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
+              - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}  
+              - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}  
+          draft: true
+          prerelease: true
+    outputs:
+      CREATE_RELEASE: ${{ steps.check.outputs.CREATE_RELEASE }}
+      EXPORTER_PATH: ${{ steps.check.outputs.EXPORTER_PATH }}
+      PACKAGE_LINUX: ${{ steps.check.outputs.PACKAGE_LINUX }}
+      PACKAGE_WINDOWS: ${{ steps.check.outputs.PACKAGE_WINDOWS }}
+      UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
+      INTEGRATION_NAME: ${{ steps.check.outputs.NAME }}
+      INTEGRATION_VERSION: ${{ steps.check.outputs.VERSION }}
+
+  fetch_external_resources:
+    needs: [ create_prerelease ]
+    name: Fetch definition file & LICENSE
+    runs-on: ubuntu-latest
+    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt-get install rpm ruby ruby-dev rubygems build-essential
+          sudo gem install --no-document fpm
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+      - name: Load variables
+        id: vars
+        run : |
+          export GOPATH=$(go env GOPATH)
+          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
+          source ./scripts/common_functions.sh
+          loadVariables
+          setStepOutput
+      - name: Package linux
+        id: package
+        run : |
+          make  fetch-resources-${{ steps.vars.outputs.NAME }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: SOURCE_DIR
+          path: exporters/${{ steps.vars.outputs.NAME }}/target/source
+
+  build_push_linux_artifacts:
+    needs: [create_prerelease, fetch_external_resources]
+    name: Push Linux Artifacts
+    runs-on: ubuntu-latest
+    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
+    steps:
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16'
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt-get install rpm ruby ruby-dev rubygems build-essential
+          sudo gem install --no-document fpm
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+      - name: Load variables
+        id: vars
+        run : |
+          export GOPATH=$(go env GOPATH)
+          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
+          source ./scripts/common_functions.sh
+          loadVariables
+          setStepOutput
+      - id: download_artifacts
+        name: Download stashed folders
+        uses: actions/download-artifact@v2
+        with:
+          name: SOURCE_DIR
+          path: exporters/${{ steps.vars.outputs.NAME }}/target/source
+      - name: Package linux
+        id: package
+        run : |
+          make  build-${{ steps.vars.outputs.NAME }}
+          make  package-${{ steps.vars.outputs.NAME }}
+      - name: Upload Release Asset DEB
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
+          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/deb/${{ steps.vars.outputs.PACKAGE_NAME }}_${{ steps.vars.outputs.VERSION }}-1_amd64.deb
+          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}_${{ steps.vars.outputs.VERSION }}-1_amd64.deb
+          asset_content_type: deb package
+      - name: Upload Release Asset TAR
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
+          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/tarball/${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
+          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
+          asset_content_type: tarball
+      - name: Upload Release Asset RPM
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
+          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/rpm/${{ steps.vars.outputs.PACKAGE_NAME }}-${{ steps.vars.outputs.VERSION }}-1.x86_64.rpm
+          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ steps.vars.outputs.VERSION }}-1.x86_64.rpm
+          asset_content_type: rpm package
+
+
+###
+###   Windows Packaging # In case a new release has been created and Windows packages are needed build and push MSI
+###
+
+  build_push_windows_artifacts:
+    name: Create MSI
+    runs-on: windows-2019
+    needs: [create_prerelease, fetch_external_resources]
+    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
+    env:
+      GOPATH: ${{ github.workspace }}
+    defaults:
+      run:
+        working-directory: src/repo
+    strategy:
+      matrix:
+        goarch: [amd64 ,386]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: src/repo
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16'
+      - name: Get PFX certificate from GH secrets
+        shell: bash
+        run: printf "%s" "$PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
+      - name: Load Variables
+        id: vars
+        shell: bash
+        run: |
+          choco install yq
+          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
+          source ./scripts/common_functions.sh
+          loadVariables
+          setStepOutput
+      - id: download_artifacts
+        name: Download stashed folders
+        uses: actions/download-artifact@v2
+        with:
+          name: SOURCE_DIR
+          path: src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\source
+      - name : Create MSI installer
+        shell: pwsh
+        run: |
+          .\exporters\${{ steps.vars.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.vars.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.vars.outputs.NAME }} -exporterURL ${{ steps.vars.outputs.EXPORTER_REPO_URL }} -version ${{ steps.vars.outputs.VERSION }} -exporterGUID ${{ steps.vars.outputs.EXPORTER_GUID }} -upgradeGUID ${{ steps.vars.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.vars.outputs.LICENSE_GUID }} -configGUID ${{ steps.vars.outputs.CONFIG_GUID }} -definitionGUID ${{ steps.vars.outputs.DEFINITION_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
+      - name: Upload Release Asset MSI
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
+          asset_path: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\msi\${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
+          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
+          asset_content_type: msi package
+
+#  publish-to-s3:
+#    #    name: Send release assets to S3
+#    runs-on: ubuntu-20.04
+#    needs: [ create_prerelease, build_push_linux_artifacts, build_push_windows_artifacts ]
+#    steps:
+#      - name: Login to DockerHub
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.OHAI_DOCKER_HUB_ID }}
+#          password: ${{ secrets.OHAI_DOCKER_HUB_PASSWORD }}
+#      - name: Publish to S3 action
+#        uses: newrelic/infrastructure-publish-action@v1
+#        env:
+#          AWS_S3_BUCKET_NAME: "nr-downloads-ohai-testing"
+#          AWS_S3_LOCK_BUCKET_NAME: "onhost-ci-lock-testing"
+#        with:
+#          disable_lock: false
+#          run_id: ${{ github.run_id }}
+#          tag: ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
+#          app_name: nri-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+#          repo_name: ${{ env.ORIGINAL_REPO_NAME }}
+#
+#          schema: "ohi"
+#          aws_region: "us-east-1"
+#          aws_role_arn: ${{ secrets.OHAI_AWS_ROLE_ARN_STAGING }}
+#          aws_role_session_name: ${{ secrets.OHAI_AWS_ROLE_SESSION_NAME_STAGING }}
+#          aws_access_key_id: ${{ secrets.OHAI_AWS_ACCESS_KEY_ID_TESTING }}
+#          aws_secret_access_key: ${{ secrets.OHAI_AWS_SECRET_ACCESS_KEY_STAGING }}
+#          aws_s3_bucket_name: ${{ env.AWS_S3_BUCKET_NAME }}
+#          # used for locking in case of concurrent releases
+#          aws_s3_lock_bucket_name: ${{ env.AWS_S3_LOCK_BUCKET_NAME }}
+#          # used for signing package stuff
+#          gpg_passphrase: ${{ secrets.OHAI_GPG_PASSPHRASE }}
+#          gpg_private_key_base64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}
+#      - name: Test uploaded package installability
+#        uses: newrelic/integrations-pkg-test-action/linux@v1
+#        with:
+#          tag: ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
+#          integration: nri-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+#          packageLocation: repo
+#          stagingRepo: true
+#          upgrade: false

@@ -24,7 +24,7 @@ func NewConfig(template *template.Template) Config {
 func (g *config) Generate(vars map[string]interface{}) (string, error) {
 	var templateOut bytes.Buffer
 	if err := g.template.Execute(&templateOut, vars); err != nil {
-		log.Error("error executing the template for the config: '%s'", err.Error())
+		log.Errorf("error executing the template for the config: '%s'", err.Error())
 		return "", err
 	}
 	content := compactTextInOneLine(templateOut.String())

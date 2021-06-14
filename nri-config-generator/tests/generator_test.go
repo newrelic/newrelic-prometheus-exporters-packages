@@ -1,3 +1,5 @@
+// +build integration
+
 package test
 
 import (
@@ -5,7 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os/exec"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -16,47 +18,49 @@ import (
 
 const configRavenDBTemplate = `
 {
-	  "config_protocol_version": "1",
-	  "action": "register_config",
-	  "config_name": "cfg-ravendb",
-	  "config": {
-		"variables": {},
-		"integrations": [
-		  {
-			"name": "nri-prometheus",
-			%s
-			"config": {
-			  "standalone": false,
-			  "targets": [
-				{
-				  "urls": [
-					"http://localhost:%s"
-				  ]
-				}
-			  ]
-			}
-		  },
-		  {
-			"name": "prometheus-exporter-ravendb",
-			"timeout": 0,
-			"env": {
-			  "RAVENDB_URL": "http://live-test.ravendb.net",
-			  "PORT": "%s"
-			}
-		  }
-		]
-	  }
-	}
+  "config_protocol_version": "1",
+  "action": "register_config",
+  "config_name": "cfg-ravendb",
+  "config": {
+    "variables": {},
+    "integrations": [
+      {
+        "name": "nri-prometheus",
+		%s
+        "config": {
+          "standalone": false,
+          "targets": [
+            {
+              "urls": [
+                "http://localhost:%s"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "prometheus-exporter-ravendb",
+        "exec": [
+          "/usr/local/prometheus-exporters/bin/ravendb-exporter"
+        ],
+        "timeout": 0,
+        "env": {
+          "RAVENDB_URL": "http://live-test.ravendb.net",
+          "PORT": "%s"
+        }
+      }
+    ]
+  }
+}
 `
 
-func callGeneratorConfig(integration string, args []string, env []string) ([]byte, error) {
-	executable := fmt.Sprintf("nri-%s", integration)
-	cmd := &exec.Cmd{
-		Path: filepath.Join(rootDir(), "bin", executable),
-		Args: args,
-		Env:  env,
+func TestMain(m *testing.M) {
+	if err := buildGeneratorConfig("ravendb"); err != nil {
+		panic(err.Error())
 	}
-	return cmd.Output()
+	exitVal := m.Run()
+	clean()
+	os.Exit(exitVal)
 }
 
 /**
@@ -66,11 +70,9 @@ func TestGeneratorConfig(t *testing.T) {
 	integration := "ravendb"
 	defaultPort := "3333"
 	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", defaultPort, defaultPort)
-	assert.Nil(t, buildGeneratorConfig(integration, defaultPort))
 	configPath := filepath.Join(rootDir(), "tests", "testdata", "config.yml")
 	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	stdout, err := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
-	assert.Nil(t, err)
+	stdout,_:= callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
 	assert.NotEmpty(t, stdout)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
@@ -93,11 +95,10 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 			panic(err)
 		}
 	}()
-	assert.Nil(t, buildGeneratorConfig(integration, defaultPort))
+
 	configPath := filepath.Join(rootDir(), "tests", "testdata", "config.yml")
 	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	stdout, err := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
-	assert.Nil(t, err)
+	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
 	assert.NotEmpty(t, stdout)
 	assignedPort, err := getAssignedPortToExporter(stdout)
 	assert.Nil(t, err)
@@ -110,13 +111,11 @@ The env var interval is provided
 */
 func TestGeneratorConfigWithInterval(t *testing.T) {
 	integration := "ravendb"
-	defaultPort := "3333"
-	assert.Nil(t, buildGeneratorConfig(integration, defaultPort))
+
 	configPath := filepath.Join(rootDir(), "tests", "testdata", "config.yml")
 	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
 	intervalEnvVar := "interval=10s"
-	stdout, err := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar, intervalEnvVar})
-	assert.Nil(t, err)
+	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar, intervalEnvVar})
 	assert.NotEmpty(t, stdout)
 	assignedPort, err := getAssignedPortToExporter(stdout)
 	assert.Nil(t, err)
@@ -129,26 +128,21 @@ The export port is defined by the user
 */
 func TestGeneratorConfigWithExporterPortInConfigFile(t *testing.T) {
 	integration := "ravendb"
-	defaultPort := "3333"
-	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", "9911", "9911")
-	assert.Nil(t, buildGeneratorConfig(integration, defaultPort))
+	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", "3333", "3333")
 	configPath := filepath.Join(rootDir(), "tests", "testdata", "config_with_port.yml")
 	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	stdout, err := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
-	assert.Nil(t, err)
+	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
 	assert.NotEmpty(t, stdout)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
-
 
 /**
 The export port is defined by the user but it's already in use
 */
 func TestGeneratorConfigWithExporterPortInConfigFileButItsInUse(t *testing.T) {
 	integration := "ravendb"
-	defaultPort := "3333"
 
-	server := &http.Server{Addr: fmt.Sprintf(":%s", "9911")}
+	server := &http.Server{Addr: fmt.Sprintf(":%s", "3333")}
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
 			log.Warn(err.Error())
@@ -160,13 +154,18 @@ func TestGeneratorConfigWithExporterPortInConfigFileButItsInUse(t *testing.T) {
 		}
 	}()
 
-	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", "3333", "3333")
-	assert.Nil(t, buildGeneratorConfig(integration, defaultPort))
+
 	configPath := filepath.Join(rootDir(), "tests", "testdata", "config_with_port.yml")
 	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	stdout, err := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
-	assert.Nil(t, err)
+	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
 	assert.NotEmpty(t, stdout)
+	out:=make(map[string]interface{})
+	json.Unmarshal(stdout,&out)
+	cfg:=out["config"].(map[string]interface{})
+	integrations:=cfg["integrations"].([]interface{})
+	env:=integrations[1].(map[string]interface{})["env"].(map[string]interface{})
+	port:=env["PORT"]
+	expectedResponse := fmt.Sprintf(configRavenDBTemplate, "", port, port)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 

@@ -28,7 +28,7 @@ loadVariables(){
 # setStepOutput exposes the environment variables needed by next github actions steps steps
 setStepOutput(){
     echo "::set-output name=NAME::${NAME}"
-    echo "::set-output name=PACKAGE_NAME::${NAME}-exporter"
+    echo "::set-output name=PACKAGE_NAME::nri-${NAME}"
     echo "::set-output name=EXPORTER_HEAD::${EXPORTER_HEAD}"
     echo "::set-output name=EXPORTER_REPO_URL::${EXPORTER_REPO_URL}"
     echo "::set-output name=EXPORTER_LICENSE_PATH::${EXPORTER_LICENSE_PATH}"
@@ -43,6 +43,7 @@ setStepOutput(){
     echo "::set-output name=LICENSE_GUID::${LICENSE_GUID}"
     echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
     echo "::set-output name=DEFINITION_GUID::${DEFINITION_GUID}"
+
 }
 
 
@@ -57,7 +58,7 @@ packageLinux(){
     fi
 
     current_pwd=$(pwd)
-    cd  ./exporters/"$exporter_name" && make all 
+    make build-$exporter_name
     cd $current_pwd
 }
 
@@ -118,8 +119,8 @@ checkExporter(){
         if [ ! -f "./exporters/$NAME/$NAME-exporter.yml.sample" ]; then
             ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-exporter.yml.sample should exist"
         fi
-        if [ ! -f "./exporters/$NAME/Makefile" ]; then
-            ERRORS=$ERRORS" - the file ./exporters/$NAME/Makefile should exist"
+        if [ ! -f "./exporters/$NAME/build.sh" ]; then
+            ERRORS=$ERRORS" - the file ./exporters/$NAME/build.sh should exist"
         fi
     fi
 
@@ -180,9 +181,6 @@ checkExporter(){
             fi
         fi
 
-        if [ ! -f "./exporters/$NAME/$NAME-exporter-windows.yml.sample" ]; then
-            ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-exporter-windows.yml.sample should exist"
-        fi
 
         if [ ! -f "./exporters/$NAME/win_build.ps1" ]; then
             ERRORS=$ERRORS" - the file ./exporters/$NAME/win_build.ps1 should exist"
@@ -195,7 +193,5 @@ checkExporter(){
         ERRORS=$ERRORS" - The exporter.yml is in a wrong folder"
     fi
 
-    if [ ! -f "./exporters/$NAME/LICENSE" ]; then
-        ERRORS=$ERRORS" - the file ./exporters/$NAME/LICENSE should exist"
-    fi
+
 }

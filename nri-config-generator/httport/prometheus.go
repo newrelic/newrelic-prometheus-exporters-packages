@@ -32,10 +32,14 @@ func IsPrometheusExporterRunning() bool {
 	log.Debug("check if prometheus exporter is running on %s", exporterURL)
 	resp, err := httpPrometheusExporterClient.Get(exporterURL)
 	if err != nil {
-		log.Error("error while checking the prometheus exporter 'health check': %s",err.Error())
+		log.Error("error while checking the prometheus exporter 'health check': %s", err.Error())
 		return false
 	}
-	io.Copy(ioutil.Discard, resp.Body) // <= NOTE
-	defer resp.Body.Close()
-	return true
+	_, err = io.Copy(ioutil.Discard, resp.Body)
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Error(err.Error())
+		}
+	}()
+	return err == nil
 }

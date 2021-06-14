@@ -80,19 +80,20 @@ if (-not $?)
     echo "Failed building exporter"
     exit -1
 }
-Copy-Item ".\exporters\$exporterName\LICENSE" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-LICENSE" -Force 
+Copy-Item ".\exporters\$exporterName\target\source\usr\local\share\doc\prometheus-exporters\$exporterName-LICENSE" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-LICENSE" -Force
 if (-not $?)
 {
     echo "Failed copying license"
     exit -1
 }
-Copy-Item ".\exporters\$exporterName\$exporterName-exporter-windows.yml.sample" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-exporter-windows.yml.sample" -Force 
+Copy-Item ".\exporters\$exporterName\$exporterName-exporter.yml.sample" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-exporter.yml.sample" -Force
 if (-not $?)
 {
     echo "Failed copying config file"
     exit -1
 }
-Copy-Item "$defFilePath\\$defFileName" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$defFileName" -Force 
+
+Copy-Item ".\exporters\$exporterName\target\source\etc\newrelic-infra\definition-files\$defFileName" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$defFileName" -Force
 if (-not $?)
 {
     echo "Failed copying definition file"

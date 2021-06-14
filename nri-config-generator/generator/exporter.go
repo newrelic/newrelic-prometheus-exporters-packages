@@ -31,7 +31,7 @@ func NewExporter(name string, template *template.Template) Exporter {
 func (g *exporter) Generate(vars map[string]interface{}) (string, error) {
 	var templateOut bytes.Buffer
 	if err := g.template.Execute(&templateOut, vars); err != nil {
-		log.Error("error executing the template for the integration: '%s'", err.Error())
+		log.Errorf("error executing the template for the integration: '%s'", err.Error())
 		return "", err
 	}
 	content := g.appendIntegrationDetails(templateOut.String())

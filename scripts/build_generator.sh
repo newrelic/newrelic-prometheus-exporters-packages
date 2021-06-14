@@ -3,9 +3,7 @@
 root_dir=$1
 integration=$2
 integration_dir="${root_dir}/exporters/${integration}"
-source ${root_dir}/scripts/common_functions.sh
-EXPORTER_PATH="${integration_dir}/exporter.yml"
-loadVariables
+
 
 binary_dir="${root_dir}/exporters/${integration}/target/bin"
 template_name=${integration}.json.tmpl

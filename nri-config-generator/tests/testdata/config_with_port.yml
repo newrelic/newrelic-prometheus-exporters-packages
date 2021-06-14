@@ -4,4 +4,4 @@ parent:
     - element2: b
 ravendb_url: "http://live-test.ravendb.net"
 other: 123
-exporter_port: 9911
+exporter_port: 3333

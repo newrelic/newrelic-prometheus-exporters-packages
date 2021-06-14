@@ -6,6 +6,7 @@ import (
 	"net"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
@@ -26,6 +27,7 @@ func launchServerOn(port string) *http.Server {
 			log.Warn(err.Error())
 		}
 	}()
+	time.Sleep(2*time.Second)
 	return server
 }
 
@@ -55,7 +57,7 @@ func Test_GetAvailablePort(t *testing.T) {
 	assert.Equal(t, availablePort, port)
 	port, err = GetAvailablePort("9999")
 	assert.Nil(t, err)
-	assert.Equal(t, availablePort, port)
+	assert.Equal(t, 9999, port)
 	server := launchServerOn(portStr)
 	port, err = GetAvailablePort("9999")
 	assert.Nil(t, err)

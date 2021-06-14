@@ -1,13 +1,25 @@
 name: nri-config-generator pipeline
 
+# Pipeline: nri-config-generator
+# The purpose of this pipeline is guarantee that the code in the config-generator is correct
+# Actually this project is used to build different executables depending on the integrations
+# Although this code doesn't create a excutable at all, we need to ensure the following steps:
+#  - golang-lint: Static analysis of the code
+#  - snyk: Guarantee that our base code doesn't contain security issues
+#  - test-nix: Run unit tests in a *nix environment
+#  - test-windows: Run unit tests in a windows environment
+#  - test-integration-nix: Run integration tests in a *nix environment
+
 on:
   pull_request:
+    branches: [ main ]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GO_VERSION: '1.16'
 
 jobs:
+
   golangci-lint:
     name: Validate code via golangci
     runs-on: ubuntu-20.04
@@ -16,9 +28,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
         with:
-          only-new-issues: true
           working-directory: nri-config-generator
-
   snyk:
     name: Run security checks via snyk
     runs-on: ubuntu-20.04
@@ -51,15 +61,20 @@ jobs:
     name: Run unit tests on Windows
     runs-on: windows-2019
     env:
-      GOPATH: ${{ github.workspace }}
+      GOPATH: ${{ github.workspace }}/nri-config-generator
     defaults:
       run:
-        working-directory: src/github.com/${{env.ORIGINAL_REPO_NAME}}
+        working-directory: src/github.com/newrelic/nri-config-generator
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          path: src/github.com/${{env.ORIGINAL_REPO_NAME}}
+          path: src/github.com/newrelic/nri-config-generator
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.OHAI_DOCKER_HUB_ID }}
+          password: ${{ secrets.OHAI_DOCKER_HUB_PASSWORD }}
       - name: Install Go
         uses: actions/setup-go@v2
         with:
@@ -67,18 +82,31 @@ jobs:
       - name: Running unit tests
         shell: pwsh
         run: |
-          .\nri-generator-config\build\windows\unit_tests.ps1
+          .\nri-config-generator\build\windows\unit_tests.ps1
 
-  test-build:
-    name: Test binary compilation for all platforms:arch
+  test-integration-nix:
+    name: Run integration tests on *Nix
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: src/github.com/newrelic/nri-config-generator
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          path: src/github.com/newrelic/nri-config-generator
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{env.GO_VERSION}}
       - name: Login to DockerHub
         if: ${{env.DOCKER_LOGIN_AVAILABLE}}
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.OHAI_DOCKER_HUB_ID }}
           password: ${{ secrets.OHAI_DOCKER_HUB_PASSWORD }}
-      - name: Build all platforms:arch
-        run: make ci/build
+      - name: Integration test
+        env:
+          GOPATH: ${{ github.workspace }}/nri-config-generator
+        run: make ci/integration-test
