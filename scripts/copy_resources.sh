@@ -9,8 +9,8 @@ target_dir="${integration_dir}/target"
 binaries_dir="${target_dir}/bin"
 source_dir="${target_dir}/source"
 
-integrations_exec_dir="${source_dir}/var/db/newrelic-infra/newrelic-integrations/bin/"
-exporters_exec_dir="${source_dir}/usr/local/prometheus-exporters/bin/"
+integrations_exec_dir="${source_dir}/var/db/newrelic-infra/newrelic-integrations/bin"
+exporters_exec_dir="${source_dir}/usr/local/prometheus-exporters/bin"
 integrations_config_dir="${source_dir}/etc/newrelic-infra/integrations.d"
 
 integration_sample="${integration_dir}/${integration}-exporter.yml.sample"

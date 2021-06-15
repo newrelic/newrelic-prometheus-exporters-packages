@@ -1,6 +1,7 @@
 #!/bin/bash
 root_dir=$1
 integration_dir="${root_dir}/exporters/ravendb"
+GOPATH=$(go env GOPATH)
 
 if [ ! -d "${GOPATH}" ]; then
   echo "GOPATH is empty" ;
