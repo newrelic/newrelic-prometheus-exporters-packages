@@ -148,7 +148,7 @@ definition_guid: 866A014A-181C-4DD2-8FD0-01521F54F1A1
 When added open a PR and once merged to master a github action workflow will start building and uploading packages to Github. 
 
  - In case one exporter definition has been modified or added the exporter will be released for the os requested and a Github release will be created
- - In case two exporter definitions have been modified the pipeline fail.
+ - In case more than one exporter definitions have been modified the pipeline fail.
 
 Please notice that exporters have their own `build` script but they share the packaging scripts, located under `./scripts`
 

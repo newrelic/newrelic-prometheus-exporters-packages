@@ -1,0 +1,73 @@
+golang:
+  github.com/fsnotify/fsnotify:
+    license: BSD-3-Clause
+    license_url: vendor/github.com/fsnotify/fsnotify/LICENSE
+    project_url: github.com/fsnotify/fsnotify
+  github.com/hashicorp/hcl:
+    license: MPL-2.0
+    license_url: vendor/github.com/hashicorp/hcl/LICENSE
+    project_url: github.com/hashicorp/hcl
+  github.com/magiconair/properties:
+    license: BSD-2-Clause
+    license_url: vendor/github.com/magiconair/properties/LICENSE
+    project_url: github.com/magiconair/properties
+  github.com/mitchellh/mapstructure:
+    license: MIT
+    license_url: vendor/github.com/mitchellh/mapstructure/LICENSE
+    project_url: github.com/mitchellh/mapstructure
+  github.com/newrelic/infra-integrations-sdk/v4:
+    license: Apache-2.0
+    license_url: vendor/github.com/newrelic/infra-integrations-sdk/v4/LICENSE
+    project_url: github.com/newrelic/infra-integrations-sdk/v4
+  github.com/pelletier/go-toml:
+    license: MIT
+    license_url: vendor/github.com/pelletier/go-toml/LICENSE
+    project_url: github.com/pelletier/go-toml
+  github.com/pkg/errors:
+    license: BSD-2-Clause
+    license_url: vendor/github.com/pkg/errors/LICENSE
+    project_url: github.com/pkg/errors
+  github.com/sirupsen/logrus:
+    license: MIT
+    license_url: vendor/github.com/sirupsen/logrus/LICENSE
+    project_url: github.com/sirupsen/logrus
+  github.com/spf13/afero:
+    license: Apache-2.0
+    license_url: vendor/github.com/spf13/afero/LICENSE.txt
+    project_url: github.com/spf13/afero
+  github.com/spf13/cast:
+    license: MIT
+    license_url: vendor/github.com/spf13/cast/LICENSE
+    project_url: github.com/spf13/cast
+  github.com/spf13/jwalterweatherman:
+    license: MIT
+    license_url: vendor/github.com/spf13/jwalterweatherman/LICENSE
+    project_url: github.com/spf13/jwalterweatherman
+  github.com/spf13/pflag:
+    license: BSD-3-Clause
+    license_url: vendor/github.com/spf13/pflag/LICENSE
+    project_url: github.com/spf13/pflag
+  github.com/spf13/viper:
+    license: MIT
+    license_url: vendor/github.com/spf13/viper/LICENSE
+    project_url: github.com/spf13/viper
+  github.com/subosito/gotenv:
+    license: MIT
+    license_url: vendor/github.com/subosito/gotenv/LICENSE
+    project_url: github.com/subosito/gotenv
+  golang.org/x/sys:
+    license: BSD-3-Clause
+    license_url: vendor/golang.org/x/sys/LICENSE
+    project_url: golang.org/x/sys
+  golang.org/x/text:
+    license: BSD-3-Clause
+    license_url: vendor/golang.org/x/text/LICENSE
+    project_url: golang.org/x/text
+  gopkg.in/ini.v1:
+    license: Apache-2.0
+    license_url: vendor/gopkg.in/ini.v1/LICENSE
+    project_url: gopkg.in/ini.v1
+  gopkg.in/yaml.v2:
+    license: Apache-2.0
+    license_url: vendor/gopkg.in/yaml.v2/LICENSE
+    project_url: gopkg.in/yaml.v2
