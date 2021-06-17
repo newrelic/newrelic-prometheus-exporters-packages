@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"runtime"
 	"text/template"
 	"time"
 
@@ -22,7 +23,10 @@ const (
 )
 
 var (
-	integration string
+	integration        string
+	integrationVersion string
+	gitCommit          string
+	buildDate          string
 	//go:embed templates
 	integrationTemplate embed.FS
 	//go:embed templates/config.json.tmpl
@@ -33,8 +37,14 @@ var (
 )
 
 func main() {
-	err := args.PopulateVars(vars)
+	al, err := args.PopulateVars(vars)
 	panicErr(err)
+
+	if al.ShowVersion {
+		printVersion()
+		os.Exit(0)
+	}
+
 	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
 
 	content, err := integrationTemplate.ReadFile(integrationTemplatePattern)
@@ -48,7 +58,7 @@ func main() {
 	configGenerator := generator.NewConfig(configTemplate)
 	port, err := findExporterPort()
 	panicErr(err)
-	vars[varExporterPort] = fmt.Sprintf("%v",port)
+	vars[varExporterPort] = fmt.Sprintf("%v", port)
 	exporterText, err := exporterGenerator.Generate(vars)
 	panicErr(err)
 	vars[varExporterDefinition] = exporterText
@@ -73,6 +83,17 @@ func panicErr(err error) {
 		log.Error(err.Error())
 		os.Exit(1)
 	}
+}
+
+func printVersion() {
+	fmt.Printf(
+		"New Relic %s integration Version: %s, Platform: %s, GoVersion: %s, GitCommit: %s, BuildDate: %s\n",
+		integration,
+		integrationVersion,
+		fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
+		runtime.Version(),
+		gitCommit,
+		buildDate)
 }
 
 func findExporterPort() (int, error) {

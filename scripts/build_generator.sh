@@ -12,8 +12,9 @@ template_path="${integration_dir}/${template_name}"
 
 cp "${template_path}" "${root_dir}/nri-config-generator/templates/${template_name}"
 cd nri-config-generator && \
-  GOOS=linux GOARCH=amd64 go build \
-    -ldflags "-X main.integration=${integration}" \
-    -o "${binary_dir}/nri-${integration}" github.com/newrelic/nri-config-generator
+  GOOS=linux \
+  GOARCH=amd64 \
+  BIN_PATH=${binary_dir}/nri-${integration} \
+  make compile 
 
 echo "executable file was created ${binary_dir}/nri-${integration}"
