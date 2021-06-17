@@ -13,6 +13,7 @@ name: nri-config-generator pipeline
 on:
   pull_request:
     branches: [ main ]
+    paths: [ nri-config-generator/** ]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

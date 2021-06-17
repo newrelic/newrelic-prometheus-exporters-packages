@@ -12,6 +12,7 @@ build-all:
 	done
 
 build-%:
+	@echo "[ build-$* ]: Building exporter..."
 	source scripts/common_functions.sh; \
 	EXPORTER_PATH=exporters/$*/exporter.yml; \
 	loadVariables; \
@@ -19,17 +20,20 @@ build-%:
 	sh scripts/build_generator.sh $(PWD) $*;
 
 fetch-resources-%:
+	@echo "[ fetch-resources-$* ]: Fetching external resources..."
 	source scripts/common_functions.sh; \
 	EXPORTER_PATH=exporters/$*/exporter.yml; \
 	loadVariables; \
 	sh scripts/create_folder_structure.sh $(PWD) $*; \
 	sh scripts/fetch_external_files.sh $(PWD) $*; \
-	sh scripts/copy_resources.sh $(PWD) $*
 
 package-%:
+	@echo "[ package-$* ]: Packaging exporter..."
 	source scripts/common_functions.sh; \
 	EXPORTER_PATH=exporters/$*/exporter.yml; \
 	loadVariables; \
+	sh scripts/create_folder_structure.sh $(PWD) $*; \
+	sh scripts/copy_resources.sh $(PWD) $*; \
 	sh scripts/package.sh $(PWD) $*
 
 all:
@@ -37,6 +41,7 @@ all:
 	for name in $$(ls -d *) ; do \
 		cd $(PWD); \
 		make	build-$${name}; \
+		make	fetch-resources-$${name}; \
 		make 	package-$${name}; \
 	done
 
