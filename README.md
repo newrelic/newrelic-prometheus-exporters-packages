@@ -136,6 +136,9 @@ upgrade_guid: 58F31C6C-DB0A-455E-9E4C-5C9AD4A8932B
 exporter_guid: 7B629E90-530F-4FAA-B7FE-1F1B30A95714
 # Lincense GUID used in the msi package Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
+nri_guid: 81068A97-AC58-47DD-90DF-2DEAC18C0E17
+# Exporter GUID used in the msi package. Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
 license_guid: 95E897AC-895A-43BE-A5EF-D72AD58E4ED1
 # Config GUID used in the msi package Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository

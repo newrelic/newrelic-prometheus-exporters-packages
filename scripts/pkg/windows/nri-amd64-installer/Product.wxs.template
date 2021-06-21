@@ -42,6 +42,9 @@
                     <Directory Id="AgentBinaryFolder" Name="newrelic-infra">
                         <Directory Id="PluginConfigsFolder" Name="integrations.d"/>
                         <Directory Id="DefinitionFilesFolder" Name="definition-files"/>
+                        <Directory Id="CustomPluginsFolder" Name="newrelic-integrations">
+                            <Directory Id="CustomPluginsBinFolderIntegration" Name="bin"/>
+                        </Directory>
                     </Directory>
                 </Directory>
             </Directory>
@@ -51,6 +54,11 @@
     <Fragment>
         <DirectoryRef Id="CustomPluginsBinFolder">
             <Component Id="CMP_V1_CUSTOM_PLUGINS_BIN" Guid="2244c368-dd8b-404a-bdc0-67c525d7422f" KeyPath="yes">
+                <CreateFolder/>
+            </Component>
+        </DirectoryRef>
+        <DirectoryRef Id="CustomPluginsBinFolderIntegration">
+            <Component Id="CMP_V1_CUSTOM_PLUGINS_BIN_INTEGRATION" Guid="6eac0d38-fcc1-450b-8072-9573092bbfe1" KeyPath="yes">
                 <CreateFolder/>
             </Component>
         </DirectoryRef>
@@ -79,6 +87,12 @@
                       KeyPath="yes"/>
             </Component>
         </ComponentGroup>
+        <ComponentGroup Id="CustomPluginsBinComponent" Directory="CustomPluginsBinFolderIntegration">
+            <Component Id="CMP_NRI_$(IntegrationName)_EXE" Guid="{nriGUID}" Win64="yes">
+                <File Id="FILE_NRI_$(IntegrationName)_EXE"
+                      Source="$(var.BinariesPath)nri-$(IntegrationName).exe"
+                      KeyPath="yes"/>
+            </Component>
         <ComponentGroup Id="PluginConfigsComponent" Directory="PluginConfigsFolder">
             <Component Id="CMP_NRI_EXPORTER_CONFIG" Guid="{configGUID}" Win64="yes">
                 <File Id="CMP_NRI_EXPORTER_CONFIG"

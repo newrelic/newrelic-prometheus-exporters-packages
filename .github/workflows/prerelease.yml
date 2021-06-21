@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - test_packages
 
 env:
   PFX_CERTIFICATE_BASE64: ${{ secrets.PFX_CERTIFICATE_BASE64 }} # base64 encoded
@@ -176,7 +175,9 @@ jobs:
     name: Create MSI
     runs-on: windows-2019
     needs: [create_prerelease, fetch_external_resources]
-    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
+    # Windows packages are not supported for now.
+    # if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
+    if: ${{ 'false' == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
     defaults:
@@ -214,21 +215,30 @@ jobs:
       - name : Create MSI installer
         shell: pwsh
         run: |
-          .\exporters\${{ steps.vars.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.vars.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.vars.outputs.NAME }} -exporterURL ${{ steps.vars.outputs.EXPORTER_REPO_URL }} -version ${{ steps.vars.outputs.VERSION }} -exporterGUID ${{ steps.vars.outputs.EXPORTER_GUID }} -upgradeGUID ${{ steps.vars.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.vars.outputs.LICENSE_GUID }} -configGUID ${{ steps.vars.outputs.CONFIG_GUID }} -definitionGUID ${{ steps.vars.outputs.DEFINITION_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
+          .\exporters\${{ steps.vars.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.vars.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.vars.outputs.NAME }} -exporterURL ${{ steps.vars.outputs.EXPORTER_REPO_URL }} -version ${{ steps.vars.outputs.VERSION }} -exporterGUID ${{ steps.vars.outputs.EXPORTER_GUID }} -nriGUID ${{ steps.vars.outputs.NRI_GUID }} -upgradeGUID ${{ steps.vars.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.vars.outputs.LICENSE_GUID }} -configGUID ${{ steps.vars.outputs.CONFIG_GUID }} -definitionGUID ${{ steps.vars.outputs.DEFINITION_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
+      - name: Test win packages installation
+        uses: newrelic/integrations-pkg-test-action/windows@v1
+        with:
+          tag: ${{ steps.vars.outputs.VERSION  }}
+          integration: nri-${{ steps.vars.outputs.NAME }}
+          arch: ${{ matrix.goarch }}
+          pkgDir: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages
+          pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
+          upgrade: false
       - name: Upload Release Asset MSI
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\msi\${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
+          asset_path: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
           asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
           asset_content_type: msi package
 
   # publish-to-s3:
   #   name: Send release assets to S3
   #   runs-on: ubuntu-20.04
-  #   # needs: [ create_prerelease, build_push_linux_artifacts, build_push_windows_artifacts ]
+  #   # needs: [ create_prerelease, build_push_linux_artifacts ]
   #   steps:
   #     - name: Login to DockerHub
   #       uses: docker/login-action@v1
