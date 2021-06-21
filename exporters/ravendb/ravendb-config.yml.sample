@@ -1,6 +1,5 @@
 integrations:
     - name: nri-ravendb
-      #interval: 15s
       config:
         # Url to connect to your RavenDb instance
         ravendb_url: http://ravendb:8080

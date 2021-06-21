@@ -13,7 +13,7 @@ integrations_exec_dir="${source_dir}/var/db/newrelic-infra/newrelic-integrations
 exporters_exec_dir="${source_dir}/usr/local/prometheus-exporters/bin"
 integrations_config_dir="${source_dir}/etc/newrelic-infra/integrations.d"
 
-integration_sample="${integration_dir}/${integration}-exporter.yml.sample"
+integration_sample="${integration_dir}/${integration}-config.yml.sample"
 
 copy_resources() {
   echo "copying binaries..."

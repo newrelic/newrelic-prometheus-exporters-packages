@@ -118,8 +118,8 @@ checkExporter(){
 
     # checking if the linux packaging is required if the file are present
     if [ "$PACKAGE_LINUX" = "true" ];then
-        if [ ! -f "./exporters/$NAME/$NAME-exporter.yml.sample" ]; then
-            ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-exporter.yml.sample should exist"
+        if [ ! -f "./exporters/$NAME/$NAME-config.yml.sample" ]; then
+            ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-config.yml.sample should exist"
         fi
         if [ ! -f "./exporters/$NAME/build.sh" ]; then
             ERRORS=$ERRORS" - the file ./exporters/$NAME/build.sh should exist"

@@ -107,7 +107,7 @@ In order to add a new exporter a new folder in the path `exporters/{exportername
 In each folder we expect to find:
   - `exporter.yml`: definition of the exporter
   - `build.sh` a bash script that will generate the exporter binary under `exporters/{exportername}/target/bin/`
-  - `{exporterName}-exporter.yml.sample` containing the configuration sample for the Infrastructure Agent to run the exporter
+  - `{exporterName}-config.yml.sample` containing the configuration sample for the Infrastructure Agent to run the exporter
   - `{exporterName}.json.tmpl` containing the configuration mappings
 
 The definition file requieres the following fields:

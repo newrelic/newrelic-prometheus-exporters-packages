@@ -6,9 +6,9 @@ integration_dir="${root_dir}/exporters/${integration}"
 target_dir="${integration_dir}/target"
 source_dir="${target_dir}/source"
 packages_dir="${target_dir}/packages"
-rpm_dir="${packages_dir}/rpm"
-deb_dir="${packages_dir}/deb"
-tarball_dir="${packages_dir}/tarball"
+rpm_dir="${packages_dir}"
+deb_dir="${packages_dir}"
+tarball_dir="${packages_dir}"
 
 PROJECT_NAME="nri-${integration}"
 LICENSE="https://newrelic.com/terms (also see LICENSE.txt installed with this package)"
@@ -45,9 +45,46 @@ create_tarball() {
 	tar -czf "${tarball_dir}/${tarball_filename}" -C "${source_dir}" ./
 }
 
+sign_rpm() {
+  echo "===> Create .rpmmacros to sign rpm's from Goreleaser"
+  echo "%_gpg_name ${GPG_MAIL}" >> ~/.rpmmacros
+  echo "%_signature gpg" >> ~/.rpmmacros
+  echo "%_gpg_path ~/.gnupg" >> ~/.rpmmacros
+  echo "%_gpgbin /usr/bin/gpg" >> ~/.rpmmacros
+  echo "%__gpg_sign_cmd   %{__gpg} gpg --no-verbose --no-armor --batch --pinentry-mode loopback --passphrase ${GPG_PASSPHRASE} --no-secmem-warning -u "%{_gpg_name}" -sbo %{__signature_filename} %{__plaintext_filename}" >> ~/.rpmmacros
 
+  find ${rpm_dir} -regex ".*\.\(rpm\)" | while read rpm_file; do
+    echo "===> Signing $rpm_file"
+    rpm --addsign "$rpm_file"
+    echo "===> Sign verification $rpm_file"
+    rpm -v --checksig $rpm_file
+  done
+}
+
+sign_deb() {
+  GNUPGHOME="${HOME}/.gnupg"
+  echo "${GPG_PASSPHRASE}" > ${GNUPGHOME}/gpg-passphrase
+  echo "passphrase-file ${GNUPGHOME}/gpg-passphrase" >> $GNUPGHOME/gpg.conf
+  echo 'allow-loopback-pinentry' >> ${GNUPGHOME}/gpg-agent.conf
+  echo 'pinentry-mode loopback' >> ${GNUPGHOME}/gpg.conf
+  echo 'use-agent' >> ${GNUPGHOME}/gpg.conf
+  echo RELOADAGENT | gpg-connect-agent
+
+  find ${deb_dir} -regex ".*\.\(deb\)" | while read deb_file; do
+    echo "===> Signing $deb_file"
+    debsigs --sign=origin --verify --check -v -k ${GPG_MAIL} $deb_file
+  done
+}
 
 
 create_deb
 create_rpm
 create_tarball
+if [ -z "$GPG_PRIVATE_KEY_BASE64" ];then
+    echo "GPG_PRIVATE_KEY_BASE64 env variable missing package are not signed";
+    exit 1;
+fi
+echo "===> Importing GPG private key from GHA secrets..."
+printf %s ${GPG_PRIVATE_KEY_BASE64} | base64 -d | gpg --batch --import -
+sign_rpm
+sign_deb
