@@ -37,7 +37,7 @@ func buildGeneratorConfig(integration string) error {
 		Args: []string{
 			"make",
 			"compile",
-			fmt.Sprintf("INTEGRATION_NAME=%s", integration),
+			fmt.Sprintf("PACKAGE_NAME=%s", integration),
 		},
 		Dir: rootDir(),
 	}
@@ -57,7 +57,7 @@ func clean() error {
 }
 
 func callGeneratorConfig(integration string, args []string, env []string) ([]byte, error) {
-	executable := fmt.Sprintf("nri-%s", integration)
+	executable := fmt.Sprintf("%s", integration)
 	ctx, _ := context.WithTimeout(context.Background(), 500*time.Millisecond)
 	cmd := exec.CommandContext(ctx, filepath.Join(rootDir(), "bin", executable), args...)
 	cmd.Env = env

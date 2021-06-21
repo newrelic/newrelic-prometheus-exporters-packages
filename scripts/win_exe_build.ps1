@@ -86,7 +86,7 @@ if (-not $?)
     echo "Failed copying license"
     exit -1
 }
-Copy-Item ".\exporters\$exporterName\$exporterName-exporter.yml.sample" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-exporter.yml.sample" -Force
+Copy-Item ".\exporters\$exporterName\$exporterName-config.yml.sample" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$exporterName-config.yml.sample" -Force
 if (-not $?)
 {
     echo "Failed copying config file"

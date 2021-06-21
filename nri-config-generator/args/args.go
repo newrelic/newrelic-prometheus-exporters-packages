@@ -21,12 +21,12 @@ func setViperDefaults(viper *viper.Viper) {
 
 // ArgumentList Available Arguments
 type ArgumentList struct {
-	ConfigPath string `default:"" help:"Path to the config file"`
+	ConfigPath  string `default:"" help:"Path to the config file"`
+	ShowVersion bool   `default:"false" help:"Print build information and exit"`
 }
 
-func argVars() (map[string]interface{}, error) {
-	c := ArgumentList{}
-	err := args.SetupArgs(&c)
+func argVars(c *ArgumentList) (map[string]interface{}, error) {
+	err := args.SetupArgs(c)
 	if err != nil {
 		return nil, err
 	}

@@ -47,18 +47,3 @@
         - 12.3
         - 12.4
 
-- src: "{app_name}-amd64.{version}.msi"
-  uploads:
-    - type: file
-      dest: "{dest_prefix}windows/integrations/{app_name}/{src}"
-    - type: file
-      override: true
-      dest: "{dest_prefix}windows/integrations/{app_name}/{app_name}-amd64.msi"
-
-- src: "{app_name}-386.{version}.msi"
-  uploads:
-    - type: file
-      dest: "{dest_prefix}windows/386/integrations/{app_name}/{src}"
-    - type: file
-      override: true
-      dest: "{dest_prefix}windows/386/integrations/{app_name}/{app_name}-386.msi"

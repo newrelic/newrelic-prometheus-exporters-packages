@@ -10,6 +10,7 @@ loadVariables(){
     export EXPORTER_COMMIT=$(cat $EXPORTER_PATH | yq e .exporter_commit -)
     export EXPORTER_CHANGELOG=$(cat $EXPORTER_PATH | yq e .exporter_changelog -)
     export UPGRADE_GUID=$(cat $EXPORTER_PATH | yq e .upgrade_guid -)
+    export NRI_GUID=$(cat $EXPORTER_PATH | yq e .nri_guid -)
     export EXPORTER_GUID=$(cat $EXPORTER_PATH | yq e .exporter_guid -)
     export CONFIG_GUID=$(cat $EXPORTER_PATH | yq e .config_guid -)
     export DEFINITION_GUID=$(cat $EXPORTER_PATH | yq e .definition_guid -)
@@ -23,12 +24,14 @@ loadVariables(){
     else
         export  EXPORTER_HEAD=$EXPORTER_TAG 
     fi
+
+    export PACKAGE_NAME=nri-${NAME}
 }
 
 # setStepOutput exposes the environment variables needed by next github actions steps steps
 setStepOutput(){
     echo "::set-output name=NAME::${NAME}"
-    echo "::set-output name=PACKAGE_NAME::nri-${NAME}"
+    echo "::set-output name=PACKAGE_NAME::${PACKAGE_NAME}"
     echo "::set-output name=EXPORTER_HEAD::${EXPORTER_HEAD}"
     echo "::set-output name=EXPORTER_REPO_URL::${EXPORTER_REPO_URL}"
     echo "::set-output name=EXPORTER_LICENSE_PATH::${EXPORTER_LICENSE_PATH}"
@@ -40,6 +43,7 @@ setStepOutput(){
     echo "::set-output name=PACKAGE_WINDOWS::${PACKAGE_WINDOWS}"
     echo "::set-output name=UPGRADE_GUID::${UPGRADE_GUID}"
     echo "::set-output name=EXPORTER_GUID::${EXPORTER_GUID}"
+    echo "::set-output name=NRI_GUID::${NRI_GUID}"
     echo "::set-output name=LICENSE_GUID::${LICENSE_GUID}"
     echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
     echo "::set-output name=DEFINITION_GUID::${DEFINITION_GUID}"
@@ -116,8 +120,8 @@ checkExporter(){
 
     # checking if the linux packaging is required if the file are present
     if [ "$PACKAGE_LINUX" = "true" ];then
-        if [ ! -f "./exporters/$NAME/$NAME-exporter.yml.sample" ]; then
-            ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-exporter.yml.sample should exist"
+        if [ ! -f "./exporters/$NAME/$NAME-config.yml.sample" ]; then
+            ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-config.yml.sample should exist"
         fi
         if [ ! -f "./exporters/$NAME/build.sh" ]; then
             ERRORS=$ERRORS" - the file ./exporters/$NAME/build.sh should exist"
@@ -145,6 +149,17 @@ checkExporter(){
             fi
             if [[ ! $EXPORTER_GUID =~ ^\{?[A-F0-9a-f]{8}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{12}\}?$ ]]; then
                 ERRORS=$ERRORS" - exporter_guid is not a GUID"
+            fi
+        fi
+
+        if [ -z "$NRI_GUID" ];then
+            ERRORS=$ERRORS" - nri_guid is missing from exporter.yml"
+        else
+            if [ $(grep $NRI_GUID exporters/*/exporter.yml | wc -l) != 1 ];then
+                ERRORS=$ERRORS" - nri_guid was already used in a different exporter"
+            fi
+            if [[ ! $NRI_GUID =~ ^\{?[A-F0-9a-f]{8}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{12}\}?$ ]]; then
+                ERRORS=$ERRORS" - nri_guid is not a GUID"
             fi
         fi
 

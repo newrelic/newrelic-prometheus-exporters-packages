@@ -45,12 +45,13 @@ jobs:
           shouldDoRelease
           loadVariables
           checkExporter
+          setStepOutput
           if [ "$ERRORS" != "" ];then 
             echo Following errors have been found: $ERRORS
             exit 1
           fi
-
-          if [ "$PACKAGE_LINUX" = "true" ];then
-            packageLinux
-          fi
+      - name: Compile exporter
+        run : |
+          make fetch-resources-${{ steps.check.outputs.NAME }}
+          make build-${{ steps.check.outputs.NAME }}
           

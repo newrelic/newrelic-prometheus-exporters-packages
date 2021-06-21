@@ -12,10 +12,11 @@ const (
 	envConfigPath = "CONFIG_PATH"
 )
 
-func PopulateVars(vars map[string]interface{}) (err error) {
+func PopulateVars(vars map[string]interface{}) (al *ArgumentList, err error) {
+	al = &ArgumentList{}
 	vars[prefixEnv] = envVars()
 	vars[prefixCLI] = cliVars()
-	vars[PrefixCfg], err = argVars()
+	vars[PrefixCfg], err = argVars(al)
 	return
 }
 

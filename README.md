@@ -107,7 +107,7 @@ In order to add a new exporter a new folder in the path `exporters/{exportername
 In each folder we expect to find:
   - `exporter.yml`: definition of the exporter
   - `build.sh` a bash script that will generate the exporter binary under `exporters/{exportername}/target/bin/`
-  - `{exporterName}-exporter.yml.sample` containing the configuration sample for the Infrastructure Agent to run the exporter
+  - `{exporterName}-config.yml.sample` containing the configuration sample for the Infrastructure Agent to run the exporter
   - `{exporterName}.json.tmpl` containing the configuration mappings
 
 The definition file requieres the following fields:
@@ -135,6 +135,9 @@ upgrade_guid: 58F31C6C-DB0A-455E-9E4C-5C9AD4A8932B
 # This GUID should be generated and be unique across all exporters in the repository
 exporter_guid: 7B629E90-530F-4FAA-B7FE-1F1B30A95714
 # Lincense GUID used in the msi package Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+nri_guid: 81068A97-AC58-47DD-90DF-2DEAC18C0E17
+# Exporter GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 license_guid: 95E897AC-895A-43BE-A5EF-D72AD58E4ED1
 # Config GUID used in the msi package Required if package_windows is set to true
