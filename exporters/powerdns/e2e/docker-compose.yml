@@ -1,0 +1,103 @@
+version: "3"
+
+services:
+
+    powerdns-admin:
+        image: aescanero/powerdns-admin
+        restart: unless-stopped
+        ports:
+            - "9191:9191"
+        environment:
+            - PDNS_PROTO=http
+            - PDNS_HOST=pdns-authoritative
+            - PDNS_API_KEY=authoritative-secret
+            - PDNSADMIN_SECRET_KEY=secret
+            - PDNSADMIN_SQLA_DB_HOST=mysql
+            - PDNSADMIN_SQLA_DB_PASSWORD=pdnspw
+            - PDNSADMIN_SQLA_DB_NAME=pdnsadmin
+            - PDNSADMIN_SQLA_DB_USER=pdns
+        depends_on:
+            - pdns-authoritative
+            - mysql
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.7
+
+    pdns-recursor:
+        image: lmnetworks/pdns-recursor
+        container_name: pdns-recursor
+        ports:
+            - "5301:53/udp"
+            - "5301:53/tcp"
+        volumes: 
+            - ./pdns-recursor/recursor.conf:/etc/pdns/recursor.conf:ro
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.2
+
+    pdns-authoritative:
+        build: 
+            context: pdns-authoritative
+        container_name: pdns-authoritative
+        links:
+            - "mysql:mysql"
+        ports:
+            - "5300:53"
+            - "5300:53/udp"
+        environment: 
+            - PDNSCONF_DNSUPDATE=no
+            - SECALLZONES_CRONJOB=yes
+        volumes: 
+            - ./pdns-authoritative/pdns.conf:/etc/powerdns/pdns.conf:ro
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.3
+
+    mysql:
+        image: mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=mysqlrootpw
+            - MYSQL_DATABASE=pdns
+            - MYSQL_USER=pdns
+            - MYSQL_PASSWORD=pdnspw
+        command: --default-authentication-plugin=mysql_native_password
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.4
+    
+    exporter-authoritative:
+        image: janeczku/powerdns-exporter 
+        container_name: exporter-authoritative
+        ports:
+            - 9121:9120
+        command: -api-url="http://pdns-authoritative:8081/api/v1/" -api-key="authoritative-secret"
+        links: 
+            - "pdns-authoritative:pdns-authoritative"
+        restart: always
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.5
+
+    exporter-recursor:
+        image: janeczku/powerdns-exporter 
+        container_name: exporter-recursor
+        ports:
+            - 9122:9120
+        command: -api-url="http://pdns-recursor:8081/api/v1/" -api-key="recursor-secret"
+        links: 
+            - "pdns-recursor:pdns-recursor"
+        restart: always
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.6
+
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+volumes: 
+    mariadb:
