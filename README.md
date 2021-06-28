@@ -2,7 +2,7 @@
 
 # Prometheus Exporter Packages
 
-This project packages several Prometheus exporters as native operating system packages, with the goal of providing a better installation experience for Prometheus exporters.
+This project packages several community written Prometheus exporters as native operating system packages, with the goal of providing a better installation experience for Prometheus exporters.
 
 All native packages are available for installation in New Relic's public repositories.
 
@@ -157,13 +157,9 @@ Please notice that exporters have their own `build` script but they share the pa
 
 ## Support
 
-Should you need assistance with New Relic products, you are in good hands with several support diagnostic tools and support channels.
+New Relic has open-sourced this project. This project is provided AS-IS WITHOUT WARRANTY OR DEDICATED SUPPORT. Issues and contributions should be reported to the project here on GitHub.
 
-
-
-> New Relic offers NRDiag, [a client-side diagnostic utility](https://docs.newrelic.com/docs/using-new-relic/cross-product-functions/troubleshooting/new-relic-diagnostics) that automatically detects common problems with New Relic agents. If NRDiag detects a problem, it suggests troubleshooting steps. NRDiag can also automatically attach troubleshooting data to a New Relic Support ticket.
-
-If the issue has been confirmed as a bug or is a Feature request, please file a Github issue.
+We encourage you to bring your experiences and questions to the Explorers Hub where our community members collaborate on solutions and new ideas.
 
 **Support Channels**
 
