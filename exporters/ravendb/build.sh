@@ -20,4 +20,6 @@ echo "building the exporter..."
 GO111MODULE=off GOOS=linux GOARCH=amd64 go build -v -o "${integration_dir}/target/bin/ravendb-exporter"
 echo "executable file created ${integration_dir}/target/bin/ravendb-exporter"
 
+
+
 rm -rf "${tmp_dir}"
