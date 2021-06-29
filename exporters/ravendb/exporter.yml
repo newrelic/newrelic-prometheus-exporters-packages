@@ -32,7 +32,5 @@ license_guid: 2810AFB4-E6AD-496E-BC03-70B15AF2125F
 config_guid: 54030FC4-E2DB-4EDD-8704-1F7E403D82A2
 # The definition name must be one of these https://github.com/newrelic-experimental/entity-synthesis-definitions/tree/main/definitions. For each definition we must set the tag
 definition_names:
-  ext-redis: 2.26.0
-  ext-host: 2.26.0
-#  infra-ravendb_node: 2.26.0
-#  infra-ravendb_database: 2.26.0
+  infra-ravendb_node: 2.26.0
+  infra-ravendb_database: 2.26.0
