@@ -44,11 +44,13 @@ func addEntryToDefinition(doc map[string]interface{}, def *internal.Definition) 
 	sType := entityType.(string)
 	details, ok := doc["synthesis"]
 	if !ok {
-		return errors.New("ignore definition because block 'synthesis' is not found!")
+		def.AddEntry(sType, nil)
+		return nil
 	}
 	detailsMap, ok := details.(map[string]interface{})
 	if !ok {
-		return errors.New("invalid format for block 'synthesis'")
+		def.AddEntry(sType, nil)
+		return nil
 	}
 	def.AddEntry(sType, detailsMap)
 	return nil

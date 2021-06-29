@@ -1,0 +1,18 @@
+domain: EXT
+type: REDIS
+synthesis:
+  identifier: targetName
+  name: targetName
+  encodeIdentifierInGUID: true
+  conditions:
+    - attribute: metricName
+      prefix: redis_
+  tags:
+    clusterName:
+    targetName:
+dashboardTemplates:
+  newRelic:
+    template: dashboard.json
+configuration:
+  entityExpirationTime: EIGHT_DAYS
+  alertable: true
