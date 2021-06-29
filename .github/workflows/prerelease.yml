@@ -215,7 +215,7 @@ jobs:
       - name : Create MSI installer
         shell: pwsh
         run: |
-          .\exporters\${{ steps.vars.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.vars.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.vars.outputs.NAME }} -exporterURL ${{ steps.vars.outputs.EXPORTER_REPO_URL }} -version ${{ steps.vars.outputs.VERSION }} -exporterGUID ${{ steps.vars.outputs.EXPORTER_GUID }} -nriGUID ${{ steps.vars.outputs.NRI_GUID }} -upgradeGUID ${{ steps.vars.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.vars.outputs.LICENSE_GUID }} -configGUID ${{ steps.vars.outputs.CONFIG_GUID }} -definitionGUID ${{ steps.vars.outputs.DEFINITION_GUID }}  -pfx_passphrase "$env:PFX_PASSPHRASE" 
+          .\exporters\${{ steps.vars.outputs.NAME }}\win_build.ps1 -arch ${{ matrix.goarch }} -exporterHead ${{ steps.vars.outputs.EXPORTER_HEAD }} -exporterName ${{ steps.vars.outputs.NAME }} -exporterURL ${{ steps.vars.outputs.EXPORTER_REPO_URL }} -version ${{ steps.vars.outputs.VERSION }} -exporterGUID ${{ steps.vars.outputs.EXPORTER_GUID }} -nriGUID ${{ steps.vars.outputs.NRI_GUID }} -upgradeGUID ${{ steps.vars.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.vars.outputs.LICENSE_GUID }} -configGUID ${{ steps.vars.outputs.CONFIG_GUID }} -definitionNames ${{ steps.vars.outputs.DEFINITION_NAMES }}  -pfx_passphrase "$env:PFX_PASSPHRASE"
       - name: Test win packages installation
         uses: newrelic/integrations-pkg-test-action/windows@v1
         with:

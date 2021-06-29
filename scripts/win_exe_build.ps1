@@ -92,10 +92,3 @@ if (-not $?)
     echo "Failed copying config file"
     exit -1
 }
-
-Copy-Item ".\exporters\$exporterName\target\source\etc\newrelic-infra\definition-files\$defFileName" -Destination ".\exporters\$exporterName\target\bin\windows_$arch\$defFileName" -Force
-if (-not $?)
-{
-    echo "Failed copying definition file"
-    exit -1
-}
