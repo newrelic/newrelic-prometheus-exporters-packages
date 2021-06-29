@@ -2,10 +2,10 @@ package synthesis
 
 import (
 	"bytes"
+	"errors"
 	"io"
 
 	"github.com/newrelic/nri-config-generator/synthesis/internal"
-	"github.com/pkg/errors"
 	"gopkg.in/yaml.v3"
 )
 
@@ -36,21 +36,30 @@ func processYamlWithMultipleDocuments(r *bytes.Reader, def *internal.Definition)
 }
 
 func addEntryToDefinition(doc map[string]interface{}, def *internal.Definition) error {
-	entityType, ok := doc["type"]
-	if !ok {
-		return errors.New("missing required field 'type' in definition")
-
+	sType, details, err := getAttributesFromSynthesis(doc)
+	if err != nil {
+		return err
 	}
-	sType := entityType.(string)
-	details, ok := doc["synthesis"]
-	if !ok {
-		return errors.New("ignore definition because block 'synthesis' is not found!")
-	}
-	detailsMap, ok := details.(map[string]interface{})
-	if !ok {
-		return errors.New("invalid format for block 'synthesis'")
-	}
-	def.AddEntry(sType, detailsMap)
+	def.AddEntry(sType, details)
 	return nil
+}
 
+func getAttributesFromSynthesis(doc map[string]interface{}) (string, map[string]interface{}, error) {
+	sType, ok := doc["type"]
+	if !ok {
+		return "", nil, errors.New("missing required field 'type' in definition")
+	}
+	sTypeStr, ok := sType.(string)
+	if !ok {
+		return "", nil, errors.New("invalid format for field 'type', It must be a string")
+	}
+	synthesis, ok := doc["synthesis"]
+	if !ok {
+		return "", nil, errors.New("missing required field 'synthesis' in definition")
+	}
+	synthesisMap, ok := synthesis.(map[string]interface{})
+	if !ok {
+		return "", nil, errors.New("invalid format for field 'synthesis', It must be an object")
+	}
+	return sTypeStr, synthesisMap, nil
 }
