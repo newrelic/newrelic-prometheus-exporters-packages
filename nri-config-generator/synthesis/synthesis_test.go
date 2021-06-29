@@ -11,8 +11,9 @@ func Test_ProcessSynthesisDefinitionsNoSynthesisBlock(t *testing.T){
 	in,err:=ioutil.ReadFile("testdata/sample.yml")
 	assert.Nil(t, err)
 	res,err:=ProcessSynthesisDefinitions(in)
-	assert.Nil(t, err)
-	assert.Equal(t,  "\"synthesis_definitions\":[{\"type\":\"RAVENDB_DATABASE\"},{\"type\":\"RAVENDB_NODE\"}]", res)
+	assert.NotNil(t, err)
+	assert.Equal(t, "missing required field 'synthesis' in definition",err.Error())
+	assert.Empty(t,res)
 }
 
 func Test_ProcessSynthesisDefinitions(t *testing.T){
