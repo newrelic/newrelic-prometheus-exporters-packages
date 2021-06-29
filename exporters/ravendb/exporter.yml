@@ -35,3 +35,4 @@ config_guid: 54030FC4-E2DB-4EDD-8704-1F7E403D82A2
 definition_names:
   infra-ravendb_node: 2.26.0
   infra-ravendb_database: 2.26.0
+

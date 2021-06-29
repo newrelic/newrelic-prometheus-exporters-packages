@@ -33,5 +33,6 @@ for definition in ${DEFINITION_NAMES}; do
   cp "${tmp_definition_file}" "${tmp_dir2}/${definition_name}.yml"
   IFS="$OLD_IFS"
 done
+mkdir -p ${root_dir}/nri-config-generator/definitions
 yq eval-all "" ${tmp_dir2}/*.yml > "${root_dir}/nri-config-generator/definitions/definitions.yml"
 rm -rf "${tmp_dir} ${tmp_dir2}"
