@@ -31,6 +31,7 @@ license_guid: 2810AFB4-E6AD-496E-BC03-70B15AF2125F
 # This GUID should be generated and be unique across all exporters in the repository
 config_guid: 54030FC4-E2DB-4EDD-8704-1F7E403D82A2
 # The definition name must be one of these https://github.com/newrelic-experimental/entity-synthesis-definitions/tree/main/definitions. For each definition we must set the tag
+# Remote commits can be configured as following: # infra-powerdns_authoritative: git@github.com:wesovilabs/entity-synthesis-definitions.git#0b005e2372fd66cd325e544e46fdfd15f3cb995f
 definition_names:
   infra-ravendb_node: 2.26.0
   infra-ravendb_database: 2.26.0
