@@ -13,7 +13,7 @@ tmp_dir="${GOPATH}/src/github.com/marcinbudny/ravendb_exporter"
 echo "cloning repository into ${tmp_dir}..."
 git clone ${EXPORTER_REPO_URL} "${tmp_dir}"
 cd "${tmp_dir}"
-git checkout ${VERSION}
+git checkout ${VERSION} -b current
 echo "checkout version ${VERSION}"
 echo "building the exporter..."
 
