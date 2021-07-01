@@ -33,7 +33,7 @@ var (
 	integrationTemplate embed.FS
 	//go:embed templates/config.json.tmpl
 	configTemplateContent string
-	// nolint: typecheck
+	//nolint: typecheck
 	//go:embed definitions/definitions.yml
 	definitions string
 	vars        = map[string]interface{}{
