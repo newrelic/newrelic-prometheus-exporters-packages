@@ -13,13 +13,15 @@ import (
 	"github.com/newrelic/nri-config-generator/args"
 	"github.com/newrelic/nri-config-generator/generator"
 	"github.com/newrelic/nri-config-generator/httport"
+	"github.com/newrelic/nri-config-generator/synthesis"
 )
 
 const (
-	varIntegrationName    = "integration"
-	varExporterPort       = "exporter_port"
-	varExporterDefinition = "exporter_definition"
-	sleepTime             = 30 * time.Second
+	varIntegrationName      = "integration"
+	varExporterPort         = "exporter_port"
+	varSynthesisDefinitions = "synthesis_definitions"
+	varExporterDefinition   = "exporter_definition"
+	sleepTime               = 30 * time.Second
 )
 
 var (
@@ -31,7 +33,10 @@ var (
 	integrationTemplate embed.FS
 	//go:embed templates/config.json.tmpl
 	configTemplateContent string
-	vars                  = map[string]interface{}{
+	// nolint: typecheck
+	//go:embed definitions/definitions.yml
+	definitions string
+	vars        = map[string]interface{}{
 		varIntegrationName: integration,
 	}
 )
@@ -39,12 +44,10 @@ var (
 func main() {
 	al, err := args.PopulateVars(vars)
 	panicErr(err)
-
 	if al.ShowVersion {
 		printVersion()
 		os.Exit(0)
 	}
-
 	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
 
 	content, err := integrationTemplate.ReadFile(integrationTemplatePattern)
@@ -58,6 +61,9 @@ func main() {
 	configGenerator := generator.NewConfig(configTemplate)
 	port, err := findExporterPort()
 	panicErr(err)
+	definitions, err := synthesis.ProcessSynthesisDefinitions([]byte(definitions))
+	panicErr(err)
+	vars[varSynthesisDefinitions] = definitions
 	vars[varExporterPort] = fmt.Sprintf("%v", port)
 	exporterText, err := exporterGenerator.Generate(vars)
 	panicErr(err)

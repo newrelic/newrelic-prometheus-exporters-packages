@@ -1,0 +1,8 @@
+{
+    "arguments": {
+        {{set "api-url" .config.powerdns_url}}
+        {{set "api-key" .config.api_key}}
+        "listen-address": ":{{.exporter_port}}",
+        "metric-path": "/metrics"
+    }
+}

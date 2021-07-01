@@ -5,8 +5,6 @@ integration_dir="${root_dir}/exporters/githubactions"
 tmp_dir=$(mktemp -d)
 git clone ${EXPORTER_REPO_URL} "${tmp_dir}"
 cd "${tmp_dir}"
-git checkout ${EXPORTER_HEAD} -b current
-
-
-GOOS=linux GOARCH=amd64 go build -v -o "${integration_dir}/target/bin/githubactions-exporter"
+git checkout ${VERSION}
+make
 rm -rf "${tmp_dir}"

@@ -1,0 +1,11 @@
+integrations:
+    - name: nri-powerdns
+      config:
+        # Url to connect to your PowerDNS instance
+        powerdns_url: http://ravendb:8080
+
+        # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
+        exporter_port: 9120
+
+        # API key used to connect to the PowerDNS server
+        # api_key:
