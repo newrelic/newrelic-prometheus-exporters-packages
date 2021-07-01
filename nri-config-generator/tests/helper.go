@@ -59,20 +59,17 @@ func buildGeneratorConfig(integration string) error {
 }
 
 func fetchDefinitions(integration string) error {
-
-	if err := copyIntegrationTemplate(integration); err != nil {
+	sourceFile:=filepath.Join("testdata",fmt.Sprintf("%s-definitions.yml",integration))
+	input, err := ioutil.ReadFile(sourceFile)
+	if err != nil {
 		return err
 	}
-	cmd := &exec.Cmd{
-		Path: "/usr/bin/make",
-		Args: []string{
-			"make",
-			"fetch-definitions",
-			fmt.Sprintf("PACKAGE_NAME=%s", integration),
-		},
-		Dir: rootDir(),
+	dir,err:=os.Getwd()
+	if err!=nil{
+		return err
 	}
-	return cmd.Run()
+	destinationFile:=filepath.Join(dir,"nri-config-generator","definitions","definitions.yml")
+	return ioutil.WriteFile(destinationFile, input, 0644)
 }
 
 func clean() error {
