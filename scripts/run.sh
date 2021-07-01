@@ -7,7 +7,7 @@ mkdir -p dist/etc/newrelic-infra/integrations.d
 mkdir -p dist/var/db/newrelic-infra/newrelic-integrations/bin
 mkdir -p dist/usr/local/prometheus-exporters/bin
 
-integrations=(ravendb github githubactions)
+integrations=(powerdns)
 
 for integration in "${integrations[@]}"
 do

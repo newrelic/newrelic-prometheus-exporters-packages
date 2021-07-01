@@ -30,6 +30,7 @@ exporter_guid: b246fde4-0083-4e16-beb0-09139fb5ca9f
 license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
 # This GUID should be generated and be unique across all exporters in the repository
 config_guid: 86733900-4e10-478c-9633-61595d0e7acb
-# This GUID should be generated and be unique across all exporters in the repository
-definition_guid: ea5236a6-d666-49c3-8a82-1a860502792b
-
+# The definition name must be one of these https://github.com/newrelic-experimental/entity-synthesis-definitions/tree/main/definitions. For each definition we must set the tag
+definition_names:
+  infra-powerdns_authoritative: bd20671d98d7c6eb921ebaeeb149d23c4d208ade
+  infra-powerdns_recursor: bd20671d98d7c6eb921ebaeeb149d23c4d208ade
