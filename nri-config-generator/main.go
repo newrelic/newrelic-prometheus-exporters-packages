@@ -34,7 +34,6 @@ var (
 	integrationTemplate embed.FS
 	//go:embed templates/config.json.tmpl
 	configTemplateContent string
-	// nolint
 	//go:embed definitions
 	definitions embed.FS
 	vars        = map[string]interface{}{
