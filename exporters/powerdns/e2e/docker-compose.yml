@@ -66,12 +66,14 @@ services:
                 ipv4_address: 10.5.0.4
     
     exporter-authoritative:
-        image: janeczku/powerdns-exporter 
+        build:
+            context: prometheus_exporter
         container_name: exporter-authoritative
         ports:
             - 9121:9120
-        command: -api-url="http://pdns-authoritative:8081/api/v1/" -api-key="authoritative-secret"
-        links: 
+        command: --api-url=http://pdns-authoritative:8081/api/v1/ --api-key=authoritative-secret
+
+        links:
             - "pdns-authoritative:pdns-authoritative"
         restart: always
         networks:
@@ -79,12 +81,13 @@ services:
                 ipv4_address: 10.5.0.5
 
     exporter-recursor:
-        image: janeczku/powerdns-exporter 
+        build:
+            context: prometheus_exporter
         container_name: exporter-recursor
         ports:
             - 9122:9120
-        command: -api-url="http://pdns-recursor:8081/api/v1/" -api-key="recursor-secret"
-        links: 
+        command: --api-url=http://pdns-recursor:8081/api/v1/ --api-key=recursor-secret
+        links:
             - "pdns-recursor:pdns-recursor"
         restart: always
         networks:
