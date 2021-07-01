@@ -28,6 +28,7 @@ license_guid: 68C1E509-840A-41AC-B4A5-FE84772F15B3
 # Config GUID used in the msi package Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 config_guid: F10B3F27-FB2C-481D-8585-553DBE130FB4
-# Definition GUID used in the msi package Required if package_windows is set to true
-# This GUID should be generated and be unique across all exporters in the repository
-definition_guid: 9B4D93EB-A484-4079-AFFA-43EAAB65BA3E
+# The definition name must be one of these https://github.com/newrelic-experimental/entity-synthesis-definitions/tree/main/definitions. For each definition we must set the tag
+definition_names:
+  infra-github_repo: 2.26.0
+  infra-github_api: 2.26.0
