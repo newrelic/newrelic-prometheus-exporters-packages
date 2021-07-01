@@ -22,6 +22,7 @@ const (
 	varSynthesisDefinitions = "synthesis_definitions"
 	varExporterDefinition   = "exporter_definition"
 	sleepTime               = 30 * time.Second
+	definitionFileName      = "definitions.yml"
 )
 
 var (
@@ -34,8 +35,8 @@ var (
 	//go:embed templates/config.json.tmpl
 	configTemplateContent string
 	// nolint
-	//go:embed definitions/definitions.yml
-	definitions string
+	//go:embed definitions
+	definitions embed.FS
 	vars        = map[string]interface{}{
 		varIntegrationName: integration,
 	}
@@ -61,7 +62,9 @@ func main() {
 	configGenerator := generator.NewConfig(configTemplate)
 	port, err := findExporterPort()
 	panicErr(err)
-	definitions, err := synthesis.ProcessSynthesisDefinitions([]byte(definitions))
+	definitionContent, err := definitions.ReadFile(definitionFileName)
+	panicErr(err)
+	definitions, err := synthesis.ProcessSynthesisDefinitions(definitionContent)
 	panicErr(err)
 	vars[varSynthesisDefinitions] = definitions
 	vars[varExporterPort] = fmt.Sprintf("%v", port)
