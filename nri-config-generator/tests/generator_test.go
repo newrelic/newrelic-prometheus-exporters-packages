@@ -97,10 +97,10 @@ var defaultArgs = []string{
 var pdnsTemplate, _ = template.New("defTemplate").Parse(configPDNSTemplate)
 
 func TestMain(m *testing.M) {
-	if err := buildGeneratorConfig(testIntegration); err != nil {
+	if err := fetchDefinitions(testIntegration); err != nil {
 		panic(err.Error())
 	}
-	if err := fetchDefinitions(testIntegration); err != nil {
+	if err := buildGeneratorConfig(testIntegration); err != nil {
 		panic(err.Error())
 	}
 	exitVal := m.Run()

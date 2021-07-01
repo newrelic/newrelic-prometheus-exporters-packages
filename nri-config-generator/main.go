@@ -22,7 +22,7 @@ const (
 	varSynthesisDefinitions = "synthesis_definitions"
 	varExporterDefinition   = "exporter_definition"
 	sleepTime               = 30 * time.Second
-	definitionFileName      = "definitions.yml"
+	definitionFileName      = "definitions/definitions.yml"
 )
 
 var (
@@ -49,10 +49,8 @@ func main() {
 		os.Exit(0)
 	}
 	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
-
 	content, err := integrationTemplate.ReadFile(integrationTemplatePattern)
 	panicErr(err)
-
 	integrationTemplate, err := loadIntegrationTemplate(content)
 	panicErr(err)
 	exporterGenerator := generator.NewExporter(integration, integrationTemplate)
