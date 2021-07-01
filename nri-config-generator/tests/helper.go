@@ -68,7 +68,7 @@ func fetchDefinitions(integration string) error {
 	if err!=nil{
 		return err
 	}
-	destinationFile:=filepath.Join(dir,"nri-config-generator","definitions","definitions.yml")
+	destinationFile:=filepath.Join(dir,"definitions.yml")
 	return ioutil.WriteFile(destinationFile, input, 0644)
 }
 
