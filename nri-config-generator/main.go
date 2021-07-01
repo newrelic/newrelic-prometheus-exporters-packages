@@ -33,7 +33,7 @@ var (
 	integrationTemplate embed.FS
 	//go:embed templates/config.json.tmpl
 	configTemplateContent string
-	//nolint: typecheck
+	// nolint
 	//go:embed definitions/definitions.yml
 	definitions string
 	vars        = map[string]interface{}{
@@ -71,7 +71,12 @@ func main() {
 	output, err := configGenerator.Generate(vars)
 	panicErr(err)
 	fmt.Println(output)
+	// In this case the integration is completed after fetching once the data from the exporter
+	if al.ShortRunning {
+		os.Exit(0)
+	}
 	httport.SetPrometheusExporterPort("localhost", port)
+	// long running execution
 	for {
 		time.Sleep(sleepTime)
 

@@ -2,6 +2,7 @@ package test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -9,6 +10,19 @@ import (
 	"path/filepath"
 	"time"
 )
+
+func getTemplateVars(exporterPort string) map[string]string {
+	return map[string]string{
+		"exporterPort": exporterPort,
+	}
+}
+
+func getConfigGeneratorEnvVars(configFileName string) []string {
+	return []string{
+		fmt.Sprintf("CONFIG_PATH=%s", filepath.Join(rootDir(), "tests", "testdata", fmt.Sprintf("%s.yml", configFileName))),
+	}
+}
+
 
 func rootDir() string {
 	dir, err := os.Getwd()
@@ -44,6 +58,23 @@ func buildGeneratorConfig(integration string) error {
 	return cmd.Run()
 }
 
+func fetchDefinitions(integration string) error {
+
+	if err := copyIntegrationTemplate(integration); err != nil {
+		return err
+	}
+	cmd := &exec.Cmd{
+		Path: "/usr/bin/make",
+		Args: []string{
+			"make",
+			"fetch-definitions",
+			fmt.Sprintf("PACKAGE_NAME=%s", integration),
+		},
+		Dir: rootDir(),
+	}
+	return cmd.Run()
+}
+
 func clean() error {
 	cmd := &exec.Cmd{
 		Path: "/usr/bin/make",
@@ -58,8 +89,19 @@ func clean() error {
 
 func callGeneratorConfig(integration string, args []string, env []string) ([]byte, error) {
 	executable := fmt.Sprintf("%s", integration)
-	ctx, _ := context.WithTimeout(context.Background(), 500*time.Millisecond)
-	cmd := exec.CommandContext(ctx, filepath.Join(rootDir(), "bin", executable), args...)
+	ctx, _ := context.WithTimeout(context.Background(), 5000*time.Millisecond)
+	name:=filepath.Join(rootDir(), "bin", executable)
+	cmd := exec.CommandContext(ctx, name, args...)
 	cmd.Env = env
 	return cmd.Output()
+}
+
+
+func getExporterPortFromConfigGeneratorResponse(stdout []byte) string{
+	out:=make(map[string]interface{})
+	json.Unmarshal(stdout, &out)
+	cfg := out["config"].(map[string]interface{})
+	integrations := cfg["integrations"].([]interface{})
+	env := integrations[1].(map[string]interface{})["env"].(map[string]interface{})
+	return env["PORT"].(string)
 }

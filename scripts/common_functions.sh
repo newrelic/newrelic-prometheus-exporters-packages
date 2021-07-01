@@ -17,9 +17,11 @@ loadVariables(){
     export PACKAGE_LINUX=$(cat $EXPORTER_PATH | yq e .package_linux -)
     export PACKAGE_WINDOWS=$(cat $EXPORTER_PATH | yq e .package_windows -)
     OLD_IFS="$IFS"
+
     while IFS= read -r value; do
         DEFINITION_NAMES+=" ${value//[[:space:]]/}"
     done < <(cat $EXPORTER_PATH | yq eval '.definition_names' -)
+
     IFS="$OLD_IFS"
     export DEFINITION_NAMES=$DEFINITION_NAMES
     if [[ -z $EXPORTER_TAG ]]

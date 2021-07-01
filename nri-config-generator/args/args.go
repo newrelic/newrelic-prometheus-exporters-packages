@@ -21,8 +21,9 @@ func setViperDefaults(viper *viper.Viper) {
 
 // ArgumentList Available Arguments
 type ArgumentList struct {
-	ConfigPath  string `default:"" help:"Path to the config file"`
-	ShowVersion bool   `default:"false" help:"Print build information and exit"`
+	ConfigPath   string `default:"" help:"Path to the config file"`
+	ShowVersion  bool   `default:"false" help:"Print build information and exit"`
+	ShortRunning bool   `default:"false" help:"By default execution is long running, but this can be override"`
 }
 
 func argVars(c *ArgumentList) (map[string]interface{}, error) {

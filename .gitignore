@@ -38,7 +38,7 @@
 nri-config-generator/dist/*
 nri-config-generator/vendor
 nri-config-generator/templates/*
-!nri-config-generator/definitions/definitions.yml
+#!nri-config-generator/definitions/definitions.yml
 !nri-config-generator/templates/config.json.tmpl
 .env
 dist

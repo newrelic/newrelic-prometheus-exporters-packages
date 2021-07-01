@@ -8,4 +8,4 @@ integrations:
         exporter_port: 9120
 
         # API key used to connect to the PowerDNS server
-        # api_key:
+        # api_key: ****-***-*****

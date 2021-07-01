@@ -9,6 +9,8 @@ const (
 	prefixEnv     = "env"
 	PrefixCfg     = "config"
 	prefixCLI     = "cli"
+	prefixMode    = "mode"
+	mode          = "mode"
 	envConfigPath = "CONFIG_PATH"
 )
 

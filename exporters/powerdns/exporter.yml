@@ -32,5 +32,5 @@ license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
 config_guid: 86733900-4e10-478c-9633-61595d0e7acb
 # The definition name must be one of these https://github.com/newrelic-experimental/entity-synthesis-definitions/tree/main/definitions. For each definition we must set the tag
 definition_names:
-  infra-powerdns_authoritative: bd20671d98d7c6eb921ebaeeb149d23c4d208ade
-  infra-powerdns_recursor: bd20671d98d7c6eb921ebaeeb149d23c4d208ade
+  infra-powerdns_authoritative: git@github.com:newrelic-experimental/entity-synthesis-definitions.git#bd20671d98d7c6eb921ebaeeb149d23c4d208ade
+  infra-powerdns_recursor: git@github.com:newrelic-experimental/entity-synthesis-definitions.git#bd20671d98d7c6eb921ebaeeb149d23c4d208ade
