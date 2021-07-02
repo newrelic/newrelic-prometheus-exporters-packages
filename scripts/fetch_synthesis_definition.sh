@@ -13,10 +13,12 @@ for definition in ${DEFINITION_NAMES}; do
   if git --git-dir ${tmp_dir}/.git show-ref --tags --quiet --verify -- "refs/tags/$definition_version" >/dev/null 2>&1; then
       cd ${tmp_dir}; git checkout ${definition_version} -d
   else
+      repo_url=${definition_version%%#*}
+      repo_commit=${definition#*#}
       cd ${tmp_dir}; \
-        git remote add forked ${arrIN[0]}; \
+        git remote add forked ${repo_url}; \
         git fetch forked;  \
-        git switch ${arrIN[1]} -d;
+        git switch ${repo_commit} -d;
   fi
   tmp_definition_file="${tmp_dir}/definitions/${definition_name}/definition.yml"
   if [ ! -f "${tmp_definition_file}" ]; then
