@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+
 root_dir=$1
 integration=$2
 
