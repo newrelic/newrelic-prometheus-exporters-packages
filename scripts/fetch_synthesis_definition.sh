@@ -13,7 +13,6 @@ for definition in ${DEFINITION_NAMES}; do
   if git --git-dir ${tmp_dir}/.git show-ref --tags --quiet --verify -- "refs/tags/$definition_version" >/dev/null 2>&1; then
       cd ${tmp_dir}; git checkout ${definition_version} -d
   else
-      arrIN=(${definition_version//#/ })
       cd ${tmp_dir}; \
         git remote add forked ${arrIN[0]}; \
         git fetch forked;  \
