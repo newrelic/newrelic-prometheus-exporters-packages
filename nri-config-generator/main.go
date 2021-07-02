@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"errors"
 	"fmt"
 	"os"
 	"runtime"
@@ -13,13 +12,16 @@ import (
 	"github.com/newrelic/nri-config-generator/args"
 	"github.com/newrelic/nri-config-generator/generator"
 	"github.com/newrelic/nri-config-generator/httport"
+	"github.com/newrelic/nri-config-generator/synthesis"
 )
 
 const (
-	varIntegrationName    = "integration"
-	varExporterPort       = "exporter_port"
-	varExporterDefinition = "exporter_definition"
-	sleepTime             = 30 * time.Second
+	varIntegrationName      = "integration"
+	varExporterPort         = "exporter_port"
+	varSynthesisDefinitions = "entity_definitions"
+	varExporterDefinition   = "exporter_definition"
+	sleepTime               = 30 * time.Second
+	definitionFileName      = "definitions/definitions.yml"
 )
 
 var (
@@ -31,7 +33,9 @@ var (
 	integrationTemplate embed.FS
 	//go:embed templates/config.json.tmpl
 	configTemplateContent string
-	vars                  = map[string]interface{}{
+	//go:embed definitions
+	definitions embed.FS
+	vars        = map[string]interface{}{
 		varIntegrationName: integration,
 	}
 )
@@ -39,17 +43,13 @@ var (
 func main() {
 	al, err := args.PopulateVars(vars)
 	panicErr(err)
-
 	if al.ShowVersion {
 		printVersion()
 		os.Exit(0)
 	}
-
 	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
-
 	content, err := integrationTemplate.ReadFile(integrationTemplatePattern)
 	panicErr(err)
-
 	integrationTemplate, err := loadIntegrationTemplate(content)
 	panicErr(err)
 	exporterGenerator := generator.NewExporter(integration, integrationTemplate)
@@ -58,6 +58,11 @@ func main() {
 	configGenerator := generator.NewConfig(configTemplate)
 	port, err := findExporterPort()
 	panicErr(err)
+	definitionContent, err := definitions.ReadFile(definitionFileName)
+	panicErr(err)
+	definitions, err := synthesis.ProcessSynthesisDefinitions(definitionContent)
+	panicErr(err)
+	vars[varSynthesisDefinitions] = definitions
 	vars[varExporterPort] = fmt.Sprintf("%v", port)
 	exporterText, err := exporterGenerator.Generate(vars)
 	panicErr(err)
@@ -65,13 +70,15 @@ func main() {
 	output, err := configGenerator.Generate(vars)
 	panicErr(err)
 	fmt.Println(output)
+	// In this case the integration is completed after fetching once the data from the exporter
+	if al.ShortRunning {
+		os.Exit(0)
+	}
 	httport.SetPrometheusExporterPort("localhost", port)
+	// long running execution. This is a long running execution because in case of the export port was auto-generated (a random port inc ase
+	// of the exporter_port is not provided by configuration) we need to keep this port for the exporter.
 	for {
 		time.Sleep(sleepTime)
-
-		if !httport.IsPrometheusExporterRunning() {
-			panicErr(errors.New("there is not a prometheus exporter in the assigned port"))
-		}
 		fmt.Println("{}")
 		fmt.Println(output)
 	}

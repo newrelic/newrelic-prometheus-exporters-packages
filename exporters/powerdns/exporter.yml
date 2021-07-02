@@ -1,35 +1,36 @@
 # name of the exporter, should match with the folder name
-name: ravendb
+name: powerdns
 # version of the package created
 version: 0.0.1
 # Relative path to the License path from the repository root
 exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
-exporter_repo_url: https://github.com/marcinbudny/ravendb_exporter
+exporter_repo_url: https://github.com/lotusnoir/prometheus-powerdns_exporter
 # Tag of the exporter to checkout
-exporter_tag: 0.3.0
+exporter_tag: 0.2.3
 # Commit of the exporter to checkout (used if tag property is empty)
-exporter_commit: 
+exporter_commit:
 # Changelog to add to the new release
-exporter_changelog: https://github.com/marcinbudny/ravendb_exporter#030
+exporter_changelog: https://github.com/lotusnoir/prometheus-powerdns_exporter/tags
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows
-package_windows: true
+package_windows: false
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-upgrade_guid: 58F31C6C-DB0A-455E-9E4C-5C9AD4A8932B
+upgrade_guid: 278db4a4-60a9-493b-b878-dc7b445a2db0
 # Integration GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-nri_guid: 81068A97-AC58-47DD-90DF-2DEAC18C0E17
+nri_guid: 44ac2940-4aff-46fc-a46b-b1b8cd9a3505
 # Exporter GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-exporter_guid: 384DEA56-0A36-483D-B946-6B41AEF70EF2
+exporter_guid: b246fde4-0083-4e16-beb0-09139fb5ca9f
 # License GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-license_guid: 2810AFB4-E6AD-496E-BC03-70B15AF2125F
+license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
 # This GUID should be generated and be unique across all exporters in the repository
-config_guid: 54030FC4-E2DB-4EDD-8704-1F7E403D82A2
-# This GUID should be generated and be unique across all exporters in the repository
-definition_guid: 3F17F653-8B95-4C33-AAA2-E7636875050D
-
+config_guid: 86733900-4e10-478c-9633-61595d0e7acb
+# The definition name must be one of these https://github.com/newrelic-experimental/entity-synthesis-definitions/tree/main/definitions. For each definition we must set the tag
+definition_names:
+  infra-powerdns_authoritative: git@github.com:newrelic-experimental/entity-synthesis-definitions.git#bd20671d98d7c6eb921ebaeeb149d23c4d208ade
+  infra-powerdns_recursor: git@github.com:newrelic-experimental/entity-synthesis-definitions.git#bd20671d98d7c6eb921ebaeeb149d23c4d208ade

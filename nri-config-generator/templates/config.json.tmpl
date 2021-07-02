@@ -11,6 +11,7 @@
             "config": {
                 "standalone": false,
                 {{set "verbose" .env.VERBOSE}}
+                {{.entity_definitions}},
                 "targets": [
                     {
                         "urls": [
@@ -18,6 +19,7 @@
                         ]
                     }
                 ]
+
             }
         },
         {{.exporter_definition}}

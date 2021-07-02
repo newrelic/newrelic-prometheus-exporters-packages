@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"path/filepath"
 	"testing"
 	"text/template"
 
@@ -18,11 +17,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const configRavenDBTemplate = `
+const (
+	testIntegration = "powerdns"
+	exporterPort    = "9120"
+)
+
+const configPDNSTemplate = `
 {
   "config_protocol_version": "1",
   "action": "register_config",
-  "config_name": "cfg-ravendb",
+  "config_name": "cfg-powerdns",
   "config": {
     "variables": {},
     "integrations": [
@@ -31,7 +35,35 @@ const configRavenDBTemplate = `
 		{{ or .pomiInterval "" }}
         "config": {
           "standalone": false,
-		  {{ or .pomiVerbose "" }}
+         {{ or .pomiVerbose "" }}
+          "entity_definitions": [
+			{
+				"conditions": [{
+					"attribute":"metricName",
+					"prefix":"powerdns_authoritative_"
+				}],
+				"identifier":"targetName", 
+				"name":"targetName",
+				"tags": {
+					"clusterName":null,
+					"targetName":null
+				},
+				"type":"POWERDNS_AUTHORITATIVE"
+			},
+			{
+				"conditions": [{
+					"attribute":"metricName",
+					"prefix":"powerdns_recursor_"
+				}],
+				"identifier":"targetName", 
+				"name":"targetName",
+				"tags": {
+					"clusterName":null,
+					"targetName":null
+				},
+				"type":"POWERDNS_RECURSOR"
+			}
+          ],
           "targets": [
             {
               "urls": [
@@ -42,15 +74,16 @@ const configRavenDBTemplate = `
         }
       },
       {
-        "name": "prometheus-exporter-ravendb",
+        "name": "prometheus-exporter-powerdns",
         "exec": [
-          "/usr/local/prometheus-exporters/bin/ravendb-exporter"
+          "/usr/local/prometheus-exporters/bin/powerdns-exporter"
         ],
         "timeout": 0,
-        "env": {
-		  {{ or .ravenVerbose "" }}
-          "RAVENDB_URL": "http://live-test.ravendb.net",
-          "PORT": "{{ .exporterPort }}"
+        "arguments": {
+          "api-url": "http://powerdns:8080/api/v1/",
+          "api-key": "11111-222222-33333-44444",
+          "listen-address": ":{{.exporterPort}}",
+          "metric-path": "/metrics"
         }
       }
     ]
@@ -58,10 +91,16 @@ const configRavenDBTemplate = `
 }
 `
 
-var ravendbTemplate, _ = template.New("defTemplate").Parse(configRavenDBTemplate)
+var defaultArgs = []string{
+	"--short_running",
+}
+var pdnsTemplate, _ = template.New("defTemplate").Parse(configPDNSTemplate)
 
 func TestMain(m *testing.M) {
-	if err := buildGeneratorConfig("ravendb"); err != nil {
+	if err := fetchDefinitions(testIntegration); err != nil {
+		panic(err.Error())
+	}
+	if err := buildGeneratorConfig(testIntegration); err != nil {
 		panic(err.Error())
 	}
 	exitVal := m.Run()
@@ -73,14 +112,11 @@ func TestMain(m *testing.M) {
 Happy path
 */
 func TestGeneratorConfig(t *testing.T) {
-	integration := "ravendb"
-	vars := map[string]string{
-		"exporterPort": "3333",
-	}
-	expectedResponse := executeTemplate(t, ravendbTemplate, vars)
-	configPath := filepath.Join(rootDir(), "tests", "testdata", "config.yml")
-	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
+	templateVars := getTemplateVars(exporterPort)
+	expectedResponse := executeTemplate(t, pdnsTemplate, templateVars)
+	envVars := getConfigGeneratorEnvVars("config")
+	stdout, err := callGeneratorConfig(testIntegration, defaultArgs, envVars)
+	assert.Nil(t, err)
 	assert.NotEmpty(t, stdout)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
@@ -89,9 +125,7 @@ func TestGeneratorConfig(t *testing.T) {
 The default port is already in use, the config generator must find and available one and set the config
 */
 func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
-	integration := "ravendb"
-	defaultPort := "3333"
-	server := &http.Server{Addr: fmt.Sprintf(":%s", defaultPort)}
+	server := &http.Server{Addr: fmt.Sprintf(":%s", exporterPort)}
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
 			log.Warn(err.Error())
@@ -102,17 +136,15 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 			panic(err)
 		}
 	}()
-
-	configPath := filepath.Join(rootDir(), "tests", "testdata", "config.yml")
-	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
+	envVars := getConfigGeneratorEnvVars("config")
+	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
 	assert.NotEmpty(t, stdout)
-	assignedPort, err := getAssignedPortToExporter(stdout)
+	assignedPort, err := getAssignedPortToPowerDNSIntegration(stdout)
 	assert.Nil(t, err)
 	vars := map[string]string{
 		"exporterPort": assignedPort,
 	}
-	expectedResponse := executeTemplate(t, ravendbTemplate, vars)
+	expectedResponse := executeTemplate(t, pdnsTemplate, vars)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
@@ -120,20 +152,15 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 The env var interval is provided
 */
 func TestGeneratorConfigWithInterval(t *testing.T) {
-	integration := "ravendb"
-
-	configPath := filepath.Join(rootDir(), "tests", "testdata", "config.yml")
-	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	intervalEnvVar := "interval=10s"
-	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar, intervalEnvVar})
+	envVars := getConfigGeneratorEnvVars("config")
+	envVars = append(envVars, "interval=10s")
+	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
 	assert.NotEmpty(t, stdout)
-	assignedPort, err := getAssignedPortToExporter(stdout)
-	assert.Nil(t, err)
 	vars := map[string]string{
-		"exporterPort": assignedPort,
+		"exporterPort": exporterPort,
 		"pomiInterval": "\"interval\":\"10s\",",
 	}
-	expectedResponse := executeTemplate(t, ravendbTemplate, vars)
+	expectedResponse := executeTemplate(t, pdnsTemplate, vars)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
@@ -141,76 +168,19 @@ func TestGeneratorConfigWithInterval(t *testing.T) {
 The verbose mode of the Agent gets propagated to exporter and prometheus
 */
 func TestGeneratorVerboseMode(t *testing.T) {
-	integration := "ravendb"
-
-	configPath := filepath.Join(rootDir(), "tests", "testdata", "config.yml")
-	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	verboseEnvVar := "VERBOSE=1"
-	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar, verboseEnvVar})
+	envVars := getConfigGeneratorEnvVars("config")
+	envVars = append(envVars, "VERBOSE=1")
+	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
 	assert.NotEmpty(t, stdout)
-	assignedPort, err := getAssignedPortToExporter(stdout)
-	assert.Nil(t, err)
 	vars := map[string]string{
-		"exporterPort": assignedPort,
-		"ravenVerbose": "\"VERBOSE\":\"1\",",
+		"exporterPort": exporterPort,
 		"pomiVerbose":  "\"verbose\":\"1\",",
 	}
-	expectedResponse := executeTemplate(t, ravendbTemplate, vars)
+	expectedResponse := executeTemplate(t, pdnsTemplate, vars)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
-/**
-The export port is defined by the user
-*/
-func TestGeneratorConfigWithExporterPortInConfigFile(t *testing.T) {
-	integration := "ravendb"
-	vars := map[string]string{
-		"exporterPort": "3333",
-	}
-	expectedResponse := executeTemplate(t, ravendbTemplate, vars)
-	configPath := filepath.Join(rootDir(), "tests", "testdata", "config_with_port.yml")
-	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
-	assert.NotEmpty(t, stdout)
-	assert.JSONEq(t, expectedResponse, string(stdout))
-}
-
-/**
-The export port is defined by the user but it's already in use
-*/
-func TestGeneratorConfigWithExporterPortInConfigFileButItsInUse(t *testing.T) {
-	integration := "ravendb"
-
-	server := &http.Server{Addr: fmt.Sprintf(":%s", "3333")}
-	go func() {
-		if err := server.ListenAndServe(); err != nil {
-			log.Warn(err.Error())
-		}
-	}()
-	defer func() {
-		if err := server.Shutdown(context.Background()); err != nil {
-			panic(err)
-		}
-	}()
-
-	configPath := filepath.Join(rootDir(), "tests", "testdata", "config_with_port.yml")
-	configPathEnvVar := fmt.Sprintf("CONFIG_PATH=%s", configPath)
-	stdout, _ := callGeneratorConfig(integration, []string{}, []string{configPathEnvVar})
-	assert.NotEmpty(t, stdout)
-	out := make(map[string]interface{})
-	json.Unmarshal(stdout, &out)
-	cfg := out["config"].(map[string]interface{})
-	integrations := cfg["integrations"].([]interface{})
-	env := integrations[1].(map[string]interface{})["env"].(map[string]interface{})
-	port := env["PORT"]
-	vars := map[string]string{
-		"exporterPort": fmt.Sprintf("%s", port),
-	}
-	expectedResponse := executeTemplate(t, ravendbTemplate, vars)
-	assert.JSONEq(t, expectedResponse, string(stdout))
-}
-
-func getAssignedPortToExporter(content []byte) (string, error) {
+func getAssignedPortToPowerDNSIntegration(content []byte) (string, error) {
 	var v map[string]interface{}
 	if err := json.Unmarshal(content, &v); err != nil {
 		return "", err
@@ -226,11 +196,11 @@ func getAssignedPortToExporter(content []byte) (string, error) {
 	if len(integrations) != 2 {
 		return "", errors.New("missing attribute config/integrations[1]")
 	}
-	env, ok := integrations[1].(map[string]interface{})["env"].(map[string]interface{})
+	args, ok := integrations[1].(map[string]interface{})["arguments"].(map[string]interface{})
 	if !ok {
 		return "", errors.New("missing attribute config/integrations[1].env")
 	}
-	return fmt.Sprintf("%v", env["PORT"]), nil
+	return fmt.Sprintf("%v", args["listen-address"])[1:], nil
 }
 
 func executeTemplate(t *testing.T, tpl *template.Template, vars map[string]string) string {

@@ -1,0 +1,11 @@
+integrations:
+    - name: nri-powerdns
+      config:
+        # API URL of the powerdns service
+        powerdns_url: http://pdns-authoritative:8081/api/v1/
+
+        # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
+        exporter_port: 9120
+
+        # API key used to connect to the PowerDNS server
+        # api_key: ****-***-*****
