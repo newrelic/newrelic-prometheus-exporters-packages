@@ -75,8 +75,8 @@ func main() {
 		os.Exit(0)
 	}
 	httport.SetPrometheusExporterPort("localhost", port)
-	// long running execution. This is a long running execution because in case of the export port was auto-generated (a random port incase
-	// whe the exporter_port is not provided by configuration) we need to keep this port for the exporter.
+	// long running execution. This is a long running execution because in case of the export port was auto-generated (a random port inc ase
+	// of the exporter_port is not provided by configuration) we need to keep this port for the exporter.
 	for {
 		time.Sleep(sleepTime)
 		fmt.Println("{}")
