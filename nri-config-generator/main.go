@@ -19,7 +19,7 @@ import (
 const (
 	varIntegrationName      = "integration"
 	varExporterPort         = "exporter_port"
-	varSynthesisDefinitions = "synthesis_definitions"
+	varSynthesisDefinitions = "entity_definitions"
 	varExporterDefinition   = "exporter_definition"
 	sleepTime               = 30 * time.Second
 	definitionFileName      = "definitions/definitions.yml"
@@ -76,13 +76,10 @@ func main() {
 		os.Exit(0)
 	}
 	httport.SetPrometheusExporterPort("localhost", port)
-	// long running execution
+	// long running execution. This is a long running execution because in case of the export port was auto-generated (a random port incase
+	// whe the exporter_port is not provided by configuration) we need to keep this port for the exporter.
 	for {
 		time.Sleep(sleepTime)
-
-		if !httport.IsPrometheusExporterRunning() {
-			panicErr(errors.New("there is not a prometheus exporter in the assigned port"))
-		}
 		fmt.Println("{}")
 		fmt.Println(output)
 	}

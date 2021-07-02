@@ -36,7 +36,7 @@ const configPDNSTemplate = `
         "config": {
           "standalone": false,
          {{ or .pomiVerbose "" }}
-          "synthesis_definitions": [
+          "entity_definitions": [
 			{
 				"conditions": [{
 					"attribute":"metricName",

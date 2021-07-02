@@ -21,5 +21,5 @@ func Test_ProcessSynthesisDefinitions(t *testing.T){
 	assert.Nil(t, err)
 	res,err:=ProcessSynthesisDefinitions(in)
 	assert.Nil(t, err)
-	assert.Equal(t,  "\"synthesis_definitions\":[{\"conditions\":[{\"attribute\":\"metricName\",\"prefix\":\"redis_\"}],\"encodeIdentifierInGUID\":true,\"identifier\":\"targetName\",\"name\":\"targetName\",\"tags\":{\"clusterName\":null,\"targetName\":null},\"type\":\"REDIS\"}]", res)
+	assert.Equal(t,  "\"entity_definitions\":[{\"conditions\":[{\"attribute\":\"metricName\",\"prefix\":\"redis_\"}],\"encodeIdentifierInGUID\":true,\"identifier\":\"targetName\",\"name\":\"targetName\",\"tags\":{\"clusterName\":null,\"targetName\":null},\"type\":\"REDIS\"}]", res)
 }

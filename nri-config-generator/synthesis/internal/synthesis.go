@@ -7,7 +7,7 @@ import (
 
 const (
 	attType = "type"
-	root    = "synthesis_definitions"
+	root    = "entity_definitions"
 )
 
 type Definition []synthesis

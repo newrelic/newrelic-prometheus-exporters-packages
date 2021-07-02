@@ -7,7 +7,7 @@ import (
 )
 
 func Test_DefinitionTOJSON(t *testing.T){
-	expected:=`"synthesis_definitions":[{"rules":[{"name":"rule1"},{"name":"rule2"}],"type":"type1"},{"name":"rule3","type":"type2"}]`
+	expected:=`"entity_definitions":[{"rules":[{"name":"rule1"},{"name":"rule2"}],"type":"type1"},{"name":"rule3","type":"type2"}]`
 	d:=&Definition{}
 	d.AddEntry("type1",map[string]interface{}{
 		"rules": []map[string]interface{}{
