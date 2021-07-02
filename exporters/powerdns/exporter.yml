@@ -34,3 +34,4 @@ config_guid: 86733900-4e10-478c-9633-61595d0e7acb
 definition_names:
   infra-powerdns_authoritative: git@github.com:newrelic-experimental/entity-synthesis-definitions.git#bd20671d98d7c6eb921ebaeeb149d23c4d208ade
   infra-powerdns_recursor: git@github.com:newrelic-experimental/entity-synthesis-definitions.git#bd20671d98d7c6eb921ebaeeb149d23c4d208ade
+
