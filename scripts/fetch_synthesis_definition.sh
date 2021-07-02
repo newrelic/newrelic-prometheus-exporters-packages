@@ -1,5 +1,4 @@
-#!/bin/sh
-
+#!/bin/bash
 root_dir=$1
 integration=$2
 
@@ -9,9 +8,8 @@ tmp_dir=$(mktemp -d)
 tmp_dir2=$(mktemp -d)
 git clone "${repository_definitions}" "${tmp_dir}"
 for definition in ${DEFINITION_NAMES}; do
-
-  OLD_IFS="$IFS"
-  IFS=':' read -r definition_name definition_version <<< "${definition}"
+  definition_name=${definition%%:*}
+  definition_version=${definition#*:}
   if git --git-dir ${tmp_dir}/.git show-ref --tags --quiet --verify -- "refs/tags/$definition_version" >/dev/null 2>&1; then
       cd ${tmp_dir}; git checkout ${definition_version} -d
   else
@@ -32,7 +30,6 @@ for definition in ${DEFINITION_NAMES}; do
     exit 1;
   fi
   cp "${tmp_definition_file}" "${tmp_dir2}/${definition_name}.yml"
-  IFS="$OLD_IFS"
 done
 mkdir -p ${root_dir}/nri-config-generator/definitions
 yq eval-all "" ${tmp_dir2}/*.yml > "${root_dir}/nri-config-generator/definitions/definitions.yml"
