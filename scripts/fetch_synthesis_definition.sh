@@ -16,8 +16,8 @@ for definition in ${DEFINITION_NAMES}; do
   else
       repo_url=${definition_version%%#*}
       repo_commit=${definition#*#}
-      cd ${tmp_dir}; \
-        git -c advice.detachedHead=false checkout ${repo_commit}
+      cd ${tmp_dir}
+      git -c advice.detachedHead=false checkout ${repo_commit}
   fi
   tmp_definition_file="${tmp_dir}/definitions/${definition_name}/definition.yml"
   if [ ! -f "${tmp_definition_file}" ]; then
