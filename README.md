@@ -112,42 +112,44 @@ In each folder we expect to find:
 
 The definition file requieres the following fields:
 ``` yaml
-# name of the exporter, should mach with the folder name
-name: githubactions
+# name of the exporter, should match with the folder name
+name: powerdns
 # version of the package created
-version: 1.2.2
+version: 0.0.1
+# Relative path to the License path from the repository root
+exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
-exporter_repo_url: https://github.com/Spendesk/github-actions-exporter
+exporter_repo_url: https://github.com/lotusnoir/prometheus-powerdns_exporter
 # Tag of the exporter to checkout
-exporter_tag: v1.2
+exporter_tag:
 # Commit of the exporter to checkout (used if tag property is empty)
-exporter_commit: ifTagIsSetThisIsNotUsed
+exporter_commit: fffbd7c4768681f93988c2c3287b690db20e6ce0
 # Changelog to add to the new release
-exporter_changelog: "Changelog for the current version, nothing relly changed, just testing pipeline"
+exporter_changelog: https://github.com/lotusnoir/prometheus-powerdns_exporter/tags
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows
-package_windows: true
+package_windows: false
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-upgrade_guid: 58F31C6C-DB0A-455E-9E4C-5C9AD4A8932B
-# Exporter GUID used in the msi package Required if package_windows is set to true
+upgrade_guid: 278db4a4-60a9-493b-b878-dc7b445a2db0
+# Integration GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-exporter_guid: 7B629E90-530F-4FAA-B7FE-1F1B30A95714
-# Lincense GUID used in the msi package Required if package_windows is set to true
-# This GUID should be generated and be unique across all exporters in the repository
-nri_guid: 81068A97-AC58-47DD-90DF-2DEAC18C0E17
+nri_guid: 44ac2940-4aff-46fc-a46b-b1b8cd9a3505
 # Exporter GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-license_guid: 95E897AC-895A-43BE-A5EF-D72AD58E4ED1
-# Config GUID used in the msi package Required if package_windows is set to true
+exporter_guid: b246fde4-0083-4e16-beb0-09139fb5ca9f
+# License GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-config_guid: 45C8D11D-57DB-4C0A-AB5E-61B6A7D3DBC0
-# Definition GUID used in the msi package Required if package_windows is set to true
+license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
+# This GUID should be generated and be unique across all exporters in the repository
+config_guid: 86733900-4e10-478c-9633-61595d0e7acb
 # The definition name must be one of these https://github.com/newrelic-experimental/entity-synthesis-definitions/tree/main/definitions. For each definition we must set the tag
 definition_names:
-  infra-ravendb_node: 2.26.0
-  infra-ravendb_database: 2.26.0
+  infra-powerdns_authoritative: 2.16.8
+  infra-powerdns_recursor: 2.16.8
+
+
 ```
 
 When added open a PR and once merged to master a github action workflow will start building and uploading packages to Github. 

@@ -6,6 +6,7 @@ repository_definitions="https://github.com/newrelic-experimental/entity-synthesi
 
 tmp_dir=$(mktemp -d)
 tmp_dir2=$(mktemp -d)
+
 git clone "${repository_definitions}" "${tmp_dir}"
 for definition in ${DEFINITION_NAMES}; do
   definition_name=${definition%%:*}
@@ -15,10 +16,8 @@ for definition in ${DEFINITION_NAMES}; do
   else
       repo_url=${definition_version%%#*}
       repo_commit=${definition#*#}
-      cd ${tmp_dir}; \
-        git remote add forked ${repo_url}; \
-        git fetch forked;  \
-        git switch ${repo_commit} -d;
+      cd ${tmp_dir}
+      git -c advice.detachedHead=false checkout ${repo_commit}
   fi
   tmp_definition_file="${tmp_dir}/definitions/${definition_name}/definition.yml"
   if [ ! -f "${tmp_definition_file}" ]; then
@@ -34,4 +33,7 @@ for definition in ${DEFINITION_NAMES}; do
 done
 mkdir -p ${root_dir}/nri-config-generator/definitions
 yq eval-all "" ${tmp_dir2}/*.yml > "${root_dir}/nri-config-generator/definitions/definitions.yml"
+
+cd ../
+
 rm -rf "${tmp_dir} ${tmp_dir2}"
