@@ -17,6 +17,7 @@ import (
 
 const (
 	varIntegrationName      = "integration"
+	varIntegrationVersion   = "integration_version"
 	varExporterPort         = "exporter_port"
 	varSynthesisDefinitions = "entity_definitions"
 	varExporterDefinition   = "exporter_definition"
@@ -35,12 +36,14 @@ var (
 	configTemplateContent string
 	//go:embed definitions
 	definitions embed.FS
-	vars        = map[string]interface{}{
-		varIntegrationName: integration,
-	}
 )
 
 func main() {
+	vars := map[string]interface{}{
+		varIntegrationName:    integration,
+		varIntegrationVersion: integrationVersion,
+	}
+
 	al, err := args.PopulateVars(vars)
 	panicErr(err)
 	if al.ShowVersion {
@@ -56,7 +59,7 @@ func main() {
 	configTemplate, err := loadConfigTemplate()
 	panicErr(err)
 	configGenerator := generator.NewConfig(configTemplate)
-	port, err := findExporterPort()
+	port, err := findExporterPort(vars)
 	panicErr(err)
 	definitionContent, err := definitions.ReadFile(definitionFileName)
 	panicErr(err)
@@ -103,7 +106,7 @@ func printVersion() {
 		buildDate)
 }
 
-func findExporterPort() (int, error) {
+func findExporterPort(vars map[string]interface{}) (int, error) {
 	cfgPort := ""
 	if cfg, ok := vars[args.PrefixCfg]; ok {
 		cfgVars := cfg.(map[string]interface{})

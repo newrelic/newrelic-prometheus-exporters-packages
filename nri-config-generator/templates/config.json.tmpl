@@ -12,6 +12,10 @@
                 "standalone": false,
                 {{set "verbose" .env.VERBOSE}}
                 {{.entity_definitions}},
+                "integration_metadata":{
+                    "version": "{{.integration_version}}",
+                    "name": "{{.integration}}"
+                },
                 "targets": [
                     {
                         "urls": [
@@ -19,7 +23,6 @@
                         ]
                     }
                 ]
-
             }
         },
         {{.exporter_definition}}

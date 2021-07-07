@@ -18,8 +18,9 @@ import (
 )
 
 const (
-	testIntegration = "powerdns"
-	exporterPort    = "9120"
+	testIntegrationVersion = "test-tag"
+	testIntegration        = "powerdns"
+	exporterPort           = "9120"
 )
 
 const configPDNSTemplate = `
@@ -36,6 +37,10 @@ const configPDNSTemplate = `
         "config": {
           "standalone": false,
          {{ or .pomiVerbose "" }}
+		  "integration_metadata":{
+			"name": "powerdns",
+			"version": "test-tag"
+		  },
           "entity_definitions": [
 			{
 				"conditions": [{
@@ -100,7 +105,7 @@ func TestMain(m *testing.M) {
 	if err := fetchDefinitions(testIntegration); err != nil {
 		panic(err.Error())
 	}
-	if err := buildGeneratorConfig(testIntegration); err != nil {
+	if err := buildGeneratorConfig(testIntegration, testIntegrationVersion); err != nil {
 		panic(err.Error())
 	}
 	exitVal := m.Run()
