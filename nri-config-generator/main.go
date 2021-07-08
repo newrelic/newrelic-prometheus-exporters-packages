@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -9,6 +10,9 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/mitchellh/mapstructure"
+
+	sdkv4 "github.com/newrelic/infra-integrations-sdk/v4/args"
 	"github.com/newrelic/infra-integrations-sdk/v4/log"
 	"github.com/newrelic/nri-config-generator/args"
 	"github.com/newrelic/nri-config-generator/generator"
@@ -23,10 +27,12 @@ const (
 	varSynthesisDefinitions = "entity_definitions"
 	varExporterDefinition   = "exporter_definition"
 	varExporterBinaryPath   = "exporter_binary_path"
-	sleepTime               = 30 * time.Second
-	definitionFileName      = "definitions/definitions.yml"
+	varMetricTransformation = "transformations"
 	nixExportsBinPath       = "/usr/local/prometheus-exporters/bin"
 	winExportsBinPath       = "C:\\Program Files\\Prometheus-exporters\\bin"
+	definitionFileName      = "definitions/definitions.yml"
+	emptyMap                = "{}"
+	sleepTime               = 30 * time.Second
 )
 
 var (
@@ -43,17 +49,21 @@ var (
 )
 
 func main() {
-	vars := map[string]interface{}{
-		varIntegrationName:    integration,
-		varIntegrationVersion: integrationVersion,
+
+	al := &args.ArgumentList{}
+	err := sdkv4.SetupArgs(al)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	al, err := args.PopulateVars(vars)
-	panicErr(err)
 	if al.ShowVersion {
-		printVersion()
-		os.Exit(0)
+		fmt.Printf(
+			"New Relic %s integration Version: %s, Platform: %s, GoVersion: %s, GitCommit: %s, BuildDate: %s\n",
+			integration, integrationVersion, fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
+			runtime.Version(), gitCommit, buildDate)
+		return
 	}
+<<<<<<< HEAD
 	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
 	content, err := integrationTemplate.ReadFile(integrationTemplatePattern)
 	panicErr(err)
@@ -72,17 +82,56 @@ func main() {
 	panicErr(err)
 	vars[varExporterBinaryPath] = prometheusExportersBinPath(exporterName)
 	vars[varSynthesisDefinitions] = definitions
+=======
+
+	vars, err := args.GetVars(al)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	exporterGenerator, err := getExporterGenerator(integration)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	configGenerator, err := getConfigGenerator()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	entityDefinitions, err := getExporterDefinitions()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	transformations, err := getMetricTransformations(vars)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	port, err := findExporterPort(vars)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+>>>>>>> feat(sample): added transformation implamentation and refactor
 	vars[varExporterPort] = fmt.Sprintf("%v", port)
-	exporterText, err := exporterGenerator.Generate(vars)
-	panicErr(err)
-	vars[varExporterDefinition] = exporterText
-	output, err := configGenerator.Generate(vars)
-	panicErr(err)
+	vars[varSynthesisDefinitions] = entityDefinitions
+	vars[varMetricTransformation] = transformations
+	vars[varIntegrationName] = integration
+	vars[varIntegrationVersion] = integrationVersion
+
+	output, err := generateOutput(exporterGenerator, configGenerator, vars)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println(output)
 	// In this case the integration is completed after fetching once the data from the exporter
 	if al.ShortRunning {
-		os.Exit(0)
+		return
 	}
+
 	httport.SetPrometheusExporterPort("localhost", port)
 	// long running execution. This is a long running execution because in case of the export port was auto-generated (a random port inc ase
 	// of the exporter_port is not provided by configuration) we need to keep this port for the exporter.
@@ -91,25 +140,80 @@ func main() {
 		fmt.Println("{}")
 		fmt.Println(output)
 	}
-
 }
 
-func panicErr(err error) {
+func generateOutput(exporterGenerator generator.Exporter, configGenerator generator.Config, vars map[string]interface{}) (string, error) {
+	exporterText, err := exporterGenerator.Generate(vars)
 	if err != nil {
-		log.Error(err.Error())
-		os.Exit(1)
+		return "", fmt.Errorf("exporterGenerator.Generate: %w", err)
 	}
+
+	vars[varExporterDefinition] = exporterText
+
+	output, err := configGenerator.Generate(vars)
+	if err != nil {
+		return "", fmt.Errorf("configGenerator.Generate: %w", err)
+	}
+
+	return output, err
 }
 
-func printVersion() {
-	fmt.Printf(
-		"New Relic %s integration Version: %s, Platform: %s, GoVersion: %s, GitCommit: %s, BuildDate: %s\n",
-		integration,
-		integrationVersion,
-		fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
-		runtime.Version(),
-		gitCommit,
-		buildDate)
+func getExporterDefinitions() (string, error) {
+	definitionContent, err := definitions.ReadFile(definitionFileName)
+	if err != nil {
+		return "", fmt.Errorf("ReadFile: %s, %w", definitionFileName, err)
+	}
+
+	definitions, err := synthesis.ProcessSynthesisDefinitions(definitionContent)
+	if err != nil {
+		return "", fmt.Errorf("ProcessSynthesisDefinitions, %w", err)
+	}
+
+	return definitions, nil
+}
+
+func getConfigGenerator() (generator.Config, error) {
+	configTemplate, err := loadConfigTemplate()
+	if err != nil {
+		return nil, fmt.Errorf("loadConfigTemplate, %w", err)
+	}
+	configGenerator := generator.NewConfig(configTemplate)
+	return configGenerator, nil
+}
+
+func getExporterGenerator(integrationName string) (generator.Exporter, error) {
+	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integrationName)
+	content, err := integrationTemplate.ReadFile(integrationTemplatePattern)
+	if err != nil {
+		return nil, fmt.Errorf("readingfile %s, %w", integrationTemplatePattern, err)
+	}
+
+	integrationTemplate, err := loadIntegrationTemplate(content)
+	if err != nil {
+		return nil, fmt.Errorf("loadIntegrationTemplate, %w", err)
+	}
+	exporterGenerator := generator.NewExporter(integrationName, integrationTemplate)
+	return exporterGenerator, nil
+}
+
+func getMetricTransformations(vars map[string]interface{}) (string, error) {
+	if cfg, ok := vars[args.PrefixCfg]; ok {
+		cfgVars := cfg.(map[string]interface{})
+		if metricTransformations, ok := cfgVars[varMetricTransformation]; ok {
+
+			mT := &[]ProcessingRule{}
+			err := mapstructure.Decode(metricTransformations, mT)
+			if err != nil {
+				return "", fmt.Errorf("mapstructure decoding: '%v', %w", metricTransformations, err)
+			}
+			pBytes, err := json.Marshal(*mT)
+			if err != nil {
+				return "", fmt.Errorf("marshalling: '%v', %w", mT, err)
+			}
+			return string(pBytes), nil
+		}
+	}
+	return emptyMap, nil
 }
 
 func findExporterPort(vars map[string]interface{}) (int, error) {
@@ -146,9 +250,24 @@ func loadConfigTemplate() (*template.Template, error) {
 	return t, nil
 }
 
+<<<<<<< HEAD
 func prometheusExportersBinPath(name string) string {
 	if runtime.GOOS == "windows" {
 		return filepath.Join(winExportsBinPath, fmt.Sprintf("%s.exe", name))
 	}
 	return filepath.Join(nixExportsBinPath, name)
+=======
+// ProcessingRule is subset of the rules supported by nri-prometheus.
+type ProcessingRule struct {
+	IgnoreMetrics []IgnoreRule `mapstructure:"ignore_metrics" json:"ignore_metrics,omitempty"`
+}
+
+// IgnoreRule skips for processing metrics that match any of the Prefixes.
+// Metrics that match any of the Except are never skipped.
+// If Prefixes is empty and Except is not, then all metrics that do not
+// match Except will be skipped.
+type IgnoreRule struct {
+	Prefixes []string `mapstructure:"prefixes" json:"prefixes,omitempty"`
+	Except   []string `mapstructure:"except" json:"except,omitempty"`
+>>>>>>> feat(sample): added transformation implamentation and refactor
 }

@@ -3,7 +3,6 @@ package args
 import (
 	"path/filepath"
 
-	"github.com/newrelic/infra-integrations-sdk/v4/args"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 )
@@ -26,11 +25,7 @@ type ArgumentList struct {
 	ShortRunning bool   `default:"false" help:"By default execution is long running, but this can be override"`
 }
 
-func argVars(c *ArgumentList) (map[string]interface{}, error) {
-	err := args.SetupArgs(c)
-	if err != nil {
-		return nil, err
-	}
+func getConfig(c *ArgumentList) (map[string]interface{}, error) {
 	configs := make(map[string]interface{})
 	if c.ConfigPath != "" {
 		cfg := viper.New()
@@ -38,7 +33,7 @@ func argVars(c *ArgumentList) (map[string]interface{}, error) {
 		cfg.AddConfigPath(filepath.Dir(c.ConfigPath))
 		cfg.SetConfigName(filepath.Base(c.ConfigPath))
 		setViperDefaults(cfg)
-		err = cfg.ReadInConfig()
+		err := cfg.ReadInConfig()
 		if err != nil {
 			return nil, errors.Wrap(err, "could not read configuration")
 		}
