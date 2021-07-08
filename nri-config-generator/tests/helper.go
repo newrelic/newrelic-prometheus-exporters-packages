@@ -40,7 +40,7 @@ func copyIntegrationTemplate(integration string) error {
 	targetPath := filepath.Join(rootDir(), "templates", fileName)
 	return ioutil.WriteFile(targetPath, bytesRead, 0755)
 }
-func buildGeneratorConfig(integration string) error {
+func buildGeneratorConfig(integration string, integrationVersion string) error {
 	if err := copyIntegrationTemplate(integration); err != nil {
 		return err
 	}
@@ -50,6 +50,7 @@ func buildGeneratorConfig(integration string) error {
 			"make",
 			"compile",
 			fmt.Sprintf("PACKAGE_NAME=%s", integration),
+			fmt.Sprintf("VERSION=%s", integrationVersion),
 		},
 		Dir: rootDir(),
 	}
