@@ -9,3 +9,12 @@ integrations:
 
         # API key used to connect to the PowerDNS server
         # api_key: ****-***-*****
+
+        transformations:
+          - description: "General processing rules"
+            ignore_metrics:
+            - prefixes:
+              - "go_"
+              - "process_"
+
+
