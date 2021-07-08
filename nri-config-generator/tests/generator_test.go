@@ -37,10 +37,10 @@ const configPDNSTemplate = `
         "config": {
           "standalone": false,
          {{ or .pomiVerbose "" }}
-		  "integration_metadata":{
-			"name": "powerdns",
-			"version": "test-tag"
-		  },
+          "integration_metadata":{
+            "name": "powerdns",
+            "version": "test-tag"
+          },
           "entity_definitions": [
 			{
 				"conditions": [{
