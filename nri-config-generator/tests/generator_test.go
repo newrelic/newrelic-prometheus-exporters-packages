@@ -42,33 +42,57 @@ const configPDNSTemplate = `
             "name": "nri-powerdns",
             "version": "test-tag"
           },
+          "transformations": [
+            {
+              "ignore_metrics": [
+                {
+                  "prefixes": [
+                    "kube_daemonset_"
+                  ]
+                }
+              ]
+            },
+            {
+              "ignore_metrics": [
+                {
+                  "prefixes": [
+                    "kube_daemonset_"
+                  ]
+                }
+              ]
+            }
+          ],
           "entity_definitions": [
-			{
-				"conditions": [{
-					"attribute":"metricName",
-					"prefix":"powerdns_authoritative_"
-				}],
-				"identifier":"targetName", 
-				"name":"targetName",
-				"tags": {
-					"clusterName":null,
-					"targetName":null
-				},
-				"type":"POWERDNS_AUTHORITATIVE"
-			},
-			{
-				"conditions": [{
-					"attribute":"metricName",
-					"prefix":"powerdns_recursor_"
-				}],
-				"identifier":"targetName", 
-				"name":"targetName",
-				"tags": {
-					"clusterName":null,
-					"targetName":null
-				},
-				"type":"POWERDNS_RECURSOR"
-			}
+            {
+              "conditions": [
+                {
+                  "attribute": "metricName",
+                  "prefix": "powerdns_authoritative_"
+                }
+              ],
+              "identifier": "targetName",
+              "name": "targetName",
+              "tags": {
+                "clusterName": null,
+                "targetName": null
+              },
+              "type": "POWERDNS_AUTHORITATIVE"
+            },
+            {
+              "conditions": [
+                {
+                  "attribute": "metricName",
+                  "prefix": "powerdns_recursor_"
+                }
+              ],
+              "identifier": "targetName",
+              "name": "targetName",
+              "tags": {
+                "clusterName": null,
+                "targetName": null
+              },
+              "type": "POWERDNS_RECURSOR"
+            }
           ],
           "targets": [
             {
@@ -109,7 +133,7 @@ func TestMain(m *testing.M) {
 		panic(err.Error())
 	}
 	if err := buildGeneratorConfig(testIntegration, testIntegrationVersion); err != nil {
-		panic(err.Error())
+		log.Fatal(err)
 	}
 	exitVal := m.Run()
 	clean()
@@ -122,7 +146,7 @@ Happy path
 func TestGeneratorConfig(t *testing.T) {
 	templateVars := getTemplateVars(exporterPort)
 	expectedResponse := executeTemplate(t, pdnsTemplate, templateVars)
-	envVars := getConfigGeneratorEnvVars("config")
+	envVars := getConfigGeneratorEnvVars("config.yml")
 	stdout, err := callGeneratorConfig(testIntegration, defaultArgs, envVars)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, stdout)
@@ -144,7 +168,7 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 			panic(err)
 		}
 	}()
-	envVars := getConfigGeneratorEnvVars("config")
+	envVars := getConfigGeneratorEnvVars("config.yml")
 	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
 	assert.NotEmpty(t, stdout)
 	assignedPort, err := getAssignedPortToPowerDNSIntegration(stdout)
@@ -160,7 +184,7 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 The env var interval is provided
 */
 func TestGeneratorConfigWithInterval(t *testing.T) {
-	envVars := getConfigGeneratorEnvVars("config")
+	envVars := getConfigGeneratorEnvVars("config.yml")
 	envVars = append(envVars, "interval=10s")
 	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
 	assert.NotEmpty(t, stdout)
@@ -176,7 +200,7 @@ func TestGeneratorConfigWithInterval(t *testing.T) {
 The verbose mode of the Agent gets propagated to exporter and prometheus
 */
 func TestGeneratorVerboseMode(t *testing.T) {
-	envVars := getConfigGeneratorEnvVars("config")
+	envVars := getConfigGeneratorEnvVars("config.yml")
 	envVars = append(envVars, "VERBOSE=1")
 	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
 	assert.NotEmpty(t, stdout)

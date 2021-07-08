@@ -17,8 +17,10 @@ func getTemplateVars(exporterPort string) map[string]string {
 }
 
 func getConfigGeneratorEnvVars(configFileName string) []string {
+
+	path := filepath.Join(rootDir(), "tests", "testdata", configFileName)
 	return []string{
-		fmt.Sprintf("CONFIG_PATH=%s", filepath.Join(rootDir(), "tests", "testdata", fmt.Sprintf("%s.yml", configFileName))),
+		fmt.Sprintf("CONFIG_PATH=%s", path),
 	}
 }
 
