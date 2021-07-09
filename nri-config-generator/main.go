@@ -4,7 +4,6 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
-	"os"
 	"path/filepath"
 	"runtime"
 	"text/template"
@@ -31,8 +30,8 @@ const (
 	nixExportsBinPath       = "/usr/local/prometheus-exporters/bin"
 	winExportsBinPath       = "C:\\Program Files\\Prometheus-exporters\\bin"
 	definitionFileName      = "definitions/definitions.yml"
-	emptyMap                = "{}"
 	sleepTime               = 30 * time.Second
+	emptyMap                = "[]"
 )
 
 var (
@@ -63,32 +62,12 @@ func main() {
 			runtime.Version(), gitCommit, buildDate)
 		return
 	}
-<<<<<<< HEAD
-	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
-	content, err := integrationTemplate.ReadFile(integrationTemplatePattern)
-	panicErr(err)
-	integrationTemplate, err := loadIntegrationTemplate(content)
-	panicErr(err)
-	exporterName := fmt.Sprintf("%s-exporter", integration)
-	exporterGenerator := generator.NewExporter(exporterName, integrationTemplate)
-	configTemplate, err := loadConfigTemplate()
-	panicErr(err)
-	configGenerator := generator.NewConfig(configTemplate)
-	port, err := findExporterPort(vars)
-	panicErr(err)
-	definitionContent, err := definitions.ReadFile(definitionFileName)
-	panicErr(err)
-	definitions, err := synthesis.ProcessSynthesisDefinitions(definitionContent)
-	panicErr(err)
-	vars[varExporterBinaryPath] = prometheusExportersBinPath(exporterName)
-	vars[varSynthesisDefinitions] = definitions
-=======
 
 	vars, err := args.GetVars(al)
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	exporterName := fmt.Sprintf("%s-exporter", integration)
 	exporterGenerator, err := getExporterGenerator(integration)
 	if err != nil {
 		log.Fatal(err)
@@ -114,7 +93,7 @@ func main() {
 		log.Fatal(err)
 	}
 
->>>>>>> feat(sample): added transformation implamentation and refactor
+	vars[varExporterBinaryPath] = prometheusExportersBinPath(exporterName)
 	vars[varExporterPort] = fmt.Sprintf("%v", port)
 	vars[varSynthesisDefinitions] = entityDefinitions
 	vars[varMetricTransformation] = transformations
@@ -181,8 +160,8 @@ func getConfigGenerator() (generator.Config, error) {
 	return configGenerator, nil
 }
 
-func getExporterGenerator(integrationName string) (generator.Exporter, error) {
-	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integrationName)
+func getExporterGenerator(exporterName string) (generator.Exporter, error) {
+	integrationTemplatePattern := fmt.Sprintf("templates/%s.json.tmpl", integration)
 	content, err := integrationTemplate.ReadFile(integrationTemplatePattern)
 	if err != nil {
 		return nil, fmt.Errorf("readingfile %s, %w", integrationTemplatePattern, err)
@@ -192,7 +171,7 @@ func getExporterGenerator(integrationName string) (generator.Exporter, error) {
 	if err != nil {
 		return nil, fmt.Errorf("loadIntegrationTemplate, %w", err)
 	}
-	exporterGenerator := generator.NewExporter(integrationName, integrationTemplate)
+	exporterGenerator := generator.NewExporter(exporterName, integrationTemplate)
 	return exporterGenerator, nil
 }
 
@@ -250,13 +229,13 @@ func loadConfigTemplate() (*template.Template, error) {
 	return t, nil
 }
 
-<<<<<<< HEAD
 func prometheusExportersBinPath(name string) string {
 	if runtime.GOOS == "windows" {
 		return filepath.Join(winExportsBinPath, fmt.Sprintf("%s.exe", name))
 	}
 	return filepath.Join(nixExportsBinPath, name)
-=======
+}
+
 // ProcessingRule is subset of the rules supported by nri-prometheus.
 type ProcessingRule struct {
 	IgnoreMetrics []IgnoreRule `mapstructure:"ignore_metrics" json:"ignore_metrics,omitempty"`
@@ -269,5 +248,4 @@ type ProcessingRule struct {
 type IgnoreRule struct {
 	Prefixes []string `mapstructure:"prefixes" json:"prefixes,omitempty"`
 	Except   []string `mapstructure:"except" json:"except,omitempty"`
->>>>>>> feat(sample): added transformation implamentation and refactor
 }
