@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"os"
+	"path/filepath"
 	"runtime"
 	"text/template"
 	"time"
@@ -21,8 +22,10 @@ const (
 	varExporterPort         = "exporter_port"
 	varSynthesisDefinitions = "entity_definitions"
 	varExporterDefinition   = "exporter_definition"
+	varExporterBinaryPath   = "exporter_binary_path"
 	sleepTime               = 30 * time.Second
 	definitionFileName      = "definitions/definitions.yml"
+	nixExportsBinPath       = "/usr/local/prometheus-exporters/bin"
 )
 
 var (
@@ -55,7 +58,8 @@ func main() {
 	panicErr(err)
 	integrationTemplate, err := loadIntegrationTemplate(content)
 	panicErr(err)
-	exporterGenerator := generator.NewExporter(integration, integrationTemplate)
+	exporterName := fmt.Sprintf("%s-exporter", integration)
+	exporterGenerator := generator.NewExporter(exporterName, integrationTemplate)
 	configTemplate, err := loadConfigTemplate()
 	panicErr(err)
 	configGenerator := generator.NewConfig(configTemplate)
@@ -65,6 +69,7 @@ func main() {
 	panicErr(err)
 	definitions, err := synthesis.ProcessSynthesisDefinitions(definitionContent)
 	panicErr(err)
+	vars[varExporterBinaryPath] = prometheusExportersBinPath(exporterName)
 	vars[varSynthesisDefinitions] = definitions
 	vars[varExporterPort] = fmt.Sprintf("%v", port)
 	exporterText, err := exporterGenerator.Generate(vars)
@@ -138,4 +143,11 @@ func loadConfigTemplate() (*template.Template, error) {
 		return nil, err
 	}
 	return t, nil
+}
+
+func prometheusExportersBinPath(name string) string {
+	if runtime.GOOS == "windows" {
+		return filepath.Join("C:\\Program Files\\Prometheus-exporters\\bin", fmt.Sprintf("%s.exe", name))
+	}
+	return filepath.Join(nixExportsBinPath, name)
 }

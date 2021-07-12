@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"text/template"
 
@@ -19,7 +20,7 @@ import (
 
 const (
 	testIntegrationVersion = "test-tag"
-	testIntegration        = "powerdns"
+	testIntegration        = "nri-powerdns"
 	exporterPort           = "9120"
 )
 
@@ -27,7 +28,7 @@ const configPDNSTemplate = `
 {
   "config_protocol_version": "1",
   "action": "register_config",
-  "config_name": "cfg-powerdns",
+  "config_name": "cfg-nri-powerdns",
   "config": {
     "variables": {},
     "integrations": [
@@ -38,7 +39,7 @@ const configPDNSTemplate = `
           "standalone": false,
          {{ or .pomiVerbose "" }}
           "integration_metadata":{
-            "name": "powerdns",
+            "name": "nri-powerdns",
             "version": "test-tag"
           },
           "entity_definitions": [
@@ -79,17 +80,19 @@ const configPDNSTemplate = `
         }
       },
       {
-        "name": "prometheus-exporter-powerdns",
-        "exec": [
-          "/usr/local/prometheus-exporters/bin/powerdns-exporter"
-        ],
+        "name": "nri-powerdns-exporter",
         "timeout": 0,
-        "arguments": {
-          "api-url": "http://powerdns:8080/api/v1/",
-          "api-key": "11111-222222-33333-44444",
-          "listen-address": ":{{.exporterPort}}",
-          "metric-path": "/metrics"
-        }
+        "exec": [
+          "/usr/local/prometheus-exporters/bin/nri-powerdns-exporter",
+          "--api-url",
+          "http://powerdns:8080/api/v1/",
+          "--api-key",
+          "11111-222222-33333-44444",
+          "--listen-address",
+          ":{{.exporterPort}}",
+          "--metric-path",
+          "/metrics"
+        ]
       }
     ]
   }
@@ -201,11 +204,19 @@ func getAssignedPortToPowerDNSIntegration(content []byte) (string, error) {
 	if len(integrations) != 2 {
 		return "", errors.New("missing attribute config/integrations[1]")
 	}
-	args, ok := integrations[1].(map[string]interface{})["arguments"].(map[string]interface{})
+	args, ok := integrations[1].(map[string]interface{})["exec"].([]interface{})
 	if !ok {
 		return "", errors.New("missing attribute config/integrations[1].env")
 	}
-	return fmt.Sprintf("%v", args["listen-address"])[1:], nil
+
+	for i, arg := range args {
+		if fmt.Sprintf("%v", arg) == "--listen-address" {
+			port := strings.Trim(fmt.Sprintf("%v", args[i+1]), ":")
+			return port, nil
+		}
+	}
+
+	return "", fmt.Errorf("missing attribute port")
 }
 
 func executeTemplate(t *testing.T, tpl *template.Template, vars map[string]string) string {
