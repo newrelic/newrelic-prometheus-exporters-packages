@@ -68,7 +68,7 @@ func main() {
 		log.Fatal(err)
 	}
 	exporterName := fmt.Sprintf("%s-exporter", integration)
-	exporterGenerator, err := getExporterGenerator(integration)
+	exporterGenerator, err := getExporterGenerator(exporterName)
 	if err != nil {
 		log.Fatal(err)
 	}
