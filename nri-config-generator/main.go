@@ -26,6 +26,7 @@ const (
 	sleepTime               = 30 * time.Second
 	definitionFileName      = "definitions/definitions.yml"
 	nixExportsBinPath       = "/usr/local/prometheus-exporters/bin"
+	winExportsBinPath       = "C:\\Program Files\\Prometheus-exporters\\bin"
 )
 
 var (
@@ -147,7 +148,7 @@ func loadConfigTemplate() (*template.Template, error) {
 
 func prometheusExportersBinPath(name string) string {
 	if runtime.GOOS == "windows" {
-		return filepath.Join("C:\\Program Files\\Prometheus-exporters\\bin", fmt.Sprintf("%s.exe", name))
+		return filepath.Join(winExportsBinPath, fmt.Sprintf("%s.exe", name))
 	}
 	return filepath.Join(nixExportsBinPath, name)
 }
