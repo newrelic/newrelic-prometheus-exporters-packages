@@ -13,7 +13,6 @@ import (
 
 	sdkv4 "github.com/newrelic/infra-integrations-sdk/v4/args"
 	"github.com/newrelic/infra-integrations-sdk/v4/log"
-	"github.com/newrelic/nri-config-generator/args"
 	"github.com/newrelic/nri-config-generator/generator"
 	"github.com/newrelic/nri-config-generator/httport"
 	"github.com/newrelic/nri-config-generator/synthesis"
@@ -49,7 +48,7 @@ var (
 
 func main() {
 
-	al := &args.ArgumentList{}
+	al := &config.ArgumentList{}
 	err := sdkv4.SetupArgs(al)
 	if err != nil {
 		log.Fatal(err)
@@ -63,7 +62,7 @@ func main() {
 		return
 	}
 
-	vars, err := args.GetVars(al)
+	vars, err := config.GetVars(al)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -176,11 +175,11 @@ func getExporterGenerator(exporterName string) (generator.Exporter, error) {
 }
 
 func getMetricTransformations(vars map[string]interface{}) (string, error) {
-	if cfg, ok := vars[args.PrefixCfg]; ok {
+	if cfg, ok := vars[config.PrefixCfg]; ok {
 		cfgVars := cfg.(map[string]interface{})
 		if metricTransformations, ok := cfgVars[varMetricTransformation]; ok {
 
-			mT := &[]ProcessingRule{}
+			mT := &[]config.ProcessingRule{}
 			err := mapstructure.Decode(metricTransformations, mT)
 			if err != nil {
 				return "", fmt.Errorf("mapstructure decoding: '%v', %w", metricTransformations, err)
@@ -197,7 +196,7 @@ func getMetricTransformations(vars map[string]interface{}) (string, error) {
 
 func findExporterPort(vars map[string]interface{}) (int, error) {
 	cfgPort := ""
-	if cfg, ok := vars[args.PrefixCfg]; ok {
+	if cfg, ok := vars[config.PrefixCfg]; ok {
 		cfgVars := cfg.(map[string]interface{})
 		if cfgPortPtr := cfgVars[varExporterPort]; cfgPortPtr != nil {
 			cfgPort = fmt.Sprintf("%v", cfgPortPtr)
@@ -234,18 +233,4 @@ func prometheusExportersBinPath(name string) string {
 		return filepath.Join(winExportsBinPath, fmt.Sprintf("%s.exe", name))
 	}
 	return filepath.Join(nixExportsBinPath, name)
-}
-
-// ProcessingRule is subset of the rules supported by nri-prometheus.
-type ProcessingRule struct {
-	IgnoreMetrics []IgnoreRule `mapstructure:"ignore_metrics" json:"ignore_metrics,omitempty"`
-}
-
-// IgnoreRule skips for processing metrics that match any of the Prefixes.
-// Metrics that match any of the Except are never skipped.
-// If Prefixes is empty and Except is not, then all metrics that do not
-// match Except will be skipped.
-type IgnoreRule struct {
-	Prefixes []string `mapstructure:"prefixes" json:"prefixes,omitempty"`
-	Except   []string `mapstructure:"except" json:"except,omitempty"`
 }

@@ -1,4 +1,4 @@
-package args
+package config
 
 import (
 	"path/filepath"
@@ -43,4 +43,18 @@ func getConfig(c *ArgumentList) (map[string]interface{}, error) {
 	}
 
 	return configs, nil
+}
+
+// ProcessingRule is subset of the rules supported by nri-prometheus.
+type ProcessingRule struct {
+	IgnoreMetrics []IgnoreRule `mapstructure:"ignore_metrics" json:"ignore_metrics,omitempty"`
+}
+
+// IgnoreRule skips for processing metrics that match any of the Prefixes.
+// Metrics that match any of the Except are never skipped.
+// If Prefixes is empty and Except is not, then all metrics that do not
+// match Except will be skipped.
+type IgnoreRule struct {
+	Prefixes []string `mapstructure:"prefixes" json:"prefixes,omitempty"`
+	Except   []string `mapstructure:"except" json:"except,omitempty"`
 }
