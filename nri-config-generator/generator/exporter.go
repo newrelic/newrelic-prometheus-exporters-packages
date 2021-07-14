@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var integrationDetailsAttributes = `"name": "%s-exporter","exec": ["%s"],"timeout": 0,`
+var integrationDetailsAttributes = `"name": "%s","timeout": 0,`
 
 type Exporter interface {
 	Generate(vars map[string]interface{}) (string, error)
@@ -21,9 +21,9 @@ type exporter struct {
 }
 
 func NewExporter(name string, template *template.Template) Exporter {
-	exporterExec := prometheusExportersBinPath(name)
+
 	return &exporter{
-		details:  fmt.Sprintf(integrationDetailsAttributes, name, exporterExec),
+		details:  fmt.Sprintf(integrationDetailsAttributes, name),
 		template: template,
 	}
 }
