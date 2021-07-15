@@ -29,7 +29,3 @@ func Test_IsPrometheusExporterRunning(t *testing.T) {
 		}
 	}()
 }
-
-func launchOn(port int) {
-
-}

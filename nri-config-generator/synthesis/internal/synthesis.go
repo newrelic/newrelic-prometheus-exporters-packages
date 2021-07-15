@@ -2,12 +2,10 @@ package internal
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 const (
 	attType = "type"
-	root    = "entity_definitions"
 )
 
 type Definition []synthesis
@@ -27,8 +25,8 @@ func (s synthesis) withDetails(attributes map[string]interface{}) synthesis {
 	return s
 }
 
-func (d *Definition) AddEntry(sType string, details map[string]interface{}){
-	*d = append(*d,newSynthesis(sType).withDetails(details))
+func (d *Definition) AddEntry(sType string, details map[string]interface{}) {
+	*d = append(*d, newSynthesis(sType).withDetails(details))
 }
 
 func (d *Definition) ToJSON() (string, error) {
@@ -36,5 +34,5 @@ func (d *Definition) ToJSON() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("\"%s\":%s", root, string(b)), nil
+	return string(b), nil
 }

@@ -1,4 +1,4 @@
-package args
+package config
 
 import (
 	"os"
@@ -12,12 +12,15 @@ const (
 	envConfigPath = "CONFIG_PATH"
 )
 
-func PopulateVars(vars map[string]interface{}) (al *ArgumentList, err error) {
-	al = &ArgumentList{}
+func GetVars(al *ArgumentList) (map[string]interface{}, error) {
+	vars := map[string]interface{}{}
+	var err error
+
 	vars[prefixEnv] = envVars()
 	vars[prefixCLI] = cliVars()
-	vars[PrefixCfg], err = argVars(al)
-	return
+	vars[PrefixCfg], err = getConfig(al)
+
+	return vars, err
 }
 
 func envVars() map[string]string {
