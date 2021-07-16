@@ -22,7 +22,7 @@ test:
 
 integration-test:
 	@echo "=== nri-config-generator === [ integration-test ]: running integration tests..."
-	@go test -v -tags=integration ./tests/.
+	@go test -v -tags=integration ./integration-tests/.
 
 PACKAGE_NAME?=
 VERSION?=dev

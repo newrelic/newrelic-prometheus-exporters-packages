@@ -23,3 +23,21 @@ func Test_ProcessSynthesisDefinitions(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "[{\"conditions\":[{\"attribute\":\"metricName\",\"prefix\":\"redis_\"}],\"encodeIdentifierInGUID\":true,\"identifier\":\"targetName\",\"name\":\"targetName\",\"tags\":{\"clusterName\":null,\"targetName\":null},\"type\":\"REDIS\"}]", res)
 }
+
+func Test_DefinitionTOJSON(t *testing.T) {
+	expected := `[{"rules":[{"name":"rule1"},{"name":"rule2"}],"type":"type1"},{"name":"rule3","type":"type2"}]`
+	d := &Definition{}
+	d.addEntry("type1", map[string]interface{}{
+		"rules": []map[string]interface{}{
+			{"name": "rule1"},
+			{"name": "rule2"},
+		},
+	})
+	d.addEntry("type2", map[string]interface{}{
+		"name": "rule3",
+	})
+	result, err := d.ToJSON()
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+}
