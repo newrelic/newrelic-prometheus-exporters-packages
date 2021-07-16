@@ -2,23 +2,20 @@
 
 # Prometheus Exporter Packages
 
-This project aims to provide a better installation experience for Prometheus exporters and configuration of `nri-prometheus`.
-It packages several open-source Prometheus exporters as native operating system packages together with a binary that 
-translates the input data the specific format needed by the exporter and `nri-prometheus` and triggers their execution.
+This project aims to provide a better installation and configuration experience for Prometheus exporters of `nri-prometheus`.
+It packages several open-source Prometheus exporters together with a binary that translates the input data into
+the specific format needed by the exporters and the `nri-prometheus` integration triggering their execution.
 
 All native packages are available for installation in New Relic's public repositories.
 
-## Prometheus based integrations Basic architecture
+## Basic architecture of prometheus based integrations 
 
-With the SDKv4 the agent performs the entity registration.
+With respect to "standard" integrations the ones based on prometheus do not collect the data anymore from
+the service, but they leverages the configuration protocol in order to register both `nri-prometheus` and an exporter
+(if the service does not expose directly prometheus metrics).
 
-With respect to integrations not based on prometheus exporters the integration does not collect the data anymore from the service,
-but it leverages the configuration protocol in order to register the exporter 
-(if the service does not expose directly prometheus metrics) 
-and nri-prometheus in “standalone=false“ mode.
-
-This repository provides a package to install the exporter and an additional binary used to configure and trigger the 
-execution of both `nri-prometheus` and the exporter
+This repository provides a way to create packages to install the exporters, and an additional binary used to configure 
+and trigger the execution of both `nri-prometheus` and the installed exporters.
 
 ![schema.png](schema.png)
 
@@ -50,29 +47,30 @@ sudo zypper install <exporter package name>
 
 ### nri-config-generator
 `nri-config-generator` folder contains all the code needed to build a binary capable to get as input the classical 
-user configuration and produce as json output a register protocol sample that will trigger in the agent the execution of:
- - `nri-prometheus` with the needed configuration (port, ignore rules, targetURL, etc).
+user configuration and as output a register protocol sample that will trigger in the agent the execution of:
+ - `nri-prometheus` with the needed configuration (port, ignore rules, targetURL, etc)
  - the exporter with the specific configuration needed. Note that this is not needed if the monitored technology is 
 exporting prometheus metrics natively.
 
-All the integrations share the same code since the different configuration are passed using the `//go:embed` directive.
+All the integrations share the same code since the different configurations are passed using the `//go:embed` directive.
+
 In particular the configuration injected are the 
  - [entity definition](https://github.com/newrelic/entity-definitions/tree/main/definitions) retrieved at build time and
 stored in a different repositories
- - the integration configuration stored under `./exporters/{exporterName`
+ - the integration configuration stored under `./exporters/{exporterName}`
 
 ### How can I track down different versions?
 
-Since there are a lot of moving pieces it can be confusing checking only nrONE data to understand what is actually
-running in the environment .
-Each metric will have the following common attributes:
+Since there are a lot of moving pieces it can be difficult data to understand what is actually
+running in the environment checking only newrelic.
+Each metric will be decorated with the following common attributes:
  - "instrumentation.name": "nri-powerdns", (name of integration)
  - "instrumentation.version": "0.0.2", (version of integration)
  - "collector.name": "infrastructure-agent",  (binary sending data to the backend, in standalone nri-prometue it is nri-prometheus itself)
  - "collector.version": "1.19.2", (version of collector)
 
-Version of nri-prometheus can be retrieved from the agent one since they are package together.
-Version of the exporter can be retrieved from the integration version for the same reason
+The version of nri-prometheus can be retrieved from the agent one since they are package together.
+The version of the exporter can be retrieved from the integration version for the same reason
 
 The data regarding the integrations are passed by configuration as metadata to nri-prometheus.
 
