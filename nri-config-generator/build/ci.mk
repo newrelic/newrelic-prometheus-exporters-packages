@@ -39,5 +39,5 @@ ci/integration-test: ci/deps
 		--name "nri-$(INTEGRATION)-validate" \
 		-v $(SRC_DIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
 		-w /go/src/github.com/newrelic/nri-$(INTEGRATION) \
-		$(BUILDER_TAG) go test -v -tags=integration ./tests/.
+		$(BUILDER_TAG) go test -v -tags=integration ./integration-tests/.
 

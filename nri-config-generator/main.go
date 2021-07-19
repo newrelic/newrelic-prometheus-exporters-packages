@@ -13,10 +13,10 @@ import (
 	sdkv4 "github.com/newrelic/infra-integrations-sdk/v4/args"
 	"github.com/newrelic/infra-integrations-sdk/v4/log"
 
-	"github.com/newrelic/nri-config-generator/config"
-	"github.com/newrelic/nri-config-generator/generator"
-	"github.com/newrelic/nri-config-generator/httport"
-	"github.com/newrelic/nri-config-generator/synthesis"
+	"github.com/newrelic/nri-config-generator/internal/config"
+	"github.com/newrelic/nri-config-generator/internal/generator"
+	"github.com/newrelic/nri-config-generator/internal/httport"
+	"github.com/newrelic/nri-config-generator/internal/synthesis"
 )
 
 const (
