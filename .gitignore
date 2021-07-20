@@ -44,3 +44,5 @@ nri-config-generator/templates/*
 dist
 
 tests/dist
+
+docs-specs-generator/output/*
