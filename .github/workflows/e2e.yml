@@ -15,7 +15,7 @@ jobs:
       - name: e2e-test
         uses: ivancorrales/newrelic-integration-e2e-action@master
         with:
-          spec_path: spec.yml
+          spec_path: exporters/powerdns/e2e_spec.yml
           license_key: ${{ secrets.LICENSE_KEY }}
           verbose: true
         env:
