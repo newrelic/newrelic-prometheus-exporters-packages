@@ -36,7 +36,7 @@ type MetricSpec struct {
 	DefaultResolution int         `yaml:"defaultResolution"`
 	Unit              string      `yaml:"unit"`
 	Description       string      `yaml:"-"`
-	Dimensions        []Dimension `yaml:"dimensions"`
+	Dimensions        []Dimension `yaml:"dimensions,omitempty"`
 }
 
 // InternalAttributes
