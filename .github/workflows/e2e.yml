@@ -1,8 +1,10 @@
 
 name: Experimental E2E action
 on:
-  push: ["feature/add-e2e-action"]
-  workflow_dispatch: ["feature/add-e2e-action"]
+  push:
+    branches: ["feature/add-e2e-action"]
+  workflow_dispatch:
+    branches: ["feature/add-e2e-action"]
 jobs:
   powerdns-e2e:
     name: E2E tests for powerdns
