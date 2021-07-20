@@ -46,7 +46,7 @@ func generateSpecFile(c Config, metrics []Metric, filename string) *Specs {
 			Name:              m.name,
 			Type:              string(m.metricType),
 			DefaultResolution: 15,
-			Unit:              "[TO_BE_FILLED with one of count, percent, seconds, milliseconds, microsenconds, bytes, countPerSecond, bytesPerSecond, bitPerSecond]",
+			Unit:              "count",
 			Description:       m.description,
 			Dimensions:        nil,
 		}

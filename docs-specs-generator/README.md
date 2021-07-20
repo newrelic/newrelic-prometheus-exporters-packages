@@ -12,7 +12,11 @@ Run it with `go run ./...` from the `docs-specs-generator` folder itself. The ou
 
 ### What is not automatized
 
- - You still need to indicate for each metric the unit in the spec file.
+ - You still need to indicate for each metric the unit in the spec file with one of 
+   ```
+   count, percent, seconds, milliseconds, microsenconds, bytes,
+   countPerSecond, bytesPerSecond, bitPerSecond
+   ```
 
  - You still need to add the description of the integration in the docs, it only helps to generate the metrics list with
    the description.   
