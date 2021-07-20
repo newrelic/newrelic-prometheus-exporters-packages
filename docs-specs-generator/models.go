@@ -31,11 +31,11 @@ type Specs struct {
 
 // Metrics
 type MetricSpec struct {
-	Name              string `yaml:"name"`
-	Type              string `yaml:"type"`
-	DefaultResolution int    `yaml:"defaultResolution"`
-	Unit              string `yaml:"unit"`
-	Description       string
+	Name              string      `yaml:"name"`
+	Type              string      `yaml:"type"`
+	DefaultResolution int         `yaml:"defaultResolution"`
+	Unit              string      `yaml:"unit"`
+	Description       string      `yaml:"-"`
 	Dimensions        []Dimension `yaml:"dimensions"`
 }
 
@@ -51,6 +51,7 @@ type Entity struct {
 	Metrics            []*MetricSpec       `yaml:"metrics"`
 	InternalAttributes []InternalAttribute `yaml:"internalAttributes"`
 	IgnoredAttributes  []string            `yaml:"ignoredAttributes"`
+	Tags               []string            `yaml:"tags"`
 }
 
 type Dimension struct {
