@@ -10,9 +10,8 @@ import (
 )
 
 var (
-	internalAttributes = []string{"newrelic.integrationName", "newrelic.integrationVersion", "newrelic.source", "newrelic.agentVersion",
-		"instrumentation.name", "instrumentation.provider", "instrumentation.version", "collector.name", "collector.version"}
-	ignoredAttributes = []string{"agentName", "coreCount", "processorCount", "systemMemoryBytes"}
+	internalAttributes = []string{"newrelic.integrationName", "newrelic.integrationVersion", "newrelic.source", "newrelic.agentVersion"}
+	ignoredAttributes  = []string{"agentName", "coreCount", "processorCount", "systemMemoryBytes"}
 )
 
 func generateSpecFile(c Config, metrics []Metric, filename string) *Specs {
