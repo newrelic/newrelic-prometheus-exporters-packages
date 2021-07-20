@@ -1,0 +1,22 @@
+
+name: Experimental E2E action
+on:
+  push: ["feature/add-e2e-action"]
+  workflow_dispatch: ["feature/add-e2e-action"]
+jobs:
+  powerdns-e2e:
+    name: E2E tests for powerdns
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout-repository
+        uses: actions/checkout@v2
+      - name: e2e-test
+        uses: ivancorrales/newrelic-integration-e2e-action@master
+        with:
+          spec_path: spec.yml
+          license_key: ${{ secrets.LICENSE_KEY }}
+          verbose: true
+        env:
+          ORACLE_PWD: ${{ secrets.SECRET_DEMO }}
+
+

@@ -1,0 +1,18 @@
+description: |
+  End-to-end tests for PowerDNS integration
+
+scenarios:
+  - description: |
+      This scenario will verify that metrics froms PDNS authoritative
+      are correcly collected.
+    integrations:
+      - name: nri-powerdns
+        path: exporters/powerdns/target/bin/nri-powerdns
+        config:
+          powerdns_url: http://pdns-authoritative:8081/api/v1/
+          exporter_port: 9120
+          api_key: secret-authoriative
+
+
+
+
