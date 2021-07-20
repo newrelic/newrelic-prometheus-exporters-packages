@@ -1,4 +1,4 @@
-integrationName: nri-powerdns
+integrationName: powerdns
 humanReadableIntegrationName: PowerDNS
 definitions:
   - type: POWERDNS_AUTHORITATIVE

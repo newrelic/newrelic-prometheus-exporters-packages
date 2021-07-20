@@ -56,7 +56,12 @@ func generateSpecFile(c Config, metrics []Metric, filename string) *Specs {
 				Type: "string",
 			})
 		}
-		e.Metrics = append(e.Metrics, &mSpec)
+
+		if mSpec.Type == string(metricType_HISTOGRAM) {
+			e.Metrics = append(e.Metrics, computeHistogramMetrics(mSpec)...)
+		} else {
+			e.Metrics = append(e.Metrics, &mSpec)
+		}
 	}
 
 	for _, e := range sp.Entities {
@@ -78,6 +83,37 @@ func generateSpecFile(c Config, metrics []Metric, filename string) *Specs {
 		log.Print(err)
 	}
 	return &sp
+}
+
+func computeHistogramMetrics(m MetricSpec) []*MetricSpec {
+	sumDimensions := make([]Dimension, len(m.Dimensions))
+	copy(sumDimensions, m.Dimensions)
+
+	bucketDimensions := make([]Dimension, len(m.Dimensions))
+	copy(bucketDimensions, m.Dimensions)
+	bucketDimensions = append(bucketDimensions, Dimension{
+		Name: "le",
+		Type: "string",
+	})
+
+	return []*MetricSpec{
+		{
+			Name:              m.Name + "_sum",
+			Type:              string(metricType_COUNTER),
+			DefaultResolution: m.DefaultResolution,
+			Unit:              "count",
+			Description:       m.Description + " (sum metric)",
+			Dimensions:        sumDimensions,
+		},
+		{
+			Name:              m.Name + "_bucket",
+			Type:              string(metricType_COUNTER),
+			DefaultResolution: m.DefaultResolution,
+			Unit:              "count",
+			Description:       m.Description + " (bucket metric)",
+			Dimensions:        bucketDimensions,
+		},
+	}
 }
 
 // getMatchingRule iterates over all conditions to check if m satisfy returning the associated rule.
