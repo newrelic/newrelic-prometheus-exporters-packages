@@ -1,0 +1,81 @@
+---
+title: {{ .HumanReadableIntegrationName }} monitoring integration
+tags:
+  - Integrations
+  - On-host integrations
+  - On-host integrations list
+metaDescription: 'New Relic''s {{ .HumanReadableIntegrationName }} integration: how to enable, configure it, and an explanation of what data it reports.'
+redirects:
+  - /docs/nfs-integration-new-relic-infrastructure
+---
+
+Our {{ .HumanReadableIntegrationName }} [integration](https://docs.newrelic.com/docs/integrations/host-integrations/getting-started/introduction-host-integrations) collects and sends dimensional metrics from [FILL INFORMATION]
+
+Read on to install the integration, and to see what data we collect.
+
+## Compatibility and requirements [#req]
+
+Our integration is compatible with {{ .HumanReadableIntegrationName }} version [FILL INFORMATION].
+
+Before installing the integration, make sure that you meet the following requirements:
+
+* [Install the infrastructure agent](/docs/infrastructure/install-infrastructure-agent/get-started/install-infrastructure-agent-new-relic), minimum version 1.19.2.
+* Linux distribution [compatible with the infrastructure agent](/docs/infrastructure/new-relic-infrastructure/getting-started/compatibility-requirements-new-relic-infrastructure#operating-systems)
+
+## Install and activate [#install]
+
+The NFS integration is already activated and installed by default. Therefore, there are no installation or activation requirements, as it works out of the box. See [samples variables](/docs/infrastructure/install-infrastructure-agent/configuration/infrastructure-agent-configuration-settings#samples-variables), and search for NFS for more info.
+
+## Find and use data [#find-and-use]
+
+To find your integration data go to [**one.newrelic.com**](http://one.newrelic.com) **> [Add Info explorer, dashboards?]
+
+## Metric data [#metrics]
+
+The {{ .HumanReadableIntegrationName }} integration collects the following metrics:
+{{- range .Entities }}
+
+The following dimensional metrics are captured scraping the exporter and linked to the entity {{ .EntityType }}:
+
+<table>
+  <thead>
+    <tr>
+      <th style={{ "{{ width: \"350px\" }}" }}>
+        Name
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Dimensions
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+        {{ range .Metrics }}
+
+    <tr>
+      <td>
+        `{{ .Name }} ({{ .Type }})`
+      </td>
+
+      <td>
+        {{ .Description }}
+      </td>
+
+      <td>
+        {{- range .Dimensions }}
+        - {{ .Name }}
+        {{- end }}
+      </td>
+    </tr>
+
+        {{- end }}
+
+  </tbody>
+</table>
+
+{{- end }}

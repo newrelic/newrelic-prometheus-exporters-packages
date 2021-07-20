@@ -41,3 +41,5 @@ nri-config-generator/templates/*
 .env
 
 tests/dist
+
+docs-specs-generator/output/*

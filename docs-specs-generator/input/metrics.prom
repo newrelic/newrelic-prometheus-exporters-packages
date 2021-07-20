@@ -1,0 +1,304 @@
+# HELP powerdns_authoritative_answers_bytes_total Total number of answer bytes sent over by protocol.
+# TYPE powerdns_authoritative_answers_bytes_total counter
+powerdns_authoritative_answers_bytes_total{proto="tcp"} 0
+powerdns_authoritative_answers_bytes_total{proto="tcp4"} 0
+powerdns_authoritative_answers_bytes_total{proto="tcp6"} 0
+powerdns_authoritative_answers_bytes_total{proto="udp"} 6344
+powerdns_authoritative_answers_bytes_total{proto="udp4"} 6344
+powerdns_authoritative_answers_bytes_total{proto="udp6"} 0
+# HELP powerdns_authoritative_answers_total Total number of answers by protocol.
+# TYPE powerdns_authoritative_answers_total counter
+powerdns_authoritative_answers_total{proto="tcp"} 0
+powerdns_authoritative_answers_total{proto="tcp4"} 0
+powerdns_authoritative_answers_total{proto="tcp6"} 0
+powerdns_authoritative_answers_total{proto="udp"} 136
+powerdns_authoritative_answers_total{proto="udp4"} 136
+powerdns_authoritative_answers_total{proto="udp6"} 0
+# HELP powerdns_authoritative_cpu_utilisation Number of CPU milliseconds spent in user, and kernel space
+# TYPE powerdns_authoritative_cpu_utilisation counter
+powerdns_authoritative_cpu_utilisation{type="sys"} 8133
+powerdns_authoritative_cpu_utilisation{type="user"} 30839
+# HELP powerdns_authoritative_deferred_cache_actions Deferred cache actions because of maintenance by type
+# TYPE powerdns_authoritative_deferred_cache_actions counter
+powerdns_authoritative_deferred_cache_actions{type="inserts"} 0
+powerdns_authoritative_deferred_cache_actions{type="lookups"} 0
+# HELP powerdns_authoritative_dnssec DNSSEC counters
+# TYPE powerdns_authoritative_dnssec counter
+powerdns_authoritative_dnssec{type="ok_queries_recv"} 0
+powerdns_authoritative_dnssec{type="signatures_created"} 0
+# HELP powerdns_authoritative_dnsupdate_queries_total Total number of DNS update queries by status.
+# TYPE powerdns_authoritative_dnsupdate_queries_total counter
+powerdns_authoritative_dnsupdate_queries_total{status="answered"} 0
+powerdns_authoritative_dnsupdate_queries_total{status="applied"} 0
+powerdns_authoritative_dnsupdate_queries_total{status="refused"} 0
+powerdns_authoritative_dnsupdate_queries_total{status="requested"} 0
+# HELP powerdns_authoritative_exceptions_total Total number of exceptions by error.
+# TYPE powerdns_authoritative_exceptions_total counter
+powerdns_authoritative_exceptions_total{error="backend_overload"} 0
+powerdns_authoritative_exceptions_total{error="corrupt_packets"} 0
+powerdns_authoritative_exceptions_total{error="recvbuf_errors"} 0
+powerdns_authoritative_exceptions_total{error="servfail"} 0
+powerdns_authoritative_exceptions_total{error="sndbuf_errors"} 0
+powerdns_authoritative_exceptions_total{error="timeout"} 0
+powerdns_authoritative_exceptions_total{error="udp_in_errors"} 0
+powerdns_authoritative_exceptions_total{error="udp_noport_errors"} 0
+# HELP powerdns_authoritative_exporter_json_parse_failures Number of errors while parsing PowerDNS JSON stats.
+# TYPE powerdns_authoritative_exporter_json_parse_failures counter
+powerdns_authoritative_exporter_json_parse_failures 0
+# HELP powerdns_authoritative_exporter_total_scrapes Current total PowerDNS scrapes.
+# TYPE powerdns_authoritative_exporter_total_scrapes counter
+powerdns_authoritative_exporter_total_scrapes 12
+# HELP powerdns_authoritative_key_cache_size Number of entries in the key cache.
+# TYPE powerdns_authoritative_key_cache_size gauge
+powerdns_authoritative_key_cache_size 0
+# HELP powerdns_authoritative_latency_average_seconds Average number of microseconds a packet spends within PowerDNS
+# TYPE powerdns_authoritative_latency_average_seconds gauge
+powerdns_authoritative_latency_average_seconds 0.000116
+# HELP powerdns_authoritative_metadata_cache_size Number of entries in the metadata cache.
+# TYPE powerdns_authoritative_metadata_cache_size gauge
+powerdns_authoritative_metadata_cache_size 0
+# HELP powerdns_authoritative_packet_cache_lookup Packet cache lookups by result
+# TYPE powerdns_authoritative_packet_cache_lookup counter
+powerdns_authoritative_packet_cache_lookup{result="hit"} 101
+powerdns_authoritative_packet_cache_lookup{result="miss"} 35
+# HELP powerdns_authoritative_packet_cache_size Number of entries in the packet cache.
+# TYPE powerdns_authoritative_packet_cache_size gauge
+powerdns_authoritative_packet_cache_size 5
+# HELP powerdns_authoritative_qsize Number of packets waiting for database attention.
+# TYPE powerdns_authoritative_qsize gauge
+powerdns_authoritative_qsize 0
+# HELP powerdns_authoritative_queries UDP Queries Received
+# TYPE powerdns_authoritative_queries counter
+powerdns_authoritative_queries{record="auth-4.4.1.security-status.secpoll.powerdns.com/TXT"} 24
+powerdns_authoritative_queries{record="google.com/A"} 4
+powerdns_authoritative_queries{record="google.com/AAAA"} 4
+powerdns_authoritative_queries{record="www.google.com/A"} 52
+powerdns_authoritative_queries{record="www.google.com/AAAA"} 52
+# HELP powerdns_authoritative_queries_total Total number of queries by protocol.
+# TYPE powerdns_authoritative_queries_total counter
+powerdns_authoritative_queries_total{proto="tcp"} 0
+powerdns_authoritative_queries_total{proto="tcp4"} 0
+powerdns_authoritative_queries_total{proto="tcp6"} 0
+powerdns_authoritative_queries_total{proto="udp"} 136
+powerdns_authoritative_queries_total{proto="udp4"} 136
+powerdns_authoritative_queries_total{proto="udp6"} 0
+# HELP powerdns_authoritative_queries_unauth Queries for domains that we are not authoritative for
+# TYPE powerdns_authoritative_queries_unauth counter
+powerdns_authoritative_queries_unauth{record="auth-4.4.1.security-status.secpoll.powerdns.com/TXT"} 24
+powerdns_authoritative_queries_unauth{record="google.com/A"} 4
+powerdns_authoritative_queries_unauth{record="google.com/AAAA"} 4
+powerdns_authoritative_queries_unauth{record="www.google.com/A"} 52
+powerdns_authoritative_queries_unauth{record="www.google.com/AAAA"} 52
+# HELP powerdns_authoritative_query_cache_lookup Query cache lookups by result
+# TYPE powerdns_authoritative_query_cache_lookup counter
+powerdns_authoritative_query_cache_lookup{result="hit"} 11
+powerdns_authoritative_query_cache_lookup{result="miss"} 223
+# HELP powerdns_authoritative_recursive_queries_total Total number of recursive queries by status.
+# TYPE powerdns_authoritative_recursive_queries_total counter
+powerdns_authoritative_recursive_queries_total{status="answered"} 0
+powerdns_authoritative_recursive_queries_total{status="processed"} 0
+powerdns_authoritative_recursive_queries_total{status="requested"} 35
+powerdns_authoritative_recursive_queries_total{status="unanswered"} 0
+# HELP powerdns_authoritative_remote_queries Remote server IP addresses
+# TYPE powerdns_authoritative_remote_queries counter
+powerdns_authoritative_remote_queries{remote="127.0.0.1"} 136
+# HELP powerdns_authoritative_remote_queries_unauth Remote hosts querying domains for which we are not auth
+# TYPE powerdns_authoritative_remote_queries_unauth counter
+powerdns_authoritative_remote_queries_unauth{remote="127.0.0.1"} 136
+# HELP powerdns_authoritative_response_rcodes Distribution of rcodes
+# TYPE powerdns_authoritative_response_rcodes counter
+powerdns_authoritative_response_rcodes{rcode="Query Refused"} 136
+# HELP powerdns_authoritative_response_sizes Size distribution of responses
+# TYPE powerdns_authoritative_response_sizes counter
+powerdns_authoritative_response_sizes{size="20"} 8
+powerdns_authoritative_response_sizes{size="40"} 104
+powerdns_authoritative_response_sizes{size="60"} 24
+# HELP powerdns_authoritative_security_status PDNS Server Security status based on security-status.secpoll.powerdns.com
+# TYPE powerdns_authoritative_security_status gauge
+powerdns_authoritative_security_status 0
+# HELP powerdns_authoritative_signature_cache_size Number of entries in the signature cache.
+# TYPE powerdns_authoritative_signature_cache_size gauge
+powerdns_authoritative_signature_cache_size 0
+# HELP powerdns_authoritative_up Was the last scrape of PowerDNS successful.
+# TYPE powerdns_authoritative_up gauge
+powerdns_authoritative_up 1
+# HELP powerdns_authoritative_uptime Uptime in seconds of the daemon
+# TYPE powerdns_authoritative_uptime counter
+powerdns_authoritative_uptime{type="seconds"} 325260
+# HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds{quantile="0"} 6.824e-06
+go_gc_duration_seconds{quantile="0.25"} 1.7524e-05
+go_gc_duration_seconds{quantile="0.5"} 4.7965e-05
+go_gc_duration_seconds{quantile="0.75"} 0.000111854
+go_gc_duration_seconds{quantile="1"} 0.007852355
+go_gc_duration_seconds_sum 0.089091763
+go_gc_duration_seconds_count 756
+# HELP go_goroutines Number of goroutines that currently exist.
+# TYPE go_goroutines gauge
+go_goroutines 10
+# HELP go_info Information about the Go environment.
+# TYPE go_info gauge
+go_info{version="go1.12.17"} 1
+# HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
+# TYPE go_memstats_alloc_bytes gauge
+go_memstats_alloc_bytes 1.589656e+06
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
+# TYPE go_memstats_alloc_bytes_total counter
+go_memstats_alloc_bytes_total 8.00001656e+08
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
+# TYPE go_memstats_buck_hash_sys_bytes gauge
+go_memstats_buck_hash_sys_bytes 1.491577e+06
+# HELP go_memstats_frees_total Total number of frees.
+# TYPE go_memstats_frees_total counter
+go_memstats_frees_total 7.407151e+06
+# HELP go_memstats_gc_cpu_fraction The fraction of this program's available CPU time used by the GC since the program started.
+# TYPE go_memstats_gc_cpu_fraction gauge
+go_memstats_gc_cpu_fraction 3.150274355956613e-06
+# HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
+# TYPE go_memstats_gc_sys_bytes gauge
+go_memstats_gc_sys_bytes 2.377728e+06
+# HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
+# TYPE go_memstats_heap_alloc_bytes gauge
+go_memstats_heap_alloc_bytes 1.589656e+06
+# HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
+# TYPE go_memstats_heap_idle_bytes gauge
+go_memstats_heap_idle_bytes 6.4077824e+07
+# HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
+# TYPE go_memstats_heap_inuse_bytes gauge
+go_memstats_heap_inuse_bytes 2.441216e+06
+# HELP go_memstats_heap_objects Number of allocated objects.
+# TYPE go_memstats_heap_objects gauge
+go_memstats_heap_objects 11081
+# HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
+# TYPE go_memstats_heap_released_bytes gauge
+go_memstats_heap_released_bytes 6.4069632e+07
+# HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
+# TYPE go_memstats_heap_sys_bytes gauge
+go_memstats_heap_sys_bytes 6.651904e+07
+# HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
+# TYPE go_memstats_last_gc_time_seconds gauge
+go_memstats_last_gc_time_seconds 1.6267135816696742e+09
+# HELP go_memstats_lookups_total Total number of pointer lookups.
+# TYPE go_memstats_lookups_total counter
+go_memstats_lookups_total 0
+# HELP go_memstats_mallocs_total Total number of mallocs.
+# TYPE go_memstats_mallocs_total counter
+go_memstats_mallocs_total 7.418232e+06
+# HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
+# TYPE go_memstats_mcache_inuse_bytes gauge
+go_memstats_mcache_inuse_bytes 3472
+# HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system.
+# TYPE go_memstats_mcache_sys_bytes gauge
+go_memstats_mcache_sys_bytes 16384
+# HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
+# TYPE go_memstats_mspan_inuse_bytes gauge
+go_memstats_mspan_inuse_bytes 37872
+# HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
+# TYPE go_memstats_mspan_sys_bytes gauge
+go_memstats_mspan_sys_bytes 81920
+# HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
+# TYPE go_memstats_next_gc_bytes gauge
+go_memstats_next_gc_bytes 4.194304e+06
+# HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
+# TYPE go_memstats_other_sys_bytes gauge
+go_memstats_other_sys_bytes 685695
+# HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
+# TYPE go_memstats_stack_inuse_bytes gauge
+go_memstats_stack_inuse_bytes 589824
+# HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
+# TYPE go_memstats_stack_sys_bytes gauge
+go_memstats_stack_sys_bytes 589824
+# HELP go_memstats_sys_bytes Number of bytes obtained from system.
+# TYPE go_memstats_sys_bytes gauge
+go_memstats_sys_bytes 7.1762168e+07
+# HELP go_threads Number of OS threads created.
+# TYPE go_threads gauge
+go_threads 12
+# HELP powerdns_recursor_answers_rcodes_total Total number of answers by response code.
+# TYPE powerdns_recursor_answers_rcodes_total counter
+powerdns_recursor_answers_rcodes_total{rcode="noerror"} 216
+powerdns_recursor_answers_rcodes_total{rcode="nxdomain"} 4
+powerdns_recursor_answers_rcodes_total{rcode="servfail"} 0
+# HELP powerdns_recursor_answers_rtime_total Total number of answers grouped by response time slots.
+# TYPE powerdns_recursor_answers_rtime_total counter
+powerdns_recursor_answers_rtime_total{timeslot="0_1ms"} 0
+powerdns_recursor_answers_rtime_total{timeslot="100_1000ms"} 15
+powerdns_recursor_answers_rtime_total{timeslot="10_100ms"} 14
+powerdns_recursor_answers_rtime_total{timeslot="1_10ms"} 0
+powerdns_recursor_answers_rtime_total{timeslot="over_1000ms"} 0
+# HELP powerdns_recursor_cache_lookups_total Total number of cache lookups by result.
+# TYPE powerdns_recursor_cache_lookups_total counter
+powerdns_recursor_cache_lookups_total{result="hit"} 0
+powerdns_recursor_cache_lookups_total{result="miss"} 29
+# HELP powerdns_recursor_cache_size Number of entries in the cache.
+# TYPE powerdns_recursor_cache_size gauge
+powerdns_recursor_cache_size 168
+# HELP powerdns_recursor_concurrent_queries Number of concurrent queries.
+# TYPE powerdns_recursor_concurrent_queries gauge
+powerdns_recursor_concurrent_queries 0
+# HELP powerdns_recursor_exceptions_total Total number of exceptions by error.
+# TYPE powerdns_recursor_exceptions_total counter
+powerdns_recursor_exceptions_total{error="ns_unreachable"} 0
+powerdns_recursor_exceptions_total{error="outgoing_timeout"} 3
+powerdns_recursor_exceptions_total{error="over_capacity_drop"} 0
+powerdns_recursor_exceptions_total{error="resource_limit"} 0
+# HELP powerdns_recursor_exporter_json_parse_failures Number of errors while parsing PowerDNS JSON stats.
+# TYPE powerdns_recursor_exporter_json_parse_failures counter
+powerdns_recursor_exporter_json_parse_failures 0
+# HELP powerdns_recursor_exporter_total_scrapes Current total PowerDNS scrapes.
+# TYPE powerdns_recursor_exporter_total_scrapes counter
+powerdns_recursor_exporter_total_scrapes 3034
+# HELP powerdns_recursor_incoming_queries_total Total number of incoming queries by network.
+# TYPE powerdns_recursor_incoming_queries_total counter
+powerdns_recursor_incoming_queries_total{net="tcp"} 0
+powerdns_recursor_incoming_queries_total{net="udp"} 220
+# HELP powerdns_recursor_latency_average_seconds Exponential moving average of question-to-answer latency.
+# TYPE powerdns_recursor_latency_average_seconds gauge
+powerdns_recursor_latency_average_seconds 0.000635
+# HELP powerdns_recursor_outgoing_queries_total Total number of outgoing queries by network.
+# TYPE powerdns_recursor_outgoing_queries_total counter
+powerdns_recursor_outgoing_queries_total{net="tcp"} 0
+powerdns_recursor_outgoing_queries_total{net="udp"} 349
+# HELP powerdns_recursor_response_time_seconds Histogram of PowerDNS recursor response times in seconds.
+# TYPE powerdns_recursor_response_time_seconds histogram
+powerdns_recursor_response_time_seconds_bucket{le="0.001"} 0
+powerdns_recursor_response_time_seconds_bucket{le="0.01"} 0
+powerdns_recursor_response_time_seconds_bucket{le="0.1"} 14
+powerdns_recursor_response_time_seconds_bucket{le="1"} 29
+powerdns_recursor_response_time_seconds_bucket{le="+Inf"} 29
+powerdns_recursor_response_time_seconds_sum 0
+powerdns_recursor_response_time_seconds_count 29
+# HELP powerdns_recursor_up Was the last scrape of PowerDNS successful.
+# TYPE powerdns_recursor_up gauge
+powerdns_recursor_up 1
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 9.49
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 8
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 8.998912e+06
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.62662212616e+09
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 8.75073536e+08
+# HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
+# TYPE process_virtual_memory_max_bytes gauge
+process_virtual_memory_max_bytes 1.8446744073709552e+19
+# HELP promhttp_metric_handler_requests_in_flight Current number of scrapes being served.
+# TYPE promhttp_metric_handler_requests_in_flight gauge
+promhttp_metric_handler_requests_in_flight 1
+# HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.
+# TYPE promhttp_metric_handler_requests_total counter
+promhttp_metric_handler_requests_total{code="200"} 3033
+promhttp_metric_handler_requests_total{code="500"} 0
+promhttp_metric_handler_requests_total{code="503"} 0
+
