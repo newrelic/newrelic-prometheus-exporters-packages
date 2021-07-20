@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: checkout-repository
         uses: actions/checkout@v2
+      - name: build-powerdns
+        run: make build-powerdns
       - name: e2e-test
         uses: ivancorrales/newrelic-integration-e2e-action@master
         with:
