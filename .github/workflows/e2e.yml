@@ -1,5 +1,4 @@
-name: Experimental E2E action
-
+name: e2e (Experimental)
 on:
   push:
     branches: ["feature/add-e2e-action"]
