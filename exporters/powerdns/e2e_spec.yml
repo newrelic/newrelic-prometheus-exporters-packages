@@ -7,9 +7,10 @@ scenarios:
       are correcly collected.
     integrations:
       - name: nri-powerdns
-        path: target/bin/nri-powerdns
+        binary_path: target/bin/nri-powerdns
+        exporter_binary_path: target/bin/powerdns-exporter
         config:
-          powerdns_url: http://pdns-authoritative:8081/api/v1/
+          powerdns_url: http://loalhost:8081/api/v1/
           exporter_port: 9120
           api_key: secret-authoriative
           transformations:
