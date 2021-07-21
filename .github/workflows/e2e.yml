@@ -17,6 +17,9 @@ jobs:
           go-version: 1.16
       - name: build-powerdns
         run: make build-powerdns
+
+      - name: lunch e2e dependencies
+
       - name: e2e-test
         uses: ivancorrales/newrelic-integration-e2e-action@master
         with:
@@ -24,4 +27,5 @@ jobs:
           license_key: ${{ secrets.LICENSE_KEY }}
           verbose: true
 
+      - name:
 
