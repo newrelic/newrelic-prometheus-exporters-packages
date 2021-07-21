@@ -1,5 +1,5 @@
-
 name: Experimental E2E action
+
 on:
   push:
     branches: ["feature/add-e2e-action"]
@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: checkout-repository
         uses: actions/checkout@v2
+      - name: Setup go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.16
       - name: build-powerdns
         run: make build-powerdns
       - name: e2e-test
@@ -20,7 +24,5 @@ jobs:
           spec_path: exporters/powerdns/e2e_spec.yml
           license_key: ${{ secrets.LICENSE_KEY }}
           verbose: true
-        env:
-          ORACLE_PWD: ${{ secrets.SECRET_DEMO }}
 
 
