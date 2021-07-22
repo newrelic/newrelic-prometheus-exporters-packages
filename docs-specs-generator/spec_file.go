@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
+	"path"
 	"strings"
 
 	"gopkg.in/yaml.v3"
@@ -77,7 +79,11 @@ func generateSpecFile(c Config, metrics []Metric, filename string) *Specs {
 	if err != nil {
 		log.Print(err)
 	}
-	err = ioutil.WriteFile(filename, out, 0666)
+	err = os.MkdirAll(path.Dir(filename), 0777)
+	if err != nil {
+		log.Print(err)
+	}
+	err = ioutil.WriteFile(filename, out, 0777)
 	if err != nil {
 		log.Print(err)
 	}
@@ -98,7 +104,7 @@ func computeHistogramMetrics(m MetricSpec) []*MetricSpec {
 	return []*MetricSpec{
 		{
 			Name:              m.Name + "_sum",
-			Type:              string(metricType_COUNTER),
+			Type:              string(metricType_SUMMARY),
 			DefaultResolution: m.DefaultResolution,
 			Unit:              "count",
 			Description:       m.Description + " (sum metric)",
