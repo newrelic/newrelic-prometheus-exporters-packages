@@ -1,0 +1,70 @@
+description: |
+  End-to-end tests for PowerDNS integration
+
+agent:
+  integrations:
+    nri-prometheus:  nri-prometheus/nri-prometheus
+
+scenarios:
+  - description: |
+      This scenario will verify that metrics froms PDNS authoritative
+      are correcly collected.
+    before:
+      - docker-compose -f docker-compose.yml up -d
+    after:
+      - docker-compose -f docker-compose.yml down -v
+    integrations:
+      - name: nri-powerdns
+        binary_path: ../target/bin/nri-powerdns
+        exporter_binary_path: ../target/bin/nri-powerdns-exporter
+        config:
+          powerdns_url: http://localhost:8081/api/v1/
+          exporter_port: 9121
+          api_key: authoritative-secret
+  - description: |
+      This scenario will verify that metrics froms PDNS recursor
+      are correcly collected.
+    before:
+      - docker-compose -f docker-compose.yml up -d
+    after:
+      - docker-compose -f docker-compose.yml down -v
+    integrations:
+      - name: nri-powerdns
+        binary_path: ../target/bin/nri-powerdns
+        exporter_binary_path: ../target/bin/nri-powerdns-exporter
+        config:
+          powerdns_url: http://localhost:8082/api/v1/
+          exporter_port: 9122
+          api_key: recursor-secret
+  - description: |
+      This scenario will verify that metrics from both PDNS authoritative & PDNS recursor
+      are correcly collected.
+    before:
+      - docker-compose -f docker-compose.yml up -d
+    after:
+      - docker-compose -f docker-compose.yml down -v
+    integrations:
+      - name: nri-powerdns
+        binary_path: ../target/bin/nri-powerdns
+        exporter_binary_path: ../target/bin/nri-powerdns-exporter
+        config:
+          powerdns_url: http://localhost:8081/api/v1/
+          exporter_port: 9121
+          api_key: authoritative-secret
+          transformations:
+            - description: "General processing rules"
+              ignore_metrics:
+                - "go_"
+                - "process_"
+      - name: nri-powerdns
+        binary_path: ../target/bin/nri-powerdns
+        exporter_binary_path: ../target/bin/nri-powerdns-exporter
+        config:
+          powerdns_url: http://localhost:8082/api/v1/
+          exporter_port: 9122
+          api_key: recursor-secret
+          transformations:
+            - description: "General processing rules"
+              ignore_metrics:
+                - "go_"
+                - "process_"

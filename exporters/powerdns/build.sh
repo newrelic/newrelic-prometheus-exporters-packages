@@ -15,6 +15,8 @@ else
     git checkout ${EXPORTER_TAG} -d
 fi
 
+GOOS=linux \
+GOARCH=amd64 \
 make build
 
 cp "${tmp_dir}/powerdns_exporter" "${powerdns_bin_dir}/powerdns-exporter"
