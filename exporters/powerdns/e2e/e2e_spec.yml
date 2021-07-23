@@ -12,6 +12,7 @@ scenarios:
     before:
       - docker-compose  up -d
     after:
+      - docker-compose logs
       - docker-compose  down -v
     integrations:
       - name: nri-powerdns
@@ -21,40 +22,40 @@ scenarios:
           powerdns_url: http://localhost:8081/api/v1/
           exporter_port: 9121
           api_key: authoritative-secret
-  - description: |
-      This scenario will verify that metrics froms PDNS recursor
-      are correcly collected.
-    before:
-      - docker-compose  up -d
-    after:
-      - docker-compose  down -v
-    integrations:
-      - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
-        config:
-          powerdns_url: http://localhost:8082/api/v1/
-          exporter_port: 9122
-          api_key: recursor-secret
-  - description: |
-      This scenario will verify that metrics from both PDNS authoritative & PDNS recursor
-      are correcly collected.
-    before:
-      - docker-compose  up -d
-    after:
-      - docker-compose  down -v
-    integrations:
-      - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
-        config:
-          powerdns_url: http://localhost:8081/api/v1/
-          exporter_port: 9121
-          api_key: authoritative-secret
-      - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
-        config:
-          powerdns_url: http://localhost:8082/api/v1/
-          exporter_port: 9122
-          api_key: recursor-secret
+#  - description: |
+#      This scenario will verify that metrics froms PDNS recursor
+#      are correcly collected.
+#    before:
+#      - docker-compose  up -d
+#    after:
+#      - docker-compose  down -v
+#    integrations:
+#      - name: nri-powerdns
+#        binary_path: ../target/bin/nri-powerdns
+#        exporter_binary_path: ../target/bin/powerdns-exporter
+#        config:
+#          powerdns_url: http://localhost:8082/api/v1/
+#          exporter_port: 9122
+#          api_key: recursor-secret
+#  - description: |
+#      This scenario will verify that metrics from both PDNS authoritative & PDNS recursor
+#      are correcly collected.
+#    before:
+#      - docker-compose  up -d
+#    after:
+#      - docker-compose  down -v
+#    integrations:
+#      - name: nri-powerdns
+#        binary_path: ../target/bin/nri-powerdns
+#        exporter_binary_path: ../target/bin/powerdns-exporter
+#        config:
+#          powerdns_url: http://localhost:8081/api/v1/
+#          exporter_port: 9121
+#          api_key: authoritative-secret
+#      - name: nri-powerdns
+#        binary_path: ../target/bin/nri-powerdns
+#        exporter_binary_path: ../target/bin/powerdns-exporter
+#        config:
+#          powerdns_url: http://localhost:8082/api/v1/
+#          exporter_port: 9122
+#          api_key: recursor-secret
