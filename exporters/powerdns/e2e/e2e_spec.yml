@@ -10,9 +10,9 @@ scenarios:
       This scenario will verify that metrics froms PDNS authoritative
       are correcly collected.
     before:
-      - docker-compose -f exporters/powerdns/e2e/docker-compose.yml up -d
+      - docker-compose -f docker-compose.yml up -d
     after:
-      - docker-compose -f exporters/powerdns/e2e/docker-compose.yml down -v
+      - docker-compose -f docker-compose.yml down -v
     integrations:
       - name: nri-powerdns
         binary_path: ../target/bin/nri-powerdns
@@ -25,9 +25,9 @@ scenarios:
       This scenario will verify that metrics froms PDNS recursor
       are correcly collected.
     before:
-      - docker-compose -f exporters/powerdns/e2e/docker-compose.yml up -d
+      - docker-compose -f docker-compose.yml up -d
     after:
-      - docker-compose -f exporters/powerdns/e2e/docker-compose.yml down -v
+      - docker-compose -f docker-compose.yml down -v
     integrations:
       - name: nri-powerdns
         binary_path: ../target/bin/nri-powerdns
@@ -40,9 +40,9 @@ scenarios:
       This scenario will verify that metrics from both PDNS authoritative & PDNS recursor
       are correcly collected.
     before:
-      - docker-compose -f exporters/powerdns/e2e/docker-compose.yml up -d
+      - docker-compose -f docker-compose.yml up -d
     after:
-      - docker-compose -f exporters/powerdns/e2e/docker-compose.yml down -v
+      - docker-compose -f docker-compose.yml down -v
     integrations:
       - name: nri-powerdns
         binary_path: ../target/bin/nri-powerdns
