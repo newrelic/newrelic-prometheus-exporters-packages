@@ -18,7 +18,7 @@ jobs:
       - name: build-powerdns
         run: make build-powerdns
       - name: e2e-test
-        uses: ivancorrales/newrelic-integration-e2e-action@feature/send-metrics-to-newrelic-one
+        uses: ivancorrales/newrelic-integration-e2e-action@feature/add-custom-attribute
         with:
           spec_path: exporters/powerdns/e2e/e2e_spec.yml
           license_key: ${{ secrets.LICENSE_KEY }}
