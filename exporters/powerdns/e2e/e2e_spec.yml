@@ -12,7 +12,6 @@ scenarios:
     before:
       - docker-compose  up -d
     after:
-      - docker-compose logs
       - docker-compose  down -v
     integrations:
       - name: nri-powerdns
