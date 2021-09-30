@@ -1,12 +1,12 @@
 name: e2e (Experimental)
 on:
   push:
-    branches: ["feature/add-e2e-action"]
+    branches: ["powerdns_e2e"]
   workflow_dispatch:
-    branches: ["feature/add-e2e-action"]
+    branches: ["powerdns_e2e"]
 jobs:
   powerdns-e2e:
-    name: E2E tests for powerdns
+    name: E2E tests for PowerDNS
     runs-on: ubuntu-latest
     steps:
       - name: checkout-repository
@@ -14,11 +14,11 @@ jobs:
       - name: Setup go
         uses: actions/setup-go@v1
         with:
-          go-version: 1.16
+          go-version: 1.17
       - name: build-powerdns
         run: make build-powerdns
       - name: e2e-test
-        uses: ivancorrales/newrelic-integration-e2e-action@feature/add-custom-attribute
+        uses: paologallinaharbur/newrelic-integration-e2e-action
         with:
           spec_path: exporters/powerdns/e2e/e2e_spec.yml
           license_key: ${{ secrets.LICENSE_KEY }}
