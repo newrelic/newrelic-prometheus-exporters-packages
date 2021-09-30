@@ -27,7 +27,7 @@ scenarios:
         config:
           powerdns_url: http://localhost:8082/api/v1/
           exporter_port: 9122
-          api_key: recursor-secretiorl
+          api_key: recursor-secret
     tests:
       nrqls:
         - query: "SELECT average(powerdns_authoritative_queries_total) FROM Metric"
