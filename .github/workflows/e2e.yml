@@ -21,5 +21,6 @@ jobs:
         uses: paologallinaharbur/newrelic-integration-e2e-action@master
         with:
           spec_path: exporters/powerdns/e2e/e2e_spec.yml
+          account_id: ${{ secrets.ACCOUNT_ID }}
+          api_key: ${{ secrets.API_KEY }}
           license_key: ${{ secrets.LICENSE_KEY }}
-          verbose: true
