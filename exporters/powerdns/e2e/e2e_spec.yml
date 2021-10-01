@@ -16,14 +16,14 @@ scenarios:
     integrations:
       - name: nri-powerdns
         binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/nri-powerdns-exporter
+        exporter_binary_path: ../target/bin/powerdns-exporter
         config:
           powerdns_url: http://localhost:8081/api/v1/
           exporter_port: 9121
           api_key: authoritative-secret
       - name: nri-powerdns
         binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/nri-powerdns-exporter
+        exporter_binary_path: ../target/bin/powerdns-exporter
         config:
           powerdns_url: http://localhost:8082/api/v1/
           exporter_port: 9122
