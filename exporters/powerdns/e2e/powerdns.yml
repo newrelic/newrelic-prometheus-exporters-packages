@@ -1,0 +1,271 @@
+specVersion: "2"
+owningTeam: integrations
+integrationName: powerdns
+humanReadableIntegrationName: PowerDNS
+entities:
+  - entityType: POWERDNS_AUTHORITATIVE
+    metrics:
+      - name: powerdns_authoritative_deferred_cache_actions
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: type
+            type: string
+      - name: powerdns_authoritative_queries_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: proto
+            type: string
+      - name: powerdns_authoritative_signature_cache_size
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_authoritative_exporter_json_parse_failures
+        type: count
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_authoritative_packet_cache_size
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_authoritative_answers_bytes_total
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: proto
+            type: string
+      - name: powerdns_authoritative_query_cache_lookup
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: result
+            type: string
+      - name: powerdns_authoritative_response_sizes
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: size
+            type: string
+      - name: powerdns_authoritative_dnssec
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: type
+            type: string
+      - name: powerdns_authoritative_latency_average_seconds
+        type: gauge
+        defaultResolution: 15
+        unit: microseconds
+      - name: powerdns_authoritative_answers_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: proto
+            type: string
+      - name: powerdns_authoritative_uptime
+        type: count
+        defaultResolution: 15
+        unit: seconds
+        dimensions:
+          - name: type
+            type: string
+      - name: powerdns_authoritative_metadata_cache_size
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_authoritative_dnsupdate_queries_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: status
+            type: string
+      - name: powerdns_authoritative_security_status
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_authoritative_packet_cache_lookup
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: result
+            type: string
+      - name: powerdns_authoritative_exporter_total_scrapes
+        type: count
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_authoritative_queries
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: record
+            type: string
+      - name: powerdns_authoritative_qsize
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_authoritative_cpu_utilisation
+        type: count
+        defaultResolution: 15
+        unit: milliseconds
+        dimensions:
+          - name: type
+            type: string
+      - name: powerdns_authoritative_response_rcodes
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: rcode
+            type: string
+      - name: powerdns_authoritative_remote_queries_unauth
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: remote
+            type: string
+      - name: powerdns_authoritative_remote_queries
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: remote
+            type: string
+      - name: powerdns_authoritative_key_cache_size
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_authoritative_up
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_authoritative_exceptions_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: error
+            type: string
+      - name: powerdns_authoritative_recursive_queries_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: status
+            type: string
+      - name: powerdns_authoritative_queries_unauth
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: record
+            type: string
+    tags: []
+    internalAttributes:
+      - name: newrelic.integrationName
+        type: string
+      - name: newrelic.integrationVersion
+        type: string
+      - name: newrelic.source
+        type: string
+      - name: newrelic.agentVersion
+        type: string
+    ignoredAttributes:
+      - agentName
+      - coreCount
+      - processorCount
+      - systemMemoryBytes
+  - entityType: POWERDNS_RECURSOR
+    metrics:
+      - name: powerdns_recursor_outgoing_queries_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: net
+            type: string
+      - name: powerdns_recursor_exporter_total_scrapes
+        type: count
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_recursor_cache_size
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_recursor_answers_rtime_total
+        type: count
+        defaultResolution: 15
+        unit: milliseconds
+        dimensions:
+          - name: timeslot
+            type: string
+      - name: powerdns_recursor_incoming_queries_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: net
+            type: string
+      - name: powerdns_recursor_up
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_recursor_cache_lookups_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: result
+            type: string
+      - name: powerdns_recursor_exporter_json_parse_failures
+        type: count
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_recursor_exceptions_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: error
+            type: string
+      - name: powerdns_recursor_concurrent_queries
+        type: gauge
+        defaultResolution: 15
+        unit: count
+      - name: powerdns_recursor_answers_rcodes_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: rcode
+            type: string
+      - name: powerdns_recursor_latency_average_seconds
+        type: gauge
+        defaultResolution: 15
+        unit: microseconds
+    tags: []
+    internalAttributes:
+      - name: newrelic.integrationName
+        type: string
+      - name: newrelic.integrationVersion
+        type: string
+      - name: newrelic.source
+        type: string
+      - name: newrelic.agentVersion
+        type: string
+    ignoredAttributes:
+      - agentName
+      - coreCount
+      - processorCount
+      - systemMemoryBytes
