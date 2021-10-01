@@ -21,10 +21,8 @@ make build
 
 mkdir -p ${powerdns_bin_dir}
 
-cp "${tmp_dir}/powerdns_exporter" "${powerdns_bin_dir}/powerdns-exporter"
+cp "${tmp_dir}/powerdns_exporter" "${powerdns_bin_dir}/nri-powerdns-exporter"
 
-pwd "${powerdns_bin_dir}/powerdns-exporter"
-
-echo "exporter file was created ${powerdns_bin_dir}/powerdns-exporter"
+pwd "${powerdns_bin_dir}/nri-powerdns-exporter"
 
 
