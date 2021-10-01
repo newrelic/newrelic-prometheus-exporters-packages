@@ -16,7 +16,7 @@ scenarios:
     integrations:
       - name: nri-powerdns
         binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
+        exporter_binary_path: ../target/bin/nri-powerdns-exporter
         config:
           powerdns_url: http://localhost:8081/api/v1/
           exporter_port: 9121
