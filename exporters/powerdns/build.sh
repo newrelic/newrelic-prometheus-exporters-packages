@@ -3,7 +3,6 @@ root_dir=$1
 integration_dir="${root_dir}/exporters/powerdns"
 powerdns_bin_dir="${integration_dir}/target/bin"
 
-pwd "${powerdns_exporter_dir}"
 tmp_dir=$(mktemp -d)
 git clone ${EXPORTER_REPO_URL} "${tmp_dir}"
 cd "${tmp_dir}"
