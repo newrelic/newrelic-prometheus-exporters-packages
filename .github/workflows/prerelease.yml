@@ -15,26 +15,6 @@ env:
 ###
 name: Create Pre-release
 jobs:
-  e2e_test:
-    name: E2E tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout-repository
-        uses: actions/checkout@v2
-      - name: Setup go
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.17
-      - name: build-${{ steps.check.outputs.NAME }}
-        run: make build-${{ steps.check.outputs.NAME }}
-      - name: e2e-test
-        uses: newrelic/newrelic-integration-e2e-action@v1
-        with:
-          spec_path: exporters/${{ steps.check.outputs.NAME }}/e2e/e2e_spec.yml
-          account_id: ${{ secrets.ACCOUNT_ID }}
-          api_key: ${{ secrets.API_KEY }}
-          license_key: ${{ secrets.LICENSE_KEY }}
-
   create_prerelease:
     name: Create Pre-release
     runs-on: ubuntu-latest
