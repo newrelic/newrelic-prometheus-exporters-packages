@@ -18,7 +18,7 @@ jobs:
       - name: build-powerdns
         run: make build-powerdns
       - name: e2e-test
-        uses: paologallinaharbur/newrelic-integration-e2e-action@master
+        uses: newrelic/newrelic-integration-e2e-action@v1
         with:
           spec_path: exporters/powerdns/e2e/e2e_spec.yml
           account_id: ${{ secrets.ACCOUNT_ID }}
