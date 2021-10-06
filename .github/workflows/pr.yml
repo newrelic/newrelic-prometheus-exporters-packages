@@ -56,6 +56,7 @@ jobs:
           make fetch-resources-${{ steps.check.outputs.NAME }}
           make build-${{ steps.check.outputs.NAME }}
       - name: e2e-test
+        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: newrelic/newrelic-integration-e2e-action@v1
         with:
           spec_path: exporters/${{ steps.check.outputs.NAME }}/e2e/e2e_spec.yml
