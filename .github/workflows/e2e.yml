@@ -1,4 +1,4 @@
-name: e2e (Experimental)
+name: e2e
 on:
   push:
     branches: ["powerdns_e2e"]
