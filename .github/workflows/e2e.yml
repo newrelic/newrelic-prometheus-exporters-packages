@@ -2,7 +2,9 @@ name: e2e
 on:
   workflow_run:
     workflows: ["Checking PR"]
-    types: [completed]
+    types:
+      - completed
+      - requested
 jobs:
   powerdns-e2e:
     name: E2E tests for PowerDNS
