@@ -23,7 +23,7 @@ env:
 ###
 jobs:
   checking_pr:
-    name: Checking PR
+    name: Preflight
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
