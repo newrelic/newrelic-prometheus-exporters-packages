@@ -139,11 +139,8 @@ func generateOutput(exporterGenerator generator.Exporter, configGenerator genera
 }
 
 func getExporterNameFromIntegration(integration string) string {
-	const (
-		integrationPrefix  = "nri-"
-		exporterNameFormat = "%s-exporter"
-	)
-	return strings.Replace(fmt.Sprintf(exporterNameFormat, integration), integrationPrefix, "", 1)
+	var exporterNameBeforeFix = fmt.Sprintf("%s-exporter", integration)
+	return strings.Replace(exporterNameBeforeFix, "nri-", "", 1)
 }
 
 func getExporterDefinitions() (string, error) {
