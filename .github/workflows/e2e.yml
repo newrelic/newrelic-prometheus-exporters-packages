@@ -1,7 +1,7 @@
 name: e2e
 on:
   workflow_run:
-    workflows: ["Checking_PR"]
+    workflows: ["Checking PR"]
     types:
       - completed
       - requested
@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout-repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+      - run: git branch
       - name: Setup go
         uses: actions/setup-go@v1
         with:

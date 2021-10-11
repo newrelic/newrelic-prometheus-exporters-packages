@@ -20,7 +20,7 @@ env:
 ###
 ###   Checking PR # Checks the file and the info provided when an exporter is modified
 ###
-name: Checking_PR
+name: Checking PR
 jobs:
   checking_pr:
     name: Checking PR
