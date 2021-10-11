@@ -1,7 +1,7 @@
 name: e2e
 on:
   workflow_run:
-    workflows: ["Checking PR"]
+    workflows: ["Checking PR","Repolinter Action", "repolint", "Run Repolinter"]
     types:
       - completed
       - requested
