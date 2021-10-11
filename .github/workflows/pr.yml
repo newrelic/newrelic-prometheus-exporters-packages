@@ -20,7 +20,7 @@ env:
 ###
 ###   Checking PR # Checks the file and the info provided when an exporter is modified
 ###
-name: Checking PR
+name: Checking_PR
 jobs:
   checking_pr:
     name: Checking PR
@@ -50,8 +50,3 @@ jobs:
             echo Following errors have been found: $ERRORS
             exit 1
           fi
-      - name: Compile exporter
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
-        run : |
-          make fetch-resources-${{ steps.check.outputs.NAME }}
-          make build-${{ steps.check.outputs.NAME }}
