@@ -1,7 +1,7 @@
 name: e2e
 on:
   workflow_run:
-    workflows: ["Checking PR", " Checking PR", "checking_pr"]
+    workflows: []
     types:
       - completed
       - requested
