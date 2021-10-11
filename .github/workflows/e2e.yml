@@ -1,20 +1,27 @@
-name: Test
-
+name: e2e
 on:
-  workflow_run:
-    workflows:
-      - Preflight
-    types:
-      - completed
-
+  workflow_dispatch:
+    inputs:
+      exporter:
+        description: 'Name of the exporter to run e2e'
+        required: true
 jobs:
-  test-job:
-    name: Test Step
+  e2e-test:
+    name: E2E tests for ${{ github.event.inputs.exporter }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout-repository
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
+      - name: Setup go
+        uses: actions/setup-go@v1
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}
-      - run: git branch
-      - run: env
+          go-version: 1.17
+      - name: build-${{ github.event.inputs.exporter }}
+        run: make build-${{ github.event.inputs.exporter }}
+      - name: e2e-test
+        uses: newrelic/newrelic-integration-e2e-action@v1
+        with:
+          spec_path: exporters/${{ github.event.inputs.exporter }}/e2e/e2e_spec.yml
+          account_id: ${{ secrets.ACCOUNT_ID }}
+          api_key: ${{ secrets.API_KEY }}
+          license_key: ${{ secrets.LICENSE_KEY }}

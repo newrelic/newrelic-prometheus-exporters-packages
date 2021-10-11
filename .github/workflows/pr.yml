@@ -9,7 +9,6 @@
 ###   | if enabled            |                            
 ###   |                       | 
 ###   +-----------------------+      
-name: Preflight
 
 on: 
   pull_request:
@@ -21,9 +20,10 @@ env:
 ###
 ###   Checking PR # Checks the file and the info provided when an exporter is modified
 ###
+name: Checking PR
 jobs:
   checking_pr:
-    name: Preflight
+    name: Checking PR
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -50,3 +50,16 @@ jobs:
             echo Following errors have been found: $ERRORS
             exit 1
           fi
+      - name: Compile exporter
+        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
+        run : |
+          make fetch-resources-${{ steps.check.outputs.NAME }}
+          make build-${{ steps.check.outputs.NAME }}
+      - name: e2e-test
+        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
+        uses: newrelic/newrelic-integration-e2e-action@v1
+        with:
+          spec_path: exporters/${{ steps.check.outputs.NAME }}/e2e/e2e_spec.yml
+          account_id: ${{ secrets.ACCOUNT_ID }}
+          api_key: ${{ secrets.API_KEY }}
+          license_key: ${{ secrets.LICENSE_KEY }}
