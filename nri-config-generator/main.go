@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"text/template"
 	"time"
 
@@ -67,7 +68,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	exporterName := fmt.Sprintf("%s-exporter", integration)
+	exporterName := getExporterNameFromIntegration(integration)
 	exporterGenerator, err := getExporterGenerator(exporterName)
 	if err != nil {
 		log.Fatal(err)
@@ -135,6 +136,11 @@ func generateOutput(exporterGenerator generator.Exporter, configGenerator genera
 	}
 
 	return output, err
+}
+
+func getExporterNameFromIntegration(integration string) string {
+	var exporterNameBeforeFix = fmt.Sprintf("%s-exporter", integration)
+	return strings.Replace(exporterNameBeforeFix, "nri-", "", 1)
 }
 
 func getExporterDefinitions() (string, error) {

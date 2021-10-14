@@ -1,6 +1,8 @@
 #!/bin/bash
 root_dir=$1
 integration_dir="${root_dir}/exporters/powerdns"
+powerdns_bin_dir="${integration_dir}/target/bin"
+
 tmp_dir=$(mktemp -d)
 git clone ${EXPORTER_REPO_URL} "${tmp_dir}"
 cd "${tmp_dir}"
@@ -14,9 +16,6 @@ fi
 
 make build
 
-mv "${tmp_dir}/powerdns_exporter" "${integration_dir}/target/bin/powerdns-exporter"
+mkdir -p ${powerdns_bin_dir}
 
-cd ../
-
-rm -rf "${tmp_dir}"
-
+cp "${tmp_dir}/powerdns_exporter" "${powerdns_bin_dir}/powerdns-exporter"

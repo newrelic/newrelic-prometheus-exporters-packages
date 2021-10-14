@@ -104,10 +104,10 @@ const configPDNSTemplate = `
         }
       },
       {
-        "name": "nri-powerdns-exporter",
+        "name": "powerdns-exporter",
         "timeout": 0,
         "exec": [
-          "/usr/local/prometheus-exporters/bin/nri-powerdns-exporter",
+          "/usr/local/prometheus-exporters/bin/powerdns-exporter",
           "--api-url",
           "http://powerdns:8080/api/v1/",
           "--api-key",
