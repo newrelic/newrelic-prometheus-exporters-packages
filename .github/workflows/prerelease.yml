@@ -19,10 +19,11 @@ jobs:
     name: Create Pre-release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
         with:
           go-version: ${{env.GO_VERSION}}
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Install dependencies
         run: |
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64
