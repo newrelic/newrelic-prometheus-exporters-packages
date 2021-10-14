@@ -5,6 +5,9 @@ on:
       exporter:
         description: 'Name of the exporter to run e2e'
         required: true
+env:
+  GO_VERSION: '1.16'
+
 jobs:
   e2e-test:
     name: E2E tests for ${{ github.event.inputs.exporter }}
@@ -15,7 +18,7 @@ jobs:
       - name: Setup go
         uses: actions/setup-go@v1
         with:
-          go-version: 1.17
+          go-version: ${{env.GO_VERSION}}
       - name: build-${{ github.event.inputs.exporter }}
         run: make build-${{ github.event.inputs.exporter }}
       - name: e2e-test
