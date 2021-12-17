@@ -1,0 +1,35 @@
+integrations:
+    - name: nri-ibmmq
+      config:
+        # Hostname of the IBM MQ service
+        hostname: localhost
+
+        # Port of the IBM MQ service
+        port: 1414
+
+        # Queue Manager name
+        queue_manager: QM1
+
+        # Channel name used to connect to the queue manager. Typically you can use SYSTEM.DEF.SVRCONN
+        channel: SYSTEM.DEF.SVRCONN
+
+        # Username to authenticate
+        username:
+
+        # Password to authenticate
+        password:
+
+        # Queues to monitor (wildcards and ! to exclude are accepted) .ie  "PROD*,!DEV*"
+        monitored_queues:
+
+        # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
+        exporter_port: 9157
+
+        # transformations:
+        #   - description: "General processing rules"
+        #     ignore_metrics:
+        #     - prefixes:
+        #       - "go_"
+        #       - "process_"
+
+
