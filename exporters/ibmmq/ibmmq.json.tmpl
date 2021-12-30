@@ -2,14 +2,14 @@
     "exec": [
         "{{ .exporter_binary_path }}",
 
-        {{ if .config.queue_manager}}
-        "--ibmmq.queueManager",
-        "{{.config.queue_manager}}",
-        {{end}}
-
         {{ if .config.hostname}}
         "--ibmmq.connName",
         "{{.config.hostname}}({{.config.port}})",
+        {{end}}
+
+        {{ if .config.queue_manager}}
+        "--ibmmq.queueManager",
+        "{{.config.queue_manager}}",
         {{end}}
 
         {{ if .config.channel}}

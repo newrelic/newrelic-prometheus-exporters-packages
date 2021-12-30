@@ -1,107 +1,31 @@
 description: |
-  End-to-end tests for PowerDNS integration
+  End-to-end tests for the IBM MQ integration
 
 scenarios:
   - description: |
-      This scenario will verify that metrics from both PDNS authoritative & PDNS recursor
+      This scenario will verify that metrics from IBM MQ
       are correcly collected.
     before:
       - docker-compose up -d
     after:
       - docker-compose down -v
     integrations:
-      - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
+      - name: nri-ibmmq
+        binary_path: ../target/bin/nri-ibmmq
+        exporter_binary_path: ../target/bin/ibmmq-exporter
         config:
-          powerdns_url: http://localhost:8081/api/v1/
-          exporter_port: 9121
-          api_key: authoritative-secret
-      - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
-        config:
-          powerdns_url: http://localhost:8082/api/v1/
-          exporter_port: 9122
-          api_key: recursor-secret
+          queue_manager: QM1
+          exporter_port: 9157
+          hostname: localhost
+          port: 1414
+          channel: SYSTEM.DEF.SVRCONN
+          username: newrelic
+          password: passw0rd
+          monitored_queues: ""
     tests:
-      nrqls:
-        - query: "SELECT average(powerdns_authoritative_queries_total) FROM Metric"
-      entities:
-        - type: "POWERDNS_AUTHORITATIVE"
-          data_type: "Metric"
-          metric_name: "powerdns_authoritative_up"
-        - type: "POWERDNS_RECURSOR"
-          data_type: "Metric"
-          metric_name: "powerdns_recursor_up"
+      nrqls: []
+      entities: []
       metrics:
         - source: "powerdns.yml"
-          except_entities:
-            - POWERDNS_AUTHORITATIVE
-          except_metrics:
-            - powerdns_authoritative_answers_bytes_total
-            - powerdns_recursor_cache_lookups_total
-          # additionals: ""
-  - description: |
-      This scenario will verify that metrics from PDNS authoritative
-      are correcly collected.
-    before:
-      - docker-compose up -d
-    after:
-      - docker-compose down -v
-    integrations:
-      - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
-        config:
-          powerdns_url: http://localhost:8081/api/v1/
-          exporter_port: 9121
-          api_key: authoritative-secret
-    tests:
-      nrqls:
-        - query: "SELECT average(powerdns_authoritative_queries_total) FROM Metric"
-      entities:
-        - type: "POWERDNS_AUTHORITATIVE"
-          data_type: "Metric"
-          metric_name: "powerdns_authoritative_up"
-      metrics:
-        - source: "powerdns.yml"
-          except_entities:
-            - POWERDNS_RECURSOR
-          except_metrics:
-            - powerdns_authoritative_response_sizes
-            - powerdns_authoritative_queries
-            - powerdns_authoritative_response_rcodes
-            - powerdns_authoritative_remote_queries_unauth
-            - powerdns_authoritative_queries_unauth
-            - powerdns_authoritative_remote_queries
-          # additionals: ""
-  - description: |
-      This scenario will verify that metrics froms PDNS recursor
-      are correcly collected.
-    before:
-      - docker-compose up -d
-    after:
-      - docker-compose down -v
-    integrations:
-      - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
-        config:
-          powerdns_url: http://localhost:8082/api/v1/
-          exporter_port: 9122
-          api_key: recursor-secret
-    tests:
-      nrqls:
-        - query: "SELECT average(powerdns_recursor_cache_lookups_total) FROM Metric"
-      entities:
-        - type: "POWERDNS_RECURSOR"
-          data_type: "Metric"
-          metric_name: "powerdns_recursor_up"
-      metrics:
-        - source: "powerdns.yml"
-          except_entities:
-            - POWERDNS_AUTHORITATIVE
-          except_metrics:
-            - powerdns_recursor_cache_lookups_total
-          # additionals: "
+          except_entities: []
+          except_metrics: []

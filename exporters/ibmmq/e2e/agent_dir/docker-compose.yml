@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  agent:
+    build:
+      context: newrelic-infra-agent
+    cap_add:
+      - SYS_PTRACE
+    network_mode: host
+    pid: host
+    privileged: true
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/:/host:ro"
+    restart: unless-stopped
+
