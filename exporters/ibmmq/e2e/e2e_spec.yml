@@ -21,7 +21,7 @@ scenarios:
           channel: SYSTEM.DEF.SVRCONN
           username: newrelic
           password: passw0rd
-          monitored_queues: ""
+          monitored_queues: "Q1,DEV.QUEUE.*"
     tests:
       nrqls: []
       entities: []

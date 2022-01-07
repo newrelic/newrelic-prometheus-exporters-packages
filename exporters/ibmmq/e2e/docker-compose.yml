@@ -6,3 +6,32 @@ services:
         ports:
             - "9443:9443"
             - "1414:1414"
+
+    start_3party_dependencies:
+        image: dadarek/wait-for-dependencies
+        environment:
+            - SLEEP_LENGTH=5
+            - TIMEOUT_LENGTH=120
+        depends_on:
+            - mq_server
+        command: mq_server:1414
+
+    mq_producer:
+        image: ibmcom/mq:latest
+        environment:
+            - LICENSE=accept
+            - MQSERVER=QM1.CHANNEL/TCP/mq_server(1414)
+        volumes:
+            - ./producer-entrypoint.sh:/usr/local/bin/producer-entrypoint.sh
+        entrypoint: ["/bin/bash", "-c", "/usr/local/bin/producer-entrypoint.sh"]
+        depends_on:
+            - start_3party_dependencies
+
+    mq_consumer:
+        image: ibmcom/mq:latest
+        environment:
+            - LICENSE=accept
+            - MQSERVER=QM1.CHANNEL/TCP/mq_server(1414)
+        entrypoint: ["/opt/mqm/samp/bin/amqsgetc", "Q1"]
+        depends_on:
+            - start_3party_dependencies
