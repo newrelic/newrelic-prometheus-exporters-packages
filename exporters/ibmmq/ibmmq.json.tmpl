@@ -37,7 +37,24 @@
         "{{.config.monitored_queues}}",
         {{end}}
 
+        {{ if .config.monitored_channels}}
+        "--ibmmq.monitoredChannels",
+        "{{.config.monitored_channels}}",
+        {{end}}
+
+        {{ if .config.monitored_topics}}
+        "--ibmmq.monitoredTopics",
+        "{{.config.monitored_topics}}",
+        {{end}}
+
+        {{ if .config.monitored_subscriptions}}
+        "--ibmmq.monitoredSubscriptions",
+        "{{.config.monitored_subscriptions}}",
+        {{end}}
+
         "--ibmmq.httpMetricPath",
-        "/metrics"
+        "/metrics",
+
+        "--ibmmq.useStatus"
     ]
 }
