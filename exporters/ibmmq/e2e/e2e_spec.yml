@@ -18,17 +18,17 @@ scenarios:
           exporter_port: 9157
           hostname: localhost
           port: 1414
-          channel: SYSTEM.DEF.SVRCONN
-          username: newrelic
+          channel: DEV.ADMIN.SVRCONN
+          username: admin
           password: passw0rd
-          monitored_queues: "!SYSTEM.*,*"
-          monitored_channels: "QM1.CHANNEL,QM1.*"
-          monitored_topics: "#"
+          monitored_queues: "*"
+          monitored_channels: "*"
+          monitored_topics: "*"
           monitored_subscriptions: "*"
     tests:
       nrqls: []
       entities: []
       metrics:
-        - source: "powerdns.yml"
+        - source: "ibmmq.yml"
           except_entities: []
           except_metrics: []
