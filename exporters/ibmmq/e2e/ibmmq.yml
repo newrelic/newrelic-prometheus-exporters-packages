@@ -4,5 +4,14 @@ owningTeam: integrations
 integrationName: ibmmq
 humanReadableIntegrationName: IBMMq
 entities:
-  - entityType: ""
-    metrics: []
+  - entityType: "IBMMQ_MANAGER"
+    metrics: 
+      - name: ibmmq_qmgr_uptime
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string

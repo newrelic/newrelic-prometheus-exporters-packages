@@ -1,6 +1,9 @@
 description: |
   End-to-end tests for the IBM MQ integration
 
+agent:
+  build_context: ./agent_dir
+
 scenarios:
   - description: |
       This scenario will verify that metrics from IBM MQ

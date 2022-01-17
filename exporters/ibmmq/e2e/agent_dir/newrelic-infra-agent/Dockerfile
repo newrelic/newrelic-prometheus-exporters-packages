@@ -37,16 +37,8 @@ RUN cd /opt/mqm \
 ENV LD_LIBRARY_PATH="/opt/mqm/lib64:/usr/lib64" \
     MQ_CONNECT_TYPE=CLIENT
 
-
-RUN mkdir -p /usr/local/prometheus-exporters/bin
-
-ADD integrations.d/nri-config.yml /etc/newrelic-infra/integrations.d
-ADD bin/* /var/db/newrelic-infra/newrelic-integrations/bin/
-ADD exporters/* /usr/local/prometheus-exporters/bin/
-
-RUN chmod +x /usr/local/prometheus-exporters/bin/* || true
-
-RUN chmod +x /var/db/newrelic-infra/newrelic-integrations/bin/* || true
+# IBMMQ Client needs permissions to write in a dir passed specified in HOME
+# https://www.ibm.com/support/pages/apar/IT32860 
 ENV HOME=/tmp
 ENV NRIA_PASSTHROUGH_ENVIRONMENT=HOME
 
