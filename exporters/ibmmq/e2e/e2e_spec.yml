@@ -24,7 +24,9 @@ scenarios:
           channel: DEV.ADMIN.SVRCONN
           username: admin
           password: passw0rd
-          monitored_queues: "*"
+          # By default 256 queues can be monitored if 'MAXHANDS' configuration  of the ibmmq 
+          # manager is not increased. !SYSTEM.* excludes the system queues to avoid reach 256
+          monitored_queues: "!SYSTEM.*,*"
           monitored_channels: "*"
           monitored_topics: "*"
           monitored_subscriptions: "*"
