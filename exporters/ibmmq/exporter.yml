@@ -11,7 +11,7 @@ exporter_tag:
 # Commit of the exporter to checkout (used if tag property is empty)
 exporter_commit: f6cf4a432d0b65989052aca87ff2d253371bb646
 # Changelog to add to the new release
-exporter_changelog: https://github.com/ibm-messaging/mq-metric-samples/tags
+exporter_changelog: https://github.com/ibm-messaging/mq-metric-samples/blob/master/CHANGELOG.md
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows
@@ -32,5 +32,5 @@ license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
 config_guid: 86733900-4e10-478c-9633-61595d0e7acb
 # The definition name must be one of these https://github.com/newrelic-experimental/entity-synthesis-definitions/tree/main/definitions. For each definition we must set the tag
 definition_names:
-  ext-ibmmqmanager: git@github.com:newrelic-experimental/entity-synthesis-definitions.git#f15d4c1da7ef2a29e3be911e85f89c212c00af50
+  infra-ibmmq_manager: git@github.com:newrelic/entity-definitions.git#74b4c2ae9b23d25b5e6c5f817a8810d78388da0f
 

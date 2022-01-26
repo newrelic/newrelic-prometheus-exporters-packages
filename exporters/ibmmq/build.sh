@@ -15,7 +15,7 @@ else
 fi
 
 cd scripts
-HOME=${tmp_dir} MONITORS=mq_prometheus ./BuildMonitors.sh
+HOME=${tmp_dir} MONITORS=mq_prometheus ./buildMonitors.sh
 
 mkdir -p ${ibmmq_bin_dir}
 
