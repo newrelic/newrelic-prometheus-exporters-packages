@@ -48,7 +48,7 @@ test-e2e-%:
 	@echo "[ test-e2e-%$* ]: Running e2e test..."
 	$(NEWRELIC_E2E) --commit_sha=test-string --retry_attempts=5 --retry_seconds=60 \
          --account_id=$(ACCOUNT_ID) --api_key=$(API_KEY) --license_key=$(LICENSE_KEY) \
-         --spec_path=./exporters/$*/e2e/e2e_spec.yml --verbose_mode=true 
+         --spec_path=$(PWD)/exporters/$*/e2e/e2e_spec.yml --verbose_mode=true --region=Staging
 
 all:
 	@cd exporters; \
