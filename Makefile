@@ -22,7 +22,6 @@ build-%:
 	source scripts/common_functions.sh; \
 	EXPORTER_PATH=exporters/$*/exporter.yml; \
 	loadVariables; \
-	bash scripts/fetch_synthesis_definition.sh $(PWD) && \
 	bash exporters/$*/build.sh $(PWD) && \
 	bash scripts/build_generator.sh $(PWD) $*;
 

@@ -3,8 +3,6 @@ root_dir=$1
 integration=$2
 integration_dir="${root_dir}/exporters/${integration}"
 
-repository_definitions="https://github.com/newrelic-experimental/entity-synthesis-definitions"
-
 target_dir="${integration_dir}/target"
 source_dir="${target_dir}/source"
 
