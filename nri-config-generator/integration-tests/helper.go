@@ -1,6 +1,7 @@
 package test
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io/ioutil"
@@ -56,18 +57,14 @@ func buildGeneratorConfig(integration string, integrationVersion string) error {
 		},
 		Dir: rootDir(),
 	}
-	return cmd.Run()
-}
-
-func fetchDefinitions(integration string) error {
-	sourceFile := filepath.Join("testdata", fmt.Sprintf("%s-definitions.yml", integration))
-	input, err := ioutil.ReadFile(sourceFile)
+	var errbuf bytes.Buffer
+	cmd.Stderr = &errbuf
+	err := cmd.Run()
 	if err != nil {
-		return err
+		return fmt.Errorf("error execting command: %v, stderr: %s", err, errbuf.String())
 	}
 
-	destinationFile := filepath.Join(rootDir(), "definitions", "definitions.yml")
-	return ioutil.WriteFile(destinationFile, input, 0777)
+	return nil
 }
 
 func clean() error {
@@ -84,7 +81,8 @@ func clean() error {
 
 func callGeneratorConfig(integration string, args []string, env []string) ([]byte, error) {
 	executable := fmt.Sprintf("%s", integration)
-	ctx, _ := context.WithTimeout(context.Background(), 5000*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 5000*time.Millisecond)
+	defer cancel()
 	name := filepath.Join(rootDir(), "bin", executable)
 	cmd := exec.CommandContext(ctx, name, args...)
 	cmd.Env = env

@@ -17,20 +17,17 @@ import (
 	"github.com/newrelic/nri-config-generator/internal/config"
 	"github.com/newrelic/nri-config-generator/internal/generator"
 	"github.com/newrelic/nri-config-generator/internal/httport"
-	"github.com/newrelic/nri-config-generator/internal/synthesis"
 )
 
 const (
 	varIntegrationName      = "integration"
 	varIntegrationVersion   = "integration_version"
 	varExporterPort         = "exporter_port"
-	varSynthesisDefinitions = "entity_definitions"
 	varExporterDefinition   = "exporter_definition"
 	varExporterBinaryPath   = "exporter_binary_path"
 	varMetricTransformation = "transformations"
 	nixExportsBinPath       = "/usr/local/prometheus-exporters/bin"
 	winExportsBinPath       = "C:\\Program Files\\Prometheus-exporters\\bin"
-	definitionFileName      = "definitions/definitions.yml"
 	sleepTime               = 30 * time.Second
 	emptyMap                = "[]"
 )
@@ -44,8 +41,6 @@ var (
 	integrationTemplate embed.FS
 	//go:embed templates/config.json.tmpl
 	configTemplateContent string
-	//go:embed definitions
-	definitions embed.FS
 )
 
 func main() {
@@ -79,11 +74,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	entityDefinitions, err := getExporterDefinitions()
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	transformations, err := getMetricTransformations(vars)
 	if err != nil {
 		log.Fatal(err)
@@ -96,7 +86,6 @@ func main() {
 
 	vars[varExporterBinaryPath] = prometheusExportersBinPath(exporterName)
 	vars[varExporterPort] = fmt.Sprintf("%v", port)
-	vars[varSynthesisDefinitions] = entityDefinitions
 	vars[varMetricTransformation] = transformations
 	vars[varIntegrationName] = integration
 	vars[varIntegrationVersion] = integrationVersion
@@ -141,20 +130,6 @@ func generateOutput(exporterGenerator generator.Exporter, configGenerator genera
 func getExporterNameFromIntegration(integration string) string {
 	var exporterNameBeforeFix = fmt.Sprintf("%s-exporter", integration)
 	return strings.Replace(exporterNameBeforeFix, "nri-", "", 1)
-}
-
-func getExporterDefinitions() (string, error) {
-	definitionContent, err := definitions.ReadFile(definitionFileName)
-	if err != nil {
-		return "", fmt.Errorf("ReadFile: %s, %w", definitionFileName, err)
-	}
-
-	definitions, err := synthesis.ProcessSynthesisDefinitions(definitionContent)
-	if err != nil {
-		return "", fmt.Errorf("ProcessSynthesisDefinitions, %w", err)
-	}
-
-	return definitions, nil
 }
 
 func getConfigGenerator() (generator.Config, error) {

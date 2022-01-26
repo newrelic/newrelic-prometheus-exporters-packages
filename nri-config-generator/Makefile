@@ -37,14 +37,3 @@ endif
 	go build \
 	-ldflags "-X main.integration=$(PACKAGE_NAME) -X main.integrationVersion=$(VERSION) -X main.gitCommit=$(GIT_COMMIT) -X main.buildDate=$(BUILD_DATE)" \
 	-o $(BIN_PATH) github.com/newrelic/nri-config-generator
-
-ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-PARENT_DIR:=$(shell cd $(CURDIR)/..; pwd)
-
-fetch-definitions:
-ifeq ($(PACKAGE_NAME),)
-	$(error Missing required argument PACKAGE_NAME.)
-endif
-	@echo "[ build-$* ]: Building exporter...$(PACKAGE_NAME)"
-	cd $(PARENT_DIR) ; \
-		make build-$(PACKAGE_NAME)
