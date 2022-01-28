@@ -43,7 +43,6 @@ package-%:
 	bash scripts/copy_resources.sh $(PWD) $* && \
 	bash scripts/package.sh $(PWD) $*
 
-# test-e2e-%: fetch-resources-% build-%
 test-e2e-%: 
 	@echo "[ test-e2e-%$* ]: Running e2e test..."
 	$(NEWRELIC_E2E) --commit_sha=test-string --retry_attempts=5 --retry_seconds=60 \
