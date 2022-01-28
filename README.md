@@ -65,6 +65,8 @@ make test-e2e-<exporter_name> \
   LICENSE_KEY=<NEWRELIC_LICENSE_KEY>
 ```
 
+Go `1.17+` is needed in order to run the e2e test without installing the `newrelic-integration-e2e`.
+
 ### nri-config-generator
 `nri-config-generator` folder contains all the code needed to build a binary capable to get as input the classical 
 user configuration and as output a register protocol sample that will trigger in the agent the execution of:
