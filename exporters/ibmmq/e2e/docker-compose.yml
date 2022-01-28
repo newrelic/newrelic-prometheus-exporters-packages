@@ -34,6 +34,7 @@ services:
         entrypoint: ["/bin/bash", "-c", "/usr/local/bin/producer-entrypoint.sh"]
         depends_on:
             - start_3party_dependencies
+        restart: unless-stopped
 
     mq_consumer:
         image: ibmcom/mq:latest
@@ -43,3 +44,4 @@ services:
         entrypoint: ["/opt/mqm/samp/bin/amqsgetc", "DEV.QUEUE.1"]
         depends_on:
             - start_3party_dependencies
+        restart: unless-stopped
