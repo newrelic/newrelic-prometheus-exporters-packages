@@ -1,0 +1,17 @@
+# https://source.datanerd.us/infrastructure/infra-integration-specs/blob/master/specs/native-dm-integrations/powerDNS.yml
+specVersion: "2"
+owningTeam: integrations
+integrationName: ibmmq
+humanReadableIntegrationName: IBMMq
+entities:
+  - entityType: "IBMMQ_MANAGER"
+    metrics: 
+      - name: ibmmq_qmgr_uptime
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string

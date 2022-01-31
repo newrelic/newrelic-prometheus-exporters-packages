@@ -1,0 +1,39 @@
+description: |
+  End-to-end tests for the IBM MQ integration
+
+agent:
+  build_context: ./agent_dir
+
+scenarios:
+  - description: |
+      This scenario will verify that metrics from IBM MQ
+      are correcly collected.
+    before:
+      - docker-compose up -d
+    after:
+      - docker-compose down -v
+    integrations:
+      - name: nri-ibmmq
+        binary_path: ../target/bin/nri-ibmmq
+        exporter_binary_path: ../target/bin/ibmmq-exporter
+        config:
+          queue_manager: QM1
+          exporter_port: 9157
+          hostname: localhost
+          port: 1414
+          channel: DEV.ADMIN.SVRCONN
+          username: admin
+          password: passw0rd
+          # By default 256 queues can be monitored if 'MAXHANDS' configuration  of the ibmmq 
+          # manager is not increased. !SYSTEM.* excludes the system queues to avoid reach 256
+          monitored_queues: "!SYSTEM.*,*"
+          monitored_channels: "*"
+          monitored_topics: "*"
+          monitored_subscriptions: "*"
+    tests:
+      nrqls: []
+      entities: []
+      metrics:
+        - source: "ibmmq.yml"
+          except_entities: []
+          except_metrics: []

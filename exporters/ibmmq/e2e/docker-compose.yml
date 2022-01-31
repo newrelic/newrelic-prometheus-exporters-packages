@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+    mq_server:
+        image: ibmcom/mq:latest
+        environment:
+            - LICENSE=accept
+            - MQ_QMGR_NAME=QM1
+            - MQ_ENABLE_METRICS=true
+            - MQ_ENABLE_EMBEDDED_WEB_SERVER=1
+            # MQ_DEV generates default objects (qeues, channels, users...) used for the test.
+            # More details in https://github.com/ibm-messaging/mq-container/blob/master/docs/developer-config.md
+            - MQ_DEV=true 
+        ports:
+            - "9443:9443"
+            - "1414:1414"
+
+    start_3party_dependencies:
+        image: dadarek/wait-for-dependencies
+        environment:
+            - SLEEP_LENGTH=5
+            - TIMEOUT_LENGTH=120
+        depends_on:
+            - mq_server
+        command: mq_server:1414
+
+    mq_producer:
+        image: ibmcom/mq:latest
+        environment:
+            - LICENSE=accept
+            - MQSERVER=DEV.APP.SVRCONN/TCP/mq_server(1414)
+        volumes:
+            - ./producer-entrypoint.sh:/usr/local/bin/producer-entrypoint.sh
+        entrypoint: ["/bin/bash", "-c", "/usr/local/bin/producer-entrypoint.sh"]
+        depends_on:
+            - start_3party_dependencies
+        restart: unless-stopped
+
+    mq_consumer:
+        image: ibmcom/mq:latest
+        environment:
+            - LICENSE=accept
+            - MQSERVER=DEV.APP.SVRCONN/TCP/mq_server(1414)
+        entrypoint: ["/opt/mqm/samp/bin/amqsgetc", "DEV.QUEUE.1"]
+        depends_on:
+            - start_3party_dependencies
+        restart: unless-stopped

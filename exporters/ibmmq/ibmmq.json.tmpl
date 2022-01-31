@@ -1,0 +1,60 @@
+{
+    "exec": [
+        "{{ .exporter_binary_path }}",
+
+        {{ if .config.hostname}}
+        "--ibmmq.connName",
+        "{{.config.hostname}}({{.config.port}})",
+        {{end}}
+
+        {{ if .config.queue_manager}}
+        "--ibmmq.queueManager",
+        "{{.config.queue_manager}}",
+        {{end}}
+
+        {{ if .config.channel}}
+        "--ibmmq.channel",
+        "{{.config.channel}}",
+        {{end}}
+
+        {{ if .config.username}}
+        "--ibmmq.userid",
+        "{{.config.username}}",
+        {{end}}
+
+        {{ if .config.password}}
+        "--ibmmq.password",
+        "{{.config.password}}",
+        {{end}}
+
+        {{ if .config.exporter_port}}
+        "--ibmmq.httpListenPort",
+        "{{.config.exporter_port}}",
+        {{end}}
+
+        {{ if .config.monitored_queues}}
+        "--ibmmq.monitoredQueues",
+        "{{.config.monitored_queues}}",
+        {{end}}
+
+        {{ if .config.monitored_channels}}
+        "--ibmmq.monitoredChannels",
+        "{{.config.monitored_channels}}",
+        {{end}}
+
+        {{ if .config.monitored_topics}}
+        "--ibmmq.monitoredTopics",
+        "{{.config.monitored_topics}}",
+        {{end}}
+
+        {{ if .config.monitored_subscriptions}}
+        "--ibmmq.monitoredSubscriptions",
+        "{{.config.monitored_subscriptions}}",
+        {{end}}
+
+        "--ibmmq.httpMetricPath",
+        "/metrics",
+
+        "--ibmmq.useStatus"
+    ]
+}
