@@ -36,4 +36,9 @@ scenarios:
       metrics:
         - source: "ibmmq.yml"
           except_entities: []
-          except_metrics: []
+          except_metrics: 
+            # TODO Add a topic pub/sub noise generator to the existing DEV.BASE.TOPIC topic.
+            - ibmmq_topic_messages_received
+            - ibmmq_topic_publisher_count
+            - ibmmq_topic_subscriber_count
+            - ibmmq_topic_time_since_msg_received
