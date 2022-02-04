@@ -1,12 +1,11 @@
-# https://source.datanerd.us/infrastructure/infra-integration-specs/blob/master/specs/native-dm-integrations/powerDNS.yml
 specVersion: "2"
 owningTeam: integrations
 integrationName: ibmmq
-humanReadableIntegrationName: IBMMq
+humanReadableIntegrationName: IBM MQ
 entities:
-  - entityType: "IBMMQ_MANAGER"
-    metrics: 
-      - name: ibmmq_qmgr_uptime
+  - entityType: IBMMQ_MANAGER
+    metrics:
+      - name: ibmmq_qmgr_channel_initiator_status
         type: gauge
         defaultResolution: 15
         unit: count
@@ -15,3 +14,1942 @@ entities:
             type: string
           - name: qmgr
             type: string
+      - name: ibmmq_qmgr_mqset_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqput_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+      - name: ibmmq_qmgr_uptime
+        type: count
+        defaultResolution: 15
+        unit: seconds
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_ram_total_estimate_for_queue_manager_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_destructive_mqget_non_persistent_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_cpu_load_one_minute_average_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_subscription_time_since_message_published
+        type: gauge
+        defaultResolution: 15
+        unit: microseconds
+        dimensions:
+          - name: subscription
+            type: string
+          - name: topic
+            type: string
+          - name: type
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: subid
+            type: string
+      - name: ibmmq_qmgr_queue_manager_file_system_free_space_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_exporter_publications
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_queue_avoided_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_queue_destructive_mqget_fails
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_resume_durable_subscription_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_non_persistent_message_mqput_count
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_channel_status
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: jobname
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+      - name: ibmmq_qmgr_persistent_message_mqput_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_persistent_message_destructive_get_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_failed_create_alter_resume_subscription_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqget_browse_non_persistent_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_non_persistent_message_mqput1_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_lock_contention_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_log_physical_written_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_qtime_short
+        type: gauge
+        defaultResolution: 15
+        unit: microseconds
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+      - name: ibmmq_qmgr_mqconn_mqconnx_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_failed_mqput1_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_non_persistent_message_browse_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_expired_messages
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_log_write_size_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_topic_messages_received
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: type
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: topic
+            type: string
+      - name: ibmmq_queue_destructive_mqget_non_persistent_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_subscription_delete_failure_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_qfile_max_size
+        type: gauge
+        defaultResolution: 15
+        unit: megabytes
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_queue_attribute_max_depth
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_interval_topic_put_total
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_failed_mqput_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_user_cpu_time_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_channel_substate
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: jobname
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+      - name: ibmmq_qmgr_mq_trace_file_system_in_use_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_queue_mqget_browse_persistent_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_non_durable_subscriber_low_water_mark
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_durable_subscriber_high_water_mark
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_failed_mqget_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqclose_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_published_to_subscribers_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_delete_non_durable_subscription_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_queue_manager_file_system_in_use_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_connection_count
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_non_persistent_message_destructive_get_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqput1_persistent_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_cpu_load_fifteen_minute_average_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqget_browse_fails_with_mqrc_no_msg_available
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+      - name: ibmmq_qmgr_system_cpu_time_estimate_for_queue_manager_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_rolled_back_mqput_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_persistent_topic_mqput_mqput1_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_queue_mqget_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_failed_mqinq_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_interval_mqput_mqput1_total_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_mqinq_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_log_workload_primary_space_utilization_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_create_durable_subscription_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_log_max_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_concurrent_connections_high_water_mark
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_commit_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqput_persistent_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+      - name: ibmmq_queue_mqset_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_subscription_type
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: subid
+            type: string
+          - name: subscription
+            type: string
+          - name: topic
+            type: string
+          - name: type
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_mq_trace_file_system_free_space_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_channel_type
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+          - name: jobname
+            type: string
+      - name: ibmmq_queue_time_since_put
+        type: gauge
+        defaultResolution: 15
+        unit: microseconds
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_ram_total_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_subscription_messsages_received
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: subid
+            type: string
+          - name: subscription
+            type: string
+          - name: topic
+            type: string
+          - name: type
+            type: string
+      - name: ibmmq_qmgr_mqsubrq_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_log_file_system_max_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_mqstat_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_topic_publisher_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: topic
+            type: string
+          - name: type
+            type: string
+      - name: ibmmq_channel_time_since_msg
+        type: gauge
+        defaultResolution: 15
+        unit: microseconds
+        dimensions:
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+          - name: jobname
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+      - name: ibmmq_qmgr_interval_destructive_get_total_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_channel_messages
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: type
+            type: string
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+          - name: jobname
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: rqmname
+            type: string
+      - name: ibmmq_qmgr_create_non_durable_subscription_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_failed_mqopen_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_mqclose_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_failed_mqconn_mqconnx_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_purged_queue_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_channel_status_squash
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: jobname
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+      - name: ibmmq_queue_mqopen_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+      - name: ibmmq_qmgr_ram_free_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_topic_mqput_mqput1_interval_total
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_non_persistent_message_browse_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_status
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_failed_mqclose_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_persistent_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqget_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_expired_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_avoided_puts_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_mqopen_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_put_non_persistent_messages_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqget_browse_fails_with_mqrc_truncated_msg_failed
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_persistent_message_mqput1_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_channel_buffers_sent
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+          - name: jobname
+            type: string
+      - name: ibmmq_qmgr_got_non_persistent_messages_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_mqcb_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_log_in_use_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_uncommitted_messages
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_failed_mqset_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_queue_average_queue_time_seconds
+        type: gauge
+        defaultResolution: 15
+        unit: seconds
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_command_server_status
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_failed_mqcb_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqinq_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_rollback_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_failed_mqsubrq_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_published_to_subscribers_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_durable_subscriber_low_water_mark
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_delete_durable_subscription_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_output_handles
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqget_browse_fails
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+      - name: ibmmq_qmgr_persistent_message_browse_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_attribute_usage
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_queue_qfile_current_size
+        type: gauge
+        defaultResolution: 15
+        unit: megabytes
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_alter_durable_subscription_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_mqctl_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_qtime_long
+        type: gauge
+        defaultResolution: 15
+        unit: microseconds
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_non_durable_subscriber_high_water_mark
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_input_handles
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_channel_buffers_rcvd
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: jobname
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+      - name: ibmmq_qmgr_log_current_primary_space_in_use_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_channel_instance_type
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+          - name: jobname
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqput1_non_persistent_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_queue_time_since_get
+        type: gauge
+        defaultResolution: 15
+        unit: microseconds
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_depth
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_queue_destructive_mqget_fails_with_mqrc_no_msg_available
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_mq_fdc_file_count
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_log_logical_written_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_log_write_latency_seconds
+        type: gauge
+        defaultResolution: 15
+        unit: seconds
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_failed_topic_mqput_mqput1_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_got_persistent_messages_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_interval_mqput_mqput1_total_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_channel_bytes_rcvd
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: connname
+            type: string
+          - name: description
+            type: string
+          - name: jobname
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+          - name: channel
+            type: string
+      - name: ibmmq_qmgr_mq_errors_file_system_in_use_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_destructive_mqget_persistent_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_queue_non_persistent_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_mq_errors_file_system_free_space_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_cpu_load_five_minute_average_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_purged_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_qmgr_failed_browse_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_system_cpu_time_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_queue_mqput_non_persistent_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_queue_rolled_back_mqget_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_non_persistent_topic_mqput_mqput1_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_topic_subscriber_count
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: topic
+            type: string
+          - name: type
+            type: string
+      - name: ibmmq_qmgr_user_cpu_time_estimate_for_queue_manager_percentage
+        type: gauge
+        defaultResolution: 15
+        unit: percent
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqget_browse_persistent_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+      - name: ibmmq_qmgr_persistent_message_browse_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_qmgr_put_persistent_messages_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqget_browse_non_persistent_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+      - name: ibmmq_queue_oldest_message_age
+        type: gauge
+        defaultResolution: 15
+        unit: seconds
+        dimensions:
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+      - name: ibmmq_channel_bytes_sent
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: rqmname
+            type: string
+          - name: type
+            type: string
+          - name: channel
+            type: string
+          - name: connname
+            type: string
+          - name: description
+            type: string
+          - name: jobname
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_mqdisc_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_destructive_mqget_persistent_message_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+      - name: ibmmq_topic_time_since_msg_received
+        type: gauge
+        defaultResolution: 15
+        unit: microseconds
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: topic
+            type: string
+          - name: type
+            type: string
+      - name: ibmmq_qmgr_log_file_system_in_use_bytes
+        type: gauge
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_qmgr_interval_destructive_get_total_bytes
+        type: count
+        defaultResolution: 15
+        unit: bytes
+        dimensions:
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+      - name: ibmmq_queue_mqput_mqput1_count
+        type: count
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: usage
+            type: string
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+      - name: ibmmq_queue_destructive_mqget_fails_with_mqrc_truncated_msg_failed
+        type: gauge
+        defaultResolution: 15
+        unit: count
+        dimensions:
+          - name: description
+            type: string
+          - name: platform
+            type: string
+          - name: qmgr
+            type: string
+          - name: queue
+            type: string
+          - name: usage
+            type: string
+    internalAttributes:
+      - name: newrelic.integrationName
+        type: string
+      - name: newrelic.integrationVersion
+        type: string
+      - name: newrelic.source
+        type: string
+      - name: newrelic.agentVersion
+        type: string
+    ignoredAttributes:
+      - agentName
+      - coreCount
+      - processorCount
+      - systemMemoryBytes
+    tags: []
