@@ -1,0 +1,33 @@
+description: |
+  End-to-end tests for the RabbitMQ integration
+
+scenarios:
+  - description: |
+      This scenario will verify that metrics from RabbitMQ
+      are correcly collected.
+    before:
+      - docker-compose up -d
+    after:
+      - docker-compose down -v
+    integrations:
+      - name: nri-rabbitmq
+        binary_path: ../target/bin/nri-rabbitmq
+        config:
+          hostname: localhost
+          exporter_port: 15693
+          port: 15693
+          transformations:
+            - description: "General processing rules"
+              ignore_metrics:
+                - prefixes:
+                    - "go_"
+                    - "process_"
+                    - "erlang_"
+
+    tests:
+      nrqls: []
+      entities: []
+      metrics:
+        - source: "rabbitmq.yml"
+          except_entities: []
+          except_metrics: []

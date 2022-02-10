@@ -1,0 +1,15 @@
+integrations:
+    - name: nri-rabbitmq
+      config:
+
+        # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
+        exporter_port: 15693
+
+        # transformations:
+        #   - description: "General processing rules"
+        #     ignore_metrics:
+        #     - prefixes:
+        #       - "go_"
+        #       - "process_"
+
+
