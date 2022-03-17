@@ -7,7 +7,6 @@ target_dir="${integration_dir}/target"
 source_dir="${target_dir}/source"
 
 exporters_doc_dir="${source_dir}/usr/local/share/doc/prometheus-exporters"
-definition_files_dir="${source_dir}/etc/newrelic-infra/definition-files"
 
 integration_license="${integration_dir}/LICENSE"
 

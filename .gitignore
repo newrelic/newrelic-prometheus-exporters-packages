@@ -16,7 +16,6 @@
 **/target/**
 **/bin/**
 **/obj/**
-**/definitions/**
 
 **/*-cloned/**
 **/*-cloned/.*
@@ -38,7 +37,6 @@
 nri-config-generator/dist/*
 nri-config-generator/vendor
 nri-config-generator/templates/*
-!nri-config-generator/definitions/index.md
 !nri-config-generator/templates/config.json.tmpl
 .env
 

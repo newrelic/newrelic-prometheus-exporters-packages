@@ -25,10 +25,8 @@
         <Feature Id="ProductFeature" Title="New Relic Prometheus Exporter Integration, {IntegrationName}" Level="1">
             <ComponentRef Id="CMP_V1_CUSTOM_PLUGINS_BIN"/>
             <ComponentRef Id="CMP_V1_PLUGIN_CONFIGS"/>
-            <ComponentRef Id="CMP_V1_DEFINITION_FILES"/>
             <ComponentGroupRef Id="PrometheusPluginsBinComponent"/>
             <ComponentGroupRef Id="PluginConfigsComponent"/>
-            <ComponentGroupRef Id="DefinitionFilesComponent"/>
         </Feature>
     </Product>
 
@@ -66,11 +64,6 @@
                 <CreateFolder/>
             </Component>
         </DirectoryRef>
-        <DirectoryRef Id="DefinitionFilesFolder">
-            <Component Id="CMP_V1_DEFINITION_FILES" Guid="863851FB-89F7-4242-9945-40A0327F03A9" KeyPath="yes">
-                <CreateFolder/>
-            </Component>
-        </DirectoryRef>
     </Fragment>
 
     <Fragment>
@@ -97,14 +90,6 @@
                 <File Id="CMP_NRI_EXPORTER_CONFIG"
                       Name="{IntegrationName}-config.yml.sample"
                       Source="$(var.BinariesPath){IntegrationName}-config.yml.sample"
-                      KeyPath="yes"/>
-            </Component>
-        </ComponentGroup>
-        <ComponentGroup Id="DefinitionFilesComponent" Directory="DefinitionFilesFolder">
-            <Component Id="CMP_NRI_DEFINITION_FILES" Guid="{definitionGUID}" Win64="yes">
-                <File Id="CMP_NRI_DEFINITION_FILES"
-                      Name="prometheus_{IntegrationName}.yml"
-                      Source="$(var.BinariesPath)prometheus_{IntegrationName}.yml"
                       KeyPath="yes"/>
             </Component>
         </ComponentGroup>
