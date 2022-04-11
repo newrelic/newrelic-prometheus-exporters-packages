@@ -14,7 +14,6 @@ param (
     [string]$upgradeGUID="",
     [string]$licenseGUID="",
     [string]$configGUID="",
-    [string]$definitionGUID="",
     [string]$version=""
 )
 
