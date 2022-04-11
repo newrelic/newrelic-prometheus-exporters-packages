@@ -16,16 +16,17 @@ RELEASE=1
 DESCRIPTION="Prometheus exporters help exporting existing metrics from third-party systems as Prometheus metrics."
 SUMMARY="Prometheus exporter for ${integration} ${EXPORTER_REPO_URL}"
 GOARCH=amd64
+MINAGENTVER="newrelic-infra >= 1.24.1"
 
 create_deb()  {
   echo "creating DEB package..."
   mkdir -p "${packages_dir}"
-  fpm --verbose -C ${source_dir} -s dir -n ${PROJECT_NAME} -v ${VERSION} --iteration ${RELEASE} --prefix "" --license "${LICENSE}" --vendor "${VENDOR}" -m "${PACKAGER}" --url "${PACKAGE_URL}" --config-files /etc/newrelic-infra/ --description "${DESCRIPTION}" -t deb -p "${packages_dir}/" .
+  fpm --verbose -C ${source_dir} -s dir -n ${PROJECT_NAME} -v ${VERSION} --iteration ${RELEASE} --prefix "" --license "${LICENSE}" --vendor "${VENDOR}" -m "${PACKAGER}" --url "${PACKAGE_URL}" --config-files /etc/newrelic-infra/ --description "${DESCRIPTION}" -t deb -p "${packages_dir}/" --depends "${MINAGENTVER}" .
 }
 
 create_rpm() {
   echo "creating RPM package..."
-  fpm --verbose -C ${source_dir} -s dir -n ${PROJECT_NAME} -v ${VERSION} --iteration ${RELEASE} --prefix "" --license "${LICENSE}" --vendor "${VENDOR}" -m "${PACKAGER}" --url "${PACKAGE_URL}" --config-files /etc/newrelic-infra/ --description "${DESCRIPTION}" -t rpm -p "${packages_dir}/" --epoch 0 --rpm-summary "${SUMMARY}" .
+  fpm --verbose -C ${source_dir} -s dir -n ${PROJECT_NAME} -v ${VERSION} --iteration ${RELEASE} --prefix "" --license "${LICENSE}" --vendor "${VENDOR}" -m "${PACKAGER}" --url "${PACKAGE_URL}" --config-files /etc/newrelic-infra/ --description "${DESCRIPTION}" -t rpm -p "${packages_dir}/" --epoch 0 --rpm-summary "${SUMMARY}" --depends "${MINAGENTVER}" .
   echo "fpm --verbose -C ${source_dir} -s dir -n ${PROJECT_NAME} -v ${VERSION} --iteration ${RELEASE} --prefix \"\" --license \"${LICENSE}\" --vendor \"${VENDOR}\" -m \"${PACKAGER}\" --url \"${PACKAGE_URL}\" --config-files /etc/newrelic-infra/ --description \"${DESCRIPTION}\" -t rpm -p \"${packages_dir}/\" --epoch 0 --rpm-summary \"${SUMMARY}\" ."
 
 }

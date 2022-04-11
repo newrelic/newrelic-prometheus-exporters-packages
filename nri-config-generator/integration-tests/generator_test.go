@@ -1,3 +1,4 @@
+//go:build integration
 // +build integration
 
 package test
@@ -62,38 +63,6 @@ const configPDNSTemplate = `
               ]
             }
           ],
-          "entity_definitions": [
-            {
-              "conditions": [
-                {
-                  "attribute": "metricName",
-                  "prefix": "powerdns_authoritative_"
-                }
-              ],
-              "identifier": "targetName",
-              "name": "targetName",
-              "tags": {
-                "clusterName": null,
-                "targetName": null
-              },
-              "type": "POWERDNS_AUTHORITATIVE"
-            },
-            {
-              "conditions": [
-                {
-                  "attribute": "metricName",
-                  "prefix": "powerdns_recursor_"
-                }
-              ],
-              "identifier": "targetName",
-              "name": "targetName",
-              "tags": {
-                "clusterName": null,
-                "targetName": null
-              },
-              "type": "POWERDNS_RECURSOR"
-            }
-          ],
           "targets": [
             {
               "urls": [
@@ -129,9 +98,6 @@ var defaultArgs = []string{
 var pdnsTemplate, _ = template.New("defTemplate").Parse(configPDNSTemplate)
 
 func TestMain(m *testing.M) {
-	if err := fetchDefinitions(testIntegration); err != nil {
-		panic(err.Error())
-	}
 	if err := buildGeneratorConfig(testIntegration, testIntegrationVersion); err != nil {
 		log.Fatal(err)
 	}

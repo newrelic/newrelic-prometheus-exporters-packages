@@ -76,10 +76,7 @@ exporting prometheus metrics natively.
 
 All the integrations share the same code since the different configurations are passed using the `//go:embed` directive.
 
-In particular the configuration injected are the 
- - [entity definition](https://github.com/newrelic/entity-definitions/tree/main/definitions) retrieved at build time and
-stored in a different repositories
- - the integration configuration stored under `./exporters/{exporterName}`
+In particular the configuration injected is the integration configuration stored under `./exporters/{exporterName}`
 
 ### How can I track down different versions?
 
@@ -144,10 +141,6 @@ exporter_guid: b246fde4-0083-4e16-beb0-09139fb5ca9f
 license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
 # This GUID should be generated and be unique across all exporters in the repository
 config_guid: 86733900-4e10-478c-9633-61595d0e7acb
-# The definition name must be one of these https://github.com/newrelic-experimental/entity-synthesis-definitions/tree/main/definitions. For each definition we must set the tag
-definition_names:
-  infra-powerdns_authoritative: git@github.com:newrelic-experimental/entity-synthesis-definitions.git#bd20671d98d7c6eb921ebaeeb149d23c4d208ade
-  infra-powerdns_recursor: git@github.com:newrelic-experimental/entity-synthesis-definitions.git#bd20671d98d7c6eb921ebaeeb149d23c4d208ade
 ```
 
 When added open a PR and once merged to master a github action workflow will start building and uploading packages to Github. 

@@ -20,23 +20,7 @@ $env:GO111MODULE = "auto"
 $exporterBinaryName = "$exporterName-exporter.exe"
 $exporterRepo =  [string]"$exporterURL" -replace 'https?://(www.)?'
 
-$defRepoURL= "https://github.com/newrelic/nr-integration-definitions"
-$defFileName = "prometheus_$exporterName.yml"
-$defRepoPath = "definitions"
-$defFilePath = "$defRepoPath\\definitions\\prometheus_exporters"
-
 $projectRootPath = pwd
-
-echo "--- Cloning definitions files Repo"
-$ErrorActionPreference = "SilentlyContinue"
-git clone $defRepoURL $defRepoPath
-$ErrorActionPreference = "Stop"
-$defFileExists = Test-Path $defFilePath\\$defFileName
-if ($defFileExists -eq $False)
-{
-    echo "Cannot find a definition file called $defFileName in the definitions repo"
-    exit -1
-}
 
 echo "--- Cloning exporter Repo"
 Push-Location $env:GOPATH\src

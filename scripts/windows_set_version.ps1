@@ -7,7 +7,6 @@ param (
 	 [string]$upgradeGUID="",
 	 [string]$licenseGUID="",
 	 [string]$configGUID="",
-	 [string]$definitionGUID="",
 	 [int]$build = 0
 )
 
@@ -53,7 +52,6 @@ Function ProcessProductFile($productPath) {
 	$product = $product -replace "{upgradeGUID}", $upgradeGUID
 	$product = $product -replace "{licenseGUID}", $licenseGUID
 	$product = $product -replace "{configGUID}", $configGUID
-	$product = $product -replace "{definitionGUID}", $definitinoGUID
 
 	Set-Content -Value $product -Path $productPath
 }

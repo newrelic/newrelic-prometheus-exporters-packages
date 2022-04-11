@@ -16,14 +16,6 @@ loadVariables(){
     export LICENSE_GUID=$(cat $EXPORTER_PATH | yq e .license_guid -)
     export PACKAGE_LINUX=$(cat $EXPORTER_PATH | yq e .package_linux -)
     export PACKAGE_WINDOWS=$(cat $EXPORTER_PATH | yq e .package_windows -)
-    OLD_IFS="$IFS"
-
-    while IFS= read -r value; do
-        DEFINITION_NAMES+=" ${value//[[:space:]]/}"
-    done < <(cat $EXPORTER_PATH | yq eval '.definition_names' -)
-
-    IFS="$OLD_IFS"
-    export DEFINITION_NAMES=$DEFINITION_NAMES
     if [[ -z $EXPORTER_TAG ]]
     then
         export EXPORTER_HEAD=$EXPORTER_COMMIT
@@ -52,7 +44,6 @@ setStepOutput(){
     echo "::set-output name=NRI_GUID::${NRI_GUID}"
     echo "::set-output name=LICENSE_GUID::${LICENSE_GUID}"
     echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
-    echo "::set-output name=DEFINITION_NAMES::${DEFINITION_NAMES}"
 
 }
 
@@ -191,9 +182,6 @@ checkExporter(){
             fi
         fi
 
-        if [ -z "$DEFINITION_NAMES" ];then
-            ERRORS=$ERRORS" - definition_names is missing from exporter.yml"
-        fi
         if [ ! -f "./exporters/$NAME/win_build.ps1" ]; then
             ERRORS=$ERRORS" - the file ./exporters/$NAME/win_build.ps1 should exist"
         fi
