@@ -12,6 +12,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"sort"
 
 	dto "github.com/prometheus/client_model/go"
 	io_prometheus_client "github.com/prometheus/client_model/go"
@@ -112,7 +113,7 @@ func getPromMetrics(filename string) []Metric {
 			)
 		}
 	}
-	return metrics
+	return sortMetrics(metrics)
 }
 
 // Get scrapes the given URL and decodes the retrieved payload.
@@ -135,4 +136,11 @@ func readMetrics(filename string) (MetricFamiliesByName, error) {
 		mfs[mf.GetName()] = mf
 	}
 	return mfs, nil
+}
+
+func sortMetrics(metrics []Metric) []Metric {
+	sort.SliceStable(metrics, func(i, j int) bool {
+		return metrics[i].name < metrics[j].name
+	})
+	return metrics
 }
