@@ -16,14 +16,6 @@ ci/snyk-test:
 		-e GO111MODULE=auto \
 		snyk/snyk:golang snyk test --severity-threshold=high
 
-.PHONY : ci/validate
-ci/validate: ci/deps
-	@docker run --rm -t \
-			--name "nri-$(INTEGRATION)-validate" \
-			-v $(SRC_DIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
-			-w /go/src/github.com/newrelic/nri-$(INTEGRATION) \
-			$(BUILDER_TAG) make validate
-
 .PHONY : ci/test
 ci/test: ci/deps
 	@docker run --rm -t \

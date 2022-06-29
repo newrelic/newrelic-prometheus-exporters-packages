@@ -1,20 +1,12 @@
 TARGET          := target
-GOFLAGS          = -mod=readonly
-GOLANGCI_LINT	 = github.com/golangci/golangci-lint/cmd/golangci-lint
 
 all: build
 
-build: clean validate compile test
+build: clean compile test
 
 clean:
 	@echo "=== nri-config-generator === [ clean ]: removing binaries and coverage file..."
 	@rm -rfv bin coverage.xml $(TARGET)
-
-validate:
-	@printf "=== nri-config-generator === [ validate ]: running golangci-lint & semgrep... "
-	@go run  $(GOFLAGS) $(GOLANGCI_LINT) run --verbose
-	@[ -f .semgrep.yml ] && semgrep_config=".semgrep.yml" || semgrep_config="p/golang" ; \
-	docker run --rm -v "${PWD}:/src:ro" --workdir / returntocorp/semgrep -c "$$semgrep_config"
 
 test:
 	@echo "=== nri-config-generator === [ test ]: running unit tests..."
