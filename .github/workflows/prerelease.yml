@@ -8,7 +8,7 @@ on:
 env:
   PFX_CERTIFICATE_BASE64: ${{ secrets.PFX_CERTIFICATE_BASE64 }} # base64 encoded
   PFX_PASSPHRASE:  ${{ secrets.PFX_PASSPHRASE }}
-  GO_VERSION: '1.16'
+  GO_VERSION: '1.18'
 
 ###
 ###   PRE-RELEASE CREATION # Creates a pre-release if needed and loads variables for next jobs

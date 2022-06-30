@@ -15,7 +15,7 @@ on:
     branches: [ main ]
 
 env:
-  GO_VERSION: '1.16'
+  GO_VERSION: '1.18'
 
 ###
 ###   Checking PR # Checks the file and the info provided when an exporter is modified

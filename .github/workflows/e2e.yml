@@ -6,7 +6,7 @@ on:
         description: 'Name of the exporter to run e2e'
         required: true
 env:
-  GO_VERSION: '1.16'
+  GO_VERSION: '1.18'
 
 jobs:
   e2e-test:
