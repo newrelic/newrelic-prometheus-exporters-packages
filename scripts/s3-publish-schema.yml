@@ -16,6 +16,7 @@
       src_repo: "http://download.newrelic.com/infrastructure_agent/linux/apt"
       dest: "{dest_prefix}linux/apt/"
       os_version:
+        - jammy
         - focal
         - bionic
         - buster
@@ -40,6 +41,7 @@
         - 6
         - 7
         - 8
+        - 9
 
     - type: zypp
       dest: "{dest_prefix}linux/zypp/sles/{os_version}/{arch}/"
@@ -54,3 +56,8 @@
         - 15.2
         - 15.3
 
+    - type: yum
+      dest: "{dest_prefix}linux/yum/amazonlinux/{os_version}/{arch}/"
+      os_version:
+        - 2
+        - 2022
