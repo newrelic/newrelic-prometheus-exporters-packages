@@ -23,6 +23,10 @@ services:
       # We mount the integrations in this directory to avoid overwritten the bundle integrations that
       #  exists in '/var/db/newrelic-infra/newrelic-integrations/bin'
       - "${E2E_NRI_BIN}:/var/db/newrelic-infra/bundled-plugins"
-      
+
+      # This files are used to perform the mTLS authentication in the mTLS e2e scenario.
+      - ../tls/ccdt-admin.json:/ccdt.json
+      - ../tls/keystore/key.kdb:/key.kdb
+      - ../tls/keystore/key.sth:/key.sth
     restart: unless-stopped
 
