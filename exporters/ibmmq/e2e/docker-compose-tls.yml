@@ -9,19 +9,26 @@ services:
             - MQ_QMGR_NAME=QM1
             - MQ_ENABLE_METRICS=true
             - MQ_ENABLE_EMBEDDED_WEB_SERVER=1
+            - MQ_APP_PASSWORD=passw0rd
             # MQ_DEV generates default objects (qeues, channels, users...) used for the test.
             # More details in https://github.com/ibm-messaging/mq-container/blob/master/docs/developer-config.md
-            - MQ_DEV=true
-            - MQ_APP_PASSWORD=passw0rd
+        entrypoint: [ "/bin/bash", "-c", "/usr/local/bin/entrypoint-server-tls.sh" ]
         ports:
             - "9443:9443"
             - "1414:1414"
+        volumes:
+            - /src/docker/myapp/upload:/var/www/html/upload
+            - ./tls/server:/etc/mqm/pki/keys/mykey
+            - ./tls/trusted:/etc/mqm/pki/trust/0
+            - ./tls/entrypoint-server-tls.sh:/usr/local/bin/entrypoint-server-tls.sh
 
     start_3party_dependencies:
+        platform: linux/x86_64
         image: dadarek/wait-for-dependencies
         environment:
             - SLEEP_LENGTH=5
             - TIMEOUT_LENGTH=120
+
         depends_on:
             - mq_server
         command: mq_server:1414
@@ -31,11 +38,17 @@ services:
         image: icr.io/ibm-messaging/mq:latest
         environment:
             - LICENSE=accept
-            - MQSERVER=DEV.APP.SVRCONN/TCP/mq_server(1414)
+            # mTLS
+            - MQCCDTURL=file:///ccdt.json
+            - MQSSLKEYR=/key
             - MQSAMP_USER_ID=app
             - MQ_APP_PASSWORD=passw0rd
         volumes:
             - ./entrypoint-producer.sh:/usr/local/bin/entrypoint-producer.sh
+            - ./tls/ccdt-app.json:/ccdt.json
+            - ./tls/keystore/key.kdb:/key.kdb
+            - ./tls/keystore/key.sth:/key.sth
+
         entrypoint: ["/bin/bash", "-c", "/usr/local/bin/entrypoint-producer.sh"]
         depends_on:
             - start_3party_dependencies
@@ -46,13 +59,18 @@ services:
         image: icr.io/ibm-messaging/mq:latest
         environment:
             - LICENSE=accept
-            - MQSERVER=DEV.APP.SVRCONN/TCP/mq_server(1414)
+            # mTLS
+            - MQCCDTURL=file:///ccdt.json
+            - MQSSLKEYR=/key
             - MQSAMP_USER_ID=app
             - MQ_APP_PASSWORD=passw0rd
-        volumes:
-            - ./entrypoint-consumer.sh:/usr/local/bin/entrypoint-consumer.sh
         entrypoint: ["/bin/bash", "-c", "/usr/local/bin/entrypoint-consumer.sh"]
         depends_on:
             - start_3party_dependencies
         restart: unless-stopped
+        volumes:
+            - ./entrypoint-consumer.sh:/usr/local/bin/entrypoint-consumer.sh
+            - ./tls/ccdt-app.json:/ccdt.json
+            - ./tls/keystore/key.kdb:/key.kdb
+            - ./tls/keystore/key.sth:/key.sth
 

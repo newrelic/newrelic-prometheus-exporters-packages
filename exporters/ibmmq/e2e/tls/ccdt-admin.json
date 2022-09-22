@@ -1,0 +1,22 @@
+{
+  "channel": [
+    {
+      "name": "DEV.ADMIN.SVRCONN",
+      "clientConnection": {
+        "connection": [
+          {
+            "host": "localhost",
+            "port": 1414
+          }
+        ],
+        "queueManager": "QM1"
+      },
+      "transmissionSecurity":
+      {
+        "cipherSpecification": "TLS_RSA_WITH_AES_256_CBC_SHA256",
+        "certificateLabel": "admin"
+      },
+      "type": "clientConnection"
+    }
+  ]
+}

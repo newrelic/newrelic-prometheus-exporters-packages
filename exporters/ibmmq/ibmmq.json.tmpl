@@ -56,5 +56,27 @@
         "/metrics",
 
         "--ibmmq.useStatus"
-    ]
+    ],
+
+    {{ if (or .config.mqsslkeyr .config.ccdt_url .config.ld_library_path .config.home) }}
+    "env": {
+            {{ if .config.mqsslkeyr}}
+            "MQSSLKEYR":"{{.config.mqsslkeyr}}",
+            {{end}}
+
+            {{ if .config.ccdt_url }}
+            "MQCCDTURL": "{{.config.ccdt_url}}",
+            "IBMMQ_CONNECTION_CCDTURL": "{{.config.ccdt_url}}",
+            {{end}}
+
+            {{ if .config.ld_library_path}}
+            "LD_LIBRARY_PATH": "{{.config.ld_library_path}}",
+            {{end}}
+
+            {{ if .config.home}}
+            "HOME": "{{.config.home}}",
+            {{end}}
+    }
+    {{ end }}
+
 }
