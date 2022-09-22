@@ -34,7 +34,8 @@ integrations:
 
         # The following parameters will be passed as environment variables directly to the IBM mq exporter in order to set up advanced connection setups such as TLS and mTLS.
 
-        # MQSSLKEYR specifies the location of the key repository that holds the digital certificate belonging to the user or to the server.
+        # MQSSLKEYR specifies the location of the keystore repository that holds the digital certificate belonging to the user or to the server.
+        # Notice that mqsslkeyr should be specified without the extension to point to both `key.kdb` and `key.sth`
         # https://www.ibm.com/docs/en/ibm-mq/9.1?topic=variables-mqsslkeyr
         # mqsslkeyr: /key
 
