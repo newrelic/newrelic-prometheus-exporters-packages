@@ -1,7 +1,7 @@
 # name of the exporter, should match with the folder name
 name: ibmmq
 # version of the package created
-version: 0.1.0
+version: 0.2.0
 # Relative path to the License path from the repository root
 exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
@@ -9,7 +9,7 @@ exporter_repo_url: https://github.com/ibm-messaging/mq-metric-samples
 # Tag of the exporter to checkout
 exporter_tag:
 # Commit of the exporter to checkout (used if tag property is empty)
-exporter_commit: f6cf4a432d0b65989052aca87ff2d253371bb646
+exporter_commit: d268624ff90d2fbbec18d62b6f73ed8955c4ee8f
 # Changelog to add to the new release
 exporter_changelog: https://github.com/ibm-messaging/mq-metric-samples/blob/master/CHANGELOG.md
 # Enable packages for Linux
