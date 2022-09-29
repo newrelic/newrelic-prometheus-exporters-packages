@@ -42,7 +42,7 @@ package-%:
 	bash scripts/copy_resources.sh $(PWD) $* && \
 	bash scripts/package.sh $(PWD) $*
 
-test-e2e-%: 
+test-e2e-%: build-%
 	@echo "[ test-e2e-%$* ]: Running e2e test..."
 	$(NEWRELIC_E2E) --commit_sha=test-string --retry_attempts=5 --retry_seconds=60 \
          --account_id=$(ACCOUNT_ID) --api_key=$(API_KEY) --license_key=$(LICENSE_KEY) \
