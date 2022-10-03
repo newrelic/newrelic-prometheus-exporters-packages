@@ -13,10 +13,12 @@ integrations:
         # Channel name used to connect to the queue manager. Typically you can use SYSTEM.DEF.SVRCONN
         channel: SYSTEM.DEF.SVRCONN
 
-        # Username to authenticate
+        # Username to authenticate. This config should be not populated if password is not set.
+        # If the password is not specified, user/password authentication is disabled and the username should not be specified in the configuration.
+        # The exporter will connect sending as clientID the user executing the integration. Depending on the agent installation mode it could be "root" or "nri-agent".
         username:
 
-        # Password to authenticate
+        # Password to authenticate. 
         password:
 
         # Queues to monitor (wildcards and ! to exclude are accepted) .ie  "PROD*,!DEV*"
