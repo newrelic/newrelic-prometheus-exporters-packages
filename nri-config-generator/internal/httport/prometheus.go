@@ -3,7 +3,6 @@ package httport
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -35,7 +34,7 @@ func IsPrometheusExporterRunning() bool {
 		log.Error("error while checking the prometheus exporter 'health check': %s", err.Error())
 		return false
 	}
-	_, err = io.Copy(ioutil.Discard, resp.Body)
+	_, err = io.Copy(io.Discard, resp.Body)
 	defer func() {
 		if err := resp.Body.Close(); err != nil {
 			log.Error(err.Error())
