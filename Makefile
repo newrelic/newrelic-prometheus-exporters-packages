@@ -5,7 +5,7 @@ GOOS ?=
 GOARCH ?=
 
 ifeq (, $(shell which newrelic-integration-e2e))
-NEWRELIC_E2E ?= go run github.com/newrelic/newrelic-integration-e2e-action/newrelic-integration-e2e/cmd
+NEWRELIC_E2E ?= go run github.com/newrelic/newrelic-integration-e2e-action/newrelic-integration-e2e/cmd@latest
 else
 NEWRELIC_E2E ?= newrelic-integration-e2e
 endif
