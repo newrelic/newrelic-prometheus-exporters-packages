@@ -27,5 +27,4 @@ fetch_license() {
 
 }
 
-
 fetch_license

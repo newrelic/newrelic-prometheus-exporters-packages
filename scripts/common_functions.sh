@@ -192,6 +192,4 @@ checkExporter(){
     if [ "$exporter_name" != "$NAME" ]; then
         ERRORS=$ERRORS" - The exporter.yml is in a wrong folder"
     fi
-
-
 }
