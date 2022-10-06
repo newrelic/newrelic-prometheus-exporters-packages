@@ -4,11 +4,7 @@ NRI_GENERATOR_PATH="$(PWD)/nri-config-generator"
 GOOS ?=
 GOARCH ?=
 
-ifeq (, $(shell which newrelic-integration-e2e))
-NEWRELIC_E2E ?= go run github.com/newrelic/newrelic-integration-e2e-action/newrelic-integration-e2e/cmd@latest
-else
-NEWRELIC_E2E ?= newrelic-integration-e2e
-endif
+NEWRELIC_E2E ?= go run github.com/marcsanmi/newrelic-integration-e2e-action/newrelic-integration-e2e@latest
 
 clean:
 	rm -rf dist
@@ -51,7 +47,7 @@ test-e2e-%: build-%
 	@echo "[ test-e2e-%$* ]: Running e2e test..."
 	$(NEWRELIC_E2E) --commit_sha=test-string --retry_attempts=5 --retry_seconds=60 \
          --account_id=$(ACCOUNT_ID) --api_key=$(API_KEY) --license_key=$(LICENSE_KEY) \
-         --spec_path=$(PWD)/exporters/$*/e2e/e2e_spec.yml --verbose_mode --agent_enabled=true
+         --spec_path=$(PWD)/exporters/$*/e2e/e2e_spec.yml --verbose_mode
 
 all:
 	@cd exporters; \
