@@ -1,0 +1,28 @@
+version: '3.5'
+
+services:
+  agent:
+    build:
+      context: newrelic-infra-agent
+    cap_add:
+      - SYS_PTRACE
+    network_mode: host
+    pid: host
+    privileged: true
+    environment:
+      - NRIA_IS_SECURE_FORWARD_ONLY=true
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/:/host:ro"
+
+      # E2E_* vars contains the path to the different temporary directories with the  binaries and 
+      # configs files used to launch the integrations for the test scenario.
+      - "${E2E_EXPORTER_BIN}:/usr/local/prometheus-exporters/bin/"
+      - "${E2E_NRI_CONFIG}:/etc/newrelic-infra/integrations.d"
+      # bundled-plugins is a directory where the Agent automatically looks for integration binaries.
+      # We mount the integrations in this directory to avoid overwritten the bundle integrations that
+      #  exists in '/var/db/newrelic-infra/newrelic-integrations/bin'
+      - "${E2E_NRI_BIN}:/var/db/newrelic-infra/bundled-plugins"
+
+    restart: unless-stopped
+

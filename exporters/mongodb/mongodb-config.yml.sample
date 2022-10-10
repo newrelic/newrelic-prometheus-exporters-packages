@@ -1,0 +1,82 @@
+integrations:
+    - name: nri-mongodb
+      config:
+        # User-defined name to uniquely identify the cluster being monitored. Required.
+        mongodb_cluster_name:
+
+        # MongoDB connection URI. If used replaces overwrites all other connection parameters .
+        mongodb_uri:
+
+        # Hostname or IP where MongoDB is running. Default is localhost
+        hostname: localhost
+
+        # Port on which MongoDB is listening. Default is 27017
+        port: 27017
+
+        # Username for accessing MongoDB server.
+        username:
+
+        # Password for the above user.
+        password:
+
+        # The database to authenticate against. Default is admin.
+        auth_source: admin
+
+        # Specify the authentication mechanism that MongoDB will use to authenticate the connection. Supported values are:
+        # SCRAM-SHA-1
+        # SCRAM-SHA-256
+        # MONGODB-X509
+        # MONGODB-AWS
+        # GSSAPI
+        # PLAIN
+        auth_mechanism:
+
+        # Use SSL when communicating with the MongoDB server. Default is false.
+        ssl: false
+
+        # Location of SSL certificate on the host. Only required if SSL is true.
+        ssl_ca_certs:
+
+        # Location of PEM file containing Private Key and Client Certificate.
+        pem_key_file:
+
+        # Passphrase to decrypt PEMKeyFile file.
+        passphrase:
+
+        # Skip the verification of the server's certificate chain and hostname. Default is false.
+        ssl_insecure_skip_verify: false
+
+        # List of comma separated databases.collections to retrieve collection stats.
+        collection_filters:
+
+        # List of comma separated databases.collections to retrieve index stats.
+        index_filters:
+
+        # Enable/Disable collection of Database metrics
+        database_stats: true
+
+        # Enable/Disable collection of Collections metrics
+        collection_stats: true
+
+        # Enable/Disable collection of Index metrics
+        index_stats: false
+
+        # Enable/Disable collection of Replica Set metrics
+        replicaset_stats: false
+
+        # Enable/Disable collection of Top Admin metrics
+        top_stats: false
+
+        # Enable/Disable collection of Diagnostic metrics
+        diagnostic_stats: false
+
+        # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
+        exporter_port: 9126
+
+        # transformations:
+        #   - description: "General processing rules"
+        #     ignore_metrics:
+        #     - prefixes:
+        #       - "go_"
+        #       - "process_"
+
