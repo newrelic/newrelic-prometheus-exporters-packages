@@ -13,4 +13,3 @@ transformations:
       - prefixes:
           - kube_daemonset_
 
-

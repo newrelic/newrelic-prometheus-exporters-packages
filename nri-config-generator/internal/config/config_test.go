@@ -2,7 +2,7 @@ package config
 
 import (
 	"io/fs"
-	"io/ioutil"
+	"os"
 	"path"
 	"testing"
 
@@ -30,7 +30,7 @@ transformations:
 func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	dir := t.TempDir()
 	p := path.Join(dir, "config.yml")
-	err := ioutil.WriteFile(p, []byte(text), fs.ModePerm)
+	err := os.WriteFile(p, []byte(text), fs.ModePerm)
 	assert.NoError(t, err)
 	c, err := getConfig(&ArgumentList{ConfigPath: p})
 	assert.NoError(t, err)

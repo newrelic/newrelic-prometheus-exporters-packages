@@ -1,11 +1,10 @@
 SHELL := /bin/bash
 NRI_GENERATOR_PATH="$(PWD)/nri-config-generator"
 
-ifeq (, $(shell which newrelic-integration-e2e))
-NEWRELIC_E2E ?= go run github.com/newrelic/newrelic-integration-e2e-action/newrelic-integration-e2e/cmd@v1
-else
-NEWRELIC_E2E ?= newrelic-integration-e2e
-endif
+GOOS ?=
+GOARCH ?=
+
+NEWRELIC_E2E ?= go run github.com/newrelic/newrelic-integration-e2e-action@latest
 
 clean:
 	rm -rf dist
@@ -17,12 +16,14 @@ build-all:
 		make build-$${name}; \
 	done
 
+build-%: GOOS := $(if $(GOOS),$(GOOS),"linux")
+build-%: GOARCH := $(if $(GOARCH),$(GOARCH),"arm64")
 build-%:
 	@echo "[ build-$* ]: Building exporter..."
 	source scripts/common_functions.sh; \
 	EXPORTER_PATH=exporters/$*/exporter.yml; \
 	loadVariables; \
-	bash exporters/$*/build.sh $(PWD) && \
+	bash exporters/$*/build.sh $(PWD) ${GOOS} ${GOARCH} && \
 	bash scripts/build_generator.sh $(PWD) $*;
 
 fetch-resources-%:
@@ -42,11 +43,11 @@ package-%:
 	bash scripts/copy_resources.sh $(PWD) $* && \
 	bash scripts/package.sh $(PWD) $*
 
-test-e2e-%: 
+test-e2e-%: build-%
 	@echo "[ test-e2e-%$* ]: Running e2e test..."
 	$(NEWRELIC_E2E) --commit_sha=test-string --retry_attempts=5 --retry_seconds=60 \
          --account_id=$(ACCOUNT_ID) --api_key=$(API_KEY) --license_key=$(LICENSE_KEY) \
-         --spec_path=$(PWD)/exporters/$*/e2e/e2e_spec.yml --verbose_mode=true
+         --spec_path=$(PWD)/exporters/$*/e2e/e2e_spec.yml --verbose_mode
 
 all:
 	@cd exporters; \

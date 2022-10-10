@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -36,12 +35,12 @@ func rootDir() string {
 func copyIntegrationTemplate(integration string) error {
 	fileName := fmt.Sprintf("%s.json.tmpl", integration)
 	sourcePath := filepath.Join("testdata", "integration_template", fileName)
-	bytesRead, err := ioutil.ReadFile(sourcePath)
+	bytesRead, err := os.ReadFile(sourcePath)
 	if err != nil {
 		return err
 	}
 	targetPath := filepath.Join(rootDir(), "templates", fileName)
-	return ioutil.WriteFile(targetPath, bytesRead, 0755)
+	return os.WriteFile(targetPath, bytesRead, 0755)
 }
 func buildGeneratorConfig(integration string, integrationVersion string) error {
 	if err := copyIntegrationTemplate(integration); err != nil {
