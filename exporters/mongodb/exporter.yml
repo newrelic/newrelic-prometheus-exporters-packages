@@ -1,0 +1,32 @@
+# name of the exporter, should match with the folder name
+name: mongodb
+# version of the package created
+version: 0.1.0
+# Relative path to the License path from the repository root
+exporter_license_path: LICENSE
+# URL to the git project hosting the exporter
+exporter_repo_url: https://github.com/percona/mongodb_exporter
+# Tag of the exporter to checkout
+exporter_tag:
+# Commit of the exporter to checkout (used if tag property is empty)
+exporter_commit: 6fa2a74de666d30cd04e2c36b417152a0d490e77
+# Changelog to add to the new release
+exporter_changelog: https://github.com/percona/mongodb_exporter/blob/main/CHANGELOG
+# Enable packages for Linux
+package_linux: true
+# Enable packages for Windows
+package_windows: false
+# Upgrade GUID used in the msi package. Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+upgrade_guid: 278db4a4-60a9-493b-b878-dc7b445a2db0
+# Integration GUID used in the msi package. Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+nri_guid: 44ac2940-4aff-46fc-a46b-b1b8cd9a3505
+# Exporter GUID used in the msi package. Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+exporter_guid: b246fde4-0083-4e16-beb0-09139fb5ca9f
+# License GUID used in the msi package. Required if package_windows is set to true
+# This GUID should be generated and be unique across all exporters in the repository
+license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
+# This GUID should be generated and be unique across all exporters in the repository
+config_guid: 86733900-4e10-478c-9633-61595d0e7acb
