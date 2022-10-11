@@ -22,3 +22,7 @@ Run it with `go run ./...` from the `docs-specs-generator` folder itself. The ou
    the description.   
 
  - You still need to review is the output makes sense and is compliant with all specifications.
+
+### Considerations
+
+The tool will convert the metrics of type `untyped` as `gauge` metrics. Therefore, remember to check those specific types when using it.
