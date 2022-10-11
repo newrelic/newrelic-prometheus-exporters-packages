@@ -71,46 +71,16 @@ or to create custom charts and dashboards.
 
 The following dimensional metrics are captured scraping the exporter and linked to the entity {{ .EntityType }}:
 
-<table>
-  <thead>
-    <tr>
-      <th style={{ "{{ width: \"350px\" }}" }}>
-        Name
-      </th>
+| Name | Description | Dimensions |
+| --- | --- | --- |
+{{- range .Metrics -}}
+{{- $dimensions:="" -}}
+{{- range .Dimensions -}}
+    {{$dimensions = (printf "%v %v" $dimensions .Name)}}
+{{- end }}
+| `{{ .Name }} ({{ .Type }})` |  {{ .Description }} | {{ $dimensions }} |
+{{- end }}
 
-      <th>
-        Description
-      </th>
-
-      <th>
-        Dimensions
-      </th>
-    </tr>
-  </thead>
-
-  <tbody>
-        {{ range .Metrics }}
-
-    <tr>
-      <td>
-        `{{ .Name }} ({{ .Type }})`
-      </td>
-
-      <td>
-        {{ .Description }}
-      </td>
-
-      <td>
-        {{- range .Dimensions }}
-        - {{ .Name }}
-        {{- end }}
-      </td>
-    </tr>
-
-        {{- end }}
-
-  </tbody>
-</table>
 
 {{- end }}
 
