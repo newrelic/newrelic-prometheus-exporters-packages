@@ -1,0 +1,53 @@
+{
+    "exec": [
+        "{{ .exporter_binary_path }}",
+
+        {{ if .config.mongodb_uri}}
+        "--mongodb.uri",
+        {{.config.mongodb_uri}},
+        {{end}}
+
+        {{ if .config.collection_filters}}
+        "--mongodb.collstats-colls",
+        {{.config.collection_filters}},
+        {{end}}
+
+        {{ if .config.index_filters}}
+        "--mongodb.indexstats-colls",
+        {{.config.index_filters}},
+        {{end}}
+
+        {{if or (.config.database_stats) (eq .config.database_stats nil)}}
+        "--collector.dbstats",
+        {{end}}
+
+        {{if or (.config.collection_stats) (eq .config.collection_stats nil)}}
+        "--collector.collstats",
+        {{end}}
+
+        {{if or (.config.index_stats) (eq .config.index_stats nil)}}
+        "--collector.indexstats",
+        {{end}}
+
+        {{if or (.config.replicaset_stats) (eq .config.replicaset_stats nil)}}
+        "--collector.indexstats",
+        {{end}}
+
+        {{if or (.config.top_stats) (eq .config.top_stats nil)}}
+        "--collector.topmetrics",
+        {{end}}
+
+        {{if or (.config.diagnostic_stats) (eq .config.diagnostic_stats nil)}}
+        "--collector.diagnosticdata",
+        {{end}}
+
+        "--discovering-mode"
+
+        "--collector.collstats-limit=0"
+
+        {{ if .config.exporter_port}}
+        "--web.listen-address",
+        "{{.config.exporter_port}}",
+        {{end}}
+    ],
+}
