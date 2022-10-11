@@ -8,34 +8,55 @@ package main
 
 import (
 	_ "embed"
+	"flag"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"sort"
 
 	dto "github.com/prometheus/client_model/go"
 	io_prometheus_client "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+)
+
+const (
+	flagPromMetricsPath = "prom_metrics_path"
+	flagSpecPath        = "spec_path"
+	flagDocsPath        = "docs_path"
 )
 
 //go:embed input/template.tmpl
 var docTemplateContent string
 
 func main() {
-	c := loadConfig()
+	promMetrics := flag.String(flagPromMetricsPath, "input/metrics.prom", "Path to the prom metrics file")
+	specFile := flag.String(flagSpecPath, "output/specFile.yaml", "Path to the output spec file")
+	docsFile := flag.String(flagDocsPath, "output/docsFile.html", "Path to the output docs file")
+	flag.Parse()
 
-	metrics := getPromMetrics("input/metrics.prom")
+	c, err := loadConfig()
+	if err != nil {
+		log.Errorf("loading config: %v", err)
+		return
+	}
 
-	sp := generateSpecFile(c, metrics, "output/specFile.yaml")
+	metrics, err := getPromMetrics(*promMetrics)
+	if err != nil {
+		log.Errorf("getting prom metrics: %v", err)
+		return
+	}
 
-	generateDocFile(sp, "output/docFile.html")
+	sp := generateSpecFile(c, metrics, *specFile)
+
+	generateDocFile(sp, *docsFile)
 
 	return
 }
 
-func loadConfig() Config {
+func loadConfig() (Config, error) {
+	c := Config{}
 	cfg := viper.New()
 	cfg.AddConfigPath("./input")
 	cfg.SetConfigName("config")
@@ -43,21 +64,21 @@ func loadConfig() Config {
 
 	err := cfg.ReadInConfig()
 	if err != nil {
-		log.Print(err)
+		return c, err
 	}
-	c := Config{}
+
 	err = cfg.Unmarshal(&c)
 	if err != nil {
-		log.Print(err)
+		return c, err
 	}
-	return c
+	return c, nil
 }
 
-func getPromMetrics(filename string) []Metric {
+func getPromMetrics(filename string) ([]Metric, error) {
 	var metricsCap int
 	mfs, err := readMetrics(filename)
 	if err != nil {
-		fmt.Printf("error reading metrics %s", err.Error())
+		return nil, err
 	}
 	for _, mf := range mfs {
 		_, ok := supportedMetricTypes[mf.GetType()]
@@ -94,7 +115,7 @@ func getPromMetrics(filename string) []Metric {
 				value = m.GetHistogram()
 				nrType = metricType_HISTOGRAM
 			default:
-				fmt.Printf("\"metric type not supported: %s\"", mtype)
+				log.Printf("\"metric type not supported: %s\"", mtype)
 				continue
 			}
 			attrs := map[string]interface{}{}
@@ -113,7 +134,7 @@ func getPromMetrics(filename string) []Metric {
 			)
 		}
 	}
-	return sortMetrics(metrics)
+	return sortMetrics(metrics), nil
 }
 
 // Get scrapes the given URL and decodes the retrieved payload.
@@ -122,7 +143,7 @@ func readMetrics(filename string) (MetricFamiliesByName, error) {
 	r, err := os.Open(filename)
 	defer r.Close()
 	if err != nil {
-		fmt.Printf("error reading metrics %s", err.Error())
+		return nil, fmt.Errorf("reading metrics %w", err)
 	}
 	d := expfmt.NewDecoder(r, expfmt.FmtText)
 	for {

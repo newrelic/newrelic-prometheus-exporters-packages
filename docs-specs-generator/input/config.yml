@@ -12,4 +12,4 @@ definitions:
   - type: NOT_MATCHING
     conditions:
       - attribute: metricName
-        prefix: neverMAtching
+        prefix: neverMatching
