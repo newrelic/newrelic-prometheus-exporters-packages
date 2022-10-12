@@ -37,7 +37,7 @@
 nri-config-generator/dist/*
 nri-config-generator/vendor
 nri-config-generator/templates/*
-!nri-config-generator/templates/config.json.tmpl
+!nri-config-generator/templates/default/config.json.tmpl
 .env
 
 tests/dist
