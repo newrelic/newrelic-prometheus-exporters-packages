@@ -42,8 +42,23 @@ func copyIntegrationTemplate(integration string) error {
 	targetPath := filepath.Join(rootDir(), "templates", fileName)
 	return os.WriteFile(targetPath, bytesRead, 0755)
 }
+
+func copyConfigTemplate(integration string) error {
+	fileName := fmt.Sprintf("%s.prometheus.json.tmpl", integration)
+	sourcePath := filepath.Join("testdata", "integration_template", fileName)
+	bytesRead, err := os.ReadFile(sourcePath)
+	if err != nil {
+		return err
+	}
+	targetPath := filepath.Join(rootDir(), "templates", fileName)
+	return os.WriteFile(targetPath, bytesRead, 0755)
+}
+
 func buildGeneratorConfig(integration string, integrationVersion string) error {
 	if err := copyIntegrationTemplate(integration); err != nil {
+		return err
+	}
+	if err := copyConfigTemplate(integration); err != nil {
 		return err
 	}
 	cmd := &exec.Cmd{
