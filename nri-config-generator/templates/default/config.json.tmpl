@@ -7,10 +7,10 @@
     "integrations": [
          {
             "name": "nri-prometheus",
-            "interval": {{default "15" .env.interval}},
+            {{ if .env.interval }}"interval": {{.env.interval}},{{ end }}
             "config": {
                 "standalone": false,
-                "verbose": {{default "0" .env.VERBOSE}},
+                {{ if .env.VERBOSE }}"verbose": {{.env.VERBOSE}},{{ end }}
                 "transformations":
                 [
                     {{/* Adds transformation rules from the integration config file */}}
