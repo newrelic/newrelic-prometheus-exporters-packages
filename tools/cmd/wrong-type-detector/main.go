@@ -50,6 +50,11 @@ func main() {
 	if len(brokenMetrics) == 0 {
 		log.Printf("No broken metrics detected in %q", promInput)
 	} else {
+		totalMetrics := len(metrics)
+		totalBroken := len(brokenMetrics)
+		percentBroken := float32(totalBroken) / float32(totalMetrics) * 100
+
+		log.Printf("Total metrics: %d | Broken metrics %d | Broken Metrics(%%): %f", totalMetrics, totalBroken, percentBroken)
 		log.Printf("broken metrics detected in %q, placed in %q and the rules fixen them in %q", promInput, outputMetrics, outputRules)
 		outputBrokenMetrics(brokenMetrics, outputMetrics)
 		outputFixRules(brokenMetrics, outputRules)
