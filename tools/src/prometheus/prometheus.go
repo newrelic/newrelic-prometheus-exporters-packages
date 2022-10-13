@@ -4,77 +4,22 @@
 //
 // Copyright 2021 New Relic Corporation. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
-package main
+package prometheus
 
 import (
 	_ "embed"
-	"flag"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"sort"
 
 	dto "github.com/prometheus/client_model/go"
 	io_prometheus_client "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 )
 
-const (
-	flagPromMetricsPath = "prom_metrics_path"
-	flagSpecPath        = "spec_path"
-	flagDocsPath        = "docs_path"
-)
-
-//go:embed input/template.tmpl
-var docTemplateContent string
-
-func main() {
-	promMetrics := flag.String(flagPromMetricsPath, "input/metrics.prom", "Path to the prom metrics file")
-	specFile := flag.String(flagSpecPath, "output/specFile.yaml", "Path to the output spec file")
-	docsFile := flag.String(flagDocsPath, "output/docsFile.html", "Path to the output docs file")
-	flag.Parse()
-
-	c, err := loadConfig()
-	if err != nil {
-		log.Errorf("loading config: %v", err)
-		return
-	}
-
-	metrics, err := getPromMetrics(*promMetrics)
-	if err != nil {
-		log.Errorf("getting prom metrics: %v", err)
-		return
-	}
-
-	sp := generateSpecFile(c, metrics, *specFile)
-
-	generateDocFile(sp, *docsFile)
-
-	return
-}
-
-func loadConfig() (Config, error) {
-	c := Config{}
-	cfg := viper.New()
-	cfg.AddConfigPath("./input")
-	cfg.SetConfigName("config")
-	cfg.SetConfigType("yaml")
-
-	err := cfg.ReadInConfig()
-	if err != nil {
-		return c, err
-	}
-
-	err = cfg.Unmarshal(&c)
-	if err != nil {
-		return c, err
-	}
-	return c, nil
-}
-
-func getPromMetrics(filename string) ([]Metric, error) {
+func GetPromMetrics(filename string) ([]Metric, error) {
 	var metricsCap int
 	mfs, err := readMetrics(filename)
 	if err != nil {
@@ -101,19 +46,19 @@ func getPromMetrics(filename string) ([]Metric, error) {
 			switch ntype {
 			case io_prometheus_client.MetricType_UNTYPED:
 				value = m.GetUntyped().GetValue()
-				nrType = metricType_GAUGE
+				nrType = MetricType_GAUGE
 			case io_prometheus_client.MetricType_COUNTER:
 				value = m.GetCounter().GetValue()
-				nrType = metricType_COUNTER
+				nrType = MetricType_COUNTER
 			case io_prometheus_client.MetricType_GAUGE:
 				value = m.GetGauge().GetValue()
-				nrType = metricType_GAUGE
+				nrType = MetricType_GAUGE
 			case io_prometheus_client.MetricType_SUMMARY:
 				value = m.GetSummary()
-				nrType = metricType_SUMMARY
+				nrType = MetricType_SUMMARY
 			case io_prometheus_client.MetricType_HISTOGRAM:
 				value = m.GetHistogram()
-				nrType = metricType_HISTOGRAM
+				nrType = MetricType_HISTOGRAM
 			default:
 				log.Printf("\"metric type not supported: %s\"", mtype)
 				continue
@@ -125,11 +70,11 @@ func getPromMetrics(filename string) ([]Metric, error) {
 			metrics = append(
 				metrics,
 				Metric{
-					name:        mname,
-					metricType:  nrType,
-					value:       value,
-					attributes:  attrs,
-					description: mf.GetHelp(),
+					Name:        mname,
+					MetricType:  nrType,
+					Value:       value,
+					Attributes:  attrs,
+					Description: mf.GetHelp(),
 				},
 			)
 		}
@@ -161,7 +106,7 @@ func readMetrics(filename string) (MetricFamiliesByName, error) {
 
 func sortMetrics(metrics []Metric) []Metric {
 	sort.SliceStable(metrics, func(i, j int) bool {
-		return metrics[i].name < metrics[j].name
+		return metrics[i].Name < metrics[j].Name
 	})
 	return metrics
 }

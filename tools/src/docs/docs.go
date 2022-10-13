@@ -1,14 +1,20 @@
-package main
+package docs
 
 import (
+	_ "embed"
 	"fmt"
 	"os"
 	"text/template"
+
+	"github.com/newrelic/newrelic-prometheus-exporters-packages/tools/src/specs"
 )
 
 const (
 	funcSet = "set"
 )
+
+//go:embed input/template.tmpl
+var docTemplateContent string
 
 func loadDocTemplate() *template.Template {
 	t, err := template.New("").Funcs(TemplatesFunc).Parse(docTemplateContent)
@@ -38,7 +44,7 @@ func attributeValue(value interface{}) string {
 	}
 }
 
-func generateDocFile(sp *Specs, fileName string) {
+func GenerateDocFile(sp *specs.Specs, fileName string) {
 	template := loadDocTemplate()
 	r, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0755)
 	defer r.Close()

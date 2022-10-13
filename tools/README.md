@@ -8,7 +8,7 @@ synthesis rules.
 The tool is not fully parametrised yet, therefore if you need to change any parameter you can check 
 directly the main.go.
 
-Run it with `go run ./...` from the `docs-specs-generator` folder itself. The output is placed in the output folder.
+Run it with ` go run ./cmd/docs-specs-generator/main.go --prom_metrics_path=etcd.prom`. The output is placed in the output folder.
 
 ### What is not automatized
 
@@ -22,7 +22,3 @@ Run it with `go run ./...` from the `docs-specs-generator` folder itself. The ou
    the description.   
 
  - You still need to review is the output makes sense and is compliant with all specifications.
-
-### Considerations
-
-The tool will convert the metrics of type `untyped` as `gauge` metrics. Therefore, remember to check those specific types when using it.

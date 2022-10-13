@@ -1,12 +1,12 @@
-package main
+package specs
 
 import (
 	"fmt"
+	"github.com/newrelic/newrelic-prometheus-exporters-packages/tools/src/prometheus"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
-	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -16,7 +16,45 @@ var (
 	ignoredAttributes  = []string{"agentName", "coreCount", "processorCount", "systemMemoryBytes"}
 )
 
-func generateSpecFile(c Config, metrics []Metric, filename string) *Specs {
+type Specs struct {
+	SpecVersion                  string    `yaml:"specVersion"`
+	OwningTeam                   string    `yaml:"owningTeam"`
+	IntegrationName              string    `yaml:"integrationName"`
+	HumanReadableIntegrationName string    `yaml:"humanReadableIntegrationName"`
+	Entities                     []*Entity `yaml:"entities"`
+}
+
+// Metrics
+type MetricSpec struct {
+	Name              string      `yaml:"name"`
+	Type              string      `yaml:"type"`
+	DefaultResolution int         `yaml:"defaultResolution"`
+	Unit              string      `yaml:"unit"`
+	Description       string      `yaml:"-"`
+	Dimensions        []Dimension `yaml:"dimensions,omitempty"`
+}
+
+// InternalAttributes
+type InternalAttribute struct {
+	Name string `yaml:"name"`
+	Type string `yaml:"type"`
+}
+
+// Entity
+type Entity struct {
+	EntityType         string              `yaml:"entityType"`
+	Metrics            []*MetricSpec       `yaml:"metrics"`
+	InternalAttributes []InternalAttribute `yaml:"internalAttributes"`
+	IgnoredAttributes  []string            `yaml:"ignoredAttributes"`
+	Tags               []string            `yaml:"tags"`
+}
+
+type Dimension struct {
+	Name string `yaml:"name"`
+	Type string `yaml:"type"`
+}
+
+func GenerateSpecFile(c Config, metrics []prometheus.Metric, filename string) *Specs {
 	sp := Specs{
 		SpecVersion:                  "2",
 		OwningTeam:                   "integrations",
@@ -25,9 +63,9 @@ func generateSpecFile(c Config, metrics []Metric, filename string) *Specs {
 		Entities:                     nil,
 	}
 	for _, m := range metrics {
-		entityType, ok := getMatchingEntity(c.Definitions, m.name, m.attributes)
+		entityType, ok := getMatchingEntity(c.Definitions, m.Name, m.Attributes)
 		if !ok {
-			fmt.Printf("metric not matching %s \n", m.name)
+			fmt.Printf("metric not matching %s \n", m.Name)
 			continue
 		}
 
@@ -39,26 +77,26 @@ func generateSpecFile(c Config, metrics []Metric, filename string) *Specs {
 			sp.Entities = append(sp.Entities, e)
 		}
 
-		if ok := isMetricDefined(e.Metrics, m.name); ok {
+		if ok := isMetricDefined(e.Metrics, m.Name); ok {
 			continue
 		}
 
 		mSpec := MetricSpec{
-			Name:              m.name,
-			Type:              string(m.metricType),
+			Name:              m.Name,
+			Type:              string(m.MetricType),
 			DefaultResolution: 15,
 			Unit:              "count",
-			Description:       m.description,
+			Description:       m.Description,
 			Dimensions:        nil,
 		}
-		for k, _ := range m.attributes {
+		for k, _ := range m.Attributes {
 			mSpec.Dimensions = append(mSpec.Dimensions, Dimension{
 				Name: k,
 				Type: "string",
 			})
 		}
 
-		if mSpec.Type == string(metricType_HISTOGRAM) {
+		if mSpec.Type == string(prometheus.MetricType_HISTOGRAM) {
 			e.Metrics = append(e.Metrics, computeHistogramMetrics(mSpec)...)
 		} else {
 			e.Metrics = append(e.Metrics, &mSpec)
@@ -104,7 +142,7 @@ func computeHistogramMetrics(m MetricSpec) []*MetricSpec {
 	return []*MetricSpec{
 		{
 			Name:              m.Name + "_sum",
-			Type:              string(metricType_SUMMARY),
+			Type:              string(prometheus.MetricType_SUMMARY),
 			DefaultResolution: m.DefaultResolution,
 			Unit:              "count",
 			Description:       m.Description + " (sum metric)",
@@ -112,7 +150,7 @@ func computeHistogramMetrics(m MetricSpec) []*MetricSpec {
 		},
 		{
 			Name:              m.Name + "_bucket",
-			Type:              string(metricType_COUNTER),
+			Type:              string(prometheus.MetricType_COUNTER),
 			DefaultResolution: m.DefaultResolution,
 			Unit:              "count",
 			Description:       m.Description + " (bucket metric)",
@@ -122,7 +160,7 @@ func computeHistogramMetrics(m MetricSpec) []*MetricSpec {
 }
 
 // getMatchingRule iterates over all conditions to check if m satisfy returning the associated rule.
-func getMatchingEntity(definitions []Definition, metricName string, attributes Set) (string, bool) {
+func getMatchingEntity(definitions []Definition, metricName string, attributes prometheus.Set) (string, bool) {
 	matchedCondition := &Condition{}
 	matchedEntityName := ""
 
@@ -142,7 +180,7 @@ func getMatchingEntity(definitions []Definition, metricName string, attributes S
 
 			// longer prefix matches take precedences over shorter ones.
 			// this allows to discriminate "foo_bar_" from "foo_" kind of metrics.
-			if c.match(value) && (matchedEntityName == "" || len(c.Prefix) > len(matchedCondition.Prefix)) { // nosemgrep: bad-nil-guard
+			if c.Match(value) && (matchedEntityName == "" || len(c.Prefix) > len(matchedCondition.Prefix)) { // nosemgrep: bad-nil-guard
 				matchedCondition = &c
 				matchedEntityName = d.EntityType
 			}
@@ -150,15 +188,6 @@ func getMatchingEntity(definitions []Definition, metricName string, attributes S
 	}
 
 	return matchedEntityName, matchedEntityName != ""
-}
-
-// match evaluates the condition an attribute by checking either its whole name against `Value` or if it starts with `Prefix`.
-func (c Condition) match(attribute string) bool {
-	if c.Value != "" {
-		return c.Value == attribute
-	}
-	// this returns true if c.Prefix is "" and is ok since the attribute exists
-	return strings.HasPrefix(attribute, c.Prefix)
 }
 
 func isEntityDefined(entities []*Entity, entityType string) (*Entity, bool) {
