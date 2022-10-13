@@ -1,0 +1,15 @@
+integrationName: powerdns
+humanReadableIntegrationName: PowerDNS
+definitions:
+  - type: POWERDNS_AUTHORITATIVE
+    conditions:
+      - attribute: metricName
+        prefix: powerdns_authoritative_
+  - type: POWERDNS_RECURSOR
+    conditions:
+      - attribute: metricName
+        prefix: powerdns_recursor_
+  - type: NOT_MATCHING
+    conditions:
+      - attribute: metricName
+        prefix: neverMatching
