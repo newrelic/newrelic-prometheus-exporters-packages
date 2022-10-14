@@ -1,0 +1,392 @@
+# HELP citadel_server_csr_count The number of CSRs received by Citadel server.
+# TYPE citadel_server_csr_count counter
+citadel_server_csr_count 8
+# HELP citadel_server_root_cert_expiry_timestamp The unix timestamp, in seconds, when Citadel root cert will expire. A negative time indicates the cert is expired.
+# TYPE citadel_server_root_cert_expiry_timestamp gauge
+citadel_server_root_cert_expiry_timestamp 1.981090497e+09
+# HELP citadel_server_success_cert_issuance_count The number of certificates issuances that have succeeded.
+# TYPE citadel_server_success_cert_issuance_count counter
+citadel_server_success_cert_issuance_count 8
+# HELP endpoint_no_pod Endpoints without an associated pod.
+# TYPE endpoint_no_pod gauge
+endpoint_no_pod 0
+# HELP galley_validation_config_updates k8s webhook configuration updates
+# TYPE galley_validation_config_updates counter
+galley_validation_config_updates 3
+# HELP galley_validation_failed Resource validation failed
+# TYPE galley_validation_failed counter
+galley_validation_failed{group="networking.istio.io",reason="invalid_resource",resource="gateways",version="v1alpha3"} 1
+# HELP galley_validation_passed Resource is valid
+# TYPE galley_validation_passed counter
+galley_validation_passed{group="networking.istio.io",resource="gateways",version="v1alpha3"} 1
+galley_validation_passed{group="networking.istio.io",resource="virtualservices",version="v1alpha3"} 1
+# HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds{quantile="0"} 9.875e-06
+go_gc_duration_seconds{quantile="0.25"} 3.3542e-05
+go_gc_duration_seconds{quantile="0.5"} 0.000143333
+go_gc_duration_seconds{quantile="0.75"} 0.000412084
+go_gc_duration_seconds{quantile="1"} 0.001644667
+go_gc_duration_seconds_sum 0.008303956
+go_gc_duration_seconds_count 30
+# HELP go_goroutines Number of goroutines that currently exist.
+# TYPE go_goroutines gauge
+go_goroutines 426
+# HELP go_info Information about the Go environment.
+# TYPE go_info gauge
+go_info{version="go1.19.2"} 1
+# HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
+# TYPE go_memstats_alloc_bytes gauge
+go_memstats_alloc_bytes 3.3732008e+07
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
+# TYPE go_memstats_alloc_bytes_total counter
+go_memstats_alloc_bytes_total 2.8252028e+08
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
+# TYPE go_memstats_buck_hash_sys_bytes gauge
+go_memstats_buck_hash_sys_bytes 1.575427e+06
+# HELP go_memstats_frees_total Total number of frees.
+# TYPE go_memstats_frees_total counter
+go_memstats_frees_total 2.808906e+06
+# HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
+# TYPE go_memstats_gc_sys_bytes gauge
+go_memstats_gc_sys_bytes 8.753928e+06
+# HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
+# TYPE go_memstats_heap_alloc_bytes gauge
+go_memstats_heap_alloc_bytes 3.3732008e+07
+# HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
+# TYPE go_memstats_heap_idle_bytes gauge
+go_memstats_heap_idle_bytes 2.4322048e+07
+# HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
+# TYPE go_memstats_heap_inuse_bytes gauge
+go_memstats_heap_inuse_bytes 4.370432e+07
+# HELP go_memstats_heap_objects Number of allocated objects.
+# TYPE go_memstats_heap_objects gauge
+go_memstats_heap_objects 137278
+# HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
+# TYPE go_memstats_heap_released_bytes gauge
+go_memstats_heap_released_bytes 2.0496384e+07
+# HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
+# TYPE go_memstats_heap_sys_bytes gauge
+go_memstats_heap_sys_bytes 6.8026368e+07
+# HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
+# TYPE go_memstats_last_gc_time_seconds gauge
+go_memstats_last_gc_time_seconds 1.6657333037780414e+09
+# HELP go_memstats_lookups_total Total number of pointer lookups.
+# TYPE go_memstats_lookups_total counter
+go_memstats_lookups_total 0
+# HELP go_memstats_mallocs_total Total number of mallocs.
+# TYPE go_memstats_mallocs_total counter
+go_memstats_mallocs_total 2.946184e+06
+# HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
+# TYPE go_memstats_mcache_inuse_bytes gauge
+go_memstats_mcache_inuse_bytes 6000
+# HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system.
+# TYPE go_memstats_mcache_sys_bytes gauge
+go_memstats_mcache_sys_bytes 15600
+# HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
+# TYPE go_memstats_mspan_inuse_bytes gauge
+go_memstats_mspan_inuse_bytes 435064
+# HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
+# TYPE go_memstats_mspan_sys_bytes gauge
+go_memstats_mspan_sys_bytes 669120
+# HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
+# TYPE go_memstats_next_gc_bytes gauge
+go_memstats_next_gc_bytes 5.7957728e+07
+# HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
+# TYPE go_memstats_other_sys_bytes gauge
+go_memstats_other_sys_bytes 1.143133e+06
+# HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
+# TYPE go_memstats_stack_inuse_bytes gauge
+go_memstats_stack_inuse_bytes 3.2768e+06
+# HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
+# TYPE go_memstats_stack_sys_bytes gauge
+go_memstats_stack_sys_bytes 3.2768e+06
+# HELP go_memstats_sys_bytes Number of bytes obtained from system.
+# TYPE go_memstats_sys_bytes gauge
+go_memstats_sys_bytes 8.3460376e+07
+# HELP go_threads Number of OS threads created.
+# TYPE go_threads gauge
+go_threads 12
+# HELP grpc_server_handled_total Total number of RPCs completed on the server, regardless of success or failure.
+# TYPE grpc_server_handled_total counter
+grpc_server_handled_total{grpc_code="OK",grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary"} 8
+# HELP grpc_server_handling_seconds Histogram of response latency (seconds) of gRPC that had been application-level handled by the server.
+# TYPE grpc_server_handling_seconds histogram
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="0.005"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="0.01"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="0.025"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="0.05"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="0.1"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="0.25"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="0.5"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="1"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="2.5"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="5"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="10"} 8
+grpc_server_handling_seconds_bucket{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary",le="+Inf"} 8
+grpc_server_handling_seconds_sum{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary"} 0.025842918000000003
+grpc_server_handling_seconds_count{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary"} 8
+# HELP grpc_server_msg_received_total Total number of RPC stream messages received on the server.
+# TYPE grpc_server_msg_received_total counter
+grpc_server_msg_received_total{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary"} 8
+# HELP grpc_server_msg_sent_total Total number of gRPC stream messages sent by the server.
+# TYPE grpc_server_msg_sent_total counter
+grpc_server_msg_sent_total{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary"} 8
+# HELP grpc_server_started_total Total number of RPCs started on the server.
+# TYPE grpc_server_started_total counter
+grpc_server_started_total{grpc_method="CreateCertificate",grpc_service="istio.v1.auth.IstioCertificateService",grpc_type="unary"} 8
+# HELP istio_build Istio component build info
+# TYPE istio_build gauge
+istio_build{component="pilot",tag="1.15.2"} 1
+# HELP istiod_managed_clusters Number of clusters managed by istiod
+# TYPE istiod_managed_clusters gauge
+istiod_managed_clusters{cluster_type="local"} 1
+istiod_managed_clusters{cluster_type="remote"} 0
+# HELP istiod_uptime_seconds Current istiod server uptime in seconds
+# TYPE istiod_uptime_seconds gauge
+istiod_uptime_seconds 2262.625951242
+# HELP pilot_conflict_inbound_listener Number of conflicting inbound listeners.
+# TYPE pilot_conflict_inbound_listener gauge
+pilot_conflict_inbound_listener 0
+# HELP pilot_conflict_outbound_listener_http_over_current_tcp Number of conflicting wildcard http listeners with current wildcard tcp listener.
+# TYPE pilot_conflict_outbound_listener_http_over_current_tcp gauge
+pilot_conflict_outbound_listener_http_over_current_tcp 0
+# HELP pilot_conflict_outbound_listener_tcp_over_current_http Number of conflicting wildcard tcp listeners with current wildcard http listener.
+# TYPE pilot_conflict_outbound_listener_tcp_over_current_http gauge
+pilot_conflict_outbound_listener_tcp_over_current_http 0
+# HELP pilot_conflict_outbound_listener_tcp_over_current_tcp Number of conflicting tcp listeners with current tcp listener.
+# TYPE pilot_conflict_outbound_listener_tcp_over_current_tcp gauge
+pilot_conflict_outbound_listener_tcp_over_current_tcp 0
+# HELP pilot_destrule_subsets Duplicate subsets across destination rules for same host
+# TYPE pilot_destrule_subsets gauge
+pilot_destrule_subsets 0
+# HELP pilot_duplicate_envoy_clusters Duplicate envoy clusters caused by service entries with same hostname
+# TYPE pilot_duplicate_envoy_clusters gauge
+pilot_duplicate_envoy_clusters 0
+# HELP pilot_eds_no_instances Number of clusters without instances.
+# TYPE pilot_eds_no_instances gauge
+pilot_eds_no_instances 0
+# HELP pilot_endpoint_not_ready Endpoint found in unready state.
+# TYPE pilot_endpoint_not_ready gauge
+pilot_endpoint_not_ready 0
+# HELP pilot_inbound_updates Total number of updates received by pilot.
+# TYPE pilot_inbound_updates counter
+pilot_inbound_updates{type="config"} 82
+pilot_inbound_updates{type="eds"} 55
+pilot_inbound_updates{type="svc"} 18
+# HELP pilot_info Pilot version and build information.
+# TYPE pilot_info gauge
+pilot_info{version="1.15.2-b542583af7f8240ad0c9cab56eb9f8d55e1357ab-Clean"} 1
+# HELP pilot_k8s_cfg_events Events from k8s config.
+# TYPE pilot_k8s_cfg_events counter
+pilot_k8s_cfg_events{event="add",type="EnvoyFilter"} 6
+pilot_k8s_cfg_events{event="add",type="Gateway"} 1
+pilot_k8s_cfg_events{event="add",type="VirtualService"} 1
+# HELP pilot_k8s_reg_events Events from k8s registry.
+# TYPE pilot_k8s_reg_events counter
+pilot_k8s_reg_events{event="add",type="EndpointSlice"} 15
+pilot_k8s_reg_events{event="add",type="Namespaces"} 6
+pilot_k8s_reg_events{event="add",type="Nodes"} 1
+pilot_k8s_reg_events{event="add",type="Pods"} 21
+pilot_k8s_reg_events{event="add",type="Services"} 15
+pilot_k8s_reg_events{event="delete",type="Pods"} 1
+pilot_k8s_reg_events{event="update",type="EndpointSlice"} 35
+pilot_k8s_reg_events{event="update",type="Namespaces"} 1
+pilot_k8s_reg_events{event="update",type="Nodes"} 11
+pilot_k8s_reg_events{event="update",type="Pods"} 63
+# HELP pilot_no_ip Pods not found in the endpoint table, possibly invalid.
+# TYPE pilot_no_ip gauge
+pilot_no_ip 0
+# HELP pilot_proxy_convergence_time Delay in seconds between config change and a proxy receiving all required configuration.
+# TYPE pilot_proxy_convergence_time histogram
+pilot_proxy_convergence_time_bucket{le="0.1"} 148
+pilot_proxy_convergence_time_bucket{le="0.5"} 148
+pilot_proxy_convergence_time_bucket{le="1"} 148
+pilot_proxy_convergence_time_bucket{le="3"} 148
+pilot_proxy_convergence_time_bucket{le="5"} 148
+pilot_proxy_convergence_time_bucket{le="10"} 148
+pilot_proxy_convergence_time_bucket{le="20"} 148
+pilot_proxy_convergence_time_bucket{le="30"} 148
+pilot_proxy_convergence_time_bucket{le="+Inf"} 148
+pilot_proxy_convergence_time_sum 0.494763957
+pilot_proxy_convergence_time_count 148
+# HELP pilot_proxy_queue_time Time in seconds, a proxy is in the push queue before being dequeued.
+# TYPE pilot_proxy_queue_time histogram
+pilot_proxy_queue_time_bucket{le="0.1"} 148
+pilot_proxy_queue_time_bucket{le="0.5"} 148
+pilot_proxy_queue_time_bucket{le="1"} 148
+pilot_proxy_queue_time_bucket{le="3"} 148
+pilot_proxy_queue_time_bucket{le="5"} 148
+pilot_proxy_queue_time_bucket{le="10"} 148
+pilot_proxy_queue_time_bucket{le="20"} 148
+pilot_proxy_queue_time_bucket{le="30"} 148
+pilot_proxy_queue_time_bucket{le="+Inf"} 148
+pilot_proxy_queue_time_sum 0.005285457000000003
+pilot_proxy_queue_time_count 148
+# HELP pilot_push_triggers Total number of times a push was triggered, labeled by reason for the push.
+# TYPE pilot_push_triggers counter
+pilot_push_triggers{type="config"} 4
+pilot_push_triggers{type="endpoint"} 213
+pilot_push_triggers{type="proxy"} 8
+pilot_push_triggers{type="service"} 26
+# HELP pilot_pushcontext_init_seconds Total time in seconds Pilot takes to init pushContext.
+# TYPE pilot_pushcontext_init_seconds histogram
+pilot_pushcontext_init_seconds_bucket{le="0.01"} 21
+pilot_pushcontext_init_seconds_bucket{le="0.1"} 21
+pilot_pushcontext_init_seconds_bucket{le="0.5"} 21
+pilot_pushcontext_init_seconds_bucket{le="1"} 21
+pilot_pushcontext_init_seconds_bucket{le="3"} 21
+pilot_pushcontext_init_seconds_bucket{le="5"} 21
+pilot_pushcontext_init_seconds_bucket{le="+Inf"} 21
+pilot_pushcontext_init_seconds_sum 0.016332373000000004
+pilot_pushcontext_init_seconds_count 21
+# HELP pilot_services Total services known to pilot.
+# TYPE pilot_services gauge
+pilot_services 15
+# HELP pilot_virt_services Total virtual services known to pilot.
+# TYPE pilot_virt_services gauge
+pilot_virt_services 1
+# HELP pilot_vservice_dup_domain Virtual services with dup domains.
+# TYPE pilot_vservice_dup_domain gauge
+pilot_vservice_dup_domain 0
+# HELP pilot_xds Number of endpoints connected to this pilot using XDS.
+# TYPE pilot_xds gauge
+pilot_xds{version="1.15.2"} 8
+# HELP pilot_xds_config_size_bytes Distribution of configuration sizes pushed to clients
+# TYPE pilot_xds_config_size_bytes histogram
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.cluster.v3.Cluster",le="1"} 0
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.cluster.v3.Cluster",le="10000"} 0
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.cluster.v3.Cluster",le="1e+06"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.cluster.v3.Cluster",le="4e+06"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.cluster.v3.Cluster",le="1e+07"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.cluster.v3.Cluster",le="4e+07"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.cluster.v3.Cluster",le="+Inf"} 97
+pilot_xds_config_size_bytes_sum{type="type.googleapis.com/envoy.config.cluster.v3.Cluster"} 2.640258e+06
+pilot_xds_config_size_bytes_count{type="type.googleapis.com/envoy.config.cluster.v3.Cluster"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment",le="1"} 0
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment",le="10000"} 162
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment",le="1e+06"} 162
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment",le="4e+06"} 162
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment",le="1e+07"} 162
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment",le="4e+07"} 162
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment",le="+Inf"} 162
+pilot_xds_config_size_bytes_sum{type="type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment"} 123889.00000000004
+pilot_xds_config_size_bytes_count{type="type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment"} 162
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.listener.v3.Listener",le="1"} 25
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.listener.v3.Listener",le="10000"} 39
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.listener.v3.Listener",le="1e+06"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.listener.v3.Listener",le="4e+06"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.listener.v3.Listener",le="1e+07"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.listener.v3.Listener",le="4e+07"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.listener.v3.Listener",le="+Inf"} 97
+pilot_xds_config_size_bytes_sum{type="type.googleapis.com/envoy.config.listener.v3.Listener"} 6.133026e+06
+pilot_xds_config_size_bytes_count{type="type.googleapis.com/envoy.config.listener.v3.Listener"} 97
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.route.v3.RouteConfiguration",le="1"} 0
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.route.v3.RouteConfiguration",le="10000"} 22
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.route.v3.RouteConfiguration",le="1e+06"} 75
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.route.v3.RouteConfiguration",le="4e+06"} 75
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.route.v3.RouteConfiguration",le="1e+07"} 75
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.route.v3.RouteConfiguration",le="4e+07"} 75
+pilot_xds_config_size_bytes_bucket{type="type.googleapis.com/envoy.config.route.v3.RouteConfiguration",le="+Inf"} 75
+pilot_xds_config_size_bytes_sum{type="type.googleapis.com/envoy.config.route.v3.RouteConfiguration"} 748226.0000000002
+pilot_xds_config_size_bytes_count{type="type.googleapis.com/envoy.config.route.v3.RouteConfiguration"} 75
+# HELP pilot_xds_expired_nonce Total number of XDS requests with an expired nonce.
+# TYPE pilot_xds_expired_nonce counter
+pilot_xds_expired_nonce{type="eds"} 55
+pilot_xds_expired_nonce{type="rds"} 3
+# HELP pilot_xds_push_time Total time in seconds Pilot takes to push lds, rds, cds and eds.
+# TYPE pilot_xds_push_time histogram
+pilot_xds_push_time_bucket{type="cds",le="0.01"} 97
+pilot_xds_push_time_bucket{type="cds",le="0.1"} 97
+pilot_xds_push_time_bucket{type="cds",le="1"} 97
+pilot_xds_push_time_bucket{type="cds",le="3"} 97
+pilot_xds_push_time_bucket{type="cds",le="5"} 97
+pilot_xds_push_time_bucket{type="cds",le="10"} 97
+pilot_xds_push_time_bucket{type="cds",le="20"} 97
+pilot_xds_push_time_bucket{type="cds",le="30"} 97
+pilot_xds_push_time_bucket{type="cds",le="+Inf"} 97
+pilot_xds_push_time_sum{type="cds"} 0.09406670499999999
+pilot_xds_push_time_count{type="cds"} 97
+pilot_xds_push_time_bucket{type="eds",le="0.01"} 161
+pilot_xds_push_time_bucket{type="eds",le="0.1"} 162
+pilot_xds_push_time_bucket{type="eds",le="1"} 162
+pilot_xds_push_time_bucket{type="eds",le="3"} 162
+pilot_xds_push_time_bucket{type="eds",le="5"} 162
+pilot_xds_push_time_bucket{type="eds",le="10"} 162
+pilot_xds_push_time_bucket{type="eds",le="20"} 162
+pilot_xds_push_time_bucket{type="eds",le="30"} 162
+pilot_xds_push_time_bucket{type="eds",le="+Inf"} 162
+pilot_xds_push_time_sum{type="eds"} 0.05192474900000002
+pilot_xds_push_time_count{type="eds"} 162
+pilot_xds_push_time_bucket{type="lds",le="0.01"} 89
+pilot_xds_push_time_bucket{type="lds",le="0.1"} 97
+pilot_xds_push_time_bucket{type="lds",le="1"} 97
+pilot_xds_push_time_bucket{type="lds",le="3"} 97
+pilot_xds_push_time_bucket{type="lds",le="5"} 97
+pilot_xds_push_time_bucket{type="lds",le="10"} 97
+pilot_xds_push_time_bucket{type="lds",le="20"} 97
+pilot_xds_push_time_bucket{type="lds",le="30"} 97
+pilot_xds_push_time_bucket{type="lds",le="+Inf"} 97
+pilot_xds_push_time_sum{type="lds"} 0.241661202
+pilot_xds_push_time_count{type="lds"} 97
+pilot_xds_push_time_bucket{type="rds",le="0.01"} 75
+pilot_xds_push_time_bucket{type="rds",le="0.1"} 75
+pilot_xds_push_time_bucket{type="rds",le="1"} 75
+pilot_xds_push_time_bucket{type="rds",le="3"} 75
+pilot_xds_push_time_bucket{type="rds",le="5"} 75
+pilot_xds_push_time_bucket{type="rds",le="10"} 75
+pilot_xds_push_time_bucket{type="rds",le="20"} 75
+pilot_xds_push_time_bucket{type="rds",le="30"} 75
+pilot_xds_push_time_bucket{type="rds",le="+Inf"} 75
+pilot_xds_push_time_sum{type="rds"} 0.055347122000000006
+pilot_xds_push_time_count{type="rds"} 75
+# HELP pilot_xds_pushes Pilot build and send errors for lds, rds, cds and eds.
+# TYPE pilot_xds_pushes counter
+pilot_xds_pushes{type="cds"} 97
+pilot_xds_pushes{type="eds"} 162
+pilot_xds_pushes{type="lds"} 97
+pilot_xds_pushes{type="rds"} 75
+# HELP pilot_xds_send_time Total time in seconds Pilot takes to send generated configuration.
+# TYPE pilot_xds_send_time histogram
+pilot_xds_send_time_bucket{le="0.01"} 430
+pilot_xds_send_time_bucket{le="0.1"} 431
+pilot_xds_send_time_bucket{le="1"} 431
+pilot_xds_send_time_bucket{le="3"} 431
+pilot_xds_send_time_bucket{le="5"} 431
+pilot_xds_send_time_bucket{le="10"} 431
+pilot_xds_send_time_bucket{le="20"} 431
+pilot_xds_send_time_bucket{le="30"} 431
+pilot_xds_send_time_bucket{le="+Inf"} 431
+pilot_xds_send_time_sum 0.03435731500000003
+pilot_xds_send_time_count 431
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 8.65
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 27
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 1.15224576e+08
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.66573108858e+09
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 5.183479808e+09
+# HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
+# TYPE process_virtual_memory_max_bytes gauge
+process_virtual_memory_max_bytes 1.8446744073709552e+19
+# HELP sidecar_injection_requests_total Total number of sidecar injection requests.
+# TYPE sidecar_injection_requests_total counter
+sidecar_injection_requests_total 6
+# HELP sidecar_injection_success_total Total number of successful sidecar injection requests.
+# TYPE sidecar_injection_success_total counter
+sidecar_injection_success_total 6
+# HELP webhook_patch_attempts_total Webhook patching attempts
+# TYPE webhook_patch_attempts_total counter
+webhook_patch_attempts_total{name="istio-revision-tag-default"} 1
+webhook_patch_attempts_total{name="istio-sidecar-injector"} 3
