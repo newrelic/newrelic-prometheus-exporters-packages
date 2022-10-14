@@ -1,0 +1,198 @@
+# HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds{quantile="0"} 7.5817e-05
+go_gc_duration_seconds{quantile="0.25"} 8.3336e-05
+go_gc_duration_seconds{quantile="0.5"} 8.8152e-05
+go_gc_duration_seconds{quantile="0.75"} 9.7977e-05
+go_gc_duration_seconds{quantile="1"} 0.000291099
+go_gc_duration_seconds_sum 0.129584884
+go_gc_duration_seconds_count 1273
+# HELP go_goroutines Number of goroutines that currently exist.
+# TYPE go_goroutines gauge
+go_goroutines 194
+# HELP go_info Information about the Go environment.
+# TYPE go_info gauge
+go_info{version="go1.18.1b7"} 1
+# HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
+# TYPE go_memstats_alloc_bytes gauge
+go_memstats_alloc_bytes 1.5237904e+07
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
+# TYPE go_memstats_alloc_bytes_total counter
+go_memstats_alloc_bytes_total 3.967393472e+09
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
+# TYPE go_memstats_buck_hash_sys_bytes gauge
+go_memstats_buck_hash_sys_bytes 1.656144e+06
+# HELP go_memstats_frees_total Total number of frees.
+# TYPE go_memstats_frees_total counter
+go_memstats_frees_total 3.13857e+07
+# HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
+# TYPE go_memstats_gc_sys_bytes gauge
+go_memstats_gc_sys_bytes 5.774576e+06
+# HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
+# TYPE go_memstats_heap_alloc_bytes gauge
+go_memstats_heap_alloc_bytes 1.5237904e+07
+# HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
+# TYPE go_memstats_heap_idle_bytes gauge
+go_memstats_heap_idle_bytes 9.650176e+06
+# HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
+# TYPE go_memstats_heap_inuse_bytes gauge
+go_memstats_heap_inuse_bytes 1.7645568e+07
+# HELP go_memstats_heap_objects Number of allocated objects.
+# TYPE go_memstats_heap_objects gauge
+go_memstats_heap_objects 65581
+# HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
+# TYPE go_memstats_heap_released_bytes gauge
+go_memstats_heap_released_bytes 9.404416e+06
+# HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
+# TYPE go_memstats_heap_sys_bytes gauge
+go_memstats_heap_sys_bytes 2.7295744e+07
+# HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
+# TYPE go_memstats_last_gc_time_seconds gauge
+go_memstats_last_gc_time_seconds 1.6656628685952172e+09
+# HELP go_memstats_lookups_total Total number of pointer lookups.
+# TYPE go_memstats_lookups_total counter
+go_memstats_lookups_total 0
+# HELP go_memstats_mallocs_total Total number of mallocs.
+# TYPE go_memstats_mallocs_total counter
+go_memstats_mallocs_total 3.1451281e+07
+# HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
+# TYPE go_memstats_mcache_inuse_bytes gauge
+go_memstats_mcache_inuse_bytes 9600
+# HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system.
+# TYPE go_memstats_mcache_sys_bytes gauge
+go_memstats_mcache_sys_bytes 15600
+# HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
+# TYPE go_memstats_mspan_inuse_bytes gauge
+go_memstats_mspan_inuse_bytes 241400
+# HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
+# TYPE go_memstats_mspan_sys_bytes gauge
+go_memstats_mspan_sys_bytes 277440
+# HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
+# TYPE go_memstats_next_gc_bytes gauge
+go_memstats_next_gc_bytes 1.8546368e+07
+# HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
+# TYPE go_memstats_other_sys_bytes gauge
+go_memstats_other_sys_bytes 1.534232e+06
+# HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
+# TYPE go_memstats_stack_inuse_bytes gauge
+go_memstats_stack_inuse_bytes 2.064384e+06
+# HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
+# TYPE go_memstats_stack_sys_bytes gauge
+go_memstats_stack_sys_bytes 2.064384e+06
+# HELP go_memstats_sys_bytes Number of bytes obtained from system.
+# TYPE go_memstats_sys_bytes gauge
+go_memstats_sys_bytes 3.861812e+07
+# HELP go_threads Number of OS threads created.
+# TYPE go_threads gauge
+go_threads 15
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 400.97
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 22
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 5.8036224e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.66551066169e+09
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.75536128e+09
+# HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
+# TYPE process_virtual_memory_max_bytes gauge
+process_virtual_memory_max_bytes 1.8446744073709552e+19
+# HELP promhttp_metric_handler_requests_in_flight Current number of scrapes being served.
+# TYPE promhttp_metric_handler_requests_in_flight gauge
+promhttp_metric_handler_requests_in_flight 1
+# HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.
+# TYPE promhttp_metric_handler_requests_total counter
+promhttp_metric_handler_requests_total{code="200"} 7221
+promhttp_metric_handler_requests_total{code="500"} 0
+promhttp_metric_handler_requests_total{code="503"} 0
+# HELP typha_breadcrumb_block Count of the number of times Typha got the next Breadcrumb after blocking.
+# TYPE typha_breadcrumb_block counter
+typha_breadcrumb_block 361
+# HELP typha_breadcrumb_non_block Count of the number of times Typha got the next Breadcrumb without blocking.
+# TYPE typha_breadcrumb_non_block counter
+typha_breadcrumb_non_block 15
+# HELP typha_breadcrumb_seq_number Current (server-local) sequence number; number of snapshot deltas processed.
+# TYPE typha_breadcrumb_seq_number gauge
+typha_breadcrumb_seq_number 197
+# HELP typha_breadcrumb_size Number of KVs recorded in each breadcrumb.
+# TYPE typha_breadcrumb_size summary
+typha_breadcrumb_size{quantile="0.5"} NaN
+typha_breadcrumb_size{quantile="0.9"} NaN
+typha_breadcrumb_size{quantile="0.99"} NaN
+typha_breadcrumb_size_sum 559
+typha_breadcrumb_size_count 203
+# HELP typha_client_latency_secs Per-client latency.  I.e. how far behind the current state is each client.
+# TYPE typha_client_latency_secs summary
+typha_client_latency_secs{quantile="0.5"} NaN
+typha_client_latency_secs{quantile="0.9"} NaN
+typha_client_latency_secs{quantile="0.99"} NaN
+typha_client_latency_secs_sum 0.001296803
+typha_client_latency_secs_count 376
+# HELP typha_client_snapshot_send_secs How long it took to send the initial snapshot to each client.
+# TYPE typha_client_snapshot_send_secs summary
+typha_client_snapshot_send_secs{quantile="0.5"} NaN
+typha_client_snapshot_send_secs{quantile="0.9"} NaN
+typha_client_snapshot_send_secs{quantile="0.99"} NaN
+typha_client_snapshot_send_secs_sum 0.009683612999999999
+typha_client_snapshot_send_secs_count 12
+# HELP typha_client_write_latency_secs Per-client write.  How long each write call is taking.
+# TYPE typha_client_write_latency_secs summary
+typha_client_write_latency_secs{quantile="0.5"} 9.8315e-05
+typha_client_write_latency_secs{quantile="0.9"} 0.000119683
+typha_client_write_latency_secs{quantile="0.99"} 0.00014679
+typha_client_write_latency_secs_sum 11.305942345000002
+typha_client_write_latency_secs_count 116417
+# HELP typha_connections_accepted Total number of connections accepted over time.
+# TYPE typha_connections_accepted counter
+typha_connections_accepted 12
+# HELP typha_connections_active Number of open client connections.
+# TYPE typha_connections_active gauge
+typha_connections_active 8
+# HELP typha_connections_dropped Total number of connections dropped due to rebalancing.
+# TYPE typha_connections_dropped counter
+typha_connections_dropped 0
+# HELP typha_connections_grace_used Total number of connections that made use of the grace period to catch up after sending the initial snapshot.
+# TYPE typha_connections_grace_used counter
+typha_connections_grace_used 0
+# HELP typha_kvs_per_msg Number of KV pairs sent in each message.
+# TYPE typha_kvs_per_msg summary
+typha_kvs_per_msg{quantile="0.5"} NaN
+typha_kvs_per_msg{quantile="0.9"} NaN
+typha_kvs_per_msg{quantile="0.99"} NaN
+typha_kvs_per_msg_sum 1330
+typha_kvs_per_msg_count 389
+# HELP typha_log_errors Number of errors encountered while logging.
+# TYPE typha_log_errors counter
+typha_log_errors 0
+# HELP typha_logs_dropped Number of logs dropped because the output stream was blocked.
+# TYPE typha_logs_dropped counter
+typha_logs_dropped 0
+# HELP typha_next_breadcrumb_latency_secs Time to retrieve next breadcrumb when already behind.
+# TYPE typha_next_breadcrumb_latency_secs summary
+typha_next_breadcrumb_latency_secs{quantile="0.5"} NaN
+typha_next_breadcrumb_latency_secs{quantile="0.9"} NaN
+typha_next_breadcrumb_latency_secs{quantile="0.99"} NaN
+typha_next_breadcrumb_latency_secs_sum 0
+typha_next_breadcrumb_latency_secs_count 0
+# HELP typha_ping_latency Round-trip ping latency to client.
+# TYPE typha_ping_latency summary
+typha_ping_latency{quantile="0.5"} 0.000679471
+typha_ping_latency{quantile="0.9"} 0.000956659
+typha_ping_latency{quantile="0.99"} 0.001076292
+typha_ping_latency_sum 74.97996580700176
+typha_ping_latency_count 115982
+# HELP typha_updates_skipped Total number of updates skipped as duplicates.
+# TYPE typha_updates_skipped counter
+typha_updates_skipped 6122
+# HELP typha_updates_total Total number of updates received from the Syncer.
+# TYPE typha_updates_total counter
+typha_updates_total 6681

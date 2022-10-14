@@ -706,4 +706,3 @@ envoy_server_initialization_time_ms_bucket{le="3600000"} 1
 envoy_server_initialization_time_ms_bucket{le="+Inf"} 1
 envoy_server_initialization_time_ms_sum{} 295
 envoy_server_initialization_time_ms_count{} 1
-
