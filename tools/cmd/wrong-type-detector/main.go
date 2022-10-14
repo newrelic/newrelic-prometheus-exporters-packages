@@ -46,13 +46,14 @@ func main() {
 		return
 	}
 
+	totalMetrics := len(metrics)
 	brokenMetrics := listMetricWithWrongType(metrics)
 	if len(brokenMetrics) == 0 {
+		log.Printf("Total metrics: %d", totalMetrics)
 		log.Printf("No broken metrics detected in %q", promInput)
 	} else {
-		totalMetrics := len(metrics)
 		totalBroken := len(brokenMetrics)
-		percentBroken := float32(totalBroken) / float32(totalMetrics) * 100
+		percentBroken := (float32(totalBroken) / float32(totalMetrics)) * 100
 
 		log.Printf("Total metrics: %d | Broken metrics %d | Broken Metrics(%%): %f", totalMetrics, totalBroken, percentBroken)
 		log.Printf("broken metrics detected in %q, placed in %q and the rules fixen them in %q", promInput, outputMetrics, outputRules)
@@ -63,9 +64,13 @@ func main() {
 
 func listMetricWithWrongType(metrics []prometheus.Metric) []prometheus.Metric {
 	brokenMetrics := []prometheus.Metric{}
+	computedBrokenMetrics := map[string]struct{}{}
 	for _, m := range metrics {
 		if isCounterWithWrongSuffix(m) || isGaugeWithWrongSuffix(m) {
-			brokenMetrics = append(brokenMetrics, m)
+			if _, ok := computedBrokenMetrics[m.Name]; !ok {
+				brokenMetrics = append(brokenMetrics, m)
+				computedBrokenMetrics[m.Name] = struct{}{}
+			}
 		}
 	}
 
