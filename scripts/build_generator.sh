@@ -14,11 +14,11 @@ config_path="${integration_dir}/${integration}.prometheus.json.tmpl"
 cp "${template_path}" "${root_dir}/nri-config-generator/templates/${template_name}"
 
 if [ -f "$config_path" ]; then
-  cp "${config_path}" "${root_dir}/nri-config-generator/templates/${config_name}"
   echo "Using prometheus template $config_path"
+  cp "${config_path}" "${root_dir}/nri-config-generator/templates/${config_name}"
 else
-  cp "${root_dir}/nri-config-generator/templates/default/config.json.tmpl" "${root_dir}/nri-config-generator/templates/${config_name}"
   echo "Using Default prometheus template"
+  cp "${root_dir}/nri-config-generator/default template/config.json.tmpl" "${root_dir}/nri-config-generator/templates/${config_name}"
 fi
 
 cd nri-config-generator && \

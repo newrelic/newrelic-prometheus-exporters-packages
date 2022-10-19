@@ -10,6 +10,10 @@ import (
 	"time"
 )
 
+const (
+	templateFileMask = 0600
+)
+
 func getTemplateVars(exporterPort string) map[string]string {
 	return map[string]string{
 		"exporterPort": exporterPort,
@@ -32,33 +36,23 @@ func rootDir() string {
 	return filepath.Dir(dir)
 }
 
-func copyIntegrationTemplate(integration string) error {
-	fileName := fmt.Sprintf("%s.json.tmpl", integration)
+func copyTemplate(fileName string) error {
 	sourcePath := filepath.Join("testdata", "integration_template", fileName)
 	bytesRead, err := os.ReadFile(sourcePath)
 	if err != nil {
 		return err
 	}
 	targetPath := filepath.Join(rootDir(), "templates", fileName)
-	return os.WriteFile(targetPath, bytesRead, 0755)
-}
-
-func copyConfigTemplate(integration string) error {
-	fileName := fmt.Sprintf("%s.prometheus.json.tmpl", integration)
-	sourcePath := filepath.Join("testdata", "integration_template", fileName)
-	bytesRead, err := os.ReadFile(sourcePath)
-	if err != nil {
-		return err
-	}
-	targetPath := filepath.Join(rootDir(), "templates", fileName)
-	return os.WriteFile(targetPath, bytesRead, 0755)
+	return os.WriteFile(targetPath, bytesRead, templateFileMask)
 }
 
 func buildGeneratorConfig(integration string, integrationVersion string) error {
-	if err := copyIntegrationTemplate(integration); err != nil {
+	integrationTemplateFileName := fmt.Sprintf("%s.json.tmpl", integration)
+	prometheusTemplateFileName := fmt.Sprintf("%s.prometheus.json.tmpl", integration)
+	if err := copyTemplate(integrationTemplateFileName); err != nil {
 		return err
 	}
-	if err := copyConfigTemplate(integration); err != nil {
+	if err := copyTemplate(prometheusTemplateFileName); err != nil {
 		return err
 	}
 	cmd := &exec.Cmd{
