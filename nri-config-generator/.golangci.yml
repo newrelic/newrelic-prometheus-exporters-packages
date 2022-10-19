@@ -28,6 +28,7 @@ run:
   skip-dirs:
     - vendor
     - build
+    - default template
     - templates
     - tools
     - tests
