@@ -7,11 +7,22 @@
     "integrations": [
          {
             "name": "nri-prometheus",
-            {{set "interval" .env.interval}}
+            {{- if .env.interval }}
+            "interval": "{{.env.interval}}",
+            {{ end }}
             "config": {
                 "standalone": false,
-                {{set "verbose" .env.VERBOSE}}
-                "transformations": {{.transformations}},
+                {{- if .env.VERBOSE }}
+                "verbose": "{{.env.VERBOSE}}",
+                {{ end }}
+                "transformations":
+                [
+                    {{/* Adds transformation rules from the integration config file */}}
+                    {{ range $a := (fromJson .transformations)}}
+                        {{ toJson $a }},
+                    {{ end }}
+                    {{/* Add below any specific rules for this template. These will be hardcoded. */}}
+                ],
                 "integration_metadata":{
                     "version": "{{.integration_version}}",
                     "name": "{{.integration}}"

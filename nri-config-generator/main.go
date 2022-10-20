@@ -4,12 +4,14 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
+	"text/template"
+
 	"path/filepath"
 	"runtime"
 	"strings"
-	"text/template"
 	"time"
 
+	"github.com/Masterminds/sprig/v3"
 	"github.com/mitchellh/mapstructure"
 	sdkv4 "github.com/newrelic/infra-integrations-sdk/v4/args"
 	"github.com/newrelic/infra-integrations-sdk/v4/log"
@@ -39,8 +41,8 @@ var (
 	buildDate          string
 	//go:embed templates
 	integrationTemplate embed.FS
-	//go:embed templates/config.json.tmpl
-	configTemplateContent string
+	//go:embed templates
+	configTemplate embed.FS
 )
 
 func main() {
@@ -102,7 +104,7 @@ func main() {
 	}
 
 	httport.SetPrometheusExporterPort("localhost", port)
-	// long running execution. This is a long running execution because in case of the export port was auto-generated (a random port inc ase
+	// long-running execution. This is a long-running execution because in case of the export port was auto-generated (a random port inc ase
 	// of the exporter_port is not provided by configuration) we need to keep this port for the exporter.
 	for {
 		time.Sleep(sleepTime)
@@ -133,7 +135,13 @@ func getExporterNameFromIntegration(integration string) string {
 }
 
 func getConfigGenerator() (generator.Config, error) {
-	configTemplate, err := loadConfigTemplate()
+	configTemplatePattern := fmt.Sprintf("templates/%s.prometheus.json.tmpl", integration)
+	content, err := configTemplate.ReadFile(configTemplatePattern)
+	if err != nil {
+		return nil, fmt.Errorf("readingfile %s, %w", configTemplatePattern, err)
+	}
+
+	configTemplate, err := loadConfigTemplate(content)
 	if err != nil {
 		return nil, fmt.Errorf("loadConfigTemplate, %w", err)
 	}
@@ -193,7 +201,7 @@ func findExporterPort(vars map[string]interface{}) (int, error) {
 }
 
 func loadIntegrationTemplate(content []byte) (*template.Template, error) {
-	t, err := template.New("").Funcs(generator.TemplatesFunc).Parse(string(content))
+	t, err := template.New("").Funcs(sprig.TxtFuncMap()).Parse(string(content))
 	if err != nil {
 		log.Error("error parsing the integration template: '%s'", err.Error())
 		return nil, err
@@ -201,8 +209,8 @@ func loadIntegrationTemplate(content []byte) (*template.Template, error) {
 	return t, nil
 }
 
-func loadConfigTemplate() (*template.Template, error) {
-	t, err := template.New("").Funcs(generator.TemplatesFunc).Parse(configTemplateContent)
+func loadConfigTemplate(content []byte) (*template.Template, error) {
+	t, err := template.New("").Funcs(sprig.TxtFuncMap()).Parse(string(content))
 	if err != nil {
 		log.Error("error parsing the template for the config: '%s'", err.Error())
 		return nil, err
