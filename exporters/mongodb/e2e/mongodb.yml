@@ -4876,7 +4876,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_abortTransaction_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -4889,7 +4889,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_abortTransaction_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -4902,7 +4902,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_addShard_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -4915,7 +4915,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_addShard_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -4941,7 +4941,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_aggregate_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -4954,7 +4954,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_aggregate_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -4967,7 +4967,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_appendOplogNote_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -4980,7 +4980,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_appendOplogNote_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -4993,7 +4993,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_applyOps_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5006,7 +5006,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_applyOps_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5019,7 +5019,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_authenticate_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5032,7 +5032,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_authenticate_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5045,7 +5045,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_autoSplitVector_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5058,7 +5058,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_autoSplitVector_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5071,7 +5071,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_availableQueryOptions_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5084,7 +5084,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_availableQueryOptions_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5097,7 +5097,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_buildInfo_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5110,7 +5110,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_buildInfo_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5123,7 +5123,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_checkShardingIndex_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5136,7 +5136,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_checkShardingIndex_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5149,7 +5149,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_cleanupOrphaned_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5162,7 +5162,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_cleanupOrphaned_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5175,7 +5175,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_cloneCatalogData_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5188,7 +5188,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_cloneCatalogData_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5201,7 +5201,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_cloneCollectionAsCapped_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5214,7 +5214,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_cloneCollectionAsCapped_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5227,7 +5227,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_cloneCollectionOptionsFromPrimaryShard_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5240,7 +5240,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_cloneCollectionOptionsFromPrimaryShard_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5253,7 +5253,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_cloneCollection_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5266,7 +5266,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_cloneCollection_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5279,7 +5279,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_collMod_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5292,7 +5292,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_collMod_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5305,7 +5305,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_collStats_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5318,7 +5318,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_collStats_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5331,7 +5331,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_commitTransaction_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5344,7 +5344,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_commitTransaction_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5357,7 +5357,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_compact_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5370,7 +5370,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_compact_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5383,7 +5383,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrAddShardToZone_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5396,7 +5396,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrAddShardToZone_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5409,7 +5409,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrAddShard_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5422,7 +5422,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrAddShard_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5435,7 +5435,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_configsvrBalancerStart_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5448,7 +5448,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrBalancerStart_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5461,7 +5461,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_configsvrBalancerStatus_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5474,7 +5474,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrBalancerStatus_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5487,7 +5487,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_configsvrBalancerStop_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5500,7 +5500,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_configsvrBalancerStop_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5513,7 +5513,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrClearJumboFlag_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5526,7 +5526,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrClearJumboFlag_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5539,7 +5539,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitChunkMerge_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5552,7 +5552,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitChunkMerge_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5565,7 +5565,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitChunkMigration_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5578,7 +5578,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitChunkMigration_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5591,7 +5591,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitChunkSplit_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5604,7 +5604,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitChunkSplit_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5617,7 +5617,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitChunksMerge_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5630,7 +5630,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitChunksMerge_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5643,7 +5643,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitMovePrimary_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5656,7 +5656,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCommitMovePrimary_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5669,7 +5669,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCreateCollection_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5682,7 +5682,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCreateCollection_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5695,7 +5695,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCreateDatabase_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5708,7 +5708,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrCreateDatabase_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5721,7 +5721,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrDropCollection_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5734,7 +5734,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_configsvrDropCollection_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5747,7 +5747,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrDropDatabase_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5760,7 +5760,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrDropDatabase_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5773,7 +5773,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_configsvrEnableSharding_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5786,7 +5786,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrEnableSharding_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5799,7 +5799,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_configsvrMoveChunk_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5812,7 +5812,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrMoveChunk_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5825,7 +5825,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_configsvrMovePrimary_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5838,7 +5838,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrMovePrimary_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5851,7 +5851,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrRemoveShardFromZone_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5864,7 +5864,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrRemoveShardFromZone_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5877,7 +5877,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrRemoveShard_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5890,7 +5890,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_configsvrRemoveShard_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5903,7 +5903,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrRepairShardedCollectionChunksHistory_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5916,7 +5916,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrRepairShardedCollectionChunksHistory_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5929,7 +5929,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrShardCollection_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5942,7 +5942,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_configsvrShardCollection_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5955,7 +5955,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_configsvrUpdateZoneKeyRange_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5968,7 +5968,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_configsvrUpdateZoneKeyRange_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5981,7 +5981,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_connPoolStats_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -5994,7 +5994,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_connPoolStats_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6007,7 +6007,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_connPoolSync_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6020,7 +6020,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_connPoolSync_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6033,7 +6033,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_connectionStatus_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6046,7 +6046,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_connectionStatus_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6059,7 +6059,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_convertToCapped_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6072,7 +6072,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_convertToCapped_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6085,7 +6085,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_coordinateCommitTransaction_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6098,7 +6098,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_coordinateCommitTransaction_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6111,7 +6111,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_count_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6124,7 +6124,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_count_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6137,7 +6137,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_createIndexes_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6150,7 +6150,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_createIndexes_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6163,7 +6163,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_createRole_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6176,7 +6176,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_createRole_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6189,7 +6189,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_createUser_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6202,7 +6202,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_createUser_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6215,7 +6215,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_create_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6228,7 +6228,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_create_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6241,7 +6241,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_currentOp_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6254,7 +6254,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_currentOp_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6267,7 +6267,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_dataSize_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6280,7 +6280,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dataSize_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6293,7 +6293,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dbHash_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6306,7 +6306,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dbHash_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6319,7 +6319,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dbStats_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6332,7 +6332,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dbStats_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6345,7 +6345,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_delete_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6358,7 +6358,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_delete_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6371,7 +6371,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_distinct_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6384,7 +6384,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_distinct_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6397,7 +6397,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_driverOIDTest_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6410,7 +6410,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_driverOIDTest_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6423,7 +6423,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dropAllRolesFromDatabase_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6436,7 +6436,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_dropAllRolesFromDatabase_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6449,7 +6449,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_dropAllUsersFromDatabase_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6462,7 +6462,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dropAllUsersFromDatabase_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6475,7 +6475,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dropConnections_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6488,7 +6488,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_dropConnections_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6501,7 +6501,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dropDatabase_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6514,7 +6514,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_dropDatabase_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6527,7 +6527,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dropIndexes_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6540,7 +6540,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dropIndexes_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6553,7 +6553,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dropRole_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6566,7 +6566,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_dropRole_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6579,7 +6579,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_dropUser_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6592,7 +6592,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_dropUser_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6605,7 +6605,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_drop_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6618,7 +6618,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_drop_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6631,7 +6631,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_endSessions_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6644,7 +6644,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_endSessions_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6657,7 +6657,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_explain_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6670,7 +6670,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_explain_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6683,7 +6683,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_features_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6696,7 +6696,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_features_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6709,7 +6709,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_filemd5_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6722,7 +6722,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_filemd5_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6748,7 +6748,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_findAndModify_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6774,7 +6774,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_findAndModify_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6787,7 +6787,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_find_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6800,7 +6800,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_find_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6813,7 +6813,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_flushDatabaseCacheUpdates_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6826,7 +6826,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_flushDatabaseCacheUpdates_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6839,7 +6839,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_flushRouterConfig_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6852,7 +6852,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_flushRouterConfig_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6865,7 +6865,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_flushRoutingTableCacheUpdates_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6878,7 +6878,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_flushRoutingTableCacheUpdates_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6891,7 +6891,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_fsyncUnlock_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6904,7 +6904,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_fsyncUnlock_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6917,7 +6917,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_fsync_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6930,7 +6930,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_fsync_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6943,7 +6943,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_geoSearch_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6956,7 +6956,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_geoSearch_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6969,7 +6969,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getCmdLineOpts_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6982,7 +6982,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getCmdLineOpts_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -6995,7 +6995,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getDatabaseVersion_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7008,7 +7008,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_getDatabaseVersion_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7021,7 +7021,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getDiagnosticData_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7034,7 +7034,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getDiagnosticData_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7047,7 +7047,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getFreeMonitoringStatus_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7060,7 +7060,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getFreeMonitoringStatus_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7073,7 +7073,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getLastError_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7086,7 +7086,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getLastError_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7099,7 +7099,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getLog_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7112,7 +7112,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getLog_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7125,7 +7125,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getMore_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7138,7 +7138,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getMore_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7151,7 +7151,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getNextSessionMods_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7164,7 +7164,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getNextSessionMods_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7177,7 +7177,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_getParameter_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7190,7 +7190,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getParameter_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7203,7 +7203,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_getShardMap_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7216,7 +7216,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_getShardMap_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7229,7 +7229,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getShardVersion_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7242,7 +7242,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getShardVersion_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7255,7 +7255,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getUserCacheGeneration_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7268,7 +7268,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getUserCacheGeneration_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7281,7 +7281,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getnonce_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7294,7 +7294,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_getnonce_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7307,7 +7307,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_grantPrivilegesToRole_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7320,7 +7320,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_grantPrivilegesToRole_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7333,7 +7333,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_grantRolesToRole_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7346,7 +7346,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_grantRolesToRole_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7359,7 +7359,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_grantRolesToUser_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7372,7 +7372,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_grantRolesToUser_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7385,7 +7385,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_hello_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7398,7 +7398,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_hello_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7411,7 +7411,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_hostInfo_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7424,7 +7424,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_hostInfo_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7437,7 +7437,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_insert_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7450,7 +7450,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_insert_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7463,7 +7463,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_invalidateUserCache_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7476,7 +7476,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_invalidateUserCache_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7489,7 +7489,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_isMaster_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7502,7 +7502,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_isMaster_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7515,7 +7515,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_isSelf_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7528,7 +7528,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_isSelf_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7541,7 +7541,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_killAllSessionsByPattern_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7554,7 +7554,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_killAllSessionsByPattern_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7567,7 +7567,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_killAllSessions_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7580,7 +7580,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_killAllSessions_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7593,7 +7593,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_killCursors_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7606,7 +7606,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_killCursors_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7619,7 +7619,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_killOp_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7632,7 +7632,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_killOp_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7645,7 +7645,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_killSessions_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7658,7 +7658,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_killSessions_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7671,7 +7671,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_listCollections_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7684,7 +7684,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_listCollections_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7697,7 +7697,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_listCommands_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7710,7 +7710,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_listCommands_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7723,7 +7723,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_listDatabases_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7736,7 +7736,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_listDatabases_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7749,7 +7749,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_listIndexes_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7762,7 +7762,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_listIndexes_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7775,7 +7775,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_lockInfo_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7788,7 +7788,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_lockInfo_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7801,7 +7801,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_logRotate_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7814,7 +7814,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_logRotate_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7827,7 +7827,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_logout_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7840,7 +7840,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_logout_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7853,7 +7853,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_mapReduce_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7866,7 +7866,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_mapReduce_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7879,7 +7879,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_mapreduce_shardedfinish_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7892,7 +7892,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_mapreduce_shardedfinish_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7905,7 +7905,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_mergeAuthzCollections_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7918,7 +7918,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_mergeAuthzCollections_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7931,7 +7931,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_mergeChunks_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7944,7 +7944,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_mergeChunks_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7957,7 +7957,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_migrateClone_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7970,7 +7970,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_migrateClone_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7983,7 +7983,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_moveChunk_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -7996,7 +7996,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_moveChunk_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8009,7 +8009,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_movePrimary_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8022,7 +8022,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_movePrimary_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8035,7 +8035,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_ping_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8048,7 +8048,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_ping_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8061,7 +8061,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_planCacheClearFilters_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8074,7 +8074,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_planCacheClearFilters_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8087,7 +8087,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_planCacheClear_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8100,7 +8100,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_planCacheClear_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8113,7 +8113,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_planCacheListFilters_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8126,7 +8126,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_planCacheListFilters_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8139,7 +8139,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_planCacheListPlans_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8152,7 +8152,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_planCacheListPlans_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8165,7 +8165,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_planCacheListQueryShapes_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8178,7 +8178,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_planCacheListQueryShapes_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8191,7 +8191,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_planCacheSetFilter_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8204,7 +8204,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_planCacheSetFilter_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8217,7 +8217,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_prepareTransaction_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8230,7 +8230,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_prepareTransaction_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8243,7 +8243,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_profile_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8256,7 +8256,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_profile_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8269,7 +8269,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_reIndex_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8282,7 +8282,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_reIndex_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8295,7 +8295,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_recvChunkAbort_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8308,7 +8308,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_recvChunkAbort_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8321,7 +8321,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_recvChunkCommit_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8334,7 +8334,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_recvChunkCommit_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8347,7 +8347,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_recvChunkStart_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8360,7 +8360,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_recvChunkStart_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8373,7 +8373,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_recvChunkStatus_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8386,7 +8386,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_recvChunkStatus_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8399,7 +8399,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_refreshSessions_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8412,7 +8412,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_refreshSessions_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8425,7 +8425,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_renameCollection_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8438,7 +8438,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_renameCollection_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8451,7 +8451,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_repairCursor_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8464,7 +8464,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_repairCursor_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8477,7 +8477,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_repairDatabase_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8490,7 +8490,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_repairDatabase_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8503,7 +8503,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_replSetAbortPrimaryCatchUp_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8516,7 +8516,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetAbortPrimaryCatchUp_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8529,7 +8529,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetFreeze_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8542,7 +8542,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_replSetFreeze_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8555,7 +8555,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetGetConfig_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8568,7 +8568,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetGetConfig_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8581,7 +8581,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetGetRBID_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8594,7 +8594,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetGetRBID_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8607,7 +8607,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetGetStatus_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8620,7 +8620,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_replSetGetStatus_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8633,7 +8633,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_replSetHeartbeat_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8646,7 +8646,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_replSetHeartbeat_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8659,7 +8659,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_replSetInitiate_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8672,7 +8672,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetInitiate_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8685,7 +8685,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetMaintenance_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8698,7 +8698,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetMaintenance_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8711,7 +8711,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_replSetReconfig_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8724,7 +8724,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_replSetReconfig_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8737,7 +8737,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetRequestVotes_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8750,7 +8750,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetRequestVotes_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8763,7 +8763,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetResizeOplog_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8776,7 +8776,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_replSetResizeOplog_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8789,7 +8789,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetStepDownWithForce_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8802,7 +8802,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_replSetStepDownWithForce_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8815,7 +8815,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_replSetStepDown_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8828,7 +8828,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetStepDown_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8841,7 +8841,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_replSetStepUp_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8854,7 +8854,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_replSetStepUp_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8867,7 +8867,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_replSetSyncFrom_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8880,7 +8880,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_replSetSyncFrom_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8893,7 +8893,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_replSetUpdatePosition_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8906,7 +8906,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_replSetUpdatePosition_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8919,7 +8919,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_resetError_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8932,7 +8932,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_resetError_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8945,7 +8945,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_revokePrivilegesFromRole_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8958,7 +8958,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_revokePrivilegesFromRole_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8971,7 +8971,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_revokeRolesFromRole_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8984,7 +8984,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_revokeRolesFromRole_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -8997,7 +8997,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_revokeRolesFromUser_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9010,7 +9010,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_revokeRolesFromUser_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9023,7 +9023,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_rolesInfo_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9036,7 +9036,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_rolesInfo_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9049,7 +9049,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_saslContinue_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9062,7 +9062,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_saslContinue_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9075,7 +9075,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_saslStart_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9088,7 +9088,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_saslStart_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9101,7 +9101,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_serverStatus_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9114,7 +9114,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_serverStatus_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9127,7 +9127,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_setFeatureCompatibilityVersion_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9140,7 +9140,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_setFeatureCompatibilityVersion_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9153,7 +9153,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_setFreeMonitoring_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9166,7 +9166,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_setFreeMonitoring_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9179,7 +9179,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_setParameter_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9192,7 +9192,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_setParameter_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9205,7 +9205,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_setShardVersion_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9218,7 +9218,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_setShardVersion_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9231,7 +9231,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_shardConnPoolStats_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9244,7 +9244,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_shardConnPoolStats_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9257,7 +9257,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_shardingState_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9270,7 +9270,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_shardingState_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9283,7 +9283,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_shardsvrSetAllowMigrations_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9296,7 +9296,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_shardsvrSetAllowMigrations_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9309,7 +9309,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_shardsvrShardCollection_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9322,7 +9322,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_shardsvrShardCollection_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9335,7 +9335,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_shutdown_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9348,7 +9348,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_shutdown_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9361,7 +9361,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_splitChunk_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9374,7 +9374,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_splitChunk_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9387,7 +9387,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_splitVector_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9400,7 +9400,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_splitVector_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9413,7 +9413,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_startRecordingTraffic_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9426,7 +9426,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_startRecordingTraffic_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9439,7 +9439,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_startSession_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9452,7 +9452,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_startSession_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9465,7 +9465,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_stopRecordingTraffic_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9478,7 +9478,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_stopRecordingTraffic_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9491,7 +9491,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_top_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9504,7 +9504,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_top_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9517,7 +9517,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_touch_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9530,7 +9530,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_touch_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9543,7 +9543,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_transferMods_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9556,7 +9556,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_transferMods_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9569,7 +9569,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_unsetSharding_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9582,7 +9582,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_unsetSharding_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9595,7 +9595,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_updateRole_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9608,7 +9608,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_updateRole_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9621,7 +9621,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_updateUser_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9634,7 +9634,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_updateUser_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9660,7 +9660,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_update_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9686,7 +9686,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_update_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9699,7 +9699,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_metrics_commands_usersInfo_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9712,7 +9712,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_usersInfo_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9725,7 +9725,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_validate_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9738,7 +9738,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_validate_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9751,7 +9751,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_voteCommitIndexBuild_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9764,7 +9764,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_metrics_commands_voteCommitIndexBuild_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9777,7 +9777,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_waitForFailPoint_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9790,7 +9790,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_metrics_commands_waitForFailPoint_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9803,7 +9803,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_whatsmyuri_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -9816,7 +9816,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_metrics_commands_whatsmyuri_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12193,7 +12193,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_transactions_totalAborted
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12206,7 +12206,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_transactions_totalCommitted
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12219,7 +12219,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_transactions_totalPrepared
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12232,7 +12232,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_transactions_totalPreparedThenAborted
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12245,7 +12245,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_transactions_totalPreparedThenCommitted
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12258,7 +12258,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_transactions_totalStarted
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12414,7 +12414,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_twoPhaseCommitCoordinator_totalAbortedTwoPhaseCommit
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12427,7 +12427,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_twoPhaseCommitCoordinator_totalCommittedTwoPhaseCommit
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12453,7 +12453,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_twoPhaseCommitCoordinator_totalStartedTwoPhaseCommit
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12570,7 +12570,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_wt_async_number_of_times_operation_allocation_failed
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12596,7 +12596,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_wt_async_total_allocations
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12609,7 +12609,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_wt_async_total_compact_calls
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12622,7 +12622,7 @@ entities:
           - name: cl_role
             type: string
       - name: mongodb_ss_wt_async_total_insert_calls
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12635,7 +12635,7 @@ entities:
           - name: cl_id
             type: string
       - name: mongodb_ss_wt_async_total_remove_calls
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12648,7 +12648,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_wt_async_total_search_calls
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -12661,7 +12661,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_wt_async_total_update_calls
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -14377,7 +14377,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_wt_capacity_bytes_written_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: bytes
         dimensions:
@@ -14671,7 +14671,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_wt_connection_total_write_I_Os
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -16088,7 +16088,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_wt_log_total_in_memory_size_of_compressed_records
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -16610,7 +16610,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_wt_snapshot_window_settings_total_number_of_SnapshotTooOld_errors
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -16922,7 +16922,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_ss_wt_txn_durable_timestamp_queue_inserts_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -17078,7 +17078,7 @@ entities:
           - name: rs_state
             type: string
       - name: mongodb_ss_wt_txn_read_timestamp_queue_inserts_total
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
@@ -21705,7 +21705,7 @@ entities:
           - name: rs_nm
             type: string
       - name: mongodb_top_total_time
-        type: gauge
+        type: count
         defaultResolution: 15
         unit: count
         dimensions:
