@@ -106,7 +106,7 @@ In each folder we expect to find:
     Notice that this is needed if in the definition of the exporter package_windows=true
   - `{exporterName}-config.yml.sample` containing the configuration sample for the Infrastructure Agent to run the exporter
   - `{exporterName}.json.tmpl` containing the integration configuration mappings loaded with the `//go:embed` directive.
-  - `{exporterName}.prometheus.json.tmpl` (Optional) containing the nri-prometheus configuration mappings loaded with the `//go:embed` directive. If this file is not present, the default file `config.json.tmpl` located under `nri-config-generator/default template` will be used.
+  - `{exporterName}.prometheus.json.tmpl` (Optional) containing the nri-prometheus configuration mappings loaded with the `//go:embed` directive. If this file is not present, the default file `config.json.tmpl` located under `nri-config-generator/templates/default` will be used.
 
 The definition file requires the following fields:
 ```yaml
