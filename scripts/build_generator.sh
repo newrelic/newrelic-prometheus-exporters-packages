@@ -18,7 +18,7 @@ if [ -f "$config_path" ]; then
   cp "${config_path}" "${root_dir}/nri-config-generator/templates/${config_name}"
 else
   echo "Using Default prometheus template"
-  cp "${root_dir}/nri-config-generator/default template/config.json.tmpl" "${root_dir}/nri-config-generator/templates/${config_name}"
+  cp "${root_dir}/nri-config-generator/default-template/config.json.tmpl" "${root_dir}/nri-config-generator/templates/${config_name}"
 fi
 
 cd nri-config-generator && \
