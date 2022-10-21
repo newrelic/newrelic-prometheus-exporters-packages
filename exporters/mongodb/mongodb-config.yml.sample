@@ -1,0 +1,43 @@
+integrations:
+    - name: nri-mongodb
+      config:
+        # User-defined name to uniquely identify the cluster being monitored. Required.
+        mongodb_cluster_name:
+
+        # MongoDB connection URI. If used replaces overwrites all other connection parameters .
+        mongodb_uri:
+
+        # List of comma separated databases.collections to retrieve collection stats.
+        collection_filters:
+
+        # List of comma separated databases.collections to retrieve index stats.
+        index_filters:
+
+        # Enable/Disable collection of Database metrics
+        database_stats: true
+
+        # Enable/Disable collection of Collections metrics
+        collection_stats: true
+
+        # Enable/Disable collection of Index metrics
+        index_stats: false
+
+        # Enable/Disable collection of Replica Set metrics
+        replicaset_stats: false
+
+        # Enable/Disable collection of Top Admin metrics
+        top_stats: false
+
+        # Enable/Disable collection of Diagnostic metrics
+        diagnostic_stats: false
+
+        # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
+        exporter_port: 9126
+
+        # transformations:
+        #   - description: "General processing rules"
+        #     ignore_metrics:
+        #     - prefixes:
+        #       - "go_"
+        #       - "process_"
+
