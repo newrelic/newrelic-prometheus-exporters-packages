@@ -4,7 +4,7 @@
 
         {{ if .config.mongodb_uri}}
         "--mongodb.uri",
-        {{.config.mongodb_uri}},
+        "{{.config.mongodb_uri}}",
         {{end}}
 
         {{ if .config.collection_filters}}
@@ -41,9 +41,9 @@
         "--collector.diagnosticdata",
         {{end}}
 
-        "--discovering-mode"
+        "--discovering-mode",
 
-        "--collector.collstats-limit=0"
+        "--collector.collstats-limit=0",
 
         {{ if .config.exporter_port}}
         "--web.listen-address",
