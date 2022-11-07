@@ -30,7 +30,7 @@
         {{end}}
 
         {{if or (.config.replicaset_stats) (eq .config.replicaset_stats nil)}}
-        "--collector.indexstats",
+        "--collector.replicasetstatus",
         {{end}}
 
         {{if or (.config.top_stats) (eq .config.top_stats nil)}}
@@ -47,7 +47,7 @@
 
         {{ if .config.exporter_port}}
         "--web.listen-address",
-        "{{.config.exporter_port}}",
+        ":{{.config.exporter_port}}",
         {{end}}
     ],
 }
