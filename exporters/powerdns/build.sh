@@ -19,6 +19,8 @@ goarch=$3
 
 GOOS="$goos" GOARCH="$goarch" make build
 
-mkdir -p ${powerdns_bin_dir}
+mkdir -p ${powerdns_bin_dir}/${goos}_${goarch}
 
 cp "${tmp_dir}/powerdns_exporter" "${powerdns_bin_dir}/powerdns-exporter"
+# TODO: only the one including os/arch will be needed
+cp "${tmp_dir}/powerdns_exporter" "${powerdns_bin_dir}/${goos}_${goarch}/powerdns-exporter"

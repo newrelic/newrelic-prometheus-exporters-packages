@@ -1,0 +1,69 @@
+builds:
+  - id: linux
+    binary: var/db/newrelic-infra/newrelic-integractions/bin/nri-{{.Env.INTEGRATION}}
+    dir: nri-config-generator
+    ldflags:
+      - -X main.integration={{.Env.INTEGRATION}} -X main.integrationVersion=${.Version} -X main.gitCommit={.Commit} -X main.BuildDate=${.Date}
+    hooks:
+      pre:
+        - cmd: nri-config-generator/scripts/build-exporter.sh {{abs "."}} {{.Env.INTEGRATION}} {{.Os}} {{.Arch}}
+          output: true
+        - cmd: nri-config-generator/scripts/setup-config-templates.sh {{abs "."}} {{.Env.INTEGRATION}}
+          output: true
+        - cmd: nri-config-generator/scripts/fetch-exporter-license.sh {{abs "."}} {{.Env.INTEGRATION}}
+          output: true
+    goos:
+      - linux
+    goarch:
+      - arm64
+      - amd64
+nfpms:
+  # TODO: we need to either set up rpm.signature and deb.signature or keep the current system to sign packages.
+  - id: linux
+    builds:
+      - linux
+    file_name_template: "nri-{{ .Env.INTEGRATION }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - deb
+      - rpm
+    vendor: New Relic, Inc.
+    maintainer: "New Relic Infrastructure <infrastructure-eng@newrelic.com>"
+    homepage: "https://www.newrelic.com/infrastructure"
+    description: Prometheus exporters help exporting existing metrics from third-party system as Prometheus metrics.
+    license: "https://newrelic.com/terms (also see LICENSE files installed with this package)"
+    dependencies:
+      - newrelic-infra
+    bindir: "/var/db/newrelic-infra/newrelic-integractions/bin"
+    contents:
+      - src: "exporters/{{.Env.INTEGRATION}}/{{.Env.INTEGRATION}}-config.yml.sample"
+        dst: "/etc/newrelic-infra/integrations.d/{{.Env.INTEGRATION}}-config.yml.sample"
+      - src: "exporters/{{.Env.INTEGRATION}}/target/bin/{{.Os}}_{{.Arch}}/{{.Env.INTEGRATION}}-exporter"
+        dst: "/usr/local/prometheus-exporters/bin/{{.Env.INTEGRATION}}-exporter"
+        file_info:
+          mode: 0755
+      - src: "exporters/{{.Env.INTEGRATION}}/target/{{.Env.INTEGRATION}}-LICENSE"
+        dst: "/usr/local/share/doc/prometheus-exporters/{{.Env.INTEGRATION}}-LICENSE"
+    overrides:
+      deb:
+        dependencies:
+          - newrelic-infra (>= 1.24.1)
+      rpm:
+        dependencies:
+          - newrelic-infra >= 1.24.1
+archives:
+  - id: linux
+    builds:
+      - linux
+    name_template: "nri-{{ .Env.INTEGRATION }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - src: "exporters/{{.Env.INTEGRATION}}/{{.Env.INTEGRATION}}-config.yml.sample"
+        dst: "etc/newrelic-infra/integrations.d"
+      - src: "exporters/{{.Env.INTEGRATION}}/target/bin/{{.Os}}_{{.Arch}}/{{.Env.INTEGRATION}}-exporter"
+        dst: "usr/local/prometheus-exporters/bin"
+        strip_parent: true
+        info:
+          mode: 0755
+      - src: "exporters/{{.Env.INTEGRATION}}/target/{{.Env.INTEGRATION}}-LICENSE"
+        dst: "usr/local/share/doc/prometheus-exporters"
+release: # we use custom publisher
+  disable: true
