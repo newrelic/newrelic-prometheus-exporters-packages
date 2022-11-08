@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"text/template"
@@ -19,6 +21,7 @@ import (
 const (
 	testIntegrationVersion = "test-tag"
 	testIntegration        = "nri-powerdns"
+	testExporter           = "powerdns-exporter"
 	exporterPort           = "9120"
 )
 
@@ -73,7 +76,7 @@ const configPDNSTemplate = `
         "name": "powerdns-exporter",
         "timeout": 0,
         "exec": [
-          "/usr/local/prometheus-exporters/bin/powerdns-exporter",
+          "{{ .exporterPath }}",
           "--api-url",
           "http://powerdns:8080/api/v1/",
           "--api-key",
@@ -213,9 +216,21 @@ func executeTemplate(t *testing.T, tpl *template.Template, vars map[string]strin
 	if tpl == nil {
 		t.Fatal("invalid template")
 	}
+
+	vars["exporterPath"] = exporterPath()
+
 	var buf bytes.Buffer
 	if err := tpl.Execute(&buf, vars); err != nil {
 		t.Fatal(err)
 	}
+
 	return buf.String()
+}
+
+func exporterPath() string {
+	if runtime.GOOS == "windows" {
+		return fmt.Sprintf("C:\\\\Program Files\\\\Prometheus-exporters\\\\bin\\\\%s.exe", testExporter)
+	}
+
+	return filepath.Join("/usr/local/prometheus-exporters/bin/", testExporter)
 }
