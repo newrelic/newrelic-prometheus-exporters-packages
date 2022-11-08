@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package test
 
 import (
@@ -102,24 +99,25 @@ func TestMain(m *testing.M) {
 		log.Fatal(err)
 	}
 	exitVal := m.Run()
-	clean()
 	os.Exit(exitVal)
 }
 
-/**
+/*
+*
 Happy path
 */
 func TestGeneratorConfig(t *testing.T) {
 	templateVars := getTemplateVars(exporterPort)
 	expectedResponse := executeTemplate(t, pdnsTemplate, templateVars)
 	envVars := getConfigGeneratorEnvVars("config.yml")
-	stdout, err := callGeneratorConfig(testIntegration, defaultArgs, envVars)
+	stdout, err := callGeneratorConfig(defaultArgs, envVars)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, stdout)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
-/**
+/*
+*
 The default port is already in use, the config generator must find and available one and set the config
 */
 func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
@@ -135,7 +133,7 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 		}
 	}()
 	envVars := getConfigGeneratorEnvVars("config.yml")
-	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
+	stdout, _ := callGeneratorConfig(defaultArgs, envVars)
 	assert.NotEmpty(t, stdout)
 	assignedPort, err := getAssignedPortToPowerDNSIntegration(stdout)
 	assert.Nil(t, err)
@@ -146,13 +144,14 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
-/**
+/*
+*
 The env var interval is provided
 */
 func TestGeneratorConfigWithInterval(t *testing.T) {
 	envVars := getConfigGeneratorEnvVars("config.yml")
 	envVars = append(envVars, "interval=10s")
-	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
+	stdout, _ := callGeneratorConfig(defaultArgs, envVars)
 	assert.NotEmpty(t, stdout)
 	vars := map[string]string{
 		"exporterPort": exporterPort,
@@ -162,13 +161,14 @@ func TestGeneratorConfigWithInterval(t *testing.T) {
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
-/**
+/*
+*
 The verbose mode of the Agent gets propagated to exporter and prometheus
 */
 func TestGeneratorVerboseMode(t *testing.T) {
 	envVars := getConfigGeneratorEnvVars("config.yml")
 	envVars = append(envVars, "VERBOSE=1")
-	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
+	stdout, _ := callGeneratorConfig(defaultArgs, envVars)
 	assert.NotEmpty(t, stdout)
 	vars := map[string]string{
 		"exporterPort": exporterPort,

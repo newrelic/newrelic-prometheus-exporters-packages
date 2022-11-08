@@ -1,13 +1,10 @@
 package test
 
 import (
-	"bytes"
-	"context"
 	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"time"
 )
 
 const (
@@ -49,50 +46,32 @@ func copyTemplate(fileName string) error {
 func buildGeneratorConfig(integration string, integrationVersion string) error {
 	integrationTemplateFileName := fmt.Sprintf("%s.json.tmpl", integration)
 	prometheusTemplateFileName := fmt.Sprintf("%s.prometheus.json.tmpl", integration)
+
 	if err := copyTemplate(integrationTemplateFileName); err != nil {
 		return err
 	}
+
 	if err := copyTemplate(prometheusTemplateFileName); err != nil {
 		return err
-	}
-	cmd := &exec.Cmd{
-		Path: "/usr/bin/make",
-		Args: []string{
-			"make",
-			"compile",
-			fmt.Sprintf("PACKAGE_NAME=%s", integration),
-			fmt.Sprintf("VERSION=%s", integrationVersion),
-		},
-		Dir: rootDir(),
-	}
-	var errbuf bytes.Buffer
-	cmd.Stderr = &errbuf
-	err := cmd.Run()
-	if err != nil {
-		return fmt.Errorf("error execting command: %v, stderr: %s", err, errbuf.String())
 	}
 
 	return nil
 }
 
-func clean() error {
-	cmd := &exec.Cmd{
-		Path: "/usr/bin/make",
-		Args: []string{
-			"make",
-			"clean",
-		},
-		Dir: rootDir(),
+func callGeneratorConfig(args []string, env []string) ([]byte, error) {
+	baseArgs := []string{
+		"run",
+		"-ldflags",
+		fmt.Sprintf("-X main.integration=%s -X main.integrationVersion=%s", testIntegration, testIntegrationVersion),
+		"../main.go",
 	}
-	return cmd.Run()
-}
 
-func callGeneratorConfig(integration string, args []string, env []string) ([]byte, error) {
-	executable := fmt.Sprintf("%s", integration)
-	ctx, cancel := context.WithTimeout(context.Background(), 5000*time.Millisecond)
-	defer cancel()
-	name := filepath.Join(rootDir(), "bin", executable)
-	cmd := exec.CommandContext(ctx, name, args...)
-	cmd.Env = env
+	cmd := exec.Command(
+		"go",
+		append(baseArgs, args...)...,
+	)
+
+	cmd.Env = append(cmd.Environ(), env...)
+
 	return cmd.Output()
 }
