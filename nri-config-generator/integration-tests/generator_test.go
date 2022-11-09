@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package test
 
 import (
@@ -10,6 +7,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"text/template"
@@ -22,6 +21,7 @@ import (
 const (
 	testIntegrationVersion = "test-tag"
 	testIntegration        = "nri-powerdns"
+	testExporter           = "powerdns-exporter"
 	exporterPort           = "9120"
 )
 
@@ -76,7 +76,7 @@ const configPDNSTemplate = `
         "name": "powerdns-exporter",
         "timeout": 0,
         "exec": [
-          "/usr/local/prometheus-exporters/bin/powerdns-exporter",
+          "{{ .exporterPath }}",
           "--api-url",
           "http://powerdns:8080/api/v1/",
           "--api-key",
@@ -102,26 +102,21 @@ func TestMain(m *testing.M) {
 		log.Fatal(err)
 	}
 	exitVal := m.Run()
-	clean()
 	os.Exit(exitVal)
 }
 
-/**
-Happy path
-*/
+// Happy path
 func TestGeneratorConfig(t *testing.T) {
 	templateVars := getTemplateVars(exporterPort)
 	expectedResponse := executeTemplate(t, pdnsTemplate, templateVars)
 	envVars := getConfigGeneratorEnvVars("config.yml")
-	stdout, err := callGeneratorConfig(testIntegration, defaultArgs, envVars)
-	assert.Nil(t, err)
+	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
-/**
-The default port is already in use, the config generator must find and available one and set the config
-*/
+// The default port is already in use, the config generator must find and available one and set the config
 func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	server := &http.Server{Addr: fmt.Sprintf(":%s", exporterPort)}
 	go func() {
@@ -135,7 +130,8 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 		}
 	}()
 	envVars := getConfigGeneratorEnvVars("config.yml")
-	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
+	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	assignedPort, err := getAssignedPortToPowerDNSIntegration(stdout)
 	assert.Nil(t, err)
@@ -146,13 +142,12 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
-/**
-The env var interval is provided
-*/
+// The env var interval is provided
 func TestGeneratorConfigWithInterval(t *testing.T) {
 	envVars := getConfigGeneratorEnvVars("config.yml")
 	envVars = append(envVars, "interval=10s")
-	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
+	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	vars := map[string]string{
 		"exporterPort": exporterPort,
@@ -162,13 +157,12 @@ func TestGeneratorConfigWithInterval(t *testing.T) {
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
-/**
-The verbose mode of the Agent gets propagated to exporter and prometheus
-*/
+// The verbose mode of the Agent gets propagated to exporter and prometheus
 func TestGeneratorVerboseMode(t *testing.T) {
 	envVars := getConfigGeneratorEnvVars("config.yml")
 	envVars = append(envVars, "VERBOSE=1")
-	stdout, _ := callGeneratorConfig(testIntegration, defaultArgs, envVars)
+	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	vars := map[string]string{
 		"exporterPort": exporterPort,
@@ -213,9 +207,21 @@ func executeTemplate(t *testing.T, tpl *template.Template, vars map[string]strin
 	if tpl == nil {
 		t.Fatal("invalid template")
 	}
+
+	vars["exporterPath"] = exporterPath()
+
 	var buf bytes.Buffer
 	if err := tpl.Execute(&buf, vars); err != nil {
 		t.Fatal(err)
 	}
+
 	return buf.String()
+}
+
+func exporterPath() string {
+	if runtime.GOOS == "windows" {
+		return fmt.Sprintf("C:\\\\Program Files\\\\Prometheus-exporters\\\\bin\\\\%s.exe", testExporter)
+	}
+
+	return filepath.Join("/usr/local/prometheus-exporters/bin/", testExporter)
 }

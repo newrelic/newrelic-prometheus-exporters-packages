@@ -12,10 +12,6 @@ test:
 	@echo "=== nri-config-generator === [ test ]: running unit tests..."
 	@go test -race ./... -count=1
 
-integration-test:
-	@echo "=== nri-config-generator === [ integration-test ]: running integration tests..."
-	@go test -v -tags=integration ./integration-tests/.
-
 PACKAGE_NAME?=
 VERSION?=dev
 GIT_COMMIT?=$(shell git rev-parse HEAD)
