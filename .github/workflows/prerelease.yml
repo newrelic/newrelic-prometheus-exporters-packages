@@ -48,9 +48,9 @@ jobs:
         uses: newrelic/newrelic-integration-e2e-action@v1
         with:
           spec_path: exporters/${{ steps.check.outputs.NAME }}/e2e/e2e_spec.yml
-          account_id: ${{ secrets.ACCOUNT_ID }}
-          api_key: ${{ secrets.API_KEY }}
-          license_key: ${{ secrets.LICENSE_KEY }}
+          account_id: ${{ secrets.COREINT_E2E_ACCOUNT_ID }}
+          api_key: ${{ secrets.COREINT_E2E_API_KEY }}
+          license_key: ${{ secrets.COREINT_E2E_LICENSE_KEY }}
       - name: Create Release for the exporter modified
         id: create_release
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
