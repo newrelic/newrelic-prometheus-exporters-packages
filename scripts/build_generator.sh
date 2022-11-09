@@ -22,8 +22,6 @@ else
 fi
 
 cd nri-config-generator && \
-  GOOS=linux \
-  GOARCH=amd64 \
   BIN_PATH=${binary_dir}/nri-${integration} \
   make compile 
 
