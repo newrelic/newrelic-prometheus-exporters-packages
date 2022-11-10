@@ -47,7 +47,11 @@ sudo zypper install <exporter package name>
 
 ## Local Build and Test
 
-There are Make targets that helps you build and run e2e test locally:
+Make sure you have installed:
+- [Go](https://go.dev/doc/install)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+There are Make targets that help you build and run e2e tests locally:
 
 * Compile an integration:
 ```bash
@@ -57,15 +61,11 @@ make build-<exporter_name>
 
 * Run End to End test:
 ```bash
-make fetch-resources-<exporter_name>
-make build-<exporter_name>
 make test-e2e-<exporter_name> \
   ACCOUNT_ID=<NEWRELIC_ACCOUNT_ID> \
   API_KEY=<NEWRELIC_API_KEY> \
   LICENSE_KEY=<NEWRELIC_LICENSE_KEY>
 ```
-
-Go `1.17+` is needed in order to run the e2e test without installing the `newrelic-integration-e2e`.
 
 ### nri-config-generator
 `nri-config-generator` folder contains all the code needed to build a binary capable to get as input the classical 

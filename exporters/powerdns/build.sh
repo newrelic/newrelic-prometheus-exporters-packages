@@ -14,10 +14,7 @@ else
     git checkout ${EXPORTER_TAG} -d
 fi
 
-goos=$2
-goarch=$3
-
-GOOS="$goos" GOARCH="$goarch" make build
+make build
 
 mkdir -p ${powerdns_bin_dir}
 
