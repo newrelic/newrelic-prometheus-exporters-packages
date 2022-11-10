@@ -22,11 +22,6 @@
         "{{.config.username}}",
         {{end}}
 
-        {{ if .config.password}}
-        "--ibmmq.password",
-        "{{.config.password}}",
-        {{end}}
-
         {{ if .config.exporter_port}}
         "--ibmmq.httpListenPort",
         "{{.config.exporter_port}}",
@@ -58,7 +53,7 @@
         "--ibmmq.useStatus"
     ],
 
-    {{ if (or .config.mqsslkeyr .config.ccdt_url .config.ld_library_path .config.home) }}
+    {{ if (or .config.password .config.mqsslkeyr .config.ccdt_url .config.ld_library_path .config.home) }}
     "env": {
             {{ if .config.mqsslkeyr}}
             "MQSSLKEYR":"{{.config.mqsslkeyr}}",
@@ -67,6 +62,10 @@
             {{ if .config.ccdt_url }}
             "MQCCDTURL": "{{.config.ccdt_url}}",
             "IBMMQ_CONNECTION_CCDTURL": "{{.config.ccdt_url}}",
+            {{end}}
+
+            {{ if .config.password}}
+            "IBMMQ_CONNECTION_PASSWORD": "{{.config.password}}",
             {{end}}
 
             {{ if .config.ld_library_path}}
