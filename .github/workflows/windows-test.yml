@@ -1,9 +1,8 @@
 name: test Bash on Windows
 on:
   workflow_dispatch:
-  on:  # I have to add pr to the test because `workflow_dispatch` is not going to be available until I merge it to `main`/`master`/default branch
-    pull_request:
-      branches: [ main ]
+  pull_request:  # I have to add pr to the test because `workflow_dispatch` is not going to be available until I merge it to `main`/`master`/default branch
+    branches: [ main, master ]
 
 jobs:
   cmd-on-windows:
