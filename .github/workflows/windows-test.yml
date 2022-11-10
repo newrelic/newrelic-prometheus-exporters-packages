@@ -1,0 +1,31 @@
+name: test Bash on Windows
+on:
+  workflow_dispatch:
+  on:  # I have to add pr to the test because `workflow_dispatch` is not going to be available until I merge it to `main`/`master`/default branch
+    pull_request:
+      branches: [ main ]
+
+jobs:
+  cmd-on-windows:
+    runs-on: windows-latest
+    steps:
+      - name:  "Shell: CMD"
+        shell: cmd
+        run: |
+          dir C:\msys64\usr\bin
+
+  bash-on-windows:
+    runs-on: windows-latest
+    steps:
+      - name:  "Shell: bash"
+        shell: bash
+        run: |
+          ls -lha /c/msys64/usr/bin
+
+  bash-exe-on-windows:
+    runs-on: windows-latest
+    steps:
+      - name:  "Shell: bash.exe"
+        shell: bash.exe
+        run: |
+          ls -lha /c/msys64/usr/bin
