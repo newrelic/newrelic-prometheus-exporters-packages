@@ -5,26 +5,74 @@ on:
     branches: [ main, master ]
 
 jobs:
-  cmd-on-windows:
+  gitbash-on-windows:
     runs-on: windows-latest
     steps:
-      - name:  "Shell: CMD"
-        shell: cmd
+      - name:  "Shell: gitbash.exe"
+        shell: 'C:\Program Files\Git\bin\bash.exe --noprofile --norc -e -o pipefail {0}'
         run: |
-          dir C:\msys64\usr\bin
+          which make
+          
+          echo $PATH
+          
+          SAVEIFS="$IFS"
+          export IFS=:
+          for P in $PATH; do
+            echo $P
+            ls -lha $P || echo Ignoring error here
+            echo
+          done
 
-  bash-on-windows:
+  msys2bash-on-windows:
+    runs-on: windows-latest
+    steps:
+      - name:  "Shell: msys2bash.cmd"
+        shell: 'C:\msys64\usr\bin\bash.exe --noprofile --norc -e -o pipefail {0}'
+        run: |
+          which make
+          
+          echo $PATH
+          
+          SAVEIFS="$IFS"
+          export IFS=:
+          for P in $PATH; do
+            echo $P
+            ls -lha $P || echo Ignoring error here
+            echo
+          done
+
+  wslbash-on-windows:
+    runs-on: windows-latest
+    steps:
+      - name:  "Shell: wslbash.exe"
+        shell: 'C:\Windows\System32\bash.exe --noprofile --norc -e -o pipefail {0}'
+        run: |
+          which make
+          
+          echo $PATH
+          
+          SAVEIFS="$IFS"
+          export IFS=:
+          for P in $PATH; do
+            echo $P
+            ls -lha $P || echo Ignoring error here
+            echo
+          done
+
+  simplybash-on-windows:
     runs-on: windows-latest
     steps:
       - name:  "Shell: bash"
         shell: bash
         run: |
-          ls -lha /c/msys64/usr/bin
-
-  bash-exe-on-windows:
-    runs-on: windows-latest
-    steps:
-      - name:  "Shell: bash.exe"
-        shell: bash.exe
-        run: |
-          ls -lha /c/msys64/usr/bin
+          which make
+          
+          echo $PATH
+          
+          SAVEIFS="$IFS"
+          export IFS=:
+          for P in $PATH; do
+            echo $P
+            ls -lha $P || echo Ignoring error here
+            echo
+          done
