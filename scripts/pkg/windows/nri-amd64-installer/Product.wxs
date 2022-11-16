@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*"
+             Name="New Relic Prometheus Exporter Integration, nri-$(var.IntegrationName)"
+             Language="1033"
+             Version="$(var.IntegrationVersion)"
+             Manufacturer="New Relic, Inc."
+             UpgradeCode="$(var.UpgradeCode)">
+        <Package Id="*"
+                 InstallerVersion="200"
+                 Compressed="yes"
+                 InstallScope="perMachine"
+                 Platform="$(var.Platform)"
+                 Manufacturer="New Relic, Inc."
+                 Comments="(c) New Relic, Inc."
+                 Keywords="infrastructure,MSI,on-host,$(var.IntegrationName)"/>
+
+        <MajorUpgrade DowngradeErrorMessage="A newer version of $(var.IntegrationName) is already installed."/>
+        <MediaTemplate EmbedCab="yes"/>
+
+        <Feature Id="ProductFeature" Title="New Relic Prometheus Exporter Integration, $(var.IntegrationName)" Level="1">
+            <ComponentRef Id="CMP_V1_CUSTOM_PLUGINS_BIN"/>
+            <ComponentRef Id="CMP_V1_CUSTOM_PLUGINS_BIN_INTEGRATION"/>
+            <ComponentRef Id="CMP_V1_PLUGIN_CONFIGS"/>
+            <ComponentGroupRef Id="PrometheusPluginsBinComponent"/>
+            <ComponentGroupRef Id="CustomPluginsBinComponent"/>
+            <ComponentGroupRef Id="PluginConfigsComponent"/>
+        </Feature>
+    </Product>
+
+    <Fragment>
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="$(var.ProgramFilesArch)">
+                <Directory Id="PrometheusFolder" Name="Prometheus-exporters">
+                    <Directory Id="CustomPluginsBinFolder" Name="bin"/>
+                </Directory>
+                <Directory Id="CompanyFolder" Name="New Relic">
+                    <Directory Id="AgentBinaryFolder" Name="newrelic-infra">
+                        <Directory Id="PluginConfigsFolder" Name="integrations.d"/>
+                        <Directory Id="CustomPluginsFolder" Name="newrelic-integrations">
+                            <Directory Id="CustomPluginsBinFolderIntegration" Name="bin"/>
+                        </Directory>
+                    </Directory>
+                </Directory>
+            </Directory>
+        </Directory>
+    </Fragment>
+
+    <Fragment>
+        <DirectoryRef Id="CustomPluginsBinFolder">
+            <Component Id="CMP_V1_CUSTOM_PLUGINS_BIN" Guid="DB8403D7-2F59-4008-B87F-4A22EE41D8D9" KeyPath="yes">
+                <CreateFolder/>
+            </Component>
+        </DirectoryRef>
+        <DirectoryRef Id="CustomPluginsBinFolderIntegration">
+            <Component Id="CMP_V1_CUSTOM_PLUGINS_BIN_INTEGRATION" Guid="8FC720E9-55F5-490E-955F-1531E1FA79A5" KeyPath="yes">
+                <CreateFolder/>
+            </Component>
+        </DirectoryRef>
+        <DirectoryRef Id="PluginConfigsFolder">
+            <Component Id="CMP_V1_PLUGIN_CONFIGS" Guid="ACD1A480-0C62-4165-8A17-2C124C6B1CB1" KeyPath="yes">
+                <CreateFolder/>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="PrometheusPluginsBinComponent" Directory="CustomPluginsBinFolder">
+            <Component Id="CMP_NRI_EXPORTER_EXE" Win64="$(var.Win64)">
+                <File Id="FILE_NRI_EXPORTER_EXE"
+                      Source="$(var.BinariesPath)$(var.IntegrationName)-exporter.exe"
+                      KeyPath="yes"/>
+            </Component>
+            <Component Id="CMP_NRI_LICENSE" Win64="$(var.Win64)">
+                <File Id="FILE_NRI_LICENSE"
+                      Source="$(var.BinariesPath)$(var.IntegrationName)-LICENSE"
+                      KeyPath="yes"/>
+            </Component>
+        </ComponentGroup>
+        <ComponentGroup Id="CustomPluginsBinComponent" Directory="CustomPluginsBinFolderIntegration">
+            <Component Id="CMP_NRI_EXE" Win64="$(var.Win64)">
+                <File Id="FILE_NRI_EXE"
+                      Source="$(var.BinariesPath)nri-$(var.IntegrationName).exe"
+                      KeyPath="yes"/>
+            </Component>
+        </ComponentGroup>
+        <ComponentGroup Id="PluginConfigsComponent" Directory="PluginConfigsFolder">
+            <Component Id="CMP_NRI_EXPORTER_CONFIG" Win64="$(var.Win64)">
+                <File Id="CMP_NRI_EXPORTER_CONFIG"
+                      Name="$(var.IntegrationName)-config.yml.sample"
+                      Source="$(var.BinariesPath)$(var.IntegrationName)-config.yml.sample"
+                      KeyPath="yes"/>
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+
+</Wix>
