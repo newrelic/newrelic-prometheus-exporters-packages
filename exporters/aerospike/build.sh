@@ -23,9 +23,9 @@ go build -o aerospike-prometheus-exporter
 mkdir -p ${aerospike_bin_dir}
 
 # copy binary file
-cp "${integration_dir}/${tmp_dir}/aerospike-prometheus-exporter" "${aerospike_bin_dir}/aerospike-exporter"
+cp "${tmp_dir}/aerospike-prometheus-exporter" "${aerospike_bin_dir}/aerospike-exporter"
 # copy config file
-cp "${integration_dir}/${tmp_dir}/ape.toml" "${aerospike_bin_dir}/aerospike-config.yml.sample"
+cp "${tmp_dir}/ape.toml" "${aerospike_bin_dir}/aerospike-config.yml.sample"
 
 # run the exporter
 "${aerospike_bin_dir}/aerospike-exporter" --config "${aerospike_bin_dir}/aerospike-config.yml.sample"
