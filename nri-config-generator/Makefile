@@ -17,6 +17,7 @@ integration-test:
 	@go test -v -tags=integration ./integration-tests/.
 
 PACKAGE_NAME?=
+OUTPUT_MODE?=
 VERSION?=dev
 GIT_COMMIT?=$(shell git rev-parse HEAD)
 BUILD_DATE?=$(shell date -u '+%Y-%m-%d_%I:%M:%S%p')
@@ -27,5 +28,5 @@ ifeq ($(PACKAGE_NAME),)
 	$(error Missing required argument PACKAGE_NAME.)
 endif
 	go build \
-	-ldflags "-X main.integration=$(PACKAGE_NAME) -X main.integrationVersion=$(VERSION) -X main.gitCommit=$(GIT_COMMIT) -X main.buildDate=$(BUILD_DATE)" \
+	-ldflags "-X main.integration=$(PACKAGE_NAME) -X main.integrationVersion=$(VERSION) -X main.outputMode=$(OUTPUT_MODE) -X main.gitCommit=$(GIT_COMMIT) -X main.buildDate=$(BUILD_DATE)" \
 	-o $(BIN_PATH) github.com/newrelic/nri-config-generator

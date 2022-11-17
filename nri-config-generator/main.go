@@ -28,10 +28,13 @@ const (
 	varExporterDefinition   = "exporter_definition"
 	varExporterBinaryPath   = "exporter_binary_path"
 	varMetricTransformation = "transformations"
+	varOutputMode           = "output_mode"
 	nixExportsBinPath       = "/usr/local/prometheus-exporters/bin"
 	winExportsBinPath       = "C:\\Program Files\\Prometheus-exporters\\bin"
 	sleepTime               = 30 * time.Second
 	emptyMap                = "[]"
+	outputConfigProtocol    = "config_protocol"
+	outputEntryPoint        = "entrypoint"
 )
 
 var (
@@ -39,6 +42,7 @@ var (
 	integrationVersion string
 	gitCommit          string
 	buildDate          string
+	outputMode         string
 	//go:embed templates
 	integrationTemplate embed.FS
 	//go:embed templates
@@ -53,10 +57,14 @@ func main() {
 		log.Fatal(err)
 	}
 
+	if outputMode == "" {
+		outputMode = outputConfigProtocol
+	}
+
 	if al.ShowVersion {
 		fmt.Printf(
-			"New Relic %s integration Version: %s, Platform: %s, GoVersion: %s, GitCommit: %s, BuildDate: %s\n",
-			integration, integrationVersion, fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
+			"New Relic %s integration Version: %s, OutputMode: %s, Platform: %s, GoVersion: %s, GitCommit: %s, BuildDate: %s\n",
+			integration, integrationVersion, outputMode, fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
 			runtime.Version(), gitCommit, buildDate)
 		return
 	}
@@ -91,6 +99,7 @@ func main() {
 	vars[varMetricTransformation] = transformations
 	vars[varIntegrationName] = integration
 	vars[varIntegrationVersion] = integrationVersion
+	vars[varOutputMode] = outputMode
 
 	output, err := generateOutput(exporterGenerator, configGenerator, vars)
 	if err != nil {
@@ -135,7 +144,11 @@ func getExporterNameFromIntegration(integration string) string {
 }
 
 func getConfigGenerator() (generator.Config, error) {
-	configTemplatePattern := fmt.Sprintf("templates/%s.prometheus.json.tmpl", integration)
+	templatePattern := "templates/%s.prometheus.json.tmpl"
+	if outputMode == outputEntryPoint {
+		templatePattern = "templates/%s.json.tmpl"
+	}
+	configTemplatePattern := fmt.Sprintf(templatePattern, integration)
 	content, err := configTemplate.ReadFile(configTemplatePattern)
 	if err != nil {
 		return nil, fmt.Errorf("readingfile %s, %w", configTemplatePattern, err)

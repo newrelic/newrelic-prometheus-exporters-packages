@@ -3,6 +3,8 @@ NRI_GENERATOR_PATH="$(PWD)/nri-config-generator"
 
 GOOS ?=
 GOARCH ?=
+OUTPUT_MODE ?= config_protocol
+
 
 NEWRELIC_E2E ?= go run github.com/newrelic/newrelic-integration-e2e-action@latest
 

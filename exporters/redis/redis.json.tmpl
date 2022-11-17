@@ -1,0 +1,8 @@
+{{ .exporter_binary_path }}
+ --redis.addr={{.config.address}}
+{{- if .config.user -}}
+ --redis.user={{.config.user}}
+{{- end -}}
+{{- if .config.password -}}
+ --redis.password={{.config.password}}
+{{- end -}}
