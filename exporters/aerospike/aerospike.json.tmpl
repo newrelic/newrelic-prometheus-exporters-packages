@@ -1,0 +1,21 @@
+{
+    "exec": [
+        "{{ .exporter_binary_path }}",
+
+        {{ if .config.db_host}}
+        "--api-url",
+        "{{.config.db_host}}",
+        {{end}}
+
+        {{ if .config.api_key}}
+        "--api-key",
+        "{{.config.api_key}}",
+        {{end}}
+
+        "--listen-address",
+        ":{{.bind}}",
+
+        "--metric-path",
+        "/metrics"
+    ]
+}
