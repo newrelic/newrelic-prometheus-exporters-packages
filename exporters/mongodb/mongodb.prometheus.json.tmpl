@@ -22,7 +22,7 @@
                         {{ toJson $a }},
                     {{ end }}
                     {{/* Add below any specific rules for this template. These will be hardcoded. */}}
-                    {"add_attributes":[{"prefix":"mongodb_","attributes":{"cluster": "{{.config.mongodb_cluster_name}}" }}]}
+                    {"add_attributes":[{"prefix":"mongodb_","attributes":{"mongodb_cluster_name": "{{.config.mongodb_cluster_name}}" }}]}
                 ],
                 "integration_metadata":{
                     "version": "{{.integration_version}}",

@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  e2e_standalone:
+    container_name: "e2e_standalone"
+    image: mongo:6.0
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass12345
+    ports:
+      - "17017:27017"
+    command: mongod --port 27017  --oplogSize 16
+
+  e2e_mongo-sa1-setup:
+    container_name: "e2e_mongo-sa1-setup"
+    image: mongo:6.0
+    depends_on:
+      - "e2e_standalone"
+    links:
+      - e2e_standalone:e2e_standalone
+    volumes:
+      - ./scripts:/scripts
+    environment:
+      - MONGO1=e2e_standalone
+    entrypoint: [ "/scripts/setup-standalone.sh" ]
