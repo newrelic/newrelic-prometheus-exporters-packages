@@ -1,0 +1,33 @@
+description: |
+  End-to-end tests for PowerDNS integration
+
+scenarios:
+  - description: |
+      This scenario will verify that metrics from aerospike prometheus exporter are correcly collected.
+    before:
+    # prerequisite to have go language installed before building the binary
+      - go version
+    after:
+      - go version
+    integrations:
+      - name: nri-aerospike
+        binary_path: ../target/bin/nri-aerospike
+        exporter_binary_path: ../target/bin/aerospike-exporter
+        config:
+          aerospike_url: http://localhost:9145/metrics/
+          exporter_port: 9145
+          api_key: authoritative-secret
+    tests:
+      nrqls:
+        - query: "SELECT latest(aerospike_node_stats_client_connections) FROM Metric"
+      entities:
+        - type: "CLIENT_CONNECTIONS"
+          data_type: "Metric"
+          metric_name: "aerospike_node_stats_client_connections"
+      metrics:
+        - source: "aerospike.yml"
+          except_entities:
+            - CLIENT_CONNECTIONS
+          except_metrics:
+            - aerospike_node_stats_client_connections_opened
+            - aerospike_node_stats_client_connections_closed

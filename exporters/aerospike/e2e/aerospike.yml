@@ -1,0 +1,14 @@
+specVersion: "2"
+owningTeam: integrations
+integrationName: aerospike
+humanReadableIntegrationName: Aerospike
+entities:
+  - entityType: CLIENT_CONNECTIONS
+    metrics:
+      - name: aerospike_node_stats_client_connections
+        type: guage
+        defaultResolution: 0
+        unit: count
+        dimensions:
+          - name: type
+            type: string
