@@ -65,7 +65,7 @@ packageLinux(){
 
 # shouldDoRelease checks if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
 shouldDoRelease(){
-    old=$(git describe --tags --abbrev=0)
+    old=$(git describe --tags --abbrev=0)  # ERROR PRONE IF THERE IS NO PREVIOUS TAG!
     export EXPORTER_PATH=$(git --no-pager diff  --name-only $old "exporters/**/exporter.yml")
     CREATE_RELEASE=false
 
@@ -120,8 +120,8 @@ checkExporter(){
         if [ ! -f "./exporters/$NAME/$NAME-config.yml.sample" ]; then
             ERRORS=$ERRORS" - the file ./exporters/$NAME/$NAME-config.yml.sample should exist"
         fi
-        if [ ! -f "./exporters/$NAME/build.sh" ]; then
-            ERRORS=$ERRORS" - the file ./exporters/$NAME/build.sh should exist"
+        if [ ! -f "./exporters/$NAME/build-linux.sh" ]; then
+            ERRORS=$ERRORS" - the file ./exporters/$NAME/build-linux.sh should exist"
         fi
     fi
 

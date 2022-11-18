@@ -14,7 +14,7 @@ env:
 jobs:
   publish-to-s3:
     name: Send release assets to S3
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - id: release_details
         run: |
