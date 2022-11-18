@@ -182,8 +182,8 @@ checkExporter(){
             fi
         fi
 
-        if [ ! -f "./exporters/$NAME/win_build.ps1" ]; then
-            ERRORS=$ERRORS" - the file ./exporters/$NAME/win_build.ps1 should exist"
+        if [ ! -f "./exporters/$NAME/build-windows.sh" ]; then
+            ERRORS=$ERRORS" - the file ./exporters/$NAME/build-windows.sh should exist"
         fi
     fi
 
