@@ -15,7 +15,7 @@ exporter_changelog: https://github.com/ibm-messaging/mq-metric-samples/blob/mast
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows
-package_windows: true
+package_windows: false
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 upgrade_guid: 278db4a4-60a9-493b-b878-dc7b445a2db0
