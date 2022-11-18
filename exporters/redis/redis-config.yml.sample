@@ -1,3 +1,3 @@
-redis.address: redis://redis-master:6379
-redis.user: ""
-redis.password: ""
+address: redis://redis-master:6379
+user: ""
+password: ""
