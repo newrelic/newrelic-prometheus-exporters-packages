@@ -2,6 +2,7 @@ SHELL := /bin/bash
 NRI_GENERATOR_PATH="$(PWD)/nri-config-generator"
 
 NEWRELIC_E2E ?= go run github.com/newrelic/newrelic-integration-e2e-action@latest
+GOOS ?= "linux"
 
 clean:
 	rm -rf dist
@@ -18,7 +19,7 @@ build-%:
 	source scripts/common_functions.sh; \
 	EXPORTER_PATH=exporters/$*/exporter.yml; \
 	loadVariables; \
-	bash exporters/$*/build.sh $(PWD) && \
+	bash exporters/$*/build-${GOOS}.sh $(PWD) && \
 	bash scripts/build_generator.sh $(PWD) $*;
 
 fetch-resources-%:
