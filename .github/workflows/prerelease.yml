@@ -71,7 +71,7 @@ jobs:
       UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
       INTEGRATION_NAME: ${{ steps.check.outputs.NAME }}
       INTEGRATION_VERSION: ${{ steps.check.outputs.VERSION }}
-      RELEASE_TAG: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}q
+      RELEASE_TAG: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
 
   fetch_external_resources:
     needs: [ create_prerelease ]
