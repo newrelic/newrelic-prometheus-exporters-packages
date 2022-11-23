@@ -187,7 +187,7 @@ func generateExporterConfigFile(exporterTemplateFile string, exporterConfigPath 
 		return fmt.Errorf("exporterConfigGenerator.Generate: %w", err)
 	}
 
-	filename := trimTemplate(exporterTemplateFile, templateSuffix)
+	filename := strings.TrimSuffix(exporterTemplateFile, templateSuffix)
 	path := sanitizePath(exporterConfigPath)
 	outputFile := fmt.Sprintf("%s%s", path, filename)
 
@@ -272,13 +272,6 @@ func loadTemplate(templateType string, content []byte) (*template.Template, erro
 		return nil, err
 	}
 	return t, nil
-}
-
-func trimTemplate(filename, suffix string) string {
-	if strings.HasSuffix(filename, suffix) {
-		filename = filename[:len(filename)-len(suffix)]
-	}
-	return filename
 }
 
 func sanitizePath(path string) string {
