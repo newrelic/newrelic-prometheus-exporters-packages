@@ -8,7 +8,9 @@ import (
 )
 
 const (
-	cfgFormat = "yaml"
+	cfgFormat                  = "yaml"
+	exportersConfigPathSetting = "config_path"
+	defaultExportersConfigPath = "/tmp/"
 )
 
 // setViperDefaults loads the default configuration into the given Viper registry.
@@ -25,8 +27,10 @@ type ArgumentList struct {
 	ShortRunning bool   `default:"false" help:"By default execution is long running, but this can be override"`
 }
 
-func getConfig(c *ArgumentList) (map[string]interface{}, error) {
+func getConfig(c *ArgumentList) (map[string]interface{}, string, error) {
 	configs := make(map[string]interface{})
+	configPathFound := false
+	exporterConfigPath := ""
 	if c.ConfigPath != "" {
 		cfg := viper.New()
 		cfg.SetConfigType(cfgFormat)
@@ -35,14 +39,21 @@ func getConfig(c *ArgumentList) (map[string]interface{}, error) {
 		setViperDefaults(cfg)
 		err := cfg.ReadInConfig()
 		if err != nil {
-			return nil, errors.Wrap(err, "could not read configuration")
+			return nil, exporterConfigPath, errors.Wrap(err, "could not read configuration")
 		}
 		for _, cfgName := range cfg.AllKeys() {
 			configs[cfgName] = cfg.Get(cfgName)
+			if cfgName == exportersConfigPathSetting {
+				configPathFound = true
+				exporterConfigPath = configs[cfgName].(string)
+			}
+		}
+		if !configPathFound {
+			configs[exportersConfigPathSetting] = defaultExportersConfigPath
+			exporterConfigPath = defaultExportersConfigPath
 		}
 	}
-
-	return configs, nil
+	return configs, exporterConfigPath, nil
 }
 
 // ProcessingRule is subset of the rules supported by nri-prometheus.

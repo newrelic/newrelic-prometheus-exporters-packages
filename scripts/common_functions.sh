@@ -9,6 +9,7 @@ loadVariables(){
     export EXPORTER_TAG=$(cat $EXPORTER_PATH | yq e .exporter_tag -)
     export EXPORTER_COMMIT=$(cat $EXPORTER_PATH | yq e .exporter_commit -)
     export EXPORTER_CHANGELOG=$(cat $EXPORTER_PATH | yq e .exporter_changelog -)
+    export EXPORTER_CONFIG_FILES=$(cat $EXPORTER_PATH | yq e .exporter_config_files -)
     export UPGRADE_GUID=$(cat $EXPORTER_PATH | yq e .upgrade_guid -)
     export NRI_GUID=$(cat $EXPORTER_PATH | yq e .nri_guid -)
     export EXPORTER_GUID=$(cat $EXPORTER_PATH | yq e .exporter_guid -)
