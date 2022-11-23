@@ -34,6 +34,7 @@ const (
 	winExportsBinPath       = "C:\\Program Files\\Prometheus-exporters\\bin"
 	sleepTime               = 30 * time.Second
 	emptyMap                = "[]"
+	templateSuffix          = ".tmpl"
 )
 
 var (
@@ -186,7 +187,7 @@ func generateExporterConfigFile(exporterTemplateFile string, exporterConfigPath 
 		return fmt.Errorf("exporterConfigGenerator.Generate: %w", err)
 	}
 
-	filename := trimTMPL(exporterTemplateFile)
+	filename := trimTemplate(exporterTemplateFile, templateSuffix)
 	path := sanitizePath(exporterConfigPath)
 	outputFile := fmt.Sprintf("%s%s", path, filename)
 
@@ -273,9 +274,9 @@ func loadTemplate(templateType string, content []byte) (*template.Template, erro
 	return t, nil
 }
 
-func trimTMPL(filename string) string {
-	if strings.HasSuffix(filename, ".tmpl") {
-		filename = filename[:len(filename)-5]
+func trimTemplate(filename, suffix string) string {
+	if strings.HasSuffix(filename, suffix) {
+		filename = filename[:len(filename)-len(suffix)]
 	}
 	return filename
 }
