@@ -173,7 +173,7 @@ func generateExporterConfigFile(exporterTemplateFile string, exporterConfigPath 
 
 	content, err := exporterConfigTemplate.ReadFile(templateLocation)
 	if err != nil {
-		return fmt.Errorf("reading exporter config template %s, %w", configTemplate, err)
+		return fmt.Errorf("reading exporter config template %s, %w", exporterTemplateFile, err)
 	}
 
 	exporterConfigTemplate, err := loadTemplate("exporter config", content)
