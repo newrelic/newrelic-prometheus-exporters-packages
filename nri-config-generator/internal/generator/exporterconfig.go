@@ -7,15 +7,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type ExporterConfig interface {
-	Generate(vars map[string]interface{}) (string, error)
-}
-
 type exporterConfig struct {
 	template *template.Template
 }
 
-func NewExporterConfig(template *template.Template) ExporterConfig {
+func NewExporterConfig(template *template.Template) Exporter {
 	return &exporterConfig{
 		template: template,
 	}

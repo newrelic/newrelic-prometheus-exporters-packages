@@ -43,7 +43,7 @@ var (
 	integrationVersion string
 	gitCommit          string
 	buildDate          string
-	//go:embed templates
+	//go:embed templates/exporter-config-files/*
 	exporterConfigTemplates embed.FS
 	//go:embed templates
 	integrationTemplate embed.FS
@@ -159,7 +159,7 @@ func getExporterConfigFiles() ([]string, error) {
 	var configFiles []string
 	fileList, err := fs.ReadDir(exporterConfigTemplates, exporterConfigFilesPath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("reading exporter config files: %w", err)
 	}
 
 	for _, file := range fileList {
@@ -188,8 +188,7 @@ func generateExporterConfigFile(exporterTemplateFile string, exporterConfigPath 
 	}
 
 	filename := strings.TrimSuffix(exporterTemplateFile, templateSuffix)
-	path := sanitizePath(exporterConfigPath)
-	outputFile := fmt.Sprintf("%s%s", path, filename)
+	outputFile := filepath.Join(exporterConfigPath, filename)
 
 	err = os.WriteFile(outputFile, []byte(result), 0644)
 	if err != nil {
@@ -272,13 +271,6 @@ func loadTemplate(templateType string, content []byte) (*template.Template, erro
 		return nil, err
 	}
 	return t, nil
-}
-
-func sanitizePath(path string) string {
-	if !strings.HasSuffix(path, "/") {
-		path = fmt.Sprintf("%s/", path)
-	}
-	return path
 }
 
 func prometheusExportersBinPath(name string) string {

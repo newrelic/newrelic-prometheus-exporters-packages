@@ -29,4 +29,4 @@ make build
 #  Move binary to its final path to be copied from the next step
 mkdir -p "${integration_bin_dir}"
 
-cp "${tmp_dir}/powerdns_exporter" "${integration_bin_dir}/powerdns-exporter.exe"
+cp "${tmp_dir}/powerdns_exporter" "${integration_bin_dir}/powerdns-exporter"
