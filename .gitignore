@@ -41,6 +41,7 @@ nri-config-generator/templates/exporter-config-files/*
 !nri-config-generator/templates/default/
 !nri-config-generator/templates/default/config.json.tmpl
 !nri-config-generator/templates/exporter-config-files/
+!nri-config-generator/templates/exporter-config-files/.gitkeep
 .env
 
 tests/dist

@@ -4,6 +4,7 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"os"
 	"text/template"
 
@@ -43,7 +44,7 @@ var (
 	gitCommit          string
 	buildDate          string
 	//go:embed templates
-	exporterConfigTemplate embed.FS
+	exporterConfigTemplates embed.FS
 	//go:embed templates
 	integrationTemplate embed.FS
 	//go:embed templates
@@ -66,9 +67,8 @@ func main() {
 		return
 	}
 
-	integration = "nri-powerdns"
-
 	vars, exporterConfigPath, err := config.GetVars(al)
+	integration = "nri-powerdns"
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -157,7 +157,7 @@ func getExporterNameFromIntegration(integration string) string {
 
 func getExporterConfigFiles() ([]string, error) {
 	var configFiles []string
-	fileList, err := os.ReadDir(exporterConfigFilesPath)
+	fileList, err := fs.ReadDir(exporterConfigTemplates, exporterConfigFilesPath)
 	if err != nil {
 		return nil, err
 	}
@@ -171,7 +171,7 @@ func getExporterConfigFiles() ([]string, error) {
 func generateExporterConfigFile(exporterTemplateFile string, exporterConfigPath string, vars map[string]interface{}) error {
 	templateLocation := fmt.Sprintf("%s/%s", exporterConfigFilesPath, exporterTemplateFile)
 
-	content, err := exporterConfigTemplate.ReadFile(templateLocation)
+	content, err := exporterConfigTemplates.ReadFile(templateLocation)
 	if err != nil {
 		return fmt.Errorf("reading exporter config template %s, %w", exporterTemplateFile, err)
 	}
