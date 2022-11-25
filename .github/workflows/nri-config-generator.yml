@@ -38,21 +38,16 @@ jobs:
         working-directory: nri-config-generator
         run: make test
 
-  test-windows:
-    name: Run unit tests on Windows
-    runs-on: windows-2019
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
-        with:
-          go-version-file: 'nri-config-generator/go.mod'
-      - name: build-windows
-        shell: bash
-        working-directory: nri-config-generator/integration-tests
-        run: |
-          go run -ldflags "-X main.integration=nri-powerdns -X main.integrationVersion=test-tag" ../main.go -short_running
-      - name: Tests
-        shell: bash
-        working-directory: nri-config-generator
-        run: |
-          go test ./...
+#  test-windows:
+#    name: Run unit tests on Windows
+#    runs-on: windows-2019
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-go@v3
+#        with:
+#          go-version-file: 'nri-config-generator/go.mod'
+#      - name: Tests
+#        shell: pwsh
+#        working-directory: nri-config-generator
+#        run: |
+#          go test ./...
