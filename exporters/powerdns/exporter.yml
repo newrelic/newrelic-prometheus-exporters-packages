@@ -12,8 +12,6 @@ exporter_tag:
 exporter_commit: fffbd7c4768681f93988c2c3287b690db20e6ce0
 # Changelog to add to the new release
 exporter_changelog: https://github.com/lotusnoir/prometheus-powerdns_exporter/tags
-# Exporter external config files (multiple files can be added separated by commas. i.e. file1,file2)
-exporter_config_files:
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows

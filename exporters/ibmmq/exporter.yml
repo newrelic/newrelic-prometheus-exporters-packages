@@ -12,8 +12,6 @@ exporter_tag:
 exporter_commit: d268624ff90d2fbbec18d62b6f73ed8955c4ee8f
 # Changelog to add to the new release
 exporter_changelog: https://github.com/ibm-messaging/mq-metric-samples/blob/master/CHANGELOG.md
-# Exporter external config files (multiple files can be added separated by commas. i.e. file1,file2)
-exporter_config_files:
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows
