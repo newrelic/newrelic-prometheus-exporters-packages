@@ -46,6 +46,11 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version-file: 'nri-config-generator/go.mod'
+      - name: build-windows
+        shell: bash
+        working-directory: nri-config-generator/integration-tests
+        run: |
+          go run -ldflags "-X main.integration=nri-powerdns -X main.integrationVersion=test-tag" ../main.go -short_running
       - name: Tests
         shell: bash
         working-directory: nri-config-generator
