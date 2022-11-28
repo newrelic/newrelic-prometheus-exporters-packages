@@ -32,10 +32,8 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	p := path.Join(dir, "config.yml")
 	err := os.WriteFile(p, []byte(text), fs.ModePerm)
 	assert.NoError(t, err)
-	c, path, err := getConfig(&ArgumentList{ConfigPath: p})
+	c, p, err := getConfig(&ArgumentList{ConfigPath: p})
 	assert.NoError(t, err)
 	assert.Len(t, c["transformations"], 2)
 	assert.Equal(t, c["exporter_port"], 9120)
-	assert.Equal(t, path, "/tmp/")
-
 }
