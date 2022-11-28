@@ -14,23 +14,9 @@ const (
 )
 
 var (
-	//go:embed templates
+	//go:embed integration-tests/testdata/templates
 	TestTemplates embed.FS
 )
-
-func copyTemplate(fileName string) error {
-	sourcePath := filepath.Join("integration-tests", "testdata", "integration_template", fileName)
-	bytesRead, err := os.ReadFile(sourcePath)
-	if err != nil {
-		return err
-	}
-	targetPath := filepath.Join("templates", "exporter-config-files", fileName)
-	err = os.WriteFile(targetPath, bytesRead, 0600)
-	if err != nil {
-		return err
-	}
-	return nil
-}
 
 func TestMain(m *testing.M) {
 	exitVal := m.Run()
@@ -44,15 +30,29 @@ func TestGetExporterNameFromIntegration(t *testing.T) {
 }
 
 func Test_getExporterConfigFiles(t *testing.T) {
-	err := copyTemplate("config.toml.tmpl")
-	if err != nil {
-		t.Error(err)
-	}
 	expected := []string{
 		"config.toml.tmpl",
 	}
 
-	got, err := getExporterConfigFiles(TestTemplates, "templates/exporter-config-files")
+	got, err := getExporterConfigFiles(TestTemplates, "integration-tests/testdata/templates/exporter-config-files")
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected, got)
+}
+
+func Test_getExporterConfigFilesEmptyFolder(t *testing.T) {
+	expected := []string(nil)
+
+	got, err := getExporterConfigFiles(TestTemplates, "integration-tests/testdata/templates/exporter-config-files-empty")
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected, got)
+}
+
+func Test_getExporterConfigFilesNonExistentFolder(t *testing.T) {
+	expected := []string(nil)
+
+	got, err := getExporterConfigFiles(TestTemplates, "integration-tests/testdata/templates/non-existent-folder")
 
 	assert.NoError(t, err)
 	assert.Equal(t, expected, got)
