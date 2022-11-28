@@ -14,14 +14,14 @@ const (
 
 func GetVars(al *ArgumentList) (map[string]interface{}, string, error) {
 	vars := map[string]interface{}{}
-	var exportersConfigPath string
+	var exportersConfigOutputPath string
 	var err error
 
 	vars[prefixEnv] = envVars()
 	vars[prefixCLI] = cliVars()
-	vars[PrefixCfg], exportersConfigPath, err = getConfig(al)
+	vars[PrefixCfg], exportersConfigOutputPath, err = getConfig(al)
 
-	return vars, exportersConfigPath, err
+	return vars, exportersConfigOutputPath, err
 }
 
 func envVars() map[string]string {

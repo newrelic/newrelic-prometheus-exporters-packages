@@ -68,7 +68,7 @@ func main() {
 		return
 	}
 
-	vars, exporterConfigPath, err := config.GetVars(al)
+	vars, exporterConfigOutputPath, err := config.GetVars(al)
 	integration = "nri-powerdns"
 	if err != nil {
 		log.Fatal(err)
@@ -108,7 +108,7 @@ func main() {
 
 	// Create exporter config files
 	for _, configFile := range exporterConfigFiles {
-		err = generateExporterConfigFile(exporterConfigTemplates, configFile, exporterConfigFilesPath, exporterConfigPath, vars)
+		err = generateExporterConfigFile(exporterConfigTemplates, configFile, exporterConfigFilesPath, exporterConfigOutputPath, vars)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -173,7 +173,7 @@ func getExporterConfigFiles(embedTemplate embed.FS, path string) ([]string, erro
 }
 
 func generateExporterConfigFile(embedTemplate embed.FS, exporterTemplateFile string, configFilesPath, exporterConfigOutputPath string, vars map[string]interface{}) error {
-	templateLocation := fmt.Sprintf("%s/%s", configFilesPath, exporterTemplateFile)
+	templateLocation := filepath.Join(configFilesPath, exporterTemplateFile)
 
 	content, err := embedTemplate.ReadFile(templateLocation)
 	if err != nil {

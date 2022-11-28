@@ -30,7 +30,7 @@ type ArgumentList struct {
 func getConfig(c *ArgumentList) (map[string]interface{}, string, error) {
 	configs := make(map[string]interface{})
 	configPathFound := false
-	exporterConfigPath := ""
+	exporterConfigOutputPath := ""
 	if c.ConfigPath != "" {
 		cfg := viper.New()
 		cfg.SetConfigType(cfgFormat)
@@ -39,22 +39,22 @@ func getConfig(c *ArgumentList) (map[string]interface{}, string, error) {
 		setViperDefaults(cfg)
 		err := cfg.ReadInConfig()
 		if err != nil {
-			return nil, exporterConfigPath, errors.Wrap(err, "could not read configuration")
+			return nil, exporterConfigOutputPath, errors.Wrap(err, "could not read configuration")
 		}
 		for _, cfgName := range cfg.AllKeys() {
 			configs[cfgName] = cfg.Get(cfgName)
 			if cfgName == exportersConfigPathSetting {
 				configPathFound = true
-				exporterConfigPath = configs[cfgName].(string)
+				exporterConfigOutputPath = configs[cfgName].(string)
 			}
 		}
 		if !configPathFound {
 			defaultExportersConfigPath := os.TempDir()
 			configs[exportersConfigPathSetting] = defaultExportersConfigPath
-			exporterConfigPath = defaultExportersConfigPath
+			exporterConfigOutputPath = defaultExportersConfigPath
 		}
 	}
-	return configs, exporterConfigPath, nil
+	return configs, exporterConfigOutputPath, nil
 }
 
 // ProcessingRule is subset of the rules supported by nri-prometheus.

@@ -107,6 +107,7 @@ In each folder we expect to find:
   - `{exporterName}-config.yml.sample` containing the configuration sample for the Infrastructure Agent to run the exporter
   - `{exporterName}.json.tmpl` containing the integration configuration mappings loaded with the `//go:embed` directive.
   - `{exporterName}.prometheus.json.tmpl` (Optional) containing the nri-prometheus configuration mappings loaded with the `//go:embed` directive. If this file is not present, the default file `config.json.tmpl` located under `nri-config-generator/templates/default` will be used.
+  - Optionally if the exporter requires any external config files these can also be added by including the files suffixed with a `.tmpl` extension. Read [Adding external config files](#external-files) for more information. 
 
 The definition file requires the following fields:
 ```yaml
@@ -124,6 +125,8 @@ exporter_tag:
 exporter_commit: fffbd7c4768681f93988c2c3287b690db20e6ce0
 # Changelog to add to the new release
 exporter_changelog: https://github.com/lotusnoir/prometheus-powerdns_exporter/tags
+# (Optional) Exporter external config files (multiple files can be added separated by commas. i.e. file1,file2)
+exporter_config_files: 
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows
@@ -150,6 +153,32 @@ When added open a PR and once merged to master a github action workflow will sta
  - In case more than one exporter definitions have been modified the pipeline fail.
 
 Please notice that exporters have their own `build` script but they share the packaging scripts, located under `./scripts`
+
+### <span id="external-files">Adding external config files</span>
+
+When an exporter requires its own config files and does not accept passing the configuration either by CLI arguments or Environment variables, you can add external config files to the exporter definition.
+
+For example, if an exporter requires a `config.toml` configuration file, you can add it by including a `config.toml.tmpl` file together with the other templates described above. This file will also be templated with values from the integration `{exporterName}-config.yml`. To include that file on the build, declare it on the `exporter.yml` definition file under the `exporter_config_files` setting:
+
+```yaml
+# (Optional) Exporter external config files (multiple files can be added separated by commas. i.e. file1,file2)
+exporter_config_files: config.toml
+```
+
+By default, the external config files will be templated and saved on the TEMP folder. If you want to specify a custom location for the external files you can do so by setting `config_path` in your exporter configuration file.
+
+Passing the location of the config file to your exporter can be done on the `exporter.json.tmpl` by adding the expected flag and setting its value to the `config_path` and config filename. For example:
+
+```yaml
+{
+    "exec": [
+        "{{ .exporter_binary_path }}",
+
+        "--config",
+        "{{.config.path}}/config.toml",
+    ]
+}
+```
 
 ## Support
 
