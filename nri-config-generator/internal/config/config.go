@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"path/filepath"
 
 	"github.com/pkg/errors"
@@ -10,7 +11,6 @@ import (
 const (
 	cfgFormat                  = "yaml"
 	exportersConfigPathSetting = "config_path"
-	defaultExportersConfigPath = "/tmp/"
 )
 
 // setViperDefaults loads the default configuration into the given Viper registry.
@@ -49,6 +49,7 @@ func getConfig(c *ArgumentList) (map[string]interface{}, string, error) {
 			}
 		}
 		if !configPathFound {
+			defaultExportersConfigPath := os.TempDir()
 			configs[exportersConfigPathSetting] = defaultExportersConfigPath
 			exporterConfigPath = defaultExportersConfigPath
 		}

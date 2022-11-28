@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -43,7 +44,7 @@ var (
 	integrationVersion string
 	gitCommit          string
 	buildDate          string
-	//go:embed templates/exporter-config-files/*
+	//go:embed templates
 	exporterConfigTemplates embed.FS
 	//go:embed templates
 	integrationTemplate embed.FS
@@ -74,7 +75,7 @@ func main() {
 	}
 	exporterName := getExporterNameFromIntegration(integration)
 
-	exporterConfigFiles, err := getExporterConfigFiles()
+	exporterConfigFiles, err := getExporterConfigFiles(exporterConfigTemplates, exporterConfigFilesPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -155,10 +156,13 @@ func getExporterNameFromIntegration(integration string) string {
 	return strings.Replace(exporterNameBeforeFix, "nri-", "", 1)
 }
 
-func getExporterConfigFiles() ([]string, error) {
+func getExporterConfigFiles(embedTemplate embed.FS, path string) ([]string, error) {
 	var configFiles []string
-	fileList, err := fs.ReadDir(exporterConfigTemplates, exporterConfigFilesPath)
+	fileList, err := embedTemplate.ReadDir(path)
 	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return nil, nil
+		}
 		return nil, fmt.Errorf("reading exporter config files: %w", err)
 	}
 
