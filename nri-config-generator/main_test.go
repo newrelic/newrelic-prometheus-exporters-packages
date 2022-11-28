@@ -3,7 +3,8 @@ package main
 import (
 	"embed"
 	"github.com/stretchr/testify/assert"
-	"os"
+	"github.com/stretchr/testify/require"
+	"path"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -18,11 +19,6 @@ var (
 	TestTemplates embed.FS
 )
 
-func TestMain(m *testing.M) {
-	exitVal := m.Run()
-	os.Exit(exitVal)
-}
-
 func TestGetExporterNameFromIntegration(t *testing.T) {
 	integrationName := "nri-powerdns"
 	exporterName := getExporterNameFromIntegration(integrationName)
@@ -36,7 +32,7 @@ func Test_getExporterConfigFiles(t *testing.T) {
 
 	got, err := getExporterConfigFiles(TestTemplates, "integration-tests/testdata/templates/exporter-config-files")
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, expected, got)
 }
 
@@ -45,7 +41,7 @@ func Test_getExporterConfigFilesEmptyFolder(t *testing.T) {
 
 	got, err := getExporterConfigFiles(TestTemplates, "integration-tests/testdata/templates/exporter-config-files-empty")
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, expected, got)
 }
 
@@ -54,21 +50,22 @@ func Test_getExporterConfigFilesNonExistentFolder(t *testing.T) {
 
 	got, err := getExporterConfigFiles(TestTemplates, "integration-tests/testdata/templates/non-existent-folder")
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, expected, got)
 }
 
 func Test_generateExporterConfigFile(t *testing.T) {
-	tempPath := os.TempDir()
-	templateFile := "config.toml.tmpl"
-	configFilesPath := "integration-tests/testdata/templates/exporter-config-files"
-	testFile := filepath.Join(tempPath, strings.TrimSuffix(templateFile, templateExtension))
+	tempPath := t.TempDir()
+	testTemplateFile := "config.toml.tmpl"
+	testConfigFilesPath := "integration-tests/testdata/templates/exporter-config-files"
+	testFile := path.Join(testConfigFilesPath, testTemplateFile)
+	testOutputFile := filepath.Join(tempPath, strings.TrimSuffix(testTemplateFile, templateExtension))
 	testVars := map[string]interface{}{
 		"exporter_port": "9120",
 	}
-	err := generateExporterConfigFile(TestTemplates, templateFile, configFilesPath, tempPath, testVars)
-	if err != nil {
-		t.Error(err)
-	}
-	assert.FileExists(t, testFile)
+
+	err := generateExporterConfigFile(TestTemplates, testFile, tempPath, testVars)
+
+	require.NoError(t, err)
+	assert.FileExists(t, testOutputFile)
 }

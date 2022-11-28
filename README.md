@@ -165,9 +165,9 @@ For example, if an exporter requires a `config.toml` configuration file, you can
 exporter_config_files: config.toml
 ```
 
-By default, the external config files will be templated and saved on the TEMP folder. If you want to specify a custom location for the external files you can do so by setting `config_path` in your exporter configuration file.
+By default, the external config files will be templated and saved on the TEMP folder. If you want to specify a custom location for the external files you can do so by setting `exporter_files_path` in your exporter configuration file.
 
-Passing the location of the config file to your exporter can be done on the `exporter.json.tmpl` by adding the expected flag and setting its value to the `config_path` and config filename. For example:
+Passing the location of the config file to your exporter can be done on the `exporter.json.tmpl` by adding the expected flag and setting its value to the `exporter_files_path` and config filename. For example:
 
 ```yaml
 {
@@ -175,7 +175,7 @@ Passing the location of the config file to your exporter can be done on the `exp
         "{{ .exporter_binary_path }}",
 
         "--config",
-        "{{.config.path}}/config.toml",
+        "{{.exporter_files_path}}/config.toml",
     ]
 }
 ```

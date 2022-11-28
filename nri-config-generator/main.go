@@ -68,7 +68,7 @@ func main() {
 		return
 	}
 
-	vars, exporterConfigOutputPath, err := config.GetVars(al)
+	vars, additionalFilesFolderPath, err := config.GetVars(al)
 	integration = "nri-powerdns"
 	if err != nil {
 		log.Fatal(err)
@@ -108,7 +108,8 @@ func main() {
 
 	// Create exporter config files
 	for _, configFile := range exporterConfigFiles {
-		err = generateExporterConfigFile(exporterConfigTemplates, configFile, exporterConfigFilesPath, exporterConfigOutputPath, vars)
+		templateFile := filepath.Join(exporterConfigFilesPath, configFile)
+		err = generateExporterConfigFile(exporterConfigTemplates, templateFile, additionalFilesFolderPath, vars)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -160,6 +161,7 @@ func getExporterConfigFiles(embedTemplate embed.FS, path string) ([]string, erro
 	var configFiles []string
 	fileList, err := embedTemplate.ReadDir(path)
 	if err != nil {
+		// If templates folder is empty we won't return the error but a nil array
 		if errors.Is(err, fs.ErrNotExist) {
 			return nil, nil
 		}
@@ -172,10 +174,8 @@ func getExporterConfigFiles(embedTemplate embed.FS, path string) ([]string, erro
 	return configFiles, nil
 }
 
-func generateExporterConfigFile(embedTemplate embed.FS, exporterTemplateFile string, configFilesPath, exporterConfigOutputPath string, vars map[string]interface{}) error {
-	templateLocation := filepath.Join(configFilesPath, exporterTemplateFile)
-
-	content, err := embedTemplate.ReadFile(templateLocation)
+func generateExporterConfigFile(embedTemplate embed.FS, exporterTemplateFile, exporterConfigOutputPath string, vars map[string]interface{}) error {
+	content, err := embedTemplate.ReadFile(exporterTemplateFile)
 	if err != nil {
 		return fmt.Errorf("reading exporter config template %s, %w", exporterTemplateFile, err)
 	}
@@ -191,7 +191,7 @@ func generateExporterConfigFile(embedTemplate embed.FS, exporterTemplateFile str
 		return fmt.Errorf("exporterConfigGenerator.Generate: %w", err)
 	}
 
-	filename := strings.TrimSuffix(exporterTemplateFile, templateSuffix)
+	filename := strings.TrimSuffix(filepath.Base(exporterTemplateFile), templateSuffix)
 	outputFile := filepath.Join(exporterConfigOutputPath, filename)
 
 	err = os.WriteFile(outputFile, []byte(result), 0644)

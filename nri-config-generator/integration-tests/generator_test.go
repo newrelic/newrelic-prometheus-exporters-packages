@@ -111,7 +111,6 @@ func TestGeneratorConfig(t *testing.T) {
 	expectedResponse := executeTemplate(t, pdnsTemplate, templateVars)
 	envVars := getConfigGeneratorEnvVars("config.yml")
 	stdout, err := callGeneratorConfig(defaultArgs, envVars)
-	t.Log(string(stdout))
 	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	assert.JSONEq(t, expectedResponse, string(stdout))

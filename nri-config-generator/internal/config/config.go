@@ -10,7 +10,7 @@ import (
 
 const (
 	cfgFormat                  = "yaml"
-	exportersConfigPathSetting = "config_path"
+	exportersConfigPathSetting = "exporter_files_path"
 )
 
 // setViperDefaults loads the default configuration into the given Viper registry.
@@ -27,10 +27,12 @@ type ArgumentList struct {
 	ShortRunning bool   `default:"false" help:"By default execution is long running, but this can be override"`
 }
 
+// getConfig returns a map with all settings read from the integration config file together with the path where exporter external config files will be created.
+// This path will default to the OS Temp folder if not set in the config file with `exporter_files_path`
 func getConfig(c *ArgumentList) (map[string]interface{}, string, error) {
 	configs := make(map[string]interface{})
 	configPathFound := false
-	exporterConfigOutputPath := ""
+	additionalFilesFolderPath := ""
 	if c.ConfigPath != "" {
 		cfg := viper.New()
 		cfg.SetConfigType(cfgFormat)
@@ -39,22 +41,22 @@ func getConfig(c *ArgumentList) (map[string]interface{}, string, error) {
 		setViperDefaults(cfg)
 		err := cfg.ReadInConfig()
 		if err != nil {
-			return nil, exporterConfigOutputPath, errors.Wrap(err, "could not read configuration")
+			return nil, additionalFilesFolderPath, errors.Wrap(err, "could not read configuration")
 		}
 		for _, cfgName := range cfg.AllKeys() {
 			configs[cfgName] = cfg.Get(cfgName)
 			if cfgName == exportersConfigPathSetting {
 				configPathFound = true
-				exporterConfigOutputPath = configs[cfgName].(string)
+				additionalFilesFolderPath = configs[cfgName].(string)
 			}
 		}
-		if !configPathFound {
-			defaultExportersConfigPath := os.TempDir()
-			configs[exportersConfigPathSetting] = defaultExportersConfigPath
-			exporterConfigOutputPath = defaultExportersConfigPath
-		}
 	}
-	return configs, exporterConfigOutputPath, nil
+	if !configPathFound {
+		defaultExportersConfigPath := os.TempDir()
+		configs[exportersConfigPathSetting] = defaultExportersConfigPath
+		additionalFilesFolderPath = defaultExportersConfigPath
+	}
+	return configs, additionalFilesFolderPath, nil
 }
 
 // ProcessingRule is subset of the rules supported by nri-prometheus.
