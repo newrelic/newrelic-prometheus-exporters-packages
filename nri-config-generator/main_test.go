@@ -61,11 +61,12 @@ func Test_getExporterConfigFilesNonExistentFolder(t *testing.T) {
 func Test_generateExporterConfigFile(t *testing.T) {
 	tempPath := os.TempDir()
 	templateFile := "config.toml.tmpl"
+	configFilesPath := "integration-tests/testdata/templates/exporter-config-files"
 	testFile := filepath.Join(tempPath, strings.TrimSuffix(templateFile, templateExtension))
 	testVars := map[string]interface{}{
 		"exporter_port": "9120",
 	}
-	err := generateExporterConfigFile(templateFile, tempPath, testVars)
+	err := generateExporterConfigFile(TestTemplates, templateFile, configFilesPath, tempPath, testVars)
 	if err != nil {
 		t.Error(err)
 	}

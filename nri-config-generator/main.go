@@ -108,7 +108,7 @@ func main() {
 
 	// Create exporter config files
 	for _, configFile := range exporterConfigFiles {
-		err = generateExporterConfigFile(configFile, exporterConfigPath, vars)
+		err = generateExporterConfigFile(exporterConfigTemplates, configFile, exporterConfigFilesPath, exporterConfigPath, vars)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -172,10 +172,10 @@ func getExporterConfigFiles(embedTemplate embed.FS, path string) ([]string, erro
 	return configFiles, nil
 }
 
-func generateExporterConfigFile(exporterTemplateFile string, exporterConfigPath string, vars map[string]interface{}) error {
-	templateLocation := fmt.Sprintf("%s/%s", exporterConfigFilesPath, exporterTemplateFile)
+func generateExporterConfigFile(embedTemplate embed.FS, exporterTemplateFile string, configFilesPath, exporterConfigOutputPath string, vars map[string]interface{}) error {
+	templateLocation := fmt.Sprintf("%s/%s", configFilesPath, exporterTemplateFile)
 
-	content, err := exporterConfigTemplates.ReadFile(templateLocation)
+	content, err := embedTemplate.ReadFile(templateLocation)
 	if err != nil {
 		return fmt.Errorf("reading exporter config template %s, %w", exporterTemplateFile, err)
 	}
@@ -192,7 +192,7 @@ func generateExporterConfigFile(exporterTemplateFile string, exporterConfigPath 
 	}
 
 	filename := strings.TrimSuffix(exporterTemplateFile, templateSuffix)
-	outputFile := filepath.Join(exporterConfigPath, filename)
+	outputFile := filepath.Join(exporterConfigOutputPath, filename)
 
 	err = os.WriteFile(outputFile, []byte(result), 0644)
 	if err != nil {
