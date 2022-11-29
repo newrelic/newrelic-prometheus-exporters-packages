@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"path/filepath"
 
 	"github.com/pkg/errors"
@@ -8,7 +9,8 @@ import (
 )
 
 const (
-	cfgFormat = "yaml"
+	cfgFormat                  = "yaml"
+	exportersConfigPathSetting = "exporter_files_path"
 )
 
 // setViperDefaults loads the default configuration into the given Viper registry.
@@ -25,8 +27,12 @@ type ArgumentList struct {
 	ShortRunning bool   `default:"false" help:"By default execution is long running, but this can be override"`
 }
 
-func getConfig(c *ArgumentList) (map[string]interface{}, error) {
+// getConfig returns a map with all settings read from the integration config file together with the path where exporter external config files will be created.
+// This path will default to the OS Temp folder if not set in the config file with `exporter_files_path`
+func getConfig(c *ArgumentList) (map[string]interface{}, string, error) {
 	configs := make(map[string]interface{})
+	configPathFound := false
+	additionalFilesFolderPath := ""
 	if c.ConfigPath != "" {
 		cfg := viper.New()
 		cfg.SetConfigType(cfgFormat)
@@ -35,14 +41,22 @@ func getConfig(c *ArgumentList) (map[string]interface{}, error) {
 		setViperDefaults(cfg)
 		err := cfg.ReadInConfig()
 		if err != nil {
-			return nil, errors.Wrap(err, "could not read configuration")
+			return nil, additionalFilesFolderPath, errors.Wrap(err, "could not read configuration")
 		}
 		for _, cfgName := range cfg.AllKeys() {
 			configs[cfgName] = cfg.Get(cfgName)
+			if cfgName == exportersConfigPathSetting {
+				configPathFound = true
+				additionalFilesFolderPath = configs[cfgName].(string)
+			}
 		}
 	}
-
-	return configs, nil
+	if !configPathFound {
+		defaultExportersConfigPath := os.TempDir()
+		configs[exportersConfigPathSetting] = defaultExportersConfigPath
+		additionalFilesFolderPath = defaultExportersConfigPath
+	}
+	return configs, additionalFilesFolderPath, nil
 }
 
 // ProcessingRule is subset of the rules supported by nri-prometheus.

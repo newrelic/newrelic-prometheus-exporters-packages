@@ -3,7 +3,10 @@ package main
 import (
 	"embed"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io/fs"
+	"os"
 	"text/template"
 
 	"path/filepath"
@@ -28,10 +31,12 @@ const (
 	varExporterDefinition   = "exporter_definition"
 	varExporterBinaryPath   = "exporter_binary_path"
 	varMetricTransformation = "transformations"
+	exporterConfigFilesPath = "templates/exporter-config-files"
 	nixExportsBinPath       = "/usr/local/prometheus-exporters/bin"
 	winExportsBinPath       = "C:\\Program Files\\Prometheus-exporters\\bin"
 	sleepTime               = 30 * time.Second
 	emptyMap                = "[]"
+	templateSuffix          = ".tmpl"
 )
 
 var (
@@ -39,6 +44,8 @@ var (
 	integrationVersion string
 	gitCommit          string
 	buildDate          string
+	//go:embed templates
+	exporterConfigTemplates embed.FS
 	//go:embed templates
 	integrationTemplate embed.FS
 	//go:embed templates
@@ -61,11 +68,17 @@ func main() {
 		return
 	}
 
-	vars, err := config.GetVars(al)
+	vars, additionalFilesFolderPath, err := config.GetVars(al)
 	if err != nil {
 		log.Fatal(err)
 	}
 	exporterName := getExporterNameFromIntegration(integration)
+
+	exporterConfigFiles, err := getExporterConfigFiles(exporterConfigTemplates, exporterConfigFilesPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	exporterGenerator, err := getExporterGenerator(exporterName)
 	if err != nil {
 		log.Fatal(err)
@@ -91,6 +104,15 @@ func main() {
 	vars[varMetricTransformation] = transformations
 	vars[varIntegrationName] = integration
 	vars[varIntegrationVersion] = integrationVersion
+
+	// Create exporter config files
+	for _, configFile := range exporterConfigFiles {
+		templateFile := filepath.Join(exporterConfigFilesPath, configFile)
+		err = generateExporterConfigFile(exporterConfigTemplates, templateFile, additionalFilesFolderPath, vars)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 
 	output, err := generateOutput(exporterGenerator, configGenerator, vars)
 	if err != nil {
@@ -134,6 +156,51 @@ func getExporterNameFromIntegration(integration string) string {
 	return strings.Replace(exporterNameBeforeFix, "nri-", "", 1)
 }
 
+func getExporterConfigFiles(embedTemplate embed.FS, path string) ([]string, error) {
+	var configFiles []string
+	fileList, err := embedTemplate.ReadDir(path)
+	if err != nil {
+		// If templates folder is empty we won't return the error but a nil array
+		if errors.Is(err, fs.ErrNotExist) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("reading exporter config files: %w", err)
+	}
+
+	for _, file := range fileList {
+		configFiles = append(configFiles, file.Name())
+	}
+	return configFiles, nil
+}
+
+func generateExporterConfigFile(embedTemplate embed.FS, exporterTemplateFile, exporterConfigOutputPath string, vars map[string]interface{}) error {
+	content, err := embedTemplate.ReadFile(exporterTemplateFile)
+	if err != nil {
+		return fmt.Errorf("reading exporter config template %s, %w", exporterTemplateFile, err)
+	}
+
+	exporterConfigTemplate, err := loadTemplate("exporter config", content)
+	if err != nil {
+		return fmt.Errorf("loadConfigTemplate, %w", err)
+	}
+
+	exporterConfigGenerator := generator.NewExporterConfig(exporterConfigTemplate)
+	result, err := exporterConfigGenerator.Generate(vars)
+	if err != nil {
+		return fmt.Errorf("exporterConfigGenerator.Generate: %w", err)
+	}
+
+	filename := strings.TrimSuffix(filepath.Base(exporterTemplateFile), templateSuffix)
+	outputFile := filepath.Join(exporterConfigOutputPath, filename)
+
+	err = os.WriteFile(outputFile, []byte(result), 0644)
+	if err != nil {
+		return fmt.Errorf("exporterConfigGenerator.Writing: %w", err)
+	}
+
+	return nil
+}
+
 func getConfigGenerator() (generator.Config, error) {
 	configTemplatePattern := fmt.Sprintf("templates/%s.prometheus.json.tmpl", integration)
 	content, err := configTemplate.ReadFile(configTemplatePattern)
@@ -141,7 +208,7 @@ func getConfigGenerator() (generator.Config, error) {
 		return nil, fmt.Errorf("readingfile %s, %w", configTemplatePattern, err)
 	}
 
-	configTemplate, err := loadConfigTemplate(content)
+	configTemplate, err := loadTemplate("prometheus configuration", content)
 	if err != nil {
 		return nil, fmt.Errorf("loadConfigTemplate, %w", err)
 	}
@@ -156,7 +223,7 @@ func getExporterGenerator(exporterName string) (generator.Exporter, error) {
 		return nil, fmt.Errorf("readingfile %s, %w", integrationTemplatePattern, err)
 	}
 
-	integrationTemplate, err := loadIntegrationTemplate(content)
+	integrationTemplate, err := loadTemplate("integration", content)
 	if err != nil {
 		return nil, fmt.Errorf("loadIntegrationTemplate, %w", err)
 	}
@@ -200,19 +267,10 @@ func findExporterPort(vars map[string]interface{}) (int, error) {
 	return port, nil
 }
 
-func loadIntegrationTemplate(content []byte) (*template.Template, error) {
+func loadTemplate(templateType string, content []byte) (*template.Template, error) {
 	t, err := template.New("").Funcs(sprig.TxtFuncMap()).Parse(string(content))
 	if err != nil {
-		log.Error("error parsing the integration template: '%s'", err.Error())
-		return nil, err
-	}
-	return t, nil
-}
-
-func loadConfigTemplate(content []byte) (*template.Template, error) {
-	t, err := template.New("").Funcs(sprig.TxtFuncMap()).Parse(string(content))
-	if err != nil {
-		log.Error("error parsing the template for the config: '%s'", err.Error())
+		log.Error("error parsing the %s template: '%s'", templateType, err.Error())
 		return nil, err
 	}
 	return t, nil
