@@ -69,7 +69,6 @@ func main() {
 	}
 
 	vars, additionalFilesFolderPath, err := config.GetVars(al)
-	integration = "nri-powerdns"
 	if err != nil {
 		log.Fatal(err)
 	}
