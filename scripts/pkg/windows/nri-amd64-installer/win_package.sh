@@ -1,20 +1,39 @@
 #!/bin/bash
 
-#TODO use snakecase
-INTEGRATION_NAME='powerdns'
-INTEGRATION_VERSION="0.0.2"
-UPGRADE_CODE="2818F0DF-0DB1-4152-B16E-88B51CA4DC9F"
-BINARIES_PATH="'..\..\..\..\exporters\powerdns\target\bin\windows_amd64\'"
-PLATFORM='x64'
-PFX_PASS='fake'
-PFX_PATH='fake.pfx'
-PFX_DESCRIPTION='fake-cert.com'
+PLATFORM="x64"
+PFX_PATH='mycert.pfx'
+
+# Parse arguments
+for i in "$@"
+do
+case $i in
+    -exporterName=*)
+    INTEGRATION_NAME="${i#*=}"
+    ;;
+    -version=*)
+    INTEGRATION_VERSION="${i#*=}"
+    ;;
+    -upgradeGUID=*)
+    UPGRADE_CODE="${i#*=}"
+    ;;
+    -pfx_passphrase=*)
+    PFX_PASSPHRASE="${i#*=}"
+    ;;
+esac
+done
+
+# verify version number format
+if ! [[ $INTEGRATION_VERSION =~ ^[0-9]+((\.[0-9]+)){2}$ ]]; then
+  echo "-version must follow a numeric major.minor.patch semantic versioning schema (received: $INTEGRATION_VERSION)"
+  exit
+fi
+
+# Remove binaries
+rm -rf bin obj
 
 MSBuild="'$(find /c/Windows/Microsoft.NET/Framework64/ -path "*/v4*/MSBuild.exe")'"
-SIGN_TOOL="'$(find /c/Program*Files*86*/ -path "*/x64/signtool.exe")'"
-
-# TODO remove
-# rm -rf bin obj
+SIGN_TOOL="'$(find /c/Program*Files*86*/ -path "*/SignTool/signtool.exe")'"
+BINARIES_PATH="'..\..\..\..\exporters\\${INTEGRATION_NAME}\target\bin\windows_amd64\'"
 
 eval $MSBuild nri-installer.wixproj \
     -p:IntegrationName=$INTEGRATION_NAME \
@@ -23,5 +42,4 @@ eval $MSBuild nri-installer.wixproj \
     -p:BinariesPath=$BINARIES_PATH \
     -p:UpgradeCode=$UPGRADE_CODE
 
-eval $SIGN_TOOL sign -fd SHA256 -f $PFX_PATH -p $PFX_PASS -d $PFX_DESCRIPTION -n $PFX_DESCRIPTION bin/x64/nri-powerdns-amd64.msi
-
+eval "$SIGN_TOOL" sign -fd SHA256 -f $PFX_PATH -p "$PFX_PASSPHRASE" bin/x64/nri-"$INTEGRATION_NAME"-amd64.msi

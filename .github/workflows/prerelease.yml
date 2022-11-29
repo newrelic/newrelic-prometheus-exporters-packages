@@ -227,7 +227,7 @@ jobs:
       - name : Create MSI installer
         shell: pwsh
         run: |
-          .\scripts\win_msi_build.ps1 -arch ${{ matrix.goarch }} -exporterName ${{ steps.vars.outputs.NAME }} -version ${{ steps.vars.outputs.VERSION }} -exporterGUID ${{ steps.vars.outputs.EXPORTER_GUID }} -upgradeGUID ${{ steps.vars.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.vars.outputs.LICENSE_GUID }} -configGUID ${{ steps.vars.outputs.CONFIG_GUID }} -pfx_passphrase "$env:PFX_PASSPHRASE"
+          .\scripts\pkg\windows\nri-amd64-installer\win_package.sh -exporterName=${{ steps.vars.outputs.NAME }} -version=${{ steps.vars.outputs.VERSION }} -upgradeGUID=${{ steps.vars.outputs.UPGRADE_GUID }} -pfx_passphrase="$env:PFX_PASSPHRASE"
       - name: Test win packages installation
         uses: newrelic/integrations-pkg-test-action/windows@v1
         with:
