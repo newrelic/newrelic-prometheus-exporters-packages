@@ -5,7 +5,7 @@ set -euo pipefail
 # ###############################################################
 #  Integration variables
 root_dir=$1
-integration_dir="${root_dir}/exporters/mongodb"
+integration_dir="${root_dir}/exporters/powerdns"
 integration_bin_dir="${integration_dir}/target/bin"
 
 # ###############################################################
@@ -21,12 +21,11 @@ else
     git checkout "${EXPORTER_TAG}" -d
 fi
 
-# ###############################################################
-#  Build exporter
-make build
-
-# ###############################################################
-#  Move binary to its final path to be copied from the next step
-mkdir -p "${integration_bin_dir}"
-
-cp "${tmp_dir}/mongodb_exporter" "${integration_bin_dir}/mongodb-exporter"
+IFS=',' read -r -a goarchs <<< "$PACKAGE_LINUX_GOARCHS"
+for goarch in "${goarchs[@]}"
+do
+  echo  "Build exporter Linux ${goarch}"
+  GOARCH=${goarch} make build
+  mkdir -p "${integration_bin_dir}/linux_${goarch}"
+  cp "${tmp_dir}/powerdns_exporter" "${integration_bin_dir}/linux_${goarch}/powerdns-exporter"
+done

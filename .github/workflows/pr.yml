@@ -41,7 +41,7 @@ jobs:
           git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
           shouldDoRelease
-          loadVariables
+          loadVariables $EXPORTER_PATH
           checkExporter
           setStepOutput
           if [ "$ERRORS" != "" ];then 
@@ -51,7 +51,6 @@ jobs:
       - name: Compile exporter
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         run : |
-          make fetch-resources-${{ steps.check.outputs.NAME }}
           make build-${{ steps.check.outputs.NAME }}
       - name: e2e-test
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
