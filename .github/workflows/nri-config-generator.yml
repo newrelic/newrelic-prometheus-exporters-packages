@@ -11,7 +11,7 @@ name: nri-config-generator pipeline
 on:
   pull_request:
     branches: [ main ]
-    paths: [ nri-config-generator/** ]
+#    paths: [ nri-config-generator/** ]  # always enabled temporally to check test-windows job
 
 jobs:
 
@@ -38,16 +38,16 @@ jobs:
         working-directory: nri-config-generator
         run: make test
 
-#  test-windows:
-#    name: Run unit tests on Windows
-#    runs-on: windows-2019
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: actions/setup-go@v3
-#        with:
-#          go-version-file: 'nri-config-generator/go.mod'
-#      - name: Tests
-#        shell: pwsh
-#        working-directory: nri-config-generator
-#        run: |
-#          go test ./...
+  test-windows:
+    name: Run unit tests on Windows
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: 'nri-config-generator/go.mod'
+      - name: Tests
+        shell: pwsh
+        working-directory: nri-config-generator
+        run: |
+          go test ./...
