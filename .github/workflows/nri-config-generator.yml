@@ -11,7 +11,7 @@ name: nri-config-generator pipeline
 on:
   pull_request:
     branches: [ main ]
-#    paths: [ nri-config-generator/** ]  # always enabled temporally to check test-windows job
+    paths: [ nri-config-generator/** ]
 
 jobs:
 
