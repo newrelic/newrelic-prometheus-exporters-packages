@@ -14,7 +14,7 @@ exporter_commit: fffbd7c4768681f93988c2c3287b690db20e6ce0
 exporter_changelog: https://github.com/lotusnoir/prometheus-powerdns_exporter/tags
 # Enable packages for Linux
 package_linux: true
-# Enable packages for Windowss
+# Enable packages for Windows
 package_windows: true
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
