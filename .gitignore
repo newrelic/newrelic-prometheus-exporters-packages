@@ -27,8 +27,6 @@
 **/obj/Release/**
 **/bin/Release/**
 
-**/Product.wxs
-
 **/versioninfo.json
 
 .DS_Store 

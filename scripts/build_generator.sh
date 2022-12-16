@@ -3,6 +3,7 @@ set -eo pipefail
 
 root_dir=$1
 integration=$2
+goos=$3
 integration_dir="${root_dir}/exporters/${integration}"
 destination_dir="${root_dir}/nri-config-generator/templates"
 
@@ -39,8 +40,13 @@ do
   fi
 done
 
+integrationName="nri-${integration}"
+if [ "$goos" == "windows" ]; then
+  integrationName="nri-${integration}.exe"
+fi
+
 cd nri-config-generator && \
-  BIN_PATH=${binary_dir}/nri-${integration} \
+  BIN_PATH=${binary_dir}/${integrationName} \
   make compile 
 
 echo "executable file was created ${binary_dir}/nri-${integration}"

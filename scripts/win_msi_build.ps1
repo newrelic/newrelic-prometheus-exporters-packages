@@ -10,7 +10,7 @@ param (
     [string]$exporterName="",
     [string]$exporterGUID="",
     [string]$upgradeGUID="",
-    [string]$licenseGUID="",   
+    [string]$licenseGUID="",
     [string]$configGUID="",
     [string]$version=""
 )
@@ -40,8 +40,6 @@ Get-ChildItem -Path cert:\CurrentUser\My\
 echo "===> Configuring version $version for artifacts in $exporterName"
 
 $projectRootPath = pwd
-$windows_set_version = Join-Path -Path $projectRootPath -ChildPath "\scripts\windows_set_version.ps1"
-& $windows_set_version -major $v[0] -minor $v[1] -patch $v[2] -exporterName $exporterName -exporterGUID $exporterGUID -upgradeGUID $upgradeGUID -licenseGUID $licenseGUID -configGUID $configGUID
 
 echo "===> Checking MSBuild.exe..."
 $msBuild = (Get-ItemProperty hklm:\software\Microsoft\MSBuild\ToolsVersions\4.0).MSBuildToolsPath
@@ -58,6 +56,8 @@ echo "===> Building Installer"
 Push-Location -Path "scripts\pkg\windows\nri-$arch-installer"
 
 $env:exporterName = $exporterName
+$env:IntegrationVersion = $version
+$env:UpgradeCode = $upgradeGUID
 . $msBuild/MSBuild.exe nri-installer.wixproj
 
 if (-not $?)

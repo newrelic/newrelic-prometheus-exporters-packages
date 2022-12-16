@@ -1,7 +1,7 @@
 # name of the exporter, should match with the folder name
 name: powerdns
 # version of the package created
-version: 0.0.7
+version: 0.0.8
 # Relative path to the License path from the repository root
 exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
@@ -15,18 +15,18 @@ exporter_changelog: https://github.com/lotusnoir/prometheus-powerdns_exporter/ta
 # Enable packages for Linux
 package_linux: true
 # Enable packages for Windows
-package_windows: false
+package_windows: true
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-upgrade_guid: 278db4a4-60a9-493b-b878-dc7b445a2db0
+upgrade_guid: e854d6c0-e0ce-4f9a-b405-d855a3864307
 # Integration GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-nri_guid: 44ac2940-4aff-46fc-a46b-b1b8cd9a3505
+nri_guid: 25b3fb82-58e0-41a2-b0d6-f87b16eaa50c
 # Exporter GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-exporter_guid: b246fde4-0083-4e16-beb0-09139fb5ca9f
+exporter_guid: c5a084d2-941a-49ae-836a-255b018cfb17
 # License GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
+license_guid: 5d2225c3-6b87-45fb-8756-6bf7c0f164fc
 # This GUID should be generated and be unique across all exporters in the repository
-config_guid: 86733900-4e10-478c-9633-61595d0e7acb
+config_guid: 1ed3fde6-1b0c-485e-85e5-7a88d6001be5

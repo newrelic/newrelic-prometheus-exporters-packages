@@ -20,7 +20,7 @@ build-%:
 	EXPORTER_PATH=exporters/$*/exporter.yml; \
 	loadVariables; \
 	bash exporters/$*/build-${GOOS}.sh $(PWD) && \
-	bash scripts/build_generator.sh $(PWD) $*;
+	bash scripts/build_generator.sh $(PWD) $* ${GOOS};
 
 fetch-resources-%:
 	@echo "[ fetch-resources-$* ]: Fetching external resources..."
