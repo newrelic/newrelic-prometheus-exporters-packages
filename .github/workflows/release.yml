@@ -58,7 +58,7 @@ jobs:
       - name: Test package from prod repo
         uses: newrelic/integrations-pkg-test-action/linux@v1
         with:
-          tag: ${{ env.TAG }}
+          tag: ${{ steps.release_details.outputs.INTEGRATION_VERSION }}
           integration: '${{ steps.release_details.outputs.INTEGRATION_NAME }}'
           packageLocation: repo
           upgrade: false
