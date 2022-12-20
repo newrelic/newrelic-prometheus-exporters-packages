@@ -20,23 +20,23 @@ clean:
 	@rm -rf dist
 
 build-%: clean bin/goreleaser
-	@echo "[ build-"$@" ]: Building exporter..."
-	bash ./scripts/build.sh $(PWD) "$@" $(GOOS)
+	@echo "[ build-$* ]: Building exporter..."
+	bash ./scripts/build.sh $(PWD) $* $(GOOS)
 
 create-publish-schema-%:
 	@echo "[ publish-schema ]: Creating publish schema..."
-	bash ./scripts/create_publish_schema.sh $(PWD) "$@"
+	bash ./scripts/create_publish_schema.sh $(PWD) $*
 
 package-%: clean bin/goreleaser build-%
-	@echo "[ package-"$@" ]: Packaging exporter..."
-	bash ./scripts/package.sh $(PWD) "$@" $(GOOS)
+	@echo "[ package-$* ]: Packaging exporter..."
+	bash ./scripts/package.sh $(PWD) $* $(GOOS)
 
 test-e2e-%:
-	@echo "[ test-e2e-%"$@" ]: Running e2e test..."
-	@GOOS=linux make build-"$@"
+	@echo "[ test-e2e-%$* ]: Running e2e test..."
+	@GOOS=linux make build-$*
 	$(NEWRELIC_E2E) --commit_sha=test-string --retry_attempts=5 --retry_seconds=60 \
-         --account_id="$(ACCOUNT_ID)" --api_key="$(API_KEY)" --license_key="$(LICENSE_KEY)" \
-         --spec_path="$(PWD)/exporters/$@/e2e/e2e_spec.yml" --verbose_mode=true
+         --account_id=$(ACCOUNT_ID) --api_key=$(API_KEY) --license_key=$(LICENSE_KEY) \
+         --spec_path=$(PWD)/exporters/$*/e2e/e2e_spec.yml --verbose_mode=true
 
 OS := $(shell uname -s)
 ifeq ($(OS), Darwin)
