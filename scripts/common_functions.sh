@@ -17,6 +17,7 @@ loadVariables(){
     export CONFIG_GUID=$(cat $exporter_path | yq e .config_guid -)
     export LICENSE_GUID=$(cat $exporter_path | yq e .license_guid -)
     export PACKAGE_LINUX=$(cat $exporter_path | yq e .package_linux -)
+    export PACKAGE_LINUX_GOARCHS=$(cat $exporter_path | yq e '.package_linux_goarchs // "amd64"' -)
     export PACKAGE_WINDOWS=$(cat $exporter_path | yq e .package_windows -)
     if [[ -z $EXPORTER_TAG ]]
     then
@@ -26,9 +27,6 @@ loadVariables(){
     fi
 
     export PACKAGE_NAME=nri-${NAME}
-
-    PACKAGE_LINUX_GOARCHS=$(cat $exporter_path | yq e .package_linux_goarchs -)
-    export PACKAGE_LINUX_GOARCHS="${PACKAGE_LINUX_GOARCHS:-amd64}"
 }
 
 # setStepOutput exposes the environment variables needed by next github actions steps steps
