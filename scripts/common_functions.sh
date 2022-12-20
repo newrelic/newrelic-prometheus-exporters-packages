@@ -17,7 +17,6 @@ loadVariables(){
     export CONFIG_GUID=$(cat $exporter_path | yq e .config_guid -)
     export LICENSE_GUID=$(cat $exporter_path | yq e .license_guid -)
     export PACKAGE_LINUX=$(cat $exporter_path | yq e .package_linux -)
-    export PACKAGE_LINUX_GOARCHS=$(cat $exporter_path | yq e .package_linux_goarchs -)
     export PACKAGE_WINDOWS=$(cat $exporter_path | yq e .package_windows -)
     if [[ -z $EXPORTER_TAG ]]
     then
@@ -27,27 +26,29 @@ loadVariables(){
     fi
 
     export PACKAGE_NAME=nri-${NAME}
+
+    PACKAGE_LINUX_GOARCHS=$(cat $exporter_path | yq e .package_linux_goarchs -)
+    export PACKAGE_LINUX_GOARCHS="${PACKAGE_LINUX_GOARCHS:-amd64}"
 }
 
 # setStepOutput exposes the environment variables needed by next github actions steps steps
 setStepOutput(){
-    echo "::set-output name=NAME::${NAME}"
-    echo "::set-output name=PACKAGE_NAME::${PACKAGE_NAME}"
-    echo "::set-output name=EXPORTER_HEAD::${EXPORTER_HEAD}"
-    echo "::set-output name=EXPORTER_REPO_URL::${EXPORTER_REPO_URL}"
-    echo "::set-output name=EXPORTER_LICENSE_PATH::${EXPORTER_LICENSE_PATH}"
-    echo "::set-output name=VERSION::${VERSION}"
-    echo "::set-output name=EXPORTER_CHANGELOG::${EXPORTER_CHANGELOG}"
-    echo "::set-output name=CREATE_RELEASE::${CREATE_RELEASE}"
-    echo "::set-output name=EXPORTER_PATH::${EXPORTER_PATH}"
-    echo "::set-output name=PACKAGE_LINUX::${PACKAGE_LINUX}"
-    echo "::set-output name=PACKAGE_WINDOWS::${PACKAGE_WINDOWS}"
-    echo "::set-output name=UPGRADE_GUID::${UPGRADE_GUID}"
-    echo "::set-output name=EXPORTER_GUID::${EXPORTER_GUID}"
-    echo "::set-output name=NRI_GUID::${NRI_GUID}"
-    echo "::set-output name=LICENSE_GUID::${LICENSE_GUID}"
-    echo "::set-output name=CONFIG_GUID::${CONFIG_GUID}"
-
+    echo "NAME=${NAME}" >> $GITHUB_OUTPUT
+    echo "PACKAGE_NAME=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
+    echo "EXPORTER_HEAD=${EXPORTER_HEAD}" >> $GITHUB_OUTPUT
+    echo "EXPORTER_REPO_URL=${EXPORTER_REPO_URL}" >> $GITHUB_OUTPUT
+    echo "EXPORTER_LICENSE_PATH=${EXPORTER_LICENSE_PATH}" >> $GITHUB_OUTPUT
+    echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+    echo "EXPORTER_CHANGELOG=${EXPORTER_CHANGELOG}" >> $GITHUB_OUTPUT
+    echo "CREATE_RELEASE=${CREATE_RELEASE}" >> $GITHUB_OUTPUT
+    echo "EXPORTER_PATH=${EXPORTER_PATH}" >> $GITHUB_OUTPUT
+    echo "PACKAGE_LINUX=${PACKAGE_LINUX}" >> $GITHUB_OUTPUT
+    echo "PACKAGE_WINDOWS=${PACKAGE_WINDOWS}" >> $GITHUB_OUTPUT
+    echo "UPGRADE_GUID=${UPGRADE_GUID}" >> $GITHUB_OUTPUT
+    echo "EXPORTER_GUID=${EXPORTER_GUID}" >> $GITHUB_OUTPUT
+    echo "NRI_GUID=${NRI_GUID}" >> $GITHUB_OUTPUT
+    echo "LICENSE_GUID=${LICENSE_GUID}" >> $GITHUB_OUTPUT
+    echo "CONFIG_GUID=${CONFIG_GUID}" >> $GITHUB_OUTPUT
 }
 
 # shouldDoRelease checks if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
@@ -59,7 +60,7 @@ shouldDoRelease(){
     if [ -z "$EXPORTER_PATH" ]
     then
         echo "No definition has been modified"
-        echo "::set-output name=CREATE_RELEASE::${CREATE_RELEASE}"
+        echo "CREATE_RELEASE=${CREATE_RELEASE}" >> $GITHUB_OUTPUT
         exit 0
     fi
 
@@ -67,7 +68,7 @@ shouldDoRelease(){
     then
         echo "Only one definition should be modified at the same time"
         git --no-pager diff  --name-only $old "exporters/**/exporter.yml"
-        echo "::set-output name=CREATE_RELEASE::${CREATE_RELEASE}"
+        echo "CREATE_RELEASE=${CREATE_RELEASE}" >> $GITHUB_OUTPUT
         exit 1
     fi
     CREATE_RELEASE=true
@@ -76,7 +77,6 @@ shouldDoRelease(){
 
 # checkExporter runs a series of tests to find common issues
 checkExporter(){
-
     ERRORS=""
     # checking variables in the yaml file
     if [ -z "$NAME" ];then

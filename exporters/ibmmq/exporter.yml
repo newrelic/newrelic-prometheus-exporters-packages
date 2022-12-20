@@ -14,8 +14,6 @@ exporter_commit: d268624ff90d2fbbec18d62b6f73ed8955c4ee8f
 exporter_changelog: https://github.com/ibm-messaging/mq-metric-samples/blob/master/CHANGELOG.md
 # Enable packages for Linux
 package_linux: true
-# Linux GOARCHS, comma separated
-package_linux_goarchs: amd64
 # Enable packages for Windows
 package_windows: false
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
