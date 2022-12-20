@@ -20,7 +20,7 @@ source "${root_dir}"/scripts/common_functions.sh
 loadVariables "${integration_dir}"/exporter.yml
 
 echo "Building exporter"
-bash ${root_dir}/exporters/${integration}/build-exporter-${goos}.sh $(PWD)
+bash ${root_dir}/exporters/${integration}/build-exporter-${goos}.sh ${PWD}
 
 echo "Finding prometheus template and placing it under nri-config-generator/templates folder"
 cp "${template_path}" "${destination_dir}/${template_name}"
