@@ -1,83 +1,49 @@
 #!/bin/bash
+set -eo pipefail
+
+goreleaser_bin=${GORELEASER_BIN:-goreleaser}
+
 root_dir=$1
 integration=$2
+goos=$3
+
 integration_dir="${root_dir}/exporters/${integration}"
+exporters_doc_dir="${integration_dir}/target"
+goreleaser_file="${root_dir}/scripts/pkg/.goreleaser.yml"
+goreleaser_file_template="${goreleaser_file}.template"
 
-target_dir="${integration_dir}/target"
-source_dir="${target_dir}/source"
-packages_dir="${target_dir}/packages"
+echo "Loading Variables of of exporter"
+source "${root_dir}"/scripts/common_functions.sh
+loadVariables "${integration_dir}"/exporter.yml
 
-PROJECT_NAME="nri-${integration}"
-LICENSE="https://newrelic.com/terms (also see LICENSE.txt installed with this package)"
-VENDOR="New Relic, Inc."
-PACKAGER="New Relic, Inc."
-PACKAGE_URL="https://github.com/newrelic/newrelic-prometheus-exporters-packages"
-RELEASE=1
-DESCRIPTION="Prometheus exporters help exporting existing metrics from third-party systems as Prometheus metrics."
-SUMMARY="Prometheus exporter for ${integration} ${EXPORTER_REPO_URL}"
-GOARCH=amd64
-MINAGENTVER="newrelic-infra >= 1.24.1"
+echo "Package configurator"
 
-create_deb()  {
-  echo "creating DEB package..."
-  mkdir -p "${packages_dir}"
-  fpm --verbose -C ${source_dir} -s dir -n ${PROJECT_NAME} -v ${VERSION} --iteration ${RELEASE} --prefix "" --license "${LICENSE}" --vendor "${VENDOR}" -m "${PACKAGER}" --url "${PACKAGE_URL}" --config-files /etc/newrelic-infra/ --description "${DESCRIPTION}" -t deb -p "${packages_dir}/" --depends "${MINAGENTVER}" .
-}
-
-create_rpm() {
-  echo "creating RPM package..."
-  fpm --verbose -C ${source_dir} -s dir -n ${PROJECT_NAME} -v ${VERSION} --iteration ${RELEASE} --prefix "" --license "${LICENSE}" --vendor "${VENDOR}" -m "${PACKAGER}" --url "${PACKAGE_URL}" --config-files /etc/newrelic-infra/ --description "${DESCRIPTION}" -t rpm -p "${packages_dir}/" --epoch 0 --rpm-summary "${SUMMARY}" --depends "${MINAGENTVER}" .
-  echo "fpm --verbose -C ${source_dir} -s dir -n ${PROJECT_NAME} -v ${VERSION} --iteration ${RELEASE} --prefix \"\" --license \"${LICENSE}\" --vendor \"${VENDOR}\" -m \"${PACKAGER}\" --url \"${PACKAGE_URL}\" --config-files /etc/newrelic-infra/ --description \"${DESCRIPTION}\" -t rpm -p \"${packages_dir}/\" --epoch 0 --rpm-summary \"${SUMMARY}\" ."
-
-}
-
-create_tarball() {
-  echo "creating tarball..."
-  tarball_filename="${PROJECT_NAME}_linux_${VERSION}_${GOARCH}.tar.gz"
-	tar -czf "${packages_dir}/${tarball_filename}" -C "${source_dir}" ./
-}
-
-sign_rpm() {
-  echo "===> Create .rpmmacros to sign rpm's from Goreleaser"
-  echo "%_gpg_name ${GPG_MAIL}" >> ~/.rpmmacros
-  echo "%_signature gpg" >> ~/.rpmmacros
-  echo "%_gpg_path ~/.gnupg" >> ~/.rpmmacros
-  echo "%_gpgbin /usr/bin/gpg" >> ~/.rpmmacros
-  echo "%__gpg_sign_cmd   %{__gpg} gpg --no-verbose --no-armor --batch --pinentry-mode loopback --passphrase ${GPG_PASSPHRASE} --no-secmem-warning -u "%{_gpg_name}" -sbo %{__signature_filename} %{__plaintext_filename}" >> ~/.rpmmacros
-
-  find ${packages_dir} -regex ".*\.\(rpm\)" | while read rpm_file; do
-    echo "===> Signing $rpm_file"
-    rpm --addsign "$rpm_file"
-    echo "===> Sign verification $rpm_file"
-    rpm -v --checksig $rpm_file
-  done
-}
-
-sign_deb() {
-  GNUPGHOME="${HOME}/.gnupg"
-  echo "${GPG_PASSPHRASE}" > ${GNUPGHOME}/gpg-passphrase
-  echo "passphrase-file ${GNUPGHOME}/gpg-passphrase" >> $GNUPGHOME/gpg.conf
-  echo 'allow-loopback-pinentry' >> ${GNUPGHOME}/gpg-agent.conf
-  echo 'pinentry-mode loopback' >> ${GNUPGHOME}/gpg.conf
-  echo 'use-agent' >> ${GNUPGHOME}/gpg.conf
-  echo RELOADAGENT | gpg-connect-agent
-
-  find ${packages_dir} -regex ".*\.\(deb\)" | while read deb_file; do
-    echo "===> Signing $deb_file"
-    debsigs --sign=origin --verify --check -v -k ${GPG_MAIL} $deb_file
-  done
-}
-
-mkdir -p "${packages_dir}"
-create_deb
-create_rpm
-create_tarball
-
-if [ -z "$GPG_PRIVATE_KEY_BASE64" ];then
-    echo "GPG_PRIVATE_KEY_BASE64 env variable missing package are not signed";
-    exit 1;
+echo "Downloading the license and placing it under ${exporters_doc_dir}/${integration}-LICENSE"
+tmp_dir=$(mktemp -d)
+filename="${EXPORTER_LICENSE_PATH}"
+git clone "${EXPORTER_REPO_URL}" "${tmp_dir}"
+tmp_license_file="${tmp_dir}/${filename}"
+if [ ! -f "${tmp_license_file}" ]; then
+  echo "Cannot find a LICENSE file called ${filename} in the exporter repo";
+  exit 1;
 fi
-echo "===> Importing GPG private key from GHA secrets..."
-printf %s ${GPG_PRIVATE_KEY_BASE64} | base64 -d | gpg --batch --import -
-sign_rpm
-sign_deb
+cp "${tmp_license_file}" "${exporters_doc_dir}/${integration}-LICENSE"
+rm -rf "${tmp_dir}"
+
+echo "Packaging"
+if [ "$goos" == "windows" ]; then
+  GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} build --config ${goreleaser_file} --snapshot --rm-dist --id ${goos}
+  powershell.exe -file "${root_dir}/scripts/win_msi_build.ps1" -arch amd64 -exporterName ${NAME} -version ${VERSION} -exporterGUID ${EXPORTER_GUID} -upgradeGUID ${UPGRADE_GUID} -licenseGUID ${LICENSE_GUID}
+else
+   cp "${goreleaser_file_template}" "${goreleaser_file}"
+   IFS=',' read -r -a goarchs <<< "$PACKAGE_LINUX_GOARCHS"
+   for goarch in "${goarchs[@]}"
+   do
+     echo  "Adding ${goarch} to goreleaser"
+     yq e -i ".builds[0].goarch += [ \"${goarch}\" ]" "${goreleaser_file}"
+   done
+
+   GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist --snapshot --id ${goos}
+   echo "Signing the packages"
+   bash ${root_dir}/scripts/sign.sh "${root_dir}" "${integration}"
+fi

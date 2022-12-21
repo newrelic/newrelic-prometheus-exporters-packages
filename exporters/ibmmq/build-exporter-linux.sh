@@ -5,7 +5,7 @@ set -euo pipefail
 # ###############################################################
 #  Integration variables
 root_dir=$1
-integration_dir="${root_dir}/exporters/powerdns"
+integration_dir="${root_dir}/exporters/ibmmq"
 integration_bin_dir="${integration_dir}/target/bin"
 
 # ###############################################################
@@ -23,10 +23,15 @@ fi
 
 # ###############################################################
 #  Build exporter
-make build
+cd scripts
 
-# ###############################################################
-#  Move binary to its final path to be copied from the next step
-mkdir -p "${integration_bin_dir}"
+## We are not considering GOARCH since the biulding script is not taking it into account
 
-cp "${tmp_dir}/powerdns_exporter" "${integration_bin_dir}/powerdns-exporter"
+
+IFS=',' read -r -a goarchs <<< "$PACKAGE_LINUX_GOARCHS"
+for goarch in "${goarchs[@]}"
+do
+  DOCKER_DEFAULT_PLATFORM=linux/${goarch} HOME=${tmp_dir} MONITORS=mq_prometheus ./buildMonitors.sh
+  mkdir -p "${integration_bin_dir}/linux_${goarch}"
+  cp "${tmp_dir}/tmp/mq-metric-samples/bin/mq_prometheus" "${integration_bin_dir}/linux_${goarch}/ibmmq-exporter"
+done

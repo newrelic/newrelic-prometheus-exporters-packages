@@ -33,12 +33,11 @@ jobs:
         run : |
           source ./scripts/common_functions.sh
           shouldDoRelease
-          loadVariables
+          loadVariables $EXPORTER_PATH
           setStepOutput
       - name: Compile exporter
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         run : |
-          make fetch-resources-${{ steps.check.outputs.NAME }}
           make build-${{ steps.check.outputs.NAME }}
       - name: e2e-test
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
@@ -73,37 +72,8 @@ jobs:
       INTEGRATION_VERSION: ${{ steps.check.outputs.VERSION }}
       RELEASE_TAG: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
 
-  fetch_external_resources:
-    needs: [ create_prerelease ]
-    name: Fetch LICENSE
-    runs-on: ubuntu-latest
-    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          sudo apt-get install rpm ruby ruby-dev rubygems build-essential
-          sudo gem install --no-document fpm
-      - name: Load variables
-        id: vars
-        run : |
-          export GOPATH=$(go env GOPATH)
-          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
-          source ./scripts/common_functions.sh
-          loadVariables
-          setStepOutput
-      - name: Package linux
-        id: package
-        run : |
-          make  fetch-resources-${{ steps.vars.outputs.NAME }}
-      - uses: actions/upload-artifact@v2
-        with:
-          name: SOURCE_DIR
-          path: exporters/${{ steps.vars.outputs.NAME }}/target/source
-
   build_push_linux_artifacts:
-    needs: [create_prerelease, fetch_external_resources]
+    needs: [create_prerelease]
     name: Push Linux Artifacts
     runs-on: ubuntu-latest
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
@@ -123,7 +93,7 @@ jobs:
           export GOPATH=$(go env GOPATH)
           export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
-          loadVariables
+          loadVariables $EXPORTER_PATH
           setStepOutput
       - id: download_artifacts
         name: Download stashed folders
@@ -182,7 +152,7 @@ jobs:
   build_push_windows_artifacts:
     name: Create MSI
     runs-on: windows-latest
-    needs: [create_prerelease, fetch_external_resources]
+    needs: [create_prerelease]
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
@@ -211,7 +181,7 @@ jobs:
           choco install yq
           export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
-          loadVariables
+          loadVariables $EXPORTER_PATH
           setStepOutput
       - id: download_artifacts
         name: Download stashed folders
@@ -257,6 +227,8 @@ jobs:
         with:
           username: ${{ secrets.OHAI_DOCKER_HUB_ID }}
           password: ${{ secrets.OHAI_DOCKER_HUB_PASSWORD }}
+      - run: |
+          make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
       - name: Publish to S3 action
         uses: newrelic/infrastructure-publish-action@v1
         env:

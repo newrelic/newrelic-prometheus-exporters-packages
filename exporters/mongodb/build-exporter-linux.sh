@@ -5,7 +5,7 @@ set -euo pipefail
 # ###############################################################
 #  Integration variables
 root_dir=$1
-integration_dir="${root_dir}/exporters/ibmmq"
+integration_dir="${root_dir}/exporters/mongodb"
 integration_bin_dir="${integration_dir}/target/bin"
 
 # ###############################################################
@@ -23,11 +23,13 @@ fi
 
 # ###############################################################
 #  Build exporter
-cd scripts
-HOME=${tmp_dir} MONITORS=mq_prometheus ./buildMonitors.sh
+make build
 
-# ###############################################################
-#  Move binary to its final path to be copied from the next step
-mkdir -p "${integration_bin_dir}"
-
-cp "${tmp_dir}/tmp/mq-metric-samples/bin/mq_prometheus" "${integration_bin_dir}/ibmmq-exporter"
+IFS=',' read -r -a goarchs <<< "$PACKAGE_LINUX_GOARCHS"
+for goarch in "${goarchs[@]}"
+do
+  echo  "Build exporter Linux ${goarch}"
+  GOARCH=${goarch} make build
+  mkdir -p "${integration_bin_dir}/linux_${goarch}"
+  cp "${tmp_dir}/mongodb_exporter" "${integration_bin_dir}/linux_${goarch}/mongodb-exporter"
+done

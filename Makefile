@@ -1,60 +1,47 @@
 SHELL := /bin/bash
 NRI_GENERATOR_PATH="$(PWD)/nri-config-generator"
+GORELEASER_VERSION := v1.13.1
+GORELEASER_BIN ?= bin/goreleaser
 
 NEWRELIC_E2E ?= go run github.com/newrelic/newrelic-integration-e2e-action@latest
 GOOS ?= "linux"
 
+bin:
+	@mkdir -p "./bin"
+
+bin/goreleaser: bin
+	@echo "[$(GORELEASER_BIN)] Installing goreleaser $(GORELEASER_VERSION)"
+	@wget -qO /tmp/goreleaser.tar.gz https://github.com/goreleaser/goreleaser/releases/download/$(GORELEASER_VERSION)/goreleaser_$(OS_DOWNLOAD)_x86_64.tar.gz
+	@tar -xf  /tmp/goreleaser.tar.gz -C bin/
+	@rm -f /tmp/goreleaser.tar.gz
+	@echo "[$(GORELEASER_BIN)] goreleaser downloaded"
+
 clean:
-	rm -rf dist
+	@rm -rf dist
 
-build-all:
-	@cd exporters; \
-	for name in $$(ls -d *) ; do \
-		cd $(PWD); \
-		make build-$${name}; \
-	done
-
-build-%:
+build-%: clean
 	@echo "[ build-$* ]: Building exporter..."
-	source scripts/common_functions.sh; \
-	EXPORTER_PATH=exporters/$*/exporter.yml; \
-	loadVariables; \
-	bash exporters/$*/build-${GOOS}.sh $(PWD) && \
-	bash scripts/build_generator.sh $(PWD) $* ${GOOS};
+	bash ./scripts/build.sh $(PWD) $* $(GOOS)
 
-fetch-resources-%:
-	@echo "[ fetch-resources-$* ]: Fetching external resources..."
-	source scripts/common_functions.sh; \
-	EXPORTER_PATH=exporters/$*/exporter.yml; \
-	loadVariables; \
-	bash scripts/create_folder_structure.sh $(PWD) $* && \
-	bash scripts/fetch_external_files.sh $(PWD) $*;
+create-publish-schema-%:
+	@echo "[ publish-schema ]: Creating publish schema..."
+	bash ./scripts/create_publish_schema.sh $(PWD) $*
 
-package-%:
+package-%: clean
 	@echo "[ package-$* ]: Packaging exporter..."
-	source scripts/common_functions.sh; \
-	EXPORTER_PATH=exporters/$*/exporter.yml; \
-	loadVariables; \
-	bash scripts/create_folder_structure.sh $(PWD) $* && \
-	bash scripts/copy_resources.sh $(PWD) $* && \
-	bash scripts/package.sh $(PWD) $*
+	bash ./scripts/package.sh $(PWD) $* $(GOOS)
 
-test-e2e-%: build-%
+test-e2e-%:
 	@echo "[ test-e2e-%$* ]: Running e2e test..."
-	GOOS=linux make build-$*
+	@GOOS=linux make build-$*
 	$(NEWRELIC_E2E) --commit_sha=test-string --retry_attempts=5 --retry_seconds=60 \
          --account_id=$(ACCOUNT_ID) --api_key=$(API_KEY) --license_key=$(LICENSE_KEY) \
          --spec_path=$(PWD)/exporters/$*/e2e/e2e_spec.yml --verbose_mode=true
 
-all:
-	@cd exporters; \
-	for name in $$(ls -d *) ; do \
-		cd $(PWD); \
-		make	build-$${name} && \
-		make	fetch-resources-$${name} && \
-		make 	package-$${name}; \
-	done
-
-run:
-	bash scripts/run.sh $(PWD)
-	docker-compose -f tests/docker-compose.yml up
+OS := $(shell uname -s)
+ifeq ($(OS), Darwin)
+	OS_DOWNLOAD := "darwin"
+	TAR := gtar
+else
+	OS_DOWNLOAD := "linux"
+endif

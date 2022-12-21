@@ -11,15 +11,15 @@ scenarios:
       - docker-compose down -v
     integrations:
       - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
+        binary_path: ../target/bin/linux_amd64/nri-powerdns
+        exporter_binary_path: ../target/bin/linux_amd64/powerdns-exporter
         config:
           powerdns_url: http://localhost:8081/api/v1/
           exporter_port: 9121
           api_key: authoritative-secret
       - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
+        binary_path: ../target/bin/linux_amd64/nri-powerdns
+        exporter_binary_path: ../target/bin/linux_amd64/powerdns-exporter
         config:
           powerdns_url: http://localhost:8082/api/v1/
           exporter_port: 9122
@@ -51,8 +51,8 @@ scenarios:
       - docker-compose down -v
     integrations:
       - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
+        binary_path: ../target/bin/linux_amd64/nri-powerdns
+        exporter_binary_path: ../target/bin/linux_amd64/powerdns-exporter
         config:
           powerdns_url: http://localhost:8081/api/v1/
           exporter_port: 9121
@@ -85,8 +85,8 @@ scenarios:
       - docker-compose down -v
     integrations:
       - name: nri-powerdns
-        binary_path: ../target/bin/nri-powerdns
-        exporter_binary_path: ../target/bin/powerdns-exporter
+        binary_path: ../target/bin/linux_amd64/nri-powerdns
+        exporter_binary_path: ../target/bin/linux_amd64/powerdns-exporter
         config:
           powerdns_url: http://localhost:8082/api/v1/
           exporter_port: 9122

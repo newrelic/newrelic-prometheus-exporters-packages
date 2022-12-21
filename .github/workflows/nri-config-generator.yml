@@ -36,7 +36,8 @@ jobs:
           go-version-file: 'nri-config-generator/go.mod'
       - name: Tests
         working-directory: nri-config-generator
-        run: make test
+        run: |
+          go test -race ./... -count=1
 
   test-windows:
     name: Run unit tests on Windows

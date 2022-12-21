@@ -1,21 +1,18 @@
 ###  On Pr creation against main
 ###
-###        checking_pr                 
-###   +-----------------------+          
-###   |                       |                                                       
-###   | Runs sanity checks    |                                                         
-###   |                       |                                                          
-###   | Tests Packages linux  |                      
-###   | if enabled            |                            
-###   |                       | 
-###   +-----------------------+      
+###        checking_pr
+###   +-----------------------+
+###   |                       |
+###   | Runs sanity checks    |
+###   |                       |
+###   | Tests Packages linux  |
+###   | if enabled            |
+###   |                       |
+###   +-----------------------+
 
-on: 
+on:
   pull_request:
     branches: [ main ]
-
-env:
-  GO_VERSION: '1.18'
 
 ###
 ###   Checking PR # Checks the file and the info provided when an exporter is modified
@@ -27,31 +24,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: actions/setup-go@v2
         with:
-          go-version: ${{env.GO_VERSION}}
-      - name: Install dependencies
-        run: |
-          sudo apt-get install rpm ruby ruby-dev rubygems build-essential
-          sudo gem install --no-document fpm
+          go-version-file: nri-config-generator/go.mod
       - name: Check if exporters have been modified and if so run checks
         id: check
         run : |
-          git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
           shouldDoRelease
-          loadVariables
+          loadVariables $EXPORTER_PATH
           checkExporter
           setStepOutput
-          if [ "$ERRORS" != "" ];then 
+          if [ "$ERRORS" != "" ];then
             echo Following errors have been found: $ERRORS
             exit 1
           fi
+      - name: Install goreleaser
+        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: v1.13.1
+          install-only: true
       - name: Compile exporter
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         run : |
-          make fetch-resources-${{ steps.check.outputs.NAME }}
           make build-${{ steps.check.outputs.NAME }}
       - name: e2e-test
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
