@@ -5,8 +5,8 @@ root_dir=$1
 integration=$2
 goos=$3
 
-template_name=nri-${integration}.json.tmpl
-config_name=nri-${integration}.prometheus.json.tmpl
+template_name=${integration}.json.tmpl
+config_name=${integration}.prometheus.json.tmpl
 destination_dir="${root_dir}/nri-config-generator/templates"
 integration_dir="${root_dir}/exporters/${integration}"
 template_path="${integration_dir}/${integration}.json.tmpl"
