@@ -6,7 +6,6 @@ param (
     # Target architecture: amd64 (default) or 386
     [ValidateSet("amd64", "386")]
     [string]$arch="amd64",
-    [string]$pfx_passphrase="none",
     [string]$exporterName="",
     [string]$exporterGUID="",
     [string]$upgradeGUID="",
@@ -16,6 +15,8 @@ param (
 )
 
 $executable = "$exporterName-exporter.exe"
+
+$pfxPassphrase = $env:OHAI_PFX_PASSPHRASE
 
 # verifying version number format
 $v = $version.Split(".")
@@ -32,7 +33,7 @@ if ($wrong.Length  -ne 0) {
 }
 
 echo "===> Import .pfx certificate from GH Secrets"
-Import-PfxCertificate -FilePath mycert.pfx -Password (ConvertTo-SecureString -String $pfx_passphrase -AsPlainText -Force) -CertStoreLocation Cert:\CurrentUser\My
+Import-PfxCertificate -FilePath mycert.pfx -Password (ConvertTo-SecureString -String $pfxPassphrase -AsPlainText -Force) -CertStoreLocation Cert:\CurrentUser\My
 
 echo "===> Show certificate installed"
 Get-ChildItem -Path cert:\CurrentUser\My\

@@ -73,7 +73,7 @@
             </Component>
             <Component Id="CMP_NRI_LICENSE" Win64="$(var.Win64)">
                 <File Id="FILE_NRI_LICENSE"
-                      Source="..\..\..\..\exporters\$(var.IntegrationName)\target\source\usr\local\share\doc\prometheus-exporters\$(var.IntegrationName)-LICENSE"
+                      Source="..\..\..\..\exporters\$(var.IntegrationName)\target\$(var.IntegrationName)-LICENSE"
                       KeyPath="yes"/>
             </Component>
         </ComponentGroup>

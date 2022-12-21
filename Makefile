@@ -19,7 +19,7 @@ bin/goreleaser: bin
 clean:
 	@rm -rf dist
 
-build-%: clean bin/goreleaser
+build-%: clean
 	@echo "[ build-$* ]: Building exporter..."
 	bash ./scripts/build.sh $(PWD) $* $(GOOS)
 
@@ -27,7 +27,7 @@ create-publish-schema-%:
 	@echo "[ publish-schema ]: Creating publish schema..."
 	bash ./scripts/create_publish_schema.sh $(PWD) $*
 
-package-%: clean bin/goreleaser build-%
+package-%: clean build-%
 	@echo "[ package-$* ]: Packaging exporter..."
 	bash ./scripts/package.sh $(PWD) $* $(GOOS)
 
