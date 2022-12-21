@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eo pipefail
 
+goreleaser_bin=${GORELEASER_BIN:-goreleaser}
+
 root_dir=$1
 integration=$2
 goos=$3
@@ -20,7 +22,7 @@ source "${root_dir}"/scripts/common_functions.sh
 loadVariables "${integration_dir}"/exporter.yml
 
 echo "Building exporter"
-bash ${root_dir}/exporters/${integration}/build-exporter-${goos}.sh ${PWD}
+bash ${root_dir}/exporters/${integration}/build-exporter-${goos}.sh ${root_dir}
 
 echo "Finding prometheus template and placing it under nri-config-generator/templates folder"
 cp "${template_path}" "${destination_dir}/${template_name}"
@@ -56,4 +58,4 @@ do
   yq e -i ".builds[0].goarch += [ \"${goarch}\" ]" ${goreleaser_file}
 done
 
-GORELEASER_CURRENT_TAG=${VERSION} ${root_dir}/bin/goreleaser build --config ${goreleaser_file} --snapshot --rm-dist
+GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} build --config ${goreleaser_file} --snapshot --rm-dist
