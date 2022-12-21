@@ -27,7 +27,7 @@ create-publish-schema-%:
 	@echo "[ publish-schema ]: Creating publish schema..."
 	bash ./scripts/create_publish_schema.sh $(PWD) $*
 
-package-%: clean
+package-%: clean build-%
 	@echo "[ package-$* ]: Packaging exporter..."
 	bash ./scripts/package.sh $(PWD) $* $(GOOS)
 

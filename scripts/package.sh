@@ -32,7 +32,6 @@ rm -rf "${tmp_dir}"
 
 echo "Packaging"
 if [ "$goos" == "windows" ]; then
-  GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} build --config ${goreleaser_file} --snapshot --rm-dist --id ${goos}
   powershell.exe -file "${root_dir}/scripts/win_msi_build.ps1" -arch amd64 -exporterName ${NAME} -version ${VERSION} -exporterGUID ${EXPORTER_GUID} -upgradeGUID ${UPGRADE_GUID} -licenseGUID ${LICENSE_GUID}
 else
    cp "${goreleaser_file_template}" "${goreleaser_file}"
