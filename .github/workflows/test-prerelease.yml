@@ -52,7 +52,15 @@ jobs:
       - name: Create Folders
         shell: bash
         run: |
-          create_folder_structure.sh $pwd "ibmmq"
+          ./scripts/create_folder_structure.sh $pwd "ibmmq"
+      - name: Copy Resources
+        shell: bash
+        run: |
+          ./scripts/copy_resources.sh $pwd "ibmmq"
+      - name: Copy License
+        shell: bash
+        run: |
+          ./scripts/fetch_external_files.sh $pwd "ibmmq"
       - name : Create MSI installer
         shell: pwsh
         run: |
