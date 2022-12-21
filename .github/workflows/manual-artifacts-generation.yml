@@ -1,0 +1,74 @@
+on:
+  workflow_dispatch:
+    inputs:
+      integrationName:
+        description: 'The integration (exporter) to compile and package. Eg: "powerdns"'
+        required: true
+        default: 'powerdns'
+        type: string
+env:
+  OHAI_PFX_CERTIFICATE_BASE64: ${{ secrets.OHAI_PFX_CERTIFICATE_BASE64 }} # base64 encoded
+  OHAI_PFX_PASSPHRASE:  ${{ secrets.OHAI_PFX_PASSPHRASE }}
+
+name: Check ${{ inputs.integrationName }} artifacts
+jobs:
+
+  build_artifacts_linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version-file: nri-config-generator/go.mod
+      - name: Install goreleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: v1.13.1
+          install-only: true
+      - name: Compile and package the exporter
+        env:
+          GPG_MAIL: 'infrastructure-eng@newrelic.com'
+          GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
+          GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }} # base64 encoded
+        run: |
+          make package-${{ inputs.integrationName }}
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Linux artifacts
+          path: dist/nri-${{ inputs.integrationName }}*
+
+  build_artifacts_windows:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version-file: nri-config-generator/go.mod
+      - name: Install goreleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: v1.13.1
+          install-only: true
+      - name: Install yq
+        id: vars
+        shell: bash
+        run: |
+          choco install yq
+      - name: Get PFX certificate from GH secrets
+        shell: bash
+        run: printf "%s" "$OHAI_PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
+      - name: Compile and package the exporter
+        shell: bash
+        env:
+          GOOS: windows
+          GPG_MAIL: 'infrastructure-eng@newrelic.com'
+          GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
+          GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }} # base64 encoded
+        run: |
+          make package-${{ inputs.integrationName }}
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows artifacts
+          path: exporters/${{ inputs.integrationName }}/target/packages/*
