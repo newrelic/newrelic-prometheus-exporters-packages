@@ -1,0 +1,69 @@
+# This Workflow creates a pre-release of the exporter that has been modified.
+
+on: 
+  pull_request:
+    branches:
+      - main
+
+env:
+  OHAI_PFX_CERTIFICATE_BASE64: ${{ secrets.OHAI_PFX_CERTIFICATE_BASE64 }} # base64 encoded
+  OHAI_PFX_PASSPHRASE:  ${{ secrets.OHAI_PFX_PASSPHRASE }}
+  GO_VERSION: '1.18'
+
+###
+###   PRE-RELEASE CREATION # Creates a pre-release if needed and loads variables for next jobs
+###
+name: Create IBMMQ Windows packages
+jobs:
+  ###
+  ###   Windows Packaging # In case a new release has been created and Windows packages are needed build and push MSI
+  ###
+  build_push_windows_artifacts:
+    name: Create MSI
+    runs-on: windows-2019
+    env:
+      GOOS: windows
+    strategy:
+      matrix:
+        goarch: [amd64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{env.GO_VERSION}}
+      - name: Get PFX certificate from GH secrets
+        shell: bash
+        run: printf "%s" "$OHAI_PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
+      - name: Load Variables
+        id: vars
+        shell: bash
+        run: |
+          choco install yq
+          export EXPORTER_PATH=./exporters/ibmmq/exporter.yml
+          source ./scripts/common_functions.sh
+          loadVariables $EXPORTER_PATH
+          setStepOutput
+      - name: Build windows binary
+        id: package
+        shell: bash
+        run : |
+          make build-ibmmq
+      - name : Create MSI installer
+        shell: pwsh
+        run: |
+          .\scripts\win_msi_build.ps1 -arch ${{ matrix.goarch }} -exporterName ${{ steps.vars.outputs.NAME }} -version ${{ steps.vars.outputs.VERSION }} -exporterGUID ${{ steps.vars.outputs.EXPORTER_GUID }} -upgradeGUID ${{ steps.vars.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.vars.outputs.LICENSE_GUID }} -configGUID ${{ steps.vars.outputs.CONFIG_GUID }} -pfx_passphrase "$env:OHAI_PFX_PASSPHRASE"
+      - name: Test win packages installation
+        uses: newrelic/integrations-pkg-test-action/windows@v1
+        with:
+          tag: ${{ steps.vars.outputs.VERSION  }}
+          integration: nri-${{ steps.vars.outputs.NAME }}
+          arch: ${{ matrix.goarch }}
+          pkgDir: .\exporters\ibmmq\target\packages
+          pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
+          upgrade: false
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows artifacts
+          path: ./exporters/ibmmq/target/packages/*
