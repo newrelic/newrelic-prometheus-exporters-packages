@@ -58,4 +58,4 @@ do
   yq e -i ".builds[0].goarch += [ \"${goarch}\" ]" ${goreleaser_file}
 done
 
-GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} build --config ${goreleaser_file} --snapshot --rm-dist
+GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} build --config ${goreleaser_file} --snapshot --rm-dist --id ${goos}
