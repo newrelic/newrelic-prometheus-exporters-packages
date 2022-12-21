@@ -14,8 +14,6 @@ exporter_commit: 6fa2a74de666d30cd04e2c36b417152a0d490e77
 exporter_changelog: https://github.com/percona/mongodb_exporter/blob/main/CHANGELOG
 # Enable packages for Linux
 package_linux: true
-# Linux GOARCHS, comma separated
-package_linux_goarchs: amd64,arm64
 # Enable packages for Windows
 package_windows: false
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
