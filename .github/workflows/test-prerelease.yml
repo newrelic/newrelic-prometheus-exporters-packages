@@ -49,6 +49,10 @@ jobs:
         shell: bash
         run : |
           make build-ibmmq
+      - name: Create Folders
+        shell: bash
+        run: |
+          create_folder_structure.sh $pwd "ibmmq"
       - name : Create MSI installer
         shell: pwsh
         run: |
