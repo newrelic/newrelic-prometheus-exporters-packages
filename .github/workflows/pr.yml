@@ -33,7 +33,6 @@ jobs:
       - name: Check if exporters have been modified and if so run checks
         id: check
         run : |
-          git fetch -at origin --unshallow
           source ./scripts/common_functions.sh
           shouldDoRelease
           loadVariables $EXPORTER_PATH
@@ -44,6 +43,7 @@ jobs:
             exit 1
           fi
       - name: Install goreleaser
+        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: goreleaser/goreleaser-action@v4
         with:
           version: v1.13.1
