@@ -92,7 +92,6 @@ jobs:
         with:
           go-version-file: nri-config-generator/go.mod
       - name: Install goreleaser
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: goreleaser/goreleaser-action@v4
         with:
           version: v1.13.1
@@ -166,7 +165,6 @@ jobs:
         with:
           go-version-file: nri-config-generator/go.mod
       - name: Install goreleaser
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: goreleaser/goreleaser-action@v4
         with:
           version: v1.13.1
