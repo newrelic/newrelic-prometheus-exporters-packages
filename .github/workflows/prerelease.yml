@@ -113,10 +113,10 @@ jobs:
           setStepOutput
       - name: Package linux
         id: package
-        env:
-          GPG_MAIL: 'infrastructure-eng@newrelic.com'
-          GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
-          GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}  # base64 encoded
+        #env:
+        #  GPG_MAIL: 'infrastructure-eng@newrelic.com'
+        #  GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
+        #  GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}  # base64 encoded
         run : |
           make package-${{ steps.vars.outputs.NAME }}
       - name: Test package installability
@@ -169,9 +169,9 @@ jobs:
         with:
           version: v1.13.1
           install-only: true
-      - name: Get PFX certificate from GH secrets
-        shell: bash
-        run: printf "%s" "$OHAI_PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
+      #- name: Get PFX certificate from GH secrets
+      #  shell: bash
+      #  run: printf "%s" "$OHAI_PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
       - name: Load Variables
         id: vars
         shell: bash

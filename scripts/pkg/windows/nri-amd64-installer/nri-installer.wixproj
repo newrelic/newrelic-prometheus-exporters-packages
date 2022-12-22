@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
@@ -30,11 +30,10 @@
 
     <Import Project="$(WixTargetsPath)"/>
 
-    <Target Name="SignInstaller">
+    <!-- Target Name="SignInstaller">
         <Exec Command="&quot;$(SignToolPath)signtool.exe&quot; sign /d &quot;New Relic Infrastructure Agent, $(exporterName)&quot; /a &quot;$(OutputPath)$(OutputName).msi&quot;"/>
         <Copy SourceFiles="$(OutputPath)$(OutputName).msi" DestinationFiles="$(OutputPath)$(OutputName).x.y.z.msi"/>
-        <!-- <Delete Files="$(OutputPath)$(OutputName).msi" /> -->
-    </Target>
+    </Target -->
 
     <Target Name="AfterBuild" DependsOnTargets="SignInstaller"/>
 </Project>
