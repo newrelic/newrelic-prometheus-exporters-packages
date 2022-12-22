@@ -48,14 +48,14 @@ jobs:
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         run : |
           make build-${{ steps.check.outputs.NAME }}
-      - name: e2e-test
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
-        uses: newrelic/newrelic-integration-e2e-action@v1
-        with:
-          spec_path: exporters/${{ steps.check.outputs.NAME }}/e2e/e2e_spec.yml
-          account_id: ${{ secrets.COREINT_E2E_ACCOUNT_ID }}
-          api_key: ${{ secrets.COREINT_E2E_API_KEY }}
-          license_key: ${{ secrets.COREINT_E2E_LICENSE_KEY }}
+      #- name: e2e-test
+      #  if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
+      #  uses: newrelic/newrelic-integration-e2e-action@v1
+      #  with:
+      #    spec_path: exporters/${{ steps.check.outputs.NAME }}/e2e/e2e_spec.yml
+      #    account_id: ${{ secrets.COREINT_E2E_ACCOUNT_ID }}
+      #    api_key: ${{ secrets.COREINT_E2E_API_KEY }}
+      #    license_key: ${{ secrets.COREINT_E2E_LICENSE_KEY }}
 
       - name: Create Release for the exporter modified
         id: create_release
@@ -98,14 +98,14 @@ jobs:
       #    sudo apt-get install rpm ruby ruby-dev rubygems build-essential rpm gnupg2 gpg-agent debsigs
       #    sudo gem install --no-document fpm
 
-      #- name: Load variables
-      #  id: vars
-      #  run : |
-      #    export GOPATH=$(go env GOPATH)
-      #    export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
-      #    source ./scripts/common_functions.sh
-      #    loadVariables $EXPORTER_PATH
-      #    setStepOutput
+      - name: Load variables
+        id: vars
+        run : |
+          export GOPATH=$(go env GOPATH)
+          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
+          source ./scripts/common_functions.sh
+          loadVariables $EXPORTER_PATH
+          setStepOutput
       - name: Package linux
         id: package
         env:
