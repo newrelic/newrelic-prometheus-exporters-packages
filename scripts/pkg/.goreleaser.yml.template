@@ -14,7 +14,10 @@ builds:
       # But then it fails while trying to build ARM binaries with an error like this:
       #   post hook failed: template: tmpl:4:66: executing "tmpl" at <.Amd64>: map has no entry for key "Amd64"
       # So we had to copy it using a wildcard but inside a shell so the shell expand the wildcard.
-      post: bash -c "cp ./dist/linux_linux_{{ .Arch }}*/var/db/newrelic-infra/newrelic-integrations/bin/nri-{{.Env.NAME}} ./exporters/{{.Env.NAME}}/target/bin/linux_{{ .Arch }}"
+      # Explaining this part `{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}`
+      # It is because apt uses .Arch amd64 while rpm uses x86_64. We have to do an override that make this template different
+      # depending in which job is running.
+      post: bash -c "cp ./dist/linux_linux_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}*/var/db/newrelic-infra/newrelic-integrations/bin/nri-{{.Env.NAME}} ./exporters/{{.Env.NAME}}/target/bin/linux_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}"
   - id: windows
     binary: bin/nri-{{.Env.NAME}}  # Windows binaries add `.exe` automatically.
     dir: nri-config-generator
@@ -26,12 +29,12 @@ builds:
       - amd64
     hooks:
       # This is ugly but needed. Refer to the hook above.
-      post: bash -c "cp ./dist/windows_windows_{{ .Arch }}*/bin/nri-{{.Env.NAME}}.exe ./exporters/{{.Env.NAME}}/target/bin"
+      post: bash -c "cp ./dist/windows_windows_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}*/bin/nri-{{.Env.NAME}}.exe ./exporters/{{.Env.NAME}}/target/bin"
 nfpms:
   - id: linux
     builds:
       - linux
-    file_name_template: "nri-{{ .Env.NAME }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
+    file_name_template: "nri-{{ .Env.NAME }}_{{ .Tag }}-1_{{ .Arch }}"
     formats:
       - deb
       - rpm
@@ -44,10 +47,10 @@ nfpms:
       - newrelic-infra
     bindir: "/var/db/newrelic-infra/newrelic-integrations/bin"
     contents:
-      - src: "exporters/{{.Env.NAME}}/{{.Env.NAME}}-config.yml.sample"
-        dst: "/etc/newrelic-infra/integrations.d/{{.Env.NAME}}-config.yml.sample"
-      - src: "exporters/{{.Env.NAME}}/target/bin/{{.Os}}_{{.Arch}}/{{.Env.NAME}}-exporter"
-        dst: "/usr/local/prometheus-exporters/bin/{{.Env.NAME}}-exporter"
+      - src: exporters/{{.Env.NAME}}/{{.Env.NAME}}-config.yml.sample
+        dst: /etc/newrelic-infra/integrations.d/{{.Env.NAME}}-config.yml.sample
+      - src: exporters/{{.Env.NAME}}/target/bin/{{.Os}}_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}/{{.Env.NAME}}-exporter
+        dst: /usr/local/prometheus-exporters/bin/{{.Env.NAME}}-exporter
         file_info:
           mode: 0755
       - src: "exporters/{{.Env.NAME}}/target/{{.Env.NAME}}-LICENSE"
@@ -59,11 +62,15 @@ nfpms:
       rpm:
         dependencies:
           - newrelic-infra >= 1.24.1
+        file_name_template: "nri-{{ .Env.NAME }}-{{ .Tag }}-1.{{ .Arch }}"
+       #file_name_template: "{{ .ProjectName }}-{{ .Version }}-1.{{ .Arch }}"
+        replacements:
+          amd64: x86_64
 archives:
   - id: linux
     builds:
       - linux
-    name_template: "nri-{{ .Env.NAME }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "nri-{{ .Env.NAME }}_{{ .Os }}_{{ .Tag }}_{{ .Arch }}"
     files:
       - src: "exporters/{{.Env.NAME}}/{{.Env.NAME}}-config.yml.sample"
         dst: "etc/newrelic-infra/integrations.d"
