@@ -163,7 +163,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-go@v3
         with:
-          go-version-file: nri-config-generator/go.mod
+          go-version-file: src/repo/nri-config-generator/go.mod
       - name: Install goreleaser
         uses: goreleaser/goreleaser-action@v4
         with:

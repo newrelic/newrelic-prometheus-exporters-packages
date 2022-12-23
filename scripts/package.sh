@@ -53,5 +53,5 @@ else
     echo "Signing the packages"
     #bash ${root_dir}/scripts/sign.sh "${root_dir}" "${integration}"
 
-    cp "${root_dir}/dist/*.{rpm,deb,tar.gz}" ${integration_target}/packages
+    cp "${root_dir}/dist/"*.{rpm,deb,tar.gz} ${integration_target}/packages
 fi
