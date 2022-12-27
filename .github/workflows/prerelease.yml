@@ -31,7 +31,7 @@ jobs:
       - name: Check if exporters have been modified
         id: check
         # Running shouldDoRelease we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
-        # Tha variable is used by the following step and jobs
+        # That variable is used by the following step and jobs
         run : |
           source ./scripts/common_functions.sh
           shouldDoRelease
@@ -95,12 +95,10 @@ jobs:
         with:
           version: v1.13.1
           install-only: true
-
-      # I am convinced they are not needed anymore.
-      #- name: Install dependencies
-      #  run: |
-      #    sudo apt-get install rpm ruby ruby-dev rubygems build-essential rpm gnupg2 gpg-agent debsigs
-      #    sudo gem install --no-document fpm
+      - name: Install dependencies
+        run: |
+          sudo apt-get install rpm ruby ruby-dev rubygems build-essential rpm gnupg2 gpg-agent debsigs
+          sudo gem install --no-document fpm
 
       - name: Load variables
         id: vars
@@ -124,6 +122,8 @@ jobs:
           tag: ${{ steps.vars.outputs.VERSION }}
           integration: nri-${{ steps.vars.outputs.NAME }}
           upgrade: false
+          # Removing suse as they ENFORCE package signing even locally and we are not signing in this test.
+          distros: "ubuntu:jammy ubuntu:focal ubuntu:bionic debian:bullseye debian:buster debian:stretch rockylinux:8"
           pkgDir: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/
 
       - name: Upload assets to the release
@@ -170,6 +170,7 @@ jobs:
       #- name: Get PFX certificate from GH secrets
       #  shell: bash
       #  run: printf "%s" "$OHAI_PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
+
       - name: Load Variables
         id: vars
         shell: bash
@@ -193,6 +194,10 @@ jobs:
           pkgDir: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages
           pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-amd64.${{ steps.vars.outputs.VERSION }}.msi
           upgrade: false
+      - name: Find binaries
+        shell: bash
+        run : |
+          find ${{ github.workspace }} -name \*.msi
       - name: Upload assets to the release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -201,7 +206,7 @@ jobs:
           name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
           prerelease: true
           files: |
-            ${{ github.workspace }}\\src\\repo\\exporters\\${{ steps.vars.outputs.NAME }}\\target\\packages\\*.msi
+            ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\*.msi
 
   publish-to-s3:
     name: Send release assets to S3
