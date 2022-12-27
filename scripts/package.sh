@@ -34,6 +34,8 @@ echo "Packaging"
 mkdir -pv "${integration_target}/packages"
 if [ "$goos" == "windows" ]; then
     powershell.exe -file "${root_dir}/scripts/win_msi_build.ps1" -arch amd64 -exporterName ${NAME} -version ${VERSION} -exporterGUID ${EXPORTER_GUID} -upgradeGUID ${UPGRADE_GUID} -licenseGUID ${LICENSE_GUID}
+
+    find "${root_dir}" -name \*.msi
 else
     cp "${goreleaser_file_template}" "${goreleaser_file}"
     yq e -i ".nfpms[0].package_name = \"nri-${NAME}\"" "${goreleaser_file}"

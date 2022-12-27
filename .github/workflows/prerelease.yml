@@ -131,7 +131,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
-          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
           prerelease: true
           files: |
             ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/*_${{ steps.vars.outputs.VERSION }}-1_*.deb
@@ -199,7 +199,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
-          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
           prerelease: true
           files: |
             ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\*.msi
