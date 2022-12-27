@@ -51,7 +51,7 @@ else
       yq e -i ".builds[0].goarch += [ \"${goarch}\" ]" "${goreleaser_file}"
     done
 
-    GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist --snapshot
+    GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist
     echo "Signing the packages"
     #bash ${root_dir}/scripts/sign.sh "${root_dir}" "${integration}"
 
