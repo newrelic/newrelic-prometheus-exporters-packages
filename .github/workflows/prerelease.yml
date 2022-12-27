@@ -194,10 +194,6 @@ jobs:
           pkgDir: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages
           pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-amd64.${{ steps.vars.outputs.VERSION }}.msi
           upgrade: false
-      - name: Find binaries
-        shell: bash
-        run : |
-          find ${{ github.workspace }} -name \*.msi
       - name: Upload assets to the release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -210,14 +206,9 @@ jobs:
 
   publish-to-s3:
     name: Send release assets to S3
-    runs-on: ubuntu-20.04
-    needs: [ create_prerelease, build_push_linux_artifacts ]
+    runs-on: ubuntu-latest
+    needs: [ create_prerelease, build_push_linux_artifacts, build_push_windows_artifacts ]
     steps:
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.OHAI_DOCKER_HUB_ID }}
-          password: ${{ secrets.OHAI_DOCKER_HUB_PASSWORD }}
       - run: |
           make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
 
@@ -244,6 +235,8 @@ jobs:
 #          aws_s3_lock_bucket_name: ${{ env.AWS_S3_LOCK_BUCKET_NAME }}
 #          gpg_passphrase: ${{ secrets.OHAI_GPG_PASSPHRASE }}
 #          gpg_private_key_base64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}
+
+#      We cannot test from repo because this action does not support testing from testing bucket
 #      - name: Test package installability
 #        uses: newrelic/integrations-pkg-test-action/linux@v1
 #        with:
