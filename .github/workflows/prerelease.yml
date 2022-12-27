@@ -182,7 +182,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: windows-artifacts
-            retention-days: 1
+          retention-days: 1
           path: |
             ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\*.msi
 
