@@ -34,12 +34,6 @@ echo "Packaging"
 mkdir -pv "${integration_target}/packages"
 if [ "$goos" == "windows" ]; then
     powershell.exe -file "${root_dir}/scripts/win_msi_build.ps1" -arch amd64 -exporterName ${NAME} -version ${VERSION} -exporterGUID ${EXPORTER_GUID} -upgradeGUID ${UPGRADE_GUID} -licenseGUID ${LICENSE_GUID}
-
-    # Need to know where the packages are going to be
-    echo finding MSIs
-    find . -name \*.msi
-    echo finding everything
-    find .
 else
     cp "${goreleaser_file_template}" "${goreleaser_file}"
     yq e -i ".nfpms[0].package_name = \"nri-${NAME}\"" "${goreleaser_file}"
@@ -51,7 +45,13 @@ else
       yq e -i ".builds[0].goarch += [ \"${goarch}\" ]" "${goreleaser_file}"
     done
 
-    GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist
+    if [ "x${CI}" = "xtrue" ]; then
+      git tag ${VERSION}  # Tag the repository in case we are in a CI.
+      GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist
+    else
+      GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist --snapshot
+    fi
+
     echo "Signing the packages"
     #bash ${root_dir}/scripts/sign.sh "${root_dir}" "${integration}"
 

@@ -204,7 +204,7 @@ jobs:
           name: ${{ steps.check.outputs.PACKAGE_NAME }} ${{ steps.check.outputs.VERSION }}
           prerelease: true
           files: |
-            ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
+            ${{ github.workspace }}/src/repo/exporters/${{ steps.vars.outputs.NAME }}/target/packages/*.msi
 
   publish-to-s3:
     name: Send release assets to S3
