@@ -42,6 +42,8 @@ if [ "$goos" == "windows" ]; then
     find .
 else
     cp "${goreleaser_file_template}" "${goreleaser_file}"
+    yq e -i ".nfpms[0].package_name = \"nri-${NAME}\"" "${goreleaser_file}"
+
     IFS=',' read -r -a goarchs <<< "$PACKAGE_LINUX_GOARCHS"
     for goarch in "${goarchs[@]}"
     do
