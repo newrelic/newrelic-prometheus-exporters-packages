@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -76,7 +75,7 @@ jobs:
       PACKAGE_LINUX: ${{ steps.check.outputs.PACKAGE_LINUX }}
       PACKAGE_WINDOWS: ${{ steps.check.outputs.PACKAGE_WINDOWS }}
       INTEGRATION_NAME: ${{ steps.check.outputs.NAME }}
-      INTEGRATION_VERSION: ${{ inputs.integrationVersion }}
+      INTEGRATION_VERSION: ${{ steps.check.outputs.VERSION }}
       RELEASE_TAG: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
 
   build_push_linux_artifacts:
@@ -131,13 +130,13 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
-          name: ${{ steps.check.outputs.PACKAGE_NAME }} ${{ steps.check.outputs.VERSION }}
+          tag_name: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
+          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
           prerelease: true
           files: |
-            ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/${{ steps.vars.outputs.PACKAGE_NAME }}_${{ steps.vars.outputs.VERSION }}-1_amd64.deb
-            ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
-            ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/${{ steps.vars.outputs.PACKAGE_NAME }}-${{ steps.vars.outputs.VERSION }}-1.x86_64.rpm
+            ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/*_${{ steps.vars.outputs.VERSION }}-1_*.deb
+            ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/*_linux_${{ steps.vars.outputs.VERSION }}_*.tar.gz
+            ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/*-${{ steps.vars.outputs.VERSION }}-1.*.rpm
 
 
   ###
@@ -198,11 +197,11 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
-          name: ${{ steps.check.outputs.PACKAGE_NAME }} ${{ steps.check.outputs.VERSION }}
+          tag_name: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
+          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
           prerelease: true
           files: |
-            ${{ github.workspace }}/src/repo/exporters/${{ steps.vars.outputs.NAME }}/target/packages/*.msi
+            ${{ github.workspace }}\\src\\repo\\exporters\\${{ steps.vars.outputs.NAME }}\\target\\packages\\*.msi
 
   publish-to-s3:
     name: Send release assets to S3
