@@ -3,7 +3,7 @@ builds:
     binary: nri-{{.Env.NAME}}
     dir: nri-config-generator
     ldflags:
-      - -X main.integration={{.Env.NAME}} -X main.integrationVersion=${.Tag} -X main.gitCommit={.Commit} -X main.BuildDate=${.Date}
+      - -X main.integration={{.Env.NAME}} -X main.integrationVersion={{.Tag}} -X main.gitCommit={{.Commit}} -X main.BuildDate={{.Date}}
     goos:
       - linux
     goarch: []  # This field is automatically populated from the exporter.yaml
@@ -22,7 +22,7 @@ builds:
     binary: nri-{{.Env.NAME}}  # Windows binaries add `.exe` automatically.
     dir: nri-config-generator
     ldflags:
-      - -X main.integration={{.Env.NAME}} -X main.integrationVersion=${.Tag} -X main.gitCommit={.Commit} -X main.BuildDate=${.Date}
+      - -X main.integration={{.Env.NAME}} -X main.integrationVersion={{.Tag}} -X main.gitCommit={{.Commit}} -X main.BuildDate={{.Date}}
     goos:
       - windows
     goarch:
