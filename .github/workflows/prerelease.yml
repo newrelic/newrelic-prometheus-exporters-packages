@@ -129,7 +129,6 @@ jobs:
 
       - name: Upload assets to the release
         id: create_release
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
@@ -197,7 +196,6 @@ jobs:
           upgrade: false
       - name: Upload assets to the release
         id: create_release
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
