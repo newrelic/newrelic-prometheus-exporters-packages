@@ -214,15 +214,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -x
+          gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" || true
+          gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${GITHUB_RUN_ID}/artifacts" || true
+          
           gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | \
-            jq -r '.artifacts[] | select(.name == "publish-schema")'
+            jq -r '.artifacts[] | select(.name == "publish-schema")' || true
 
           gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | \
-            jq -r '.artifacts[] | select(.name == "publish-schema") | select(.workflow_run.id == '"${GITHUB_RUN_ID}"'
+            jq -r '.artifacts[] | select(.name == "publish-schema") | select(.workflow_run.id == '"${GITHUB_RUN_ID}"' || true
 
           gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${GITHUB_RUN_ID}/artifacts" | \
-            jq -r '.artifacts[] | select(.name == "publish-schema")'
+            jq -r '.artifacts[] | select(.name == "publish-schema")' || true
 
       #- name: Create Release for the exporter modified
       #  id: create_release
