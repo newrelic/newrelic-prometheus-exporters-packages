@@ -191,10 +191,6 @@ jobs:
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' }}
     needs: [ create_prerelease ]
     steps:
-      - env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | jq
-
       - uses: actions/checkout@v3
       - run: make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
       - uses: actions/upload-artifact@v3
@@ -203,12 +199,6 @@ jobs:
           retention-days: 1
           path: |
             scripts/pkg/s3-publish-schema-tmp.yml
-
-      - env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          sleep 10
-          gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | jq
 
   publish-to-s3:
     name: Send release assets to S3
@@ -227,9 +217,9 @@ jobs:
           name: windows-artifacts
           path: packages
 
-      - env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | jq
+      - run: |
+          set
+          curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" ${ACTIONS_RUNTIME_URL}_apis/pipelines/workflows/${GITHUB_RUN_ID}/artifacts?api-version=6.0-preview | jq
 
       #    gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | \
       #      jq -r '.artifacts[] | select(.name == "publish-schema")' || true
