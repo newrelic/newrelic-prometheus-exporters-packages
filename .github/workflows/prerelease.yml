@@ -66,7 +66,7 @@ jobs:
 
   build_push_linux_artifacts:
     needs: [create_prerelease]
-    name: Push Linux Artifacts
+    name: Build and package package for Linux
     runs-on: ubuntu-latest
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
     steps:
@@ -126,7 +126,7 @@ jobs:
   ###   Windows Packaging # In case a new release has been created and Windows packages are needed build and push MSI
   ###
   build_push_windows_artifacts:
-    name: Create MSI
+    name: Build and package package for Windows
     runs-on: windows-latest
     needs: [create_prerelease]
     if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
@@ -185,10 +185,36 @@ jobs:
           path: |
             ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\*.msi
 
+  create_publish_schema:
+    name: Create the publish schema
+    runs-on: ubuntu-latest
+    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' }}
+    needs: [ create_prerelease ]
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | jq
+
+      - uses: actions/checkout@v3
+      - run: make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: publish-schema
+          retention-days: 1
+          path: |
+            scripts/pkg/s3-publish-schema-tmp.yml
+
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sleep 10
+          gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | jq
+
   publish-to-s3:
     name: Send release assets to S3
     runs-on: ubuntu-latest
-    needs: [ create_prerelease, build_push_linux_artifacts, build_push_windows_artifacts ]
+    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' }}
+    needs: [ create_prerelease, build_push_linux_artifacts, build_push_windows_artifacts, create_publish_schema ]
     steps:
       - name: Downloading Linux artifacts
         uses: actions/download-artifact@v3
@@ -201,22 +227,9 @@ jobs:
           name: windows-artifacts
           path: packages
 
-      - uses: actions/checkout@v3
-      - run: make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | jq
-      - uses: actions/upload-artifact@v3
-        with:
-          name: publish-schema
-          retention-days: 1
-          path: |
-            scripts/pkg/s3-publish-schema-tmp.yml
-      - env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          sleep 10
-          gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | jq
 
       #    gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | \
       #      jq -r '.artifacts[] | select(.name == "publish-schema")' || true
