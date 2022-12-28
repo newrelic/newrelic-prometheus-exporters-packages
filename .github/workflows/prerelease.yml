@@ -102,15 +102,15 @@ jobs:
         #  GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}  # base64 encoded
         run : |
           make package-${{ steps.vars.outputs.NAME }}
-      - name: Test package installability
-        uses: newrelic/integrations-pkg-test-action/linux@v1
-        with:
-          tag: ${{ steps.vars.outputs.VERSION }}
-          integration: nri-${{ steps.vars.outputs.NAME }}
-          upgrade: false
-          # Removing suse as they ENFORCE package signing even locally and we are not signing in this test.
-          distros: "ubuntu:jammy ubuntu:focal ubuntu:bionic debian:bullseye debian:buster debian:stretch rockylinux:8"
-          pkgDir: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/
+      #- name: Test package installability
+      #  uses: newrelic/integrations-pkg-test-action/linux@v1
+      #  with:
+      #    tag: ${{ steps.vars.outputs.VERSION }}
+      #    integration: nri-${{ steps.vars.outputs.NAME }}
+      #    upgrade: false
+      #    # Removing suse as they ENFORCE package signing even locally and we are not signing in this test.
+      #    distros: "ubuntu:jammy ubuntu:focal ubuntu:bionic debian:bullseye debian:buster debian:stretch rockylinux:8"
+      #    pkgDir: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/
 
       - name: Upload assets to be released
         uses: actions/upload-artifact@v3
@@ -169,15 +169,15 @@ jobs:
         shell: bash
         run : |
           make package-${{ steps.vars.outputs.NAME }}
-      - name: Test win packages installation
-        uses: newrelic/integrations-pkg-test-action/windows@v1
-        with:
-          tag: ${{ steps.vars.outputs.VERSION  }}
-          integration: nri-${{ steps.vars.outputs.NAME }}
-          arch: amd64
-          pkgDir: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages
-          pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-amd64.${{ steps.vars.outputs.VERSION }}.msi
-          upgrade: false
+      #- name: Test win packages installation
+      #  uses: newrelic/integrations-pkg-test-action/windows@v1
+      #  with:
+      #    tag: ${{ steps.vars.outputs.VERSION  }}
+      #    integration: nri-${{ steps.vars.outputs.NAME }}
+      #    arch: amd64
+      #    pkgDir: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages
+      #    pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-amd64.${{ steps.vars.outputs.VERSION }}.msi
+      #    upgrade: false
       - name: Upload assets to be released
         uses: actions/upload-artifact@v3
         with:
