@@ -218,6 +218,10 @@ jobs:
           ARTIFACTS_LIST="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts)"
           jq -r '.artifacts[] | select(.name == "publish-schema")' <<<"${ARTIFACTS_LIST}"
           jq -r '.artifacts[] | select(.name == "publish-schema") | .id' <<<"${ARTIFACTS_LIST}"
+          jq -r '.artifacts[] | select(.name == "publish-schema") | select(.workflow_run.id == ${{ github.run_id }})' <<<"${ARTIFACTS_LIST}"
+          ARTIFACT_ID="$(jq -r '.artifacts[] | select(.name == "publish-schema") | select(.workflow_run.id == ${{ github.run_id }}) | .id' <<<"${ARTIFACTS_LIST}")"
+          ARTIFACT_URL="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts/${ARTIFACT_ID})"
+          echo $ARTIFACT_URL
 
       #- name: Create Release for the exporter modified
       #  id: create_release
