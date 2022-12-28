@@ -196,34 +196,43 @@ jobs:
         with:
           name: linux-artifacts
           path: packages
-      - shell: bash
-        run : |
-          find packages
       - name: Downloading Windows artifacts
         uses: actions/download-artifact@v3
         with:
           name: windows-artifacts
           path: packages
-      - shell: bash
-        run : |
-          find packages
-      - run: |
-          make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
 
-      - name: Create Release for the exporter modified
-        id: create_release
-        uses: softprops/action-gh-release@v1
+      - uses: actions/checkout@v3
+      - run: make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+      - uses: actions/upload-artifact@v3
         with:
-          tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
-          name: ${{ steps.check.outputs.PACKAGE_NAME }} ${{ steps.check.outputs.VERSION }}
-          prerelease: true
-          body: |
-            Changes in ${{ steps.check.outputs.PACKAGE_NAME }} version ${{ steps.check.outputs.VERSION }}
-              - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
-              - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}
-              - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
-          files: |
-            packages/*
+          name: publish-schema
+          retention-days: 1
+          path: |
+            scripts/pkg/s3-publish-schema-tmp.yml
+      - id: schema
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -x
+          ARTIFACTS_LIST="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts)"
+          jq -r '.artifacts[] | select(.name == "publish-schema")' <<<"${ARTIFACTS_LIST}"
+          jq -r '.artifacts[] | select(.name == "publish-schema") | .id' <<<"${ARTIFACTS_LIST}"
+
+      #- name: Create Release for the exporter modified
+      #  id: create_release
+      #  uses: softprops/action-gh-release@v1
+      #  with:
+      #    tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
+      #    name: ${{ steps.check.outputs.PACKAGE_NAME }} ${{ steps.check.outputs.VERSION }}
+      #    prerelease: true
+      #    body: |
+      #      Changes in ${{ steps.check.outputs.PACKAGE_NAME }} version ${{ steps.check.outputs.VERSION }}
+      #        - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
+      #        - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}
+      #        - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
+      #    files: |
+      #      packages/*
 
 #      - name: Publish to S3 action
 #        uses: newrelic/infrastructure-publish-action@v1

@@ -7,7 +7,7 @@ integration=$2
 integration_dir="${root_dir}/exporters/${integration}"
 publish_schema_tmp="${root_dir}/scripts/pkg/s3-publish-schema-tmp.yml"
 
-echo "Loading Variables of of exporter"
+echo "Loading Variables of the exporter"
 source "${root_dir}"/scripts/common_functions.sh
 loadVariables "${integration_dir}"/exporter.yml
 
