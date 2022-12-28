@@ -122,7 +122,6 @@ jobs:
             ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/*_linux_${{ steps.vars.outputs.VERSION }}_*.tar.gz
             ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/*-${{ steps.vars.outputs.VERSION }}-1.*.rpm
 
-
   ###
   ###   Windows Packaging # In case a new release has been created and Windows packages are needed build and push MSI
   ###
@@ -202,6 +201,12 @@ jobs:
           name: windows-artifacts
           path: packages
 
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -x
+          ARTIFACTS_LIST="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts)"
+          jq -r '.artifacts[] | select(.name == "publish-schema")' <<<"${ARTIFACTS_LIST}" > one
       - uses: actions/checkout@v3
       - run: make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
       - uses: actions/upload-artifact@v3
@@ -210,23 +215,37 @@ jobs:
           retention-days: 1
           path: |
             scripts/pkg/s3-publish-schema-tmp.yml
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -x
+          ARTIFACTS_LIST="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts)"
+          jq -r '.artifacts[] | select(.name == "publish-schema")' <<<"${ARTIFACTS_LIST}" > two
+          diff one two
+
+          echo ${{ github.run_id }}
+          echo ${{ github.run_number }}
+          echo ${{ github.env }}
+          cat ${{ github.env }}
+          echo ${{ github }}
+
       - id: schema
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -x
-          ARTIFACTS_LIST="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}/artifacts)"
-          jq -r '.artifacts[]' <<<"${ARTIFACTS_LIST}"
+          ARTIFACTS_LIST="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts)"
           jq -r '.artifacts[] | select(.name == "publish-schema")' <<<"${ARTIFACTS_LIST}"
           jq -r '.artifacts[] | select(.name == "publish-schema") | .id' <<<"${ARTIFACTS_LIST}"
-          ARTIFACT_URL="$(jq -r '.artifacts[] | select(.name == "publish-schema") | .url' <<<${ARTIFACTS_LIST})"
+          jq -r '.artifacts[] | select(.name == "publish-schema") | select(.workflow_run.id == ${{ github.run_id }})' <<<"${ARTIFACTS_LIST}"
+          ARTIFACT_ID="$(jq -r '.artifacts[] | select(.name == "publish-schema") | select(.workflow_run.id == ${{ github.run_id }}) | .id' <<<"${ARTIFACTS_LIST}")"
+          ARTIFACT_URL="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts/${ARTIFACT_ID})"
 
           echo $ARTIFACT_URL
           curl -Lo artifact "$ARTIFACT_URL"
           ls -lha
           file artifact
           cat artifact
-
       #- name: Create Release for the exporter modified
       #  id: create_release
       #  uses: softprops/action-gh-release@v1
