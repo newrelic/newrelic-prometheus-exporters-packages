@@ -201,14 +201,17 @@ jobs:
           name: windows-artifacts
           path: packages
 
+      - uses: actions/checkout@v3
+
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -x
           ARTIFACTS_LIST="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts)"
-          jq -r '.artifacts[] | select(.name == "publish-schema")' <<<"${ARTIFACTS_LIST}" > one
-      - uses: actions/checkout@v3
+          jq -r '.artifacts[] | select(.name == "publish-schema")' <<<"${ARTIFACTS_LIST}" | tee one
+
       - run: make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+
       - uses: actions/upload-artifact@v3
         with:
           name: publish-schema
@@ -220,7 +223,7 @@ jobs:
         run: |
           set -x
           ARTIFACTS_LIST="$(gh api --method GET /repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts)"
-          jq -r '.artifacts[] | select(.name == "publish-schema")' <<<"${ARTIFACTS_LIST}" > two
+          jq -r '.artifacts[] | select(.name == "publish-schema")' <<<"${ARTIFACTS_LIST}" | tee two
           diff one two
 
           echo ${{ github.run_id }}
