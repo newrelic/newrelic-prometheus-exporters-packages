@@ -203,27 +203,21 @@ jobs:
 
       - uses: actions/checkout@v3
       - run: make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | jq
       - uses: actions/upload-artifact@v3
         with:
           name: publish-schema
           retention-days: 1
           path: |
             scripts/pkg/s3-publish-schema-tmp.yml
-
-      - id: schema
-        env:
+      - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo ${GITHUB_RUN_ID}
-
           sleep 10
-          
           gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | jq
 
-          sleep 10
-
-          gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${GITHUB_RUN_ID}/artifacts" | jq
-          
       #    gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | \
       #      jq -r '.artifacts[] | select(.name == "publish-schema")' || true
 
