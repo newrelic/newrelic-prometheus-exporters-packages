@@ -217,57 +217,52 @@ jobs:
           name: windows-artifacts
           path: packages
 
-      - run: |
-          set
-          curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" ${ACTIONS_RUNTIME_URL}_apis/pipelines/workflows/${GITHUB_RUN_ID}/artifacts?api-version=6.0-preview | jq
-
-      #    gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | \
-      #      jq -r '.artifacts[] | select(.name == "publish-schema")' || true
-
-      #    gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/artifacts" | \
-      #      jq -r '.artifacts[] | select(.name == "publish-schema") | select(.workflow_run.id == '"${GITHUB_RUN_ID}"')' || true
-
-      #    gh api --method GET "/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${GITHUB_RUN_ID}/artifacts" | \
-      #      jq -r '.artifacts[] | select(.name == "publish-schema")' || true
-
-      #- name: Create Release for the exporter modified
-      #  id: create_release
-      #  uses: softprops/action-gh-release@v1
-      #  with:
-      #    tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
-      #    name: ${{ steps.check.outputs.PACKAGE_NAME }} ${{ steps.check.outputs.VERSION }}
-      #    prerelease: true
-      #    body: |
-      #      Changes in ${{ steps.check.outputs.PACKAGE_NAME }} version ${{ steps.check.outputs.VERSION }}
-      #        - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
-      #        - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}
-      #        - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
-      #    files: |
-      #      packages/*
-
-#      - name: Publish to S3 action
-#        uses: newrelic/infrastructure-publish-action@v1
-#        env:
+      - name: Publish to S3 action
+        uses: newrelic/infrastructure-publish-action@v1
+        env:
 #          AWS_S3_BUCKET_NAME: "nr-downloads-ohai-staging"
 #          AWS_S3_LOCK_BUCKET_NAME: "onhost-ci-lock-staging"
-#        with:
-#          disable_lock: false
-#          run_id: ${{ github.run_id }}
-#          tag: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
-#          app_version: ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
-#          app_name: nri-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
-#          repo_name: ${{ github.event.repository.full_name }}
-#          schema: "custom"
-#          schema_url: "https://raw.githubusercontent.com/${{ github.event.repository.full_name }}/${{ needs.create_prerelease.outputs.RELEASE_TAG }}/scripts/s3-publish-schema.yml"
-#          aws_region: "us-east-1"
+          AWS_S3_BUCKET_NAME: "nr-downloads-ohai-testing"
+          AWS_S3_LOCK_BUCKET_NAME: "onhost-ci-lock-testing"
+        with:
+          disable_lock: false
+          run_id: ${{ github.run_id }}
+          tag: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
+          app_version: ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
+          app_name: nri-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+          repo_name: ${{ github.event.repository.full_name }}
+          schema: "custom-local"
+          schema_path: ./scripts/pkg/s3-publish-schema-tmp.yml
+          aws_region: "us-east-1"
 #          aws_role_arn: ${{ secrets.OHAI_AWS_ROLE_ARN_STAGING }}
 #          aws_role_session_name: ${{ secrets.OHAI_AWS_ROLE_SESSION_NAME_STAGING }}
 #          aws_access_key_id: ${{ secrets.OHAI_AWS_ACCESS_KEY_ID_STAGING }}
 #          aws_secret_access_key: ${{ secrets.OHAI_AWS_SECRET_ACCESS_KEY_STAGING }}
-#          aws_s3_bucket_name: ${{ env.AWS_S3_BUCKET_NAME }}
-#          aws_s3_lock_bucket_name: ${{ env.AWS_S3_LOCK_BUCKET_NAME }}
+          aws_role_arn: ${{ secrets.OHAI_AWS_ROLE_ARN_TESTING }}
+          aws_role_session_name: ${{ secrets.OHAI_AWS_ROLE_SESSION_NAME_TESTING }}
+          aws_access_key_id: ${{ secrets.OHAI_AWS_ACCESS_KEY_ID_TESTING }}
+          aws_secret_access_key: ${{ secrets.OHAI_AWS_SECRET_ACCESS_KEY_TESTING }}
+          aws_s3_bucket_name: ${{ env.AWS_S3_BUCKET_NAME }}
+          aws_s3_lock_bucket_name: ${{ env.AWS_S3_LOCK_BUCKET_NAME }}
 #          gpg_passphrase: ${{ secrets.OHAI_GPG_PASSPHRASE }}
 #          gpg_private_key_base64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}
+          gpg_passphrase: testkey
+          gpg_private_key_base64: LS0tLS1CRUdJTiBQR1AgUFJJVkFURSBLRVkgQkxPQ0stLS0tLQoKbFFXR0JHT3RmcnNCREFDcTNJUFMvU3BxL3VGNGpZYkkrdVRRZ1laVitRZEphMGhwZDBrckVzNTh2UDdKM0JMOQpWRFVsbTRzZ3FiaG90QkVGTWtWYUw3QVF3WXZRQ1FIa0QzZ0dDeEdjdExhVXd6eEdVejU0ZUV5Mkk3ZlNmN2RhCndmbzkrdE81cWZMTHlNRlNQZEluRnBZd2wycVQzMjBKVmR0SUZhUXprc29LZFhjOG1UMXFGT1R3anBaNnZIV0gKQzBmMkMwSlQreG0rZmEzU2NEcUkrbHplaDYyT2pXbkZTcjZScTV2c0s4cTBXMHZoV0lkeDh3NFhpZE5nODV6aAp4bDZ5YzB4UnJpMkFTcUVKclp1amNxSi85WWJLci9Md1hnemZDU0xLNHlvc2FNeE1QUld4VkIzTGRUd09nZnZYCm9zN2JHSTNlWmdhRGFXVEFsS2xzWVNucWlneGExcm9OVFB5VWh4VEZ2VG9pMGNrTDVoa0Jha1N2QWZ5NUYyR3cKdWZ1NjlDNFRRWUViMVhhNjdYWExNTHNhU1BmZmRRd0xhdzdIVmhqZ3ByRTc2czVtRHRJYWJyTmZpdHhEaUZuYQpYYTlzRnhuOXBGcnJqWlhLaHIxdFV0Uk15ZTZIUWF4UC9NNklCeEFoUTNtSHR5YVRxQmxtNFQvejI5cXdsWENYClloR09OemZDRW1pSmNqMEFFUUVBQWY0SEF3SnQvTG5tODdXUzd2OUozcy9pNU9GVFkyQTFENEZvNVIvMlJQTkcKZzVEblUyRVNsV2NZR1Y3b05UYjJkVDhEdHA1eUZ0UG5KYzk0TUVVWm9WK1R1aHdUcmpLK0hpOFpkdTlpVWNDVQpNT1ZQRWFCY20wR3h6eVFHQ0IyUHNla1ZVNGpMTU1YUStrOE8vZzczWFBsNStRQzQraEJ2eU9IM2JyZE9nWFZpCk1wWXh2bU81bGtKN3RkUDA4OGk2NFA3WjhDbXNWTTlRc2MxSDlQZUdRMEpNQjMwSmdlR0YwbUJxa3BpMm9xSjcKa2lFRmI0cWtOTkR1Ty9LaUhybFY3UC9MdTJvb1Y4QitGczMrNG9kb0g5eTdXdVl0NlV1Q1Z3a1JvUzBQWXFkVQpCM0JSWk1OemNEdU9sWGs0djg0Wk05RTJCa3g0TDdtb0gzR1JWSkZXUzRhTUtRVlZhT214R1VlRHZMSWFwQ2RqCm9SZmgwZHM2TzZNV1RvVnNnN3grMkFFaUt6LzN4Q1ZKc3kzd29KUDJyNGQrK25udWhScFNRd2ROK0huZ3F5VjMKa3JUblQzOXc0ODF5TzF6cUY2b2dYVDllSmFBa2NqUng3YzFRTE9yR1NjSlkyRktrYlp5R1RtRkgxcEJjbTVDeApCOUxJZTFqa09waXdMRjNmSEtUUzZqb25WT0J1b3BjMnBnaXNVL1lyS2E3S3greXZnYkx6aU5WOVlGMjBzVkpHClYvYSs4TnlRa2pBSERDanNON1JsN09Wc2FNSjdLSk81dUI0UjkxeFBOK2hhaWlFUFI3NUhTZDdPbGtPZ0VyVHUKbXFhNnZXT1Q2OHFQWnIwMGhPZ3BFRzlDSmptRlZWTWp1cU1wbkVpaitQNWQvSlVxYncwWExNc1dRYS90NXBiOQpjWGlQK2RtRmJmSVpOMGF6TWVCbHE5TFgzeGZMZ3d5c2Y0YzBxVUVzV3VwbjVINU5NQ0J6aEptcGpla05nRDZhClNtR2kzbnRFUUJJOTNZRVBzSStpdTdDZm1nUzMzbmlWeFJLa0VHcmRZNlB2dCtNUUdySFNTZWxrSDJKd0JWczAKZXRlNFVqOFVKL3dvS0dBVGNRa1VaT2FRZmo4SjBjZVF0NENQbTVzRndUR2ZBODYwOGJYS0ZUcFlURTZ6cTNyaQo1bFFSRndKaXFtcXdRRmY3UHFUMGl5bmRUdmVRQnVVcUkxcUd4ZXVSL2tMendYc2tqU2VhQ01YaldDQUg3UmdJCmFvZXpSNWhkbjNUUzlkcWhZajlkWUxMUkFkaUpCcDVjZEpzaURmUnFlU1RuazZFSW9OaXVKN3l2eG95bnhyWnEKOEQwR2xEa1A5Y0xUMkpCdUNRK1JDeTcxMzdaU1dYbVdZa2piOWJDODVLc2tlVUpJcDhNNkQxK3dnbkt1Q1BSWgpyRXlWRi9acXZQSkk4ajJNVmE0MU1WaElDd3BiL1BSUGkvN1daWWlSSncvMzh2WEtySHlsZFdYalh3KzE4MkxaCityNWxUeVBuSm9TZkJTVjAyM0ZVcVV0WTRXZE42UFVlaERaK244SE5qRmZOMEU0M3ExUk9PQjRxZm5Zc3BMdVcKekRTM2NKQzdQYmdhMngrMTRRNXNadlB1Vld4Zy9DWkhEVDg5VnlxV2dtdWJ1N2ZzWjEwc0g3UTI2QzBlT3dMawpnQTE1ZjVMeFVOVUZVU1VCRURnNFZ3SEtMSzdnQy9iaCtTckJqdHNwMjJxYS9sVW41L3VDbnNRMElSbXJoUEFuCk5tTlY4YmR3ZzBZcG1NV0lwZ0RNb1dQOGpuT2hwakQvNDdRc1ZHVnpkQ0J6YVdkdWFXNW5JR3RsZVNBOGFuQmwKY21WNlpteHZjbVY2UUc1bGQzSmxiR2xqTG1OdmJUNkpBZFFFRXdFS0FENFdJUVNZUDB0SW1QN0Nvc2JoZmN5aQpBVkEyQUJqTkhnVUNZNjErdXdJYkF3VUpBOEpuQUFVTENRZ0hBZ1lWQ2drSUN3SUVGZ0lEQVFJZUFRSVhnQUFLCkNSQ2lBVkEyQUJqTkhtemVEQUNqUGMzb0dTOUEzczFMMTJLTUFwL3ErUjFRY2ROMmk5Vjh5dVJCdWM2Ylk2RDEKNDFUQ1pHd1NuRW5QVGdaemtlTmg5TTRIMVd5emlqWU8yN0hKOU1WR1k0cDlZVlhhcHloNzdsRFJUWkFxVmtJRwppano2bnhnRVBmak92RUpsbVBid0l6bThGQWdiemlUOFdhdk5vRktjeVhlbGp1QytZUXJuSFZONVBrT1ZPdUp6CkIyU0JmNlZuNmcveGEvQmdLVEpJMytHcFJUckkvN2Q5ZSttVTlUUjREOGlKZ3YwWmZpcWJqUXcwTFF0MGgrVUMKREtFSnJXYkF3bWdMZHBLZk9lMkltUGNZQWlHZElkVVI1TXN0cnVhdGJBbmt2cThiM1FYai9xSGZEMTdiSjh6Ygp6NHBsbzk4UE9iblZvSmVwTkhJMkhld0NnTWV4a1ljT3JNL0Jpc2hidGR6Z3pHNnppN0FkTXllZkljRHlDcEtBCkhkc1RtMGJ6Q0FMYVcvSFdXWlN3cGZURW82VDhldUZVempiR1JyUzVPWm1YTS9xb3RVNDEzakFMTDZRMlZsZncKdWxRam5MKzN2aUo3NFp1eVFOUGFlZDlYT0JCTEJJREh1UTNJRlJjcGJPSUNidnNCbzVSWG5GNXEvNlFIdEZYagorbEhDSHoweUE5Y0JSVDlpWWNtZEJZWUVZNjErdXdFTUFKMWZEVHRyQ253YXNiNitoYXNWQ0dRcnVSMGZPQ0g4CkU3WTVHRU53OE9pZDBZaVUyQUIyRjMxYzdMTnJIdE1hZEJTcVVhWEU1ak5maGw0Q3lIclRuNnB3eVFkMEkyWm8KcHdyTkJJQWp0L3pOcGE5Um96akJXWVJtRVYzbnNDZGI3b3R0bm9sRFN3VmsyOFhCTlZuTTQyc3pZdUg2YmFWSgpYRU1oc2ZjR2FwRHhNME9tUHB2ZnlpV2RIT2kwSVZNcWZReXV0SXZwUDJ4V3U3WkJpME0zc3hDbFU3aVZ1dEUvClI0WUtKcHV2Z0w4RHhMcmxxcm4waytFb1NudjY1cnk5SHNxM3VDbkxIcG0vdlRJWGJKVTRiYTNJK2w0SlVvYXoKM28zTkloajR5eUh4Q29rV25VZk9UMzF0RTlBOUVZWUpzWU8yYklkeCthTkUybk5UcW53T0ZQOWtPekJ1dXpXdAp5Y2E5eXhVZFdPYzNXNHVsTkdHQmt3R3MxWXRlTmlDYWUzR3liK2YxRGxCZ0VtOEd0TWNiNGZLbDc3aWZpaHE5CmoxWmxsaWxuN0dTYVZRcWxwM1FWSU5CQUcwNHgwNVl4Rk0wTVB3YlF3SjZKcWErclJDRUJPT2dDWUpsUG1JdWYKbGFoOWZReEtrY2d6Wi9LNE9SYjVYNTA4OW1BUnIyUmJUUUFSQVFBQi9nY0RBcVp6Mkc0Q3FTV2UveTZQM0JFMwpNMWNBNDllcTE3aE9sQjdUSExSM2ZXSXRtcVZtaEh0NUsxQ2NKbVlVRUpRS0c5ZlBkbENvVmJoWFE5OU9pMjRLCmhtQTE0TFB4Z0V3c3dUQWtwbStRb0E4WDRXYmJOL1VUQVZBcjFUK3k2TjZScDhhWmh6OHhVUi9zYnF6UjRRbWEKMzBkUWZIVzJqSTk0am1EUmVsR0ZOZ1FObHcrcDFyVHBRYjFXcEwydDlVOTR2b0ZQZGltMlpDNlcrZWh2NGZsZwpnYkYyVFNWeG5UQTdsTUlmTllHVFpIbHNKQkRlZUNGNVhaejB5THM3ekhwVS91V3lTempTVWJvbmZYbDJlc3B6ClZFSkRiUForU3lPV1hneGVHNmJZZkJ0Q0p4U2N0S1JtNkZ2Q0JYOVN0cHd4R0VXdEhhZ1REZUw3ZGpVTVJlN04KamV3LzZ5OE54ZVRhVmpWRnNiQlkzazh4NDBHOVNnL2E1eHpaZjBYT2hoeUsvWGpQWTBEOUZJVzFmM3Y0Zm50TgpET3JOSGhJU2hDTHpWa2RIWDhhQU43dlhnaVdaQnVCN1VCNEdMbjhCZmppTkhZRWN0TG5ZUXFYYTNCS203NDlZCmdkVUdpcUJ3NlhGcDlQTUVvbUJKZWR2RXRhZUxDZnNsS29GbjFIb3hENE05OHlHYlJqS1VOQnV4WTVoV3ZRUUcKNWMvdHV1NHBIRzZZSTNSZjRpVllIQ0FuOTBON0dFbVNUSGVXSGFnRjBLYm9WeTZ0UnVIOTQ2aE9QOWpVNWs3VApnUkt1cHVmbDJwUHoyVS9FdGVmZTlOL2NkWSsrV203VU94eTJDek5wVHFVYi8va3MxNHdteVNiM29IczRRR2ZJCnZBQUgyWDhPd2s0aXRhSWZZYW9ISys4WXVlZVhhOVdUVkQzdkpTb3JYNmtKSlAvc1NlcXFvbXc5MENYRWxMV1YKU3BkS1ducm9YNllkaDJlS09YbDFCazR0bHN3U1Nic2UzbVV5dk00NFlLeEZhT0JFUWs1OCt5Y2ljc2k4eEk1ZApaTlEzTkRqbEpzVERqNDdUTm9wbmFucEVUN3RUMytSNmlMQm1UdzR5K2NDLzFhcFZjb3QxdnZuQVNHVjhqYW52CmMwNXZTd2x5N2hrUExkb2ZqVmhNL0N2S0JNUFNFMzU5WW9JL2hrVXBRY0R6NndnS0VFYS8wcmpRUm1iL083ZjYKTW1kNzd3dndycXpTS3FZb0huWmdOdFhwVWRMTWJKU0J3bUtCVHFIL1pXV2gweFV5d09zT3lreWUyRG54ZnhUegpiRkdnVGMzcHZIdnBPRzNMNEo0STNQajlyTEx0RHg1a0xXcWRETGsrT3JXVTNLVTViTldVOTlVb0x2bkVyaEhtCmpvN0I0aTJHUDE3YVA1cjQrbG1PUmFyNjIrbHhmeGt2dkVUR2pzTlQ5MER3OGduNUc3c3ZDdkJ6RHEreDMxQTgKc1R3QndJS0RMRjZDQ1d0aitVNXMzVXljUXRDVXJuMXI4Rnh3SFRuWFhNY2hpTmtKaG43SW00aWhqcFFrbXE3cgpRd0tTampTZFpnYnJsWUMySzhRVDc2WEJFN0c3T2NLYmpTODRBZHpaVkc1b0tDYThWV0pKakl5aEtVWnJxeitkCk5QNDBEZ1FUam5lUGJnc3FFSHB0amVVVFN1RFFoa1JlSDl1S05BbHpEWmxzVks1OFA3NVR1YzU3WFZ0OWkrcHAKUU9ONldRZFBMOEt0dFErcjVGMnh4N3dTREV0bG5meTJxa0NWRGtTei9aL0dOOHFzZGdjTmlRRzhCQmdCQ2dBbQpGaUVFbUQ5TFNKait3cUxHNFgzTW9nRlFOZ0FZelI0RkFtT3RmcnNDR3d3RkNRUENad0FBQ2drUW9nRlFOZ0FZCnpSNStIQXYvVnJTbkJiWk1uRWNYYWhOUGo2TnJlNnZqZnJyQVJCdUxCZkJJTjF2Z2V3dlZlb280Y0pYelRlSmIKVkFKZERoYi9SN2dGT3dpTUM2Yk93L2VTWkQyQ0UwbmFMYUY0dmdCMC9sU1lvZm9qbmROSXdpTWROSUtuSks1TAowQ3BNVDJXWGdVNFhIMkI2a2dTdTgxUWNXenZyRUh6dEx3Q2E2TElLWmFOM2Q3MnZrVWFqWFVEWmp5RGVZTXFOCmF4ZjRTMjhLaENIRE41akVHVmlreWwvaDVGNnc2c3ZWYS85c296U2NBazl5ZDJLTnBEYXEzMHJaZDBaaDRaeWoKQnBNYVdvcmFxc2NoR1p3aXc4SGtub1loTGxIa3pMYTNvKy85enV0akhlcXBCV25wRXExU3ExRjc1bzlVeXVIZQp3V2RkdHd3NWpoYnNDTHRLYXFJd0YxeWVRWExxTWNySFdDTjV6Q29pNWp5b2NCNW53QjBUTTBDVGxpeWs1Ny9WCmszcE4zN0NDdHpUQU9lN3EzTUV4MDVNVUkvTm82UWVuelhFbWwwamUwUFY4ajBvVFh6UkJSRnErbVgycXYyWDIKTWtZVCsyTWtTaGtwbEdEaFEydXJHWGp6RnVGdmp5U201UDRsZFYwUVdkUGtLOTdoT0h2UTdETGdiZy9vR1d2TApBNlh6K2g3Zgo9WnJrRgotLS0tLUVORCBQR1AgUFJJVkFURSBLRVkgQkxPQ0stLS0tLQo=
+
+      - name: Create Release for the exporter modified
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
+          name: ${{ steps.check.outputs.PACKAGE_NAME }} ${{ steps.check.outputs.VERSION }}
+          prerelease: true
+          body: |
+            Changes in ${{ steps.check.outputs.PACKAGE_NAME }} version ${{ steps.check.outputs.VERSION }}
+              - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
+              - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}
+              - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
+          files: |
+            packages/*
 
 #      We cannot test from repo because this action does not support testing from testing bucket
 #      - name: Test package installability
