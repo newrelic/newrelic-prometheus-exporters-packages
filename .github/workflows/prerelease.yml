@@ -229,7 +229,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
-          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
           prerelease: true
           body: |
             Changes in ${{ needs.create_prerelease.outputs.PACKAGE_NAME }} version ${{ needs.create_prerelease.outputs.VERSION }}
