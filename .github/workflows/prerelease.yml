@@ -228,8 +228,8 @@ jobs:
       - name: Create Release for the exporter modified
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.create_prerelease.outputs.PACKAGE_NAME }}-${{ needs.create_prerelease.outputs.VERSION }}
-          name: ${{ needs.create_prerelease.outputs.PACKAGE_NAME }} ${{ needs.create_prerelease.outputs.VERSION }}
+          tag_name: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
+          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
           prerelease: true
           body: |
             Changes in ${{ needs.create_prerelease.outputs.PACKAGE_NAME }} version ${{ needs.create_prerelease.outputs.VERSION }}
