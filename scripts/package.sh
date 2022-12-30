@@ -34,6 +34,22 @@ echo "Packaging"
 mkdir -pv "${integration_target}/packages"
 if [ "$goos" == "windows" ]; then
     powershell.exe -file "${root_dir}/scripts/win_msi_build.ps1" -arch amd64 -exporterName ${NAME} -version ${VERSION} -exporterGUID ${EXPORTER_GUID} -upgradeGUID ${UPGRADE_GUID} -licenseGUID ${LICENSE_GUID}
+
+    mkdir -p "${root_dir}/dist/New Relic/newrelic-infra/integrations.d"
+    cp "${integration_dir}/${NAME}-config.yml.sample" "${root_dir}/dist/New Relic/newrelic-infra/integrations.d/"
+
+    mkdir -p "${root_dir}/dist/New Relic/newrelic-infra/newrelic-integrations/bin"
+    cp "${integration_target}/bin/nri-${NAME}.exe" "${root_dir}/dist/New Relic/newrelic-infra/newrelic-integrations/bin"
+    cp "${integration_dir}/${NAME}-win-definition.yml" "${root_dir}/dist/New Relic/newrelic-infra/newrelic-integrations/" || true
+
+    mkdir -p "${root_dir}/dist/New Relic/newrelic-infra/logging.d"
+    cp "${integration_dir}/${NAME}-log-win.yml" "${root_dir}/dist/New Relic/newrelic-infra/logging.d/" || true
+
+    (
+      # Inside a subshell so we do not change $PWD to the rest of the script
+      cd "${root_dir}/dist"
+      zip -g "${integration_dir}/target/packages/nri-${NAME}-amd64.${VERSION}.zip" "New Relic"
+    )
 else
     cp "${goreleaser_file_template}" "${goreleaser_file}"
     yq e -i ".nfpms[0].package_name = \"nri-${NAME}\"" "${goreleaser_file}"

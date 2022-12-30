@@ -191,6 +191,7 @@ jobs:
           retention-days: 1
           path: |
             ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\*.msi
+            ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\*.zip
 
   create_publish_schema:
     name: Create the publish schema
