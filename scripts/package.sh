@@ -48,12 +48,7 @@ if [ "$goos" == "windows" ]; then
     (
       # Inside a subshell so we do not change $PWD to the rest of the script
       cd "${root_dir}/dist"
-      echo $PATH
-      which zip || true
-      which unzip || true
-      which 7z || true
-
-      zip -g "${integration_dir}/target/packages/nri-${NAME}-amd64.${VERSION}.zip" "New Relic"
+      7z a -tzip "${integration_dir}/target/packages/nri-${NAME}-amd64.${VERSION}.zip" "New Relic"
     )
 else
     cp "${goreleaser_file_template}" "${goreleaser_file}"
