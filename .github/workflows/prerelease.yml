@@ -171,6 +171,10 @@ jobs:
         shell: bash
         run : |
           make package-${{ steps.vars.outputs.NAME }}
+      - shell: bash
+        run: |
+          find . -name \*.zip
+
       #- name: Test win packages installation
       #  uses: newrelic/integrations-pkg-test-action/windows@v1
       #  with:
