@@ -17,8 +17,8 @@ env:
 ###
 name: Create Pre-release
 jobs:
-  create_prerelease:
-    name: Create Pre-release
+  exporter_variables:
+    name: Test exporter e2e and output exporter variables
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -67,11 +67,11 @@ jobs:
       EXPORTER_HEAD: ${{ steps.check.outputs.EXPORTER_HEAD }}
       EXPORTER_CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
 
-  build_push_linux_artifacts:
-    needs: [create_prerelease]
-    name: Build and package package for Linux
+  build_linux_artifacts:
+    needs: [exporter_variables]
+    name: Build Linux artifacts and packages
     runs-on: ubuntu-latest
-    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
+    if: ${{ needs.exporter_variables.outputs.CREATE_RELEASE == 'true' && needs.exporter_variables.outputs.PACKAGE_LINUX == 'true'}}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -93,7 +93,7 @@ jobs:
         id: vars
         run : |
           export GOPATH=$(go env GOPATH)
-          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
+          export EXPORTER_PATH=${{ needs.exporter_variables.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables $EXPORTER_PATH
           setStepOutput
@@ -125,11 +125,11 @@ jobs:
   ###
   ###   Windows Packaging # In case a new release has been created and Windows packages are needed build and push MSI
   ###
-  build_push_windows_artifacts:
-    name: Build and package package for Windows
+  build_windows_artifacts:
+    name: Build Windows artifacts and packages
     runs-on: windows-latest
-    needs: [create_prerelease]
-    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
+    needs: [exporter_variables]
+    if: ${{ needs.exporter_variables.outputs.CREATE_RELEASE == 'true' && needs.exporter_variables.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
       GOOS: windows
@@ -159,7 +159,7 @@ jobs:
         shell: bash
         run: |
           choco install yq
-          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
+          export EXPORTER_PATH=${{ needs.exporter_variables.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables $EXPORTER_PATH
           setStepOutput
@@ -190,11 +190,11 @@ jobs:
   create_publish_schema:
     name: Create the publish schema
     runs-on: ubuntu-latest
-    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' }}
-    needs: [ create_prerelease ]
+    if: ${{ needs.exporter_variables.outputs.CREATE_RELEASE == 'true' }}
+    needs: [ exporter_variables ]
     steps:
       - uses: actions/checkout@v3
-      - run: make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+      - run: make create-publish-schema-${{ needs.exporter_variables.outputs.INTEGRATION_NAME }}
       - uses: actions/upload-artifact@v3
         with:
           name: publish-schema
@@ -202,11 +202,11 @@ jobs:
           path: |
             scripts/pkg/s3-publish-schema-tmp.yml
 
-  publish-to-s3:
-    name: Send release assets to S3
+  create_prerelease_and_upload_packages:
+    name: Create pre-release and upload packages to staging repositories
     runs-on: ubuntu-latest
-    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' }}
-    needs: [ create_prerelease, build_push_linux_artifacts, build_push_windows_artifacts, create_publish_schema ]
+    if: ${{ needs.exporter_variables.outputs.CREATE_RELEASE == 'true' }}
+    needs: [ exporter_variables, build_linux_artifacts, build_windows_artifacts, create_publish_schema ]
     steps:
       - name: Downloading Linux artifacts
         uses: actions/download-artifact@v3
@@ -227,14 +227,14 @@ jobs:
       - name: Create Release for the exporter modified
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
-          name: ${{ needs.create_prerelease.outputs.INTEGRATION_NAME }} ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
+          tag_name: ${{ needs.exporter_variables.outputs.RELEASE_TAG }}
+          name: ${{ needs.exporter_variables.outputs.INTEGRATION_NAME }} ${{ needs.exporter_variables.outputs.INTEGRATION_VERSION }}
           prerelease: true
           body: |
-            Changes in ${{ needs.create_prerelease.outputs.PACKAGE_NAME }} version ${{ needs.create_prerelease.outputs.VERSION }}
-              - Exporter repository URL: ${{ needs.create_prerelease.outputs.EXPORTER_REPO_URL }}
-              - Commit or Tag of the exporter packaged: ${{ needs.create_prerelease.outputs.EXPORTER_HEAD }}
-              - CHANGELOG: ${{ needs.create_prerelease.outputs.EXPORTER_CHANGELOG }}
+            Changes in ${{ needs.exporter_variables.outputs.PACKAGE_NAME }} version ${{ needs.exporter_variables.outputs.VERSION }}
+              - Exporter repository URL: ${{ needs.exporter_variables.outputs.EXPORTER_REPO_URL }}
+              - Commit or Tag of the exporter packaged: ${{ needs.exporter_variables.outputs.EXPORTER_HEAD }}
+              - CHANGELOG: ${{ needs.exporter_variables.outputs.EXPORTER_CHANGELOG }}
           files: |
             packages/*
 
@@ -248,9 +248,9 @@ jobs:
 ##        with:
 ##          disable_lock: false
 ##          run_id: ${{ github.run_id }}
-##          tag: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
-##          app_version: ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
-##          app_name: nri-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+##          tag: ${{ needs.exporter_variables.outputs.RELEASE_TAG }}
+##          app_version: ${{ needs.exporter_variables.outputs.INTEGRATION_VERSION }}
+##          app_name: nri-${{ needs.exporter_variables.outputs.INTEGRATION_NAME }}
 ##          repo_name: ${{ github.event.repository.full_name }}
 ##          schema: "custom-local"
 ##          schema_path: ./s3-publish-schema-tmp.yml
@@ -271,8 +271,8 @@ jobs:
 ##      - name: Test package installability
 ##        uses: newrelic/integrations-pkg-test-action/linux@v1
 ##        with:
-##          tag: ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
-##          integration: nri-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+##          tag: ${{ needs.exporter_variables.outputs.INTEGRATION_VERSION }}
+##          integration: nri-${{ needs.exporter_variables.outputs.INTEGRATION_NAME }}
 ##          packageLocation: repo
 ##          stagingRepo: true
 ##          upgrade: false
