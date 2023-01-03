@@ -32,11 +32,11 @@ if ($wrong.Length  -ne 0) {
     exit -1
 }
 
-#echo "===> Import .pfx certificate from GH Secrets"
-#Import-PfxCertificate -FilePath mycert.pfx -Password (ConvertTo-SecureString -String $pfxPassphrase -AsPlainText -Force) -CertStoreLocation Cert:\CurrentUser\My
+echo "===> Import .pfx certificate from GH Secrets"
+Import-PfxCertificate -FilePath mycert.pfx -Password (ConvertTo-SecureString -String $pfxPassphrase -AsPlainText -Force) -CertStoreLocation Cert:\CurrentUser\My
 
-#echo "===> Show certificate installed"
-#Get-ChildItem -Path cert:\CurrentUser\My\
+echo "===> Show certificate installed"
+Get-ChildItem -Path cert:\CurrentUser\My\
 
 echo "===> Configuring version $version for artifacts in $exporterName"
 
