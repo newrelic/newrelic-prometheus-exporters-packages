@@ -1,6 +1,6 @@
 # This Workflow creates a pre-release of the exporter that has been modified.
 
-on: 
+on:
   push:
     branches:
       - main
@@ -19,7 +19,8 @@ env:
 ###
 name: Create Pre-release
 jobs:
-  exporter_variables:
+
+  check_exporter_preconditions:
     name: Test exporter e2e and output exporter variables
     runs-on: ubuntu-latest
     steps:
@@ -29,7 +30,6 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version-file: nri-config-generator/go.mod
-
       - name: Check if exporters have been modified
         id: check
         # Running shouldDoRelease we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
@@ -70,10 +70,10 @@ jobs:
       EXPORTER_CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
 
   build_linux_artifacts:
-    needs: [exporter_variables]
+    needs: [check_exporter_preconditions]
     name: Build Linux artifacts and packages
     runs-on: ubuntu-latest
-    if: ${{ needs.exporter_variables.outputs.CREATE_RELEASE == 'true' && needs.exporter_variables.outputs.PACKAGE_LINUX == 'true'}}
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true'}}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -90,12 +90,11 @@ jobs:
         run: |
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential rpm gnupg2 gpg-agent debsigs
           sudo gem install --no-document fpm
-
       - name: Load variables
         id: vars
         run : |
           export GOPATH=$(go env GOPATH)
-          export EXPORTER_PATH=${{ needs.exporter_variables.outputs.EXPORTER_PATH }}
+          export EXPORTER_PATH=${{ needs.check_exporter_preconditions.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables $EXPORTER_PATH
           setStepOutput
@@ -129,8 +128,8 @@ jobs:
   build_windows_artifacts:
     name: Build Windows artifacts and packages
     runs-on: windows-latest
-    needs: [exporter_variables]
-    if: ${{ needs.exporter_variables.outputs.CREATE_RELEASE == 'true' && needs.exporter_variables.outputs.PACKAGE_WINDOWS == 'true' }}
+    needs: [check_exporter_preconditions]
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
       GOOS: windows
@@ -160,7 +159,7 @@ jobs:
         shell: bash
         run: |
           choco install yq
-          export EXPORTER_PATH=${{ needs.exporter_variables.outputs.EXPORTER_PATH }}
+          export EXPORTER_PATH=${{ needs.check_exporter_preconditions.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables $EXPORTER_PATH
           setStepOutput
@@ -191,11 +190,11 @@ jobs:
   create_publish_schema:
     name: Create the publish schema
     runs-on: ubuntu-latest
-    if: ${{ needs.exporter_variables.outputs.CREATE_RELEASE == 'true' }}
-    needs: [ exporter_variables ]
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' }}
+    needs: [ check_exporter_preconditions ]
     steps:
       - uses: actions/checkout@v3
-      - run: make create-publish-schema-${{ needs.exporter_variables.outputs.INTEGRATION_NAME }}
+      - run: make create-publish-schema-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
       - uses: actions/upload-artifact@v3
         with:
           name: publish-schema
@@ -206,8 +205,8 @@ jobs:
   create_prerelease_and_upload_packages:
     name: Create pre-release and upload packages to staging repositories
     runs-on: ubuntu-latest
-    if: ${{ needs.exporter_variables.outputs.CREATE_RELEASE == 'true' }}
-    needs: [ exporter_variables, build_linux_artifacts, build_windows_artifacts, create_publish_schema ]
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' }}
+    needs: [ check_exporter_preconditions, build_linux_artifacts, build_windows_artifacts, create_publish_schema ]
     steps:
       - name: Downloading Linux artifacts
         uses: actions/download-artifact@v3
@@ -224,21 +223,19 @@ jobs:
         with:
           name: publish-schema
           path: .
-
       - name: Create Release for the exporter modified
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.exporter_variables.outputs.RELEASE_TAG }}
-          name: ${{ needs.exporter_variables.outputs.INTEGRATION_NAME }} ${{ needs.exporter_variables.outputs.INTEGRATION_VERSION }}
+          tag_name: ${{ needs.check_exporter_preconditions.outputs.RELEASE_TAG }}
+          name: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }} ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}
           prerelease: true
           body: |
-            Changes in ${{ needs.exporter_variables.outputs.PACKAGE_NAME }} version ${{ needs.exporter_variables.outputs.VERSION }}
-              - Exporter repository URL: ${{ needs.exporter_variables.outputs.EXPORTER_REPO_URL }}
-              - Commit or Tag of the exporter packaged: ${{ needs.exporter_variables.outputs.EXPORTER_HEAD }}
-              - CHANGELOG: ${{ needs.exporter_variables.outputs.EXPORTER_CHANGELOG }}
+            Changes in ${{ needs.check_exporter_preconditions.outputs.PACKAGE_NAME }} version ${{ needs.check_exporter_preconditions.outputs.VERSION }}
+              - Exporter repository URL: ${{ needs.check_exporter_preconditions.outputs.EXPORTER_REPO_URL }}
+              - Commit or Tag of the exporter packaged: ${{ needs.check_exporter_preconditions.outputs.EXPORTER_HEAD }}
+              - CHANGELOG: ${{ needs.check_exporter_preconditions.outputs.EXPORTER_CHANGELOG }}
           files: |
             packages/*
-
       - name: Publish to S3 action (staging)
         uses: newrelic/infrastructure-publish-action@v1
         env:
@@ -248,9 +245,9 @@ jobs:
         with:
           disable_lock: false
           run_id: ${{ github.run_id }}
-          tag: ${{ needs.exporter_variables.outputs.RELEASE_TAG }}
-          app_version: ${{ needs.exporter_variables.outputs.INTEGRATION_VERSION }}
-          app_name: nri-${{ needs.exporter_variables.outputs.INTEGRATION_NAME }}
+          tag: ${{ needs.check_exporter_preconditions.outputs.RELEASE_TAG }}
+          app_version: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}
+          app_name: nri-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
           repo_name: ${{ github.event.repository.full_name }}
           schema: "custom-local"
           schema_path: ./s3-publish-schema-tmp.yml
@@ -264,12 +261,11 @@ jobs:
           aws_s3_lock_bucket_name: ${{ env.AWS_S3_LOCK_BUCKET_NAME }}
           gpg_passphrase: ${{ secrets.OHAI_GPG_PASSPHRASE }}
           gpg_private_key_base64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}
-
       - name: Test package installability (staging)
         uses: newrelic/integrations-pkg-test-action/linux@v1
         with:
-          tag: ${{ needs.exporter_variables.outputs.INTEGRATION_VERSION }}
-          integration: nri-${{ needs.exporter_variables.outputs.INTEGRATION_NAME }}
+          tag: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}
+          integration: nri-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
           packageLocation: repo
           stagingRepo: true
           upgrade: false
