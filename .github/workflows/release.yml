@@ -26,6 +26,8 @@ jobs:
           else
               exit 1
           fi
+      - uses: actions/checkout@v3
+      - run: make create-publish-schema-${{ steps.release_details.outputs.INTEGRATION_NAME  }}
       - name: Publish to S3 action
         uses: newrelic/infrastructure-publish-action@v1
         env:
@@ -39,8 +41,8 @@ jobs:
           app_version: ${{ steps.release_details.outputs.INTEGRATION_VERSION }}
           app_name: ${{ steps.release_details.outputs.INTEGRATION_NAME }}
           repo_name: ${{ github.event.repository.full_name }}
-          schema: "custom"
-          schema_url: "https://raw.githubusercontent.com/${{ github.event.repository.full_name }}/${{ env.TAG }}/scripts/s3-publish-schema.yml"
+          schema: "custom-local"
+          schema_path: ./s3-publish-schema-tmp.yml
           aws_region: ${{ env.AWS_REGION }}
           aws_role_arn: ${{ secrets.OHAI_AWS_ROLE_ARN_PRODUCTION }}
           aws_role_session_name: ${{ secrets.OHAI_AWS_ROLE_SESSION_NAME_PRODUCTION }}
