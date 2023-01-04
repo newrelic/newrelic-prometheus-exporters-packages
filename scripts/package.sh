@@ -68,8 +68,9 @@ else
       GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist --snapshot
     fi
 
+    echo "Copying packages to ${integration_target}"
+    cp "${root_dir}/dist/"*.{rpm,deb,tar.gz} ${integration_target}/packages
+
     echo "Signing the packages"
     bash ${root_dir}/scripts/sign.sh "${root_dir}" "${integration}"
-
-    cp "${root_dir}/dist/"*.{rpm,deb,tar.gz} ${integration_target}/packages
 fi
