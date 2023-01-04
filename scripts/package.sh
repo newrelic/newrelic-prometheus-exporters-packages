@@ -52,6 +52,7 @@ if [ "$goos" == "windows" ]; then
     )
 else
     cp "${goreleaser_file_template}" "${goreleaser_file}"
+    # We need to template the package_name because goreleaser does not template it with environment variables.
     yq e -i ".nfpms[0].package_name = \"nri-${NAME}\"" "${goreleaser_file}"
 
     IFS=',' read -r -a goarchs <<< "$PACKAGE_LINUX_GOARCHS"
@@ -65,6 +66,7 @@ else
       git tag ${VERSION}  # Tag the repository in case we are in a CI.
       GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist
     else
+      # --snapshots is usually needed locally (as the repository might be in a dirty state) and would alter the package name.
       GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist --snapshot
     fi
 
