@@ -9,6 +9,7 @@ permissions:
   contents: write
 
 env:
+  GPG_MAIL: 'infrastructure-eng@newrelic.com'
   OHAI_PFX_CERTIFICATE_BASE64: ${{ secrets.OHAI_PFX_CERTIFICATE_BASE64 }} # base64 encoded
   OHAI_PFX_PASSPHRASE:  ${{ secrets.OHAI_PFX_PASSPHRASE }}
   GORELEASER_VERSION: 'v1.13.1'
@@ -101,7 +102,6 @@ jobs:
       - name: Package linux
         id: package
         env:
-          GPG_MAIL: 'infrastructure-eng@newrelic.com'
           GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
           GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}  # base64 encoded
         run : |
