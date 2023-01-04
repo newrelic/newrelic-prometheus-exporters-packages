@@ -7,7 +7,7 @@ integration=$2
 integration_dir="${root_dir}/exporters/${integration}"
 publish_schema_tmp="${root_dir}/scripts/pkg/s3-publish-schema-tmp.yml"
 
-echo "Loading Variables of of exporter"
+echo "Loading Variables of the exporter"
 source "${root_dir}"/scripts/common_functions.sh
 loadVariables "${integration_dir}"/exporter.yml
 
@@ -21,7 +21,9 @@ if [ "$PACKAGE_LINUX" = "true" ];then
    for goarch in "${goarchs[@]}"
    do
      echo  "Adding ${goarch} to linux in ${publish_schema_tmp}"
-     yq e -i ".[].arch += [ \"${goarch}\" ]" ${publish_schema_tmp}
+     yq e -i ".[0].arch += [ \"${goarch}\" ]"               ${publish_schema_tmp}  # Tarball
+     yq e -i ".[1].arch += [ \"${goarch}\" ]"               ${publish_schema_tmp}  # Debian
+     yq e -i ".[2].arch += [ \"${goarch//amd64/x86_64}\" ]" ${publish_schema_tmp}  # Red Hat
    done
 fi
 

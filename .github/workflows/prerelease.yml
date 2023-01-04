@@ -1,40 +1,47 @@
 # This Workflow creates a pre-release of the exporter that has been modified.
 
-on: 
+on:
   push:
     branches:
       - main
 
+permissions:
+  contents: write
+
 env:
+  GPG_MAIL: 'infrastructure-eng@newrelic.com'
   OHAI_PFX_CERTIFICATE_BASE64: ${{ secrets.OHAI_PFX_CERTIFICATE_BASE64 }} # base64 encoded
   OHAI_PFX_PASSPHRASE:  ${{ secrets.OHAI_PFX_PASSPHRASE }}
-  GO_VERSION: '1.18'
+  GORELEASER_VERSION: 'v1.13.1'
 
-###
-###   PRE-RELEASE CREATION # Creates a pre-release if needed and loads variables for next jobs
-###
 name: Create Pre-release
 jobs:
-  create_prerelease:
-    name: Create Pre-release
+
+  check_exporter_preconditions:
+    name: Test exporter e2e and output exporter variables
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v2
-        with:
-          go-version: ${{env.GO_VERSION}}
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: nri-config-generator/go.mod
       - name: Check if exporters have been modified
         id: check
         # Running shouldDoRelease we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
-        # Tha variable is used by the following step and jobs
+        # That variable is used by the following step and jobs
         run : |
           source ./scripts/common_functions.sh
           shouldDoRelease
           loadVariables $EXPORTER_PATH
           setStepOutput
+      - name: Install goreleaser
+        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: ${{ env.GORELEASER_VERSION }}
+          install-only: true
       - name: Compile exporter
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         run : |
@@ -47,42 +54,35 @@ jobs:
           account_id: ${{ secrets.COREINT_E2E_ACCOUNT_ID }}
           api_key: ${{ secrets.COREINT_E2E_API_KEY }}
           license_key: ${{ secrets.COREINT_E2E_LICENSE_KEY }}
-      - name: Create Release for the exporter modified
-        id: create_release
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
-          release_name: ${{ steps.check.outputs.PACKAGE_NAME }} ${{ steps.check.outputs.VERSION }}
-          body: |
-            Changes in ${{ steps.check.outputs.PACKAGE_NAME }} version ${{ steps.check.outputs.VERSION }}
-              - Exporter repository URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
-              - Commit or Tag of the exporter packaged: ${{ steps.check.outputs.EXPORTER_HEAD }}
-              - CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
-          prerelease: true
     outputs:
       CREATE_RELEASE: ${{ steps.check.outputs.CREATE_RELEASE }}
       EXPORTER_PATH: ${{ steps.check.outputs.EXPORTER_PATH }}
       PACKAGE_LINUX: ${{ steps.check.outputs.PACKAGE_LINUX }}
       PACKAGE_WINDOWS: ${{ steps.check.outputs.PACKAGE_WINDOWS }}
-      UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
       INTEGRATION_NAME: ${{ steps.check.outputs.NAME }}
       INTEGRATION_VERSION: ${{ steps.check.outputs.VERSION }}
       RELEASE_TAG: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
+      EXPORTER_REPO_URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
+      EXPORTER_HEAD: ${{ steps.check.outputs.EXPORTER_HEAD }}
+      EXPORTER_CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
 
-  build_push_linux_artifacts:
-    needs: [create_prerelease]
-    name: Push Linux Artifacts
+  build_linux_artifacts:
+    needs: [check_exporter_preconditions]
+    name: Build Linux artifacts and packages
     runs-on: ubuntu-latest
-    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_LINUX == 'true'}}
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true'}}
     steps:
-      - uses: actions/setup-go@v2
+      - uses: actions/checkout@v3
         with:
-          go-version: ${{env.GO_VERSION}}
-      - name: Checkout code
-        uses: actions/checkout@v2
+          fetch-depth: 0
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: nri-config-generator/go.mod
+      - name: Install goreleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: ${{ env.GORELEASER_VERSION }}
+          install-only: true
       - name: Install dependencies
         run: |
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential rpm gnupg2 gpg-agent debsigs
@@ -91,25 +91,17 @@ jobs:
         id: vars
         run : |
           export GOPATH=$(go env GOPATH)
-          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
+          export EXPORTER_PATH=${{ needs.check_exporter_preconditions.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables $EXPORTER_PATH
           setStepOutput
-      - id: download_artifacts
-        name: Download stashed folders
-        uses: actions/download-artifact@v2
-        with:
-          name: SOURCE_DIR
-          path: exporters/${{ steps.vars.outputs.NAME }}/target/source
       - name: Package linux
         id: package
         env:
-          GPG_MAIL: 'infrastructure-eng@newrelic.com'
           GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
-          GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }} # base64 encoded
+          GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}  # base64 encoded
         run : |
-          make  build-${{ steps.vars.outputs.NAME }}
-          make  package-${{ steps.vars.outputs.NAME }}
+          make package-${{ steps.vars.outputs.NAME }}
       - name: Test package installability
         uses: newrelic/integrations-pkg-test-action/linux@v1
         with:
@@ -117,132 +109,143 @@ jobs:
           integration: nri-${{ steps.vars.outputs.NAME }}
           upgrade: false
           pkgDir: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/
-      - name: Upload Release Asset DEB
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload assets to be released
+        uses: actions/upload-artifact@v3
         with:
-          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/${{ steps.vars.outputs.PACKAGE_NAME }}_${{ steps.vars.outputs.VERSION }}-1_amd64.deb
-          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}_${{ steps.vars.outputs.VERSION }}-1_amd64.deb
-          asset_content_type: deb package
-      - name: Upload Release Asset TAR
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
-          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}_linux_${{ steps.vars.outputs.VERSION }}_amd64.tar.gz
-          asset_content_type: tarball
-      - name: Upload Release Asset RPM
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/${{ steps.vars.outputs.PACKAGE_NAME }}-${{ steps.vars.outputs.VERSION }}-1.x86_64.rpm
-          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ steps.vars.outputs.VERSION }}-1.x86_64.rpm
-          asset_content_type: rpm package
+          name: linux-artifacts
+          retention-days: 1
+          path: |
+            ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/*_${{ steps.vars.outputs.VERSION }}-1_*.deb
+            ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/*_linux_${{ steps.vars.outputs.VERSION }}_*.tar.gz
+            ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/*-${{ steps.vars.outputs.VERSION }}-1.*.rpm
 
-
-  ###
-  ###   Windows Packaging # In case a new release has been created and Windows packages are needed build and push MSI
-  ###
-  build_push_windows_artifacts:
-    name: Create MSI
+  build_windows_artifacts:
+    name: Build Windows artifacts and packages
     runs-on: windows-latest
-    needs: [create_prerelease]
-    if: ${{ needs.create_prerelease.outputs.CREATE_RELEASE == 'true' && needs.create_prerelease.outputs.PACKAGE_WINDOWS == 'true' }}
+    needs: [check_exporter_preconditions]
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
       GOOS: windows
     defaults:
       run:
         working-directory: src/repo
-    strategy:
-      matrix:
-        goarch: [amd64]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: src/repo
-      - uses: actions/setup-go@v2
+          fetch-depth: 0
+      - uses: actions/setup-go@v3
         with:
-          go-version: ${{env.GO_VERSION}}
+          go-version-file: src/repo/nri-config-generator/go.mod
+      - name: Install goreleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: v1.13.1
+          install-only: true
       - name: Get PFX certificate from GH secrets
         shell: bash
         run: printf "%s" "$OHAI_PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
+
       - name: Load Variables
         id: vars
         shell: bash
         run: |
           choco install yq
-          export EXPORTER_PATH=${{ needs.create_prerelease.outputs.EXPORTER_PATH }}
+          export EXPORTER_PATH=${{ needs.check_exporter_preconditions.outputs.EXPORTER_PATH }}
           source ./scripts/common_functions.sh
           loadVariables $EXPORTER_PATH
           setStepOutput
-      - id: download_artifacts
-        name: Download stashed folders
-        uses: actions/download-artifact@v2
-        with:
-          name: SOURCE_DIR
-          path: src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\source
       - name: Build windows binary
         id: package
         shell: bash
         run : |
-          make build-${{ steps.vars.outputs.NAME }}
-      - name : Create MSI installer
-        shell: pwsh
-        run: |
-          .\scripts\win_msi_build.ps1 -arch ${{ matrix.goarch }} -exporterName ${{ steps.vars.outputs.NAME }} -version ${{ steps.vars.outputs.VERSION }} -exporterGUID ${{ steps.vars.outputs.EXPORTER_GUID }} -upgradeGUID ${{ steps.vars.outputs.UPGRADE_GUID }} -licenseGUID ${{ steps.vars.outputs.LICENSE_GUID }} -configGUID ${{ steps.vars.outputs.CONFIG_GUID }} -pfx_passphrase "$env:OHAI_PFX_PASSPHRASE"
+          make package-${{ steps.vars.outputs.NAME }}
+
       - name: Test win packages installation
         uses: newrelic/integrations-pkg-test-action/windows@v1
         with:
           tag: ${{ steps.vars.outputs.VERSION  }}
           integration: nri-${{ steps.vars.outputs.NAME }}
-          arch: ${{ matrix.goarch }}
+          arch: amd64
           pkgDir: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages
-          pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
+          pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-amd64.${{ steps.vars.outputs.VERSION }}.msi
           upgrade: false
-      - name: Upload Release Asset MSI
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload assets to be released
+        uses: actions/upload-artifact@v3
         with:
-          upload_url: ${{ needs.create_prerelease.outputs.UPLOAD_URL }}
-          asset_path: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
-          asset_name: ${{ steps.vars.outputs.PACKAGE_NAME }}-${{ matrix.goarch }}.${{ steps.vars.outputs.VERSION }}.msi
-          asset_content_type: msi package
+          name: windows-artifacts
+          retention-days: 1
+          path: |
+            ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\*.msi
+            ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages\*.zip
 
-  publish-to-s3:
-    name: Send release assets to S3
-    runs-on: ubuntu-20.04
-    needs: [ create_prerelease, build_push_linux_artifacts ]
+  create_publish_schema:
+    name: Create the publish schema
+    runs-on: ubuntu-latest
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' }}
+    needs: [ check_exporter_preconditions ]
     steps:
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
+      - uses: actions/checkout@v3
+      - run: make create-publish-schema-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
+      - uses: actions/upload-artifact@v3
         with:
-          username: ${{ secrets.OHAI_DOCKER_HUB_ID }}
-          password: ${{ secrets.OHAI_DOCKER_HUB_PASSWORD }}
-      - run: |
-          make create-publish-schema-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
-      - name: Publish to S3 action
+          name: publish-schema
+          retention-days: 1
+          path: |
+            scripts/pkg/s3-publish-schema-tmp.yml
+
+  create_prerelease_and_upload_packages:
+    name: Create pre-release and upload packages to staging repositories
+    runs-on: ubuntu-latest
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' }}
+    needs: [ check_exporter_preconditions, build_linux_artifacts, build_windows_artifacts, create_publish_schema ]
+    steps:
+      - name: Downloading Linux artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: linux-artifacts
+          path: packages
+      - name: Downloading Windows artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: windows-artifacts
+          path: packages
+      - name: Downloading Publish schema
+        uses: actions/download-artifact@v3
+        with:
+          name: publish-schema
+          path: .
+      - name: Create Release for the exporter modified
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.check_exporter_preconditions.outputs.RELEASE_TAG }}
+          name: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }} ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}
+          prerelease: true
+          body: |
+            Changes in ${{ needs.check_exporter_preconditions.outputs.PACKAGE_NAME }} version ${{ needs.check_exporter_preconditions.outputs.VERSION }}
+              - Exporter repository URL: ${{ needs.check_exporter_preconditions.outputs.EXPORTER_REPO_URL }}
+              - Commit or Tag of the exporter packaged: ${{ needs.check_exporter_preconditions.outputs.EXPORTER_HEAD }}
+              - CHANGELOG: ${{ needs.check_exporter_preconditions.outputs.EXPORTER_CHANGELOG }}
+          files: |
+            packages/*
+      - name: Publish to S3 action (staging)
         uses: newrelic/infrastructure-publish-action@v1
         env:
           AWS_S3_BUCKET_NAME: "nr-downloads-ohai-staging"
           AWS_S3_LOCK_BUCKET_NAME: "onhost-ci-lock-staging"
+          ACCESS_POINT_HOST: "staging"
         with:
           disable_lock: false
           run_id: ${{ github.run_id }}
-          tag: ${{ needs.create_prerelease.outputs.RELEASE_TAG }}
-          app_version: ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
-          app_name: nri-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+          tag: ${{ needs.check_exporter_preconditions.outputs.RELEASE_TAG }}
+          app_version: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}
+          app_name: nri-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
           repo_name: ${{ github.event.repository.full_name }}
-          schema: "custom"
-          schema_url: "https://raw.githubusercontent.com/${{ github.event.repository.full_name }}/${{ needs.create_prerelease.outputs.RELEASE_TAG }}/scripts/s3-publish-schema.yml"
+          schema: "custom-local"
+          schema_path: ./s3-publish-schema-tmp.yml
+          access_point_host: ${{ env.ACCESS_POINT_HOST }}
           aws_region: "us-east-1"
           aws_role_arn: ${{ secrets.OHAI_AWS_ROLE_ARN_STAGING }}
           aws_role_session_name: ${{ secrets.OHAI_AWS_ROLE_SESSION_NAME_STAGING }}
@@ -252,11 +255,11 @@ jobs:
           aws_s3_lock_bucket_name: ${{ env.AWS_S3_LOCK_BUCKET_NAME }}
           gpg_passphrase: ${{ secrets.OHAI_GPG_PASSPHRASE }}
           gpg_private_key_base64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}
-      - name: Test package installability
+      - name: Test package installability (staging)
         uses: newrelic/integrations-pkg-test-action/linux@v1
         with:
-          tag: ${{ needs.create_prerelease.outputs.INTEGRATION_VERSION }}
-          integration: nri-${{ needs.create_prerelease.outputs.INTEGRATION_NAME }}
+          tag: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}
+          integration: nri-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
           packageLocation: repo
           stagingRepo: true
           upgrade: false

@@ -3,7 +3,7 @@ builds:
     binary: var/db/newrelic-infra/newrelic-integrations/bin/nri-{{.Env.NAME}}
     dir: nri-config-generator
     ldflags:
-      - -X main.integration={{.Env.NAME}} -X main.integrationVersion=${.Tag} -X main.gitCommit={.Commit} -X main.BuildDate=${.Date}
+      - -X main.integration={{.Env.NAME}} -X main.integrationVersion={{.Tag}} -X main.gitCommit={{.Commit}} -X main.BuildDate={{.Date}}
     goos:
       - linux
     goarch: []  # This field is automatically populated from the exporter.yaml
@@ -14,40 +14,47 @@ builds:
       # But then it fails while trying to build ARM binaries with an error like this:
       #   post hook failed: template: tmpl:4:66: executing "tmpl" at <.Amd64>: map has no entry for key "Amd64"
       # So we had to copy it using a wildcard but inside a shell so the shell expand the wildcard.
-      post: bash -c "cp ./dist/linux_linux_{{ .Arch }}*/var/db/newrelic-infra/newrelic-integrations/bin/nri-{{.Env.NAME}} ./exporters/{{.Env.NAME}}/target/bin/linux_{{ .Arch }}"
+      # Explaining this part `{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}`
+      # It is because apt uses .Arch amd64 while rpm uses x86_64. We have to do an override that make this template different
+      # depending in which job is running.
+      post: bash -c "cp ./dist/linux_linux_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}*/var/db/newrelic-infra/newrelic-integrations/bin/nri-{{.Env.NAME}} ./exporters/{{.Env.NAME}}/target/bin/linux_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}"
   - id: windows
-    binary: bin/nri-{{.Env.NAME}}  # Windows binaries add `.exe` automatically.
+    binary: nri-{{.Env.NAME}}  # Windows binaries add `.exe` automatically.
     dir: nri-config-generator
     ldflags:
-      - -X main.integration={{.Env.NAME}} -X main.integrationVersion=${.Tag} -X main.gitCommit={.Commit} -X main.BuildDate=${.Date}
+      - -X main.integration={{.Env.NAME}} -X main.integrationVersion={{.Tag}} -X main.gitCommit={{.Commit}} -X main.BuildDate={{.Date}}
     goos:
       - windows
     goarch:
       - amd64
     hooks:
       # This is ugly but needed. Refer to the hook above.
-      post: bash -c "cp ./dist/windows_windows_{{ .Arch }}*/bin/nri-{{.Env.NAME}}.exe ./exporters/{{.Env.NAME}}/target/bin"
+      post: bash -c "cp ./dist/windows_windows_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}*/nri-{{.Env.NAME}}.exe ./exporters/{{.Env.NAME}}/target/bin"
 nfpms:
   - id: linux
     builds:
       - linux
-    file_name_template: "nri-{{ .Env.NAME }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
+    # package_name defaults to ProjectName so we have to change it to "nri-{{.Env.NAME}}" but this field is not templated by goreleaser.
+    # So it has to be done in the templating script. Refer to "package.sh".
+    file_name_template: "nri-{{ .Env.NAME }}_{{ .Tag }}-1_{{ .Arch }}"
     formats:
       - deb
       - rpm
     vendor: New Relic, Inc.
     maintainer: "New Relic Infrastructure <infrastructure-eng@newrelic.com>"
     homepage: "https://www.newrelic.com/infrastructure"
-    description: Prometheus exporters help exporting existing metrics from third-party system as Prometheus metrics.
+    description: Prometheus exporter to help exporting existing metrics from nri-{{.Env.NAME}} systems as Prometheus metrics.
     license: "https://newrelic.com/terms (also see LICENSE files installed with this package)"
     dependencies:
       - newrelic-infra
-    bindir: "/var/db/newrelic-infra/newrelic-integrations/bin"
+    # We are setting the path in the build step so the binary is in "var/db/newrelic-infra/newrelic-integrations/bin" in the archive step.
+    # As the binary is in position in the build step, in the packaging step we have to just use "/".
+    bindir: "/"
     contents:
-      - src: "exporters/{{.Env.NAME}}/{{.Env.NAME}}-config.yml.sample"
-        dst: "/etc/newrelic-infra/integrations.d/{{.Env.NAME}}-config.yml.sample"
-      - src: "exporters/{{.Env.NAME}}/target/bin/{{.Os}}_{{.Arch}}/{{.Env.NAME}}-exporter"
-        dst: "/usr/local/prometheus-exporters/bin/{{.Env.NAME}}-exporter"
+      - src: exporters/{{.Env.NAME}}/{{.Env.NAME}}-config.yml.sample
+        dst: /etc/newrelic-infra/integrations.d/{{.Env.NAME}}-config.yml.sample
+      - src: exporters/{{.Env.NAME}}/target/bin/{{.Os}}_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}/{{.Env.NAME}}-exporter
+        dst: /usr/local/prometheus-exporters/bin/{{.Env.NAME}}-exporter
         file_info:
           mode: 0755
       - src: "exporters/{{.Env.NAME}}/target/{{.Env.NAME}}-LICENSE"
@@ -59,13 +66,17 @@ nfpms:
       rpm:
         dependencies:
           - newrelic-infra >= 1.24.1
+        file_name_template: "nri-{{ .Env.NAME }}-{{ .Tag }}-1.{{ .Arch }}"
+        replacements:
+          amd64: x86_64
 archives:
   - id: linux
     builds:
       - linux
-    name_template: "nri-{{ .Env.NAME }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "nri-{{ .Env.NAME }}_{{ .Os }}_{{ .Tag }}_{{ .Arch }}"
     files:
       - src: "exporters/{{.Env.NAME}}/{{.Env.NAME}}-config.yml.sample"
+        strip_parent: true
         dst: "etc/newrelic-infra/integrations.d"
       - src: "exporters/{{.Env.NAME}}/target/bin/{{.Os}}_{{.Arch}}/{{.Env.NAME}}-exporter"
         dst: "usr/local/prometheus-exporters/bin"
@@ -73,6 +84,7 @@ archives:
         info:
           mode: 0755
       - src: "exporters/{{.Env.NAME}}/target/{{.Env.NAME}}-LICENSE"
+        strip_parent: true
         dst: "usr/local/share/doc/prometheus-exporters"
 release: # we use custom publisher
   disable: true
