@@ -11,6 +11,7 @@ permissions:
 env:
   OHAI_PFX_CERTIFICATE_BASE64: ${{ secrets.OHAI_PFX_CERTIFICATE_BASE64 }} # base64 encoded
   OHAI_PFX_PASSPHRASE:  ${{ secrets.OHAI_PFX_PASSPHRASE }}
+  GORELEASER_VERSION: 'v1.13.1'
 
 ###
 ###   PRE-RELEASE CREATION # Creates a pre-release if needed and loads variables for next jobs
@@ -41,7 +42,7 @@ jobs:
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: goreleaser/goreleaser-action@v4
         with:
-          version: v1.13.1
+          version: ${{ env.GORELEASER_VERSION }}
           install-only: true
       - name: Compile exporter
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
@@ -82,7 +83,7 @@ jobs:
       - name: Install goreleaser
         uses: goreleaser/goreleaser-action@v4
         with:
-          version: v1.13.1
+          version: ${{ env.GORELEASER_VERSION }}
           install-only: true
       - name: Install dependencies
         run: |
