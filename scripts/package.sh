@@ -52,7 +52,7 @@ if [ "$goos" == "windows" ]; then
     )
 else
     cp "${goreleaser_file_template}" "${goreleaser_file}"
-    # We need to template the package_name because goreleaser does not template it with environment variables.
+    # We need to "manually" template the package_name because goreleaser does not template it with environment variables.
     yq e -i ".nfpms[0].package_name = \"nri-${NAME}\"" "${goreleaser_file}"
 
     IFS=',' read -r -a goarchs <<< "$PACKAGE_LINUX_GOARCHS"
@@ -62,11 +62,16 @@ else
       yq e -i ".builds[0].goarch += [ \"${goarch}\" ]" "${goreleaser_file}"
     done
 
+    # We need to create a tag in the repository when we are in a CI because we need that tag if we want the version to be
+    # properly set.
+    # Using `--snapshot` flag will build and package  even if the tag does not exists or the repository is in a dirty
+    # state,  but the tag value (and consequently, the version value in the binary) will include
+    # `-SNAPSHOT-${COMMIT_HASH}`, that is the reason why that flag is only used outside the CI.
+    # Another considered option was using `--skip-validate` flag, but it does not skip the tag existence validation.
     if [ "x${CI}" = "xtrue" ]; then
-      git tag ${VERSION}  # Tag the repository in case we are in a CI.
+      git tag ${VERSION}
       GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist
     else
-      # --snapshots is usually needed locally (as the repository might be in a dirty state) and would alter the package name.
       GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist --snapshot
     fi
 
