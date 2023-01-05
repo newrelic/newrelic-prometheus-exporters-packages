@@ -21,6 +21,11 @@ echo "Loading Variables of of exporter"
 source "${root_dir}"/scripts/common_functions.sh
 loadVariables "${integration_dir}"/exporter.yml
 
+if [[ "$PACKAGE_LINUX" != "true" ]] && [[ "$PACKAGE_WINDOWS" != "true" ]]; then
+    echo "ERROR: the exporter would not be packaged for any supported OS (at least one of package_linux or package_windows should be set to true)"
+    exit 1
+fi
+
 echo "Building exporter"
 bash ${root_dir}/exporters/${integration}/build-exporter-${goos}.sh ${root_dir}
 
