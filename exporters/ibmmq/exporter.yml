@@ -1,7 +1,7 @@
 # name of the exporter, should match with the folder name
 name: ibmmq
 # version of the package created
-version: 0.3.0
+version: 0.4.0
 # Relative path to the License path from the repository root
 exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
@@ -9,24 +9,26 @@ exporter_repo_url: https://github.com/ibm-messaging/mq-metric-samples
 # Tag of the exporter to checkout
 exporter_tag:
 # Commit of the exporter to checkout (used if tag property is empty)
-exporter_commit: d268624ff90d2fbbec18d62b6f73ed8955c4ee8f
+exporter_commit: 322e8f6cc5ac687e5766acd4eaee447cc7d62d7a
 # Changelog to add to the new release
 exporter_changelog: https://github.com/ibm-messaging/mq-metric-samples/blob/master/CHANGELOG.md
 # Enable packages for Linux
 package_linux: true
+# Set goarch values
+package_linux_goarchs: amd64
 # Enable packages for Windows
-package_windows: false
+package_windows: true
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-upgrade_guid: 278db4a4-60a9-493b-b878-dc7b445a2db0
+upgrade_guid: 947072e6-3fe6-4775-b22e-79b502b26b96
 # Integration GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-nri_guid: 44ac2940-4aff-46fc-a46b-b1b8cd9a3505
+nri_guid: 86af6311-14d9-48c8-b752-398d5749b69c
 # Exporter GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-exporter_guid: b246fde4-0083-4e16-beb0-09139fb5ca9f
+exporter_guid: f27b1ade-938f-4594-a752-7d4bb1daabf1
 # License GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
+license_guid: 2b9425a0-3b30-4122-bd09-4b375c328c75
 # This GUID should be generated and be unique across all exporters in the repository
-config_guid: 86733900-4e10-478c-9633-61595d0e7acb
+config_guid: 8c224fdc-70ce-4f07-b3e6-2c97b6596c41

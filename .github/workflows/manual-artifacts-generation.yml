@@ -25,6 +25,10 @@ jobs:
         with:
           version: v1.13.1
           install-only: true
+      - name: Install dependencies
+        run: |
+          sudo apt-get install rpm ruby ruby-dev rubygems build-essential rpm gnupg2 gpg-agent debsigs
+          sudo gem install --no-document fpm
       - name: Compile and package the exporter
         env:
           GPG_MAIL: 'infrastructure-eng@newrelic.com'
