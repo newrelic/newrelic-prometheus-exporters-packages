@@ -200,15 +200,18 @@ jobs:
   create_prerelease_and_upload_packages:
     name: Create pre-release and upload packages to staging repositories
     runs-on: ubuntu-latest
-    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' }}
+    # Using 'always() && !( failure() )' the job is executed unless any of the needed jobs fails (even if some are skipped)
+    if: ${{ always() && !( failure() ) && needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' }}
     needs: [ check_exporter_preconditions, build_linux_artifacts, build_windows_artifacts, create_publish_schema ]
     steps:
       - name: Downloading Linux artifacts
+        if: ${{ needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true' }}
         uses: actions/download-artifact@v3
         with:
           name: linux-artifacts
           path: packages
       - name: Downloading Windows artifacts
+        if: ${{ needs.check_exporter_preconditions.outputs.PACKAGE_WINDOWS == 'true' }}
         uses: actions/download-artifact@v3
         with:
           name: windows-artifacts
