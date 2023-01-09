@@ -18,7 +18,7 @@ jobs:
     steps:
       - id: release_details
         run: |
-          regex="(.*)-([0-9]+\.[0-9]+\.[0-9]+)"
+          regex="nri-(.*)-([0-9]+\.[0-9]+\.[0-9]+)"
 
           if [[ $TAG =~ $regex ]]; then
               echo "INTEGRATION_NAME=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
@@ -40,7 +40,7 @@ jobs:
           run_id: ${{ github.run_id }}
           tag: ${{ env.TAG }}
           app_version: ${{ steps.release_details.outputs.INTEGRATION_VERSION }}
-          app_name: ${{ steps.release_details.outputs.INTEGRATION_NAME }}
+          app_name: nri-${{ steps.release_details.outputs.INTEGRATION_NAME }}
           repo_name: ${{ github.event.repository.full_name }}
           schema: "custom-local"
           schema_path: ./scripts/pkg/s3-publish-schema-tmp.yml
@@ -58,6 +58,6 @@ jobs:
         uses: newrelic/integrations-pkg-test-action/linux@v1
         with:
           tag: ${{ steps.release_details.outputs.INTEGRATION_VERSION }}
-          integration: '${{ steps.release_details.outputs.INTEGRATION_NAME }}'
+          integration: nri-${{ steps.release_details.outputs.INTEGRATION_NAME }}
           packageLocation: repo
           upgrade: false
