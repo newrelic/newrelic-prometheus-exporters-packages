@@ -58,6 +58,7 @@ jobs:
         uses: newrelic/integrations-pkg-test-action/linux@v1
         with:
           tag: ${{ steps.release_details.outputs.INTEGRATION_VERSION }}
+          repoVersion: ${{ steps.release_details.outputs.INTEGRATION_VERSION }}
           integration: nri-${{ steps.release_details.outputs.INTEGRATION_NAME }}
           packageLocation: repo
           upgrade: false
