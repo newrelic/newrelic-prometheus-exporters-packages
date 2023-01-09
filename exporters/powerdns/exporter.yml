@@ -18,17 +18,3 @@ package_linux: true
 package_linux_goarchs: amd64,arm64
 # Enable packages for Windows
 package_windows: false
-# Upgrade GUID used in the msi package. Required if package_windows is set to true
-# This GUID should be generated and be unique across all exporters in the repository
-upgrade_guid: e854d6c0-e0ce-4f9a-b405-d855a3864307
-# Integration GUID used in the msi package. Required if package_windows is set to true
-# This GUID should be generated and be unique across all exporters in the repository
-nri_guid: 25b3fb82-58e0-41a2-b0d6-f87b16eaa50c
-# Exporter GUID used in the msi package. Required if package_windows is set to true
-# This GUID should be generated and be unique across all exporters in the repository
-exporter_guid: c5a084d2-941a-49ae-836a-255b018cfb17
-# License GUID used in the msi package. Required if package_windows is set to true
-# This GUID should be generated and be unique across all exporters in the repository
-license_guid: 5d2225c3-6b87-45fb-8756-6bf7c0f164fc
-# This GUID should be generated and be unique across all exporters in the repository
-config_guid: 1ed3fde6-1b0c-485e-85e5-7a88d6001be5
