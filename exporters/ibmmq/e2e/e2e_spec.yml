@@ -15,8 +15,8 @@ scenarios:
       - docker-compose down -v
     integrations:
       - name: nri-ibmmq
-        binary_path: ../target/bin/nri-ibmmq
-        exporter_binary_path: ../target/bin/ibmmq-exporter
+        binary_path: ../target/bin/linux_amd64/nri-ibmmq
+        exporter_binary_path: ../target/bin/linux_amd64/ibmmq-exporter
         config:
           queue_manager: QM1
           exporter_port: 9157
@@ -53,8 +53,8 @@ scenarios:
       - docker-compose -f docker-compose-tls.yml down -v
     integrations:
       - name: nri-ibmmq
-        binary_path: ../target/bin/nri-ibmmq
-        exporter_binary_path: ../target/bin/ibmmq-exporter
+        binary_path: ../target/bin/linux_amd64/nri-ibmmq
+        exporter_binary_path: ../target/bin/linux_amd64/ibmmq-exporter
         config:
           queue_manager: QM1
           exporter_port: 9157
