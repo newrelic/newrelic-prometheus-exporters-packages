@@ -149,6 +149,8 @@ scenarios:
             - mongodb_ss_metrics_commands_touch_total
             - mongodb_ss_metrics_commands_unsetSharding_failed
             - mongodb_ss_metrics_commands_unsetSharding_total
+            - mongodb_ss_metrics_commands_repairDatabase_failed
+            - mongodb_ss_metrics_commands_repairDatabase_total
             - mongodb_ss_network_serviceExecutorTaskStats_threadsRunning
             - mongodb_ss_opReadConcernCounters
             - mongodb_ss_repl_ismaster
@@ -582,6 +584,8 @@ scenarios:
             - mongodb_ss_metrics_commands_touch_total
             - mongodb_ss_metrics_commands_unsetSharding_failed
             - mongodb_ss_metrics_commands_unsetSharding_total
+            - mongodb_ss_metrics_commands_repairDatabase_failed
+            - mongodb_ss_metrics_commands_repairDatabase_total
             - mongodb_ss_metrics_record_moves
             - mongodb_ss_network_serviceExecutorTaskStats_threadsRunning
             - mongodb_ss_opReadConcernCounters
