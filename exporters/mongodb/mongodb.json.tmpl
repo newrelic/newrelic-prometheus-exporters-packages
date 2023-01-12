@@ -12,6 +12,12 @@
         {{.config.collection_filters}},
         {{end}}
 
+        {{ if .config.mongodb_direct_connect}}
+        "--mongodb.direct-connect",
+        {{ else }}
+        "--no-mongodb.direct-connect",
+        {{end}}
+
         {{ if .config.index_filters}}
         "--mongodb.indexstats-colls",
         {{.config.index_filters}},
