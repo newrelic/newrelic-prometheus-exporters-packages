@@ -5,7 +5,7 @@ set -euo pipefail
 # ###############################################################
 #  Integration variables
 root_dir=$1
-integration_dir="${root_dir}/exporters/mongodb"
+integration_dir="${root_dir}/exporters/mongodb3"
 integration_bin_dir="${integration_dir}/target/bin"
 
 # ###############################################################
