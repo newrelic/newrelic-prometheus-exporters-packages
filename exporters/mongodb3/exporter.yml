@@ -1,5 +1,5 @@
 # name of the exporter, should match with the folder name
-name: mongodb
+name: mongodb3
 # version of the package created
 version: 3.0.1
 # Relative path to the License path from the repository root
