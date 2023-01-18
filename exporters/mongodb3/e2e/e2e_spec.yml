@@ -9,8 +9,8 @@ scenarios:
     after:
       - docker-compose -f docker-compose-sharded.yml down -v
     integrations:
-      - name: nri-mongodb
-        binary_path: ../target/bin/linux_amd64/nri-mongodb
+      - name: nri-mongodb3
+        binary_path: ../target/bin/linux_amd64/nri-mongodb3
         exporter_binary_path: ../target/bin/linux_amd64/mongodb-exporter  # Hardcoded as we only test E2E in the pipeline with a linux machine.
         config:
           mongodb_cluster_name: e2e_test_cluster
@@ -70,8 +70,8 @@ scenarios:
     after:
       - docker-compose -f docker-compose-replicaset.yml down -v
     integrations:
-      - name: nri-mongodb
-        binary_path: ../target/bin/linux_amd64/nri-mongodb
+      - name: nri-mongodb3
+        binary_path: ../target/bin/linux_amd64/nri-mongodb3
         exporter_binary_path: ../target/bin/linux_amd64/mongodb-exporter  # Hardcoded as we only test E2E in the pipeline with a linux machine.
         config:
           mongodb_cluster_name: e2e_test_cluster
@@ -252,8 +252,8 @@ scenarios:
     after:
       - docker-compose -f docker-compose-standalone.yml down -v
     integrations:
-      - name: nri-mongodb
-        binary_path: ../target/bin/linux_amd64/nri-mongodb
+      - name: nri-mongodb3
+        binary_path: ../target/bin/linux_amd64/nri-mongodb3
         exporter_binary_path: ../target/bin/linux_amd64/mongodb-exporter  # Hardcoded as we only test E2E in the pipeline with a linux machine.
         config:
           mongodb_cluster_name: e2e_test_cluster
