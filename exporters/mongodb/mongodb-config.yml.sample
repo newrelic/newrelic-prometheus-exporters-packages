@@ -4,8 +4,12 @@ integrations:
         # User-defined name to uniquely identify the cluster being monitored. Required.
         mongodb_cluster_name:
 
-        # MongoDB connection URI. If used replaces overwrites all other connection parameters .
+        # MongoDB connection URI. If used overwrites all other connection parameters.
         mongodb_uri:
+
+        # MongoDB direct connect. Whether or not a direct connect should be made.
+        # Direct connections are not valid if multiple hosts are specified or an SRV URI is used, for example for mongoDB Atlas.
+        mongodb_direct_connect: true
 
         # List of comma separated databases.collections to retrieve collection stats.
         collection_filters:
