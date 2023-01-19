@@ -25,4 +25,4 @@ jobs:
           api_key: ${{ secrets.COREINT_E2E_API_KEY }}
           license_key: ${{ secrets.COREINT_E2E_LICENSE_KEY }}
           retry_seconds: 60
-          retry_attempts: 20
+          retry_attempts: 15
