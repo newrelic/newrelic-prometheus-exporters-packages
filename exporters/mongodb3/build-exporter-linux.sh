@@ -5,7 +5,8 @@ set -euo pipefail
 # ###############################################################
 #  Integration variables
 root_dir=$1
-integration_dir="${root_dir}/exporters/mongodb3"
+integration_name="mongodb3"
+integration_dir="${root_dir}/exporters/${integration_name}"
 integration_bin_dir="${integration_dir}/target/bin"
 
 # ###############################################################
@@ -31,5 +32,5 @@ do
   echo  "Build exporter Linux ${goarch}"
   GOARCH=${goarch} make build
   mkdir -p "${integration_bin_dir}/linux_${goarch}"
-  cp "${tmp_dir}/mongodb_exporter" "${integration_bin_dir}/linux_${goarch}/mongodb-exporter"
+  cp "${tmp_dir}/mongodb_exporter" "${integration_bin_dir}/linux_${goarch}/${integration_name}-exporter"
 done

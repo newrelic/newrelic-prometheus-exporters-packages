@@ -11,7 +11,7 @@ scenarios:
     integrations:
       - name: nri-mongodb3
         binary_path: ../target/bin/linux_amd64/nri-mongodb3
-        exporter_binary_path: ../target/bin/linux_amd64/mongodb-exporter  # Hardcoded as we only test E2E in the pipeline with a linux machine.
+        exporter_binary_path: ../target/bin/linux_amd64/mongodb3-exporter  # Hardcoded as we only test E2E in the pipeline with a linux machine.
         config:
           mongodb_cluster_name: e2e_test_cluster
           mongodb_uri: mongodb://localhost:17000
@@ -72,7 +72,7 @@ scenarios:
     integrations:
       - name: nri-mongodb3
         binary_path: ../target/bin/linux_amd64/nri-mongodb3
-        exporter_binary_path: ../target/bin/linux_amd64/mongodb-exporter  # Hardcoded as we only test E2E in the pipeline with a linux machine.
+        exporter_binary_path: ../target/bin/linux_amd64/mongodb3-exporter  # Hardcoded as we only test E2E in the pipeline with a linux machine.
         config:
           mongodb_cluster_name: e2e_test_cluster
           mongodb_uri: mongodb://localhost:17001
@@ -254,7 +254,7 @@ scenarios:
     integrations:
       - name: nri-mongodb3
         binary_path: ../target/bin/linux_amd64/nri-mongodb3
-        exporter_binary_path: ../target/bin/linux_amd64/mongodb-exporter  # Hardcoded as we only test E2E in the pipeline with a linux machine.
+        exporter_binary_path: ../target/bin/linux_amd64/mongodb3-exporter  # Hardcoded as we only test E2E in the pipeline with a linux machine.
         config:
           mongodb_cluster_name: e2e_test_cluster
           mongodb_uri: mongodb://root:pass12345@localhost:17017

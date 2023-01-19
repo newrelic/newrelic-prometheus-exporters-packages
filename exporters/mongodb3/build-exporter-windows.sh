@@ -5,7 +5,8 @@ set -euo pipefail
 # ###############################################################
 #  Integration variables
 root_dir=$1
-integration_dir="${root_dir}/exporters/mongodb3"
+integration_name="mongodb3"
+integration_dir="${root_dir}/exporters/${integration_name}"
 integration_bin_dir="${integration_dir}/target/bin"
 
 # ###############################################################
@@ -31,4 +32,4 @@ mkdir -p ${integration_bin_dir}
 
 # Since we are using the make build from the repository, the binary doesn't have the correct extension
 # 'exe' needed in windows executables, so we add it to the final binary.
-cp "${tmp_dir}/mongodb_exporter" "${integration_bin_dir}/mongodb-exporter.exe"
+cp "${tmp_dir}/mongodb_exporter" "${integration_bin_dir}/${integration_name}-exporter.exe"
