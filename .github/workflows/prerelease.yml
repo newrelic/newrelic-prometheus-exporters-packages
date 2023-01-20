@@ -54,6 +54,8 @@ jobs:
           account_id: ${{ secrets.COREINT_E2E_ACCOUNT_ID }}
           api_key: ${{ secrets.COREINT_E2E_API_KEY }}
           license_key: ${{ secrets.COREINT_E2E_LICENSE_KEY }}
+          retry_seconds: 60
+          retry_attempts: 15
     outputs:
       CREATE_RELEASE: ${{ steps.check.outputs.CREATE_RELEASE }}
       EXPORTER_PATH: ${{ steps.check.outputs.EXPORTER_PATH }}
