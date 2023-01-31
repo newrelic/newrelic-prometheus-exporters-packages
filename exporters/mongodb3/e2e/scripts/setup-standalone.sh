@@ -8,7 +8,7 @@ USER="root"
 PASS="pass12345"
 
 echo "Waiting for startup.."
-until mongosh --host ${mongodb1}:${port} -u $USER -p $PASS --authenticationDatabase admin --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' &>/dev/null; do
+until mongosh ${mongodb1}:${port} -u $USER -p $PASS --authenticationDatabase admin --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' &>/dev/null; do
   printf '.'
   sleep 1
 done

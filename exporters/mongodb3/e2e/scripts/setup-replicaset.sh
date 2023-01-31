@@ -8,7 +8,7 @@ port=${PORT:-27017}
 DB="E2EReplicasetDB"
 
 echo "Waiting for startup.."
-until mongo --host ${mongodb1}:${port} --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' &>/dev/null; do
+until mongosh ${mongodb1}:${port} --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' &>/dev/null; do
   printf '.'
   sleep 1
 done
@@ -17,7 +17,7 @@ echo "Started.."
 
 function setup_servers() {
     echo "setup servers"
-    mongo --host ${mongodb1}:${port} <<EOF
+    mongosh ${mongodb1}:${port} <<EOF
     var cfg = {
         "_id": "${RS}",
         "protocolVersion": 1,
@@ -43,15 +43,15 @@ function noise_generator() {
       MAX_KEYS=10000
       function key() { KEY=$((RANDOM % $MAX_KEYS)); }
       while true; do
-        mongo $DB --host ${mongodb1}:${port} --eval "printjson(db.serverStatus())" > /dev/null
+        mongosh $DB --host ${mongodb1}:${port} --eval "printjson(db.serverStatus())" > /dev/null
         key
-        mongo $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetFirstCollection.insertOne( { _id: $KEY } ))" > /dev/null
-        mongo $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetFirstCollection.deleteOne( { _id: $KEY } ))" > /dev/null
-        mongo $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetFirstCollection.insertOne( { _id: $KEY } ))" > /dev/null
+        mongosh $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetFirstCollection.insertOne( { _id: $KEY } ))" > /dev/null
+        mongosh $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetFirstCollection.deleteOne( { _id: $KEY } ))" > /dev/null
+        mongosh $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetFirstCollection.insertOne( { _id: $KEY } ))" > /dev/null
         key
-        mongo $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetSecondCollection.insertOne( { _id: $KEY } ))" > /dev/null
+        mongosh $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetSecondCollection.insertOne( { _id: $KEY } ))" > /dev/null
         key
-        mongo $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetSecondCollection.insertOne( { _id: $KEY } ))" > /dev/null
+        mongosh $DB --host ${mongodb1}:${port} --eval "printjson(db.E2EReplicasetSecondCollection.insertOne( { _id: $KEY } ))" > /dev/null
         sleep $((RANDOM % 10))
       done
 }

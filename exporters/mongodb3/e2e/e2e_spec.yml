@@ -238,6 +238,9 @@ scenarios:
             - mongodb_sys_mounts_proc_sched_debug_available
             - mongodb_sys_mounts_proc_sched_debug_capacity
             - mongodb_sys_mounts_proc_sched_debug_free
+            - mongodb_sys_mounts_data_configdb_available
+            - mongodb_sys_mounts_data_configdb_capacity
+            - mongodb_sys_mounts_data_configdb_free
             - mongodb_collstats_storageStats_indexSizes_callingCode_1
             - mongodb_collstats_storageStats_indexSizes_capital_text
             - mongodb_dbstats_configServerState_opTime_t
@@ -686,6 +689,9 @@ scenarios:
             - mongodb_sys_mounts_proc_sched_debug_available
             - mongodb_sys_mounts_proc_sched_debug_capacity
             - mongodb_sys_mounts_proc_sched_debug_free
+            - mongodb_sys_mounts_data_configdb_available
+            - mongodb_sys_mounts_data_configdb_capacity
+            - mongodb_sys_mounts_data_configdb_free
             - mongodb_term
             - mongodb_writeMajorityCount
             - mongodb_collstats_storageStats_indexSizes_callingCode_1
