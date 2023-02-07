@@ -9,11 +9,13 @@ exporter_repo_url: https://github.com/aerospike/aerospike-prometheus-exporter
 # Tag of the exporter to checkout
 exporter_tag:
 # Commit of the exporter to checkout (used if tag property is empty)
-exporter_commit: c45a3266c1daafe4996fb8cb11e265bb25d856cb
+exporter_commit: 612e842ea3e56fdee42589dc886e5efbc5d2e639
 # Changelog to add to the new release
 exporter_changelog: https://github.com/aerospike/aerospike-prometheus-exporter/blob/master/CHANGELOG.md
 # Enable packages for Linux
 package_linux: true
+# (Optional) Exporter external config files (multiple files can be added separated by commas. i.e. file1,file2)
+exporter_config_files: ape.toml
 # Enable packages for Windows
 package_windows: false
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
@@ -21,12 +23,12 @@ package_windows: false
 upgrade_guid: 278db4a4-60a9-493b-b878-dc7b445a2db0
 # Integration GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-nri_guid:
+nri_guid: 44ac2940-4aff-46fc-a46b-b1b8cd9a3505
 # Exporter GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-exporter_guid:
+exporter_guid: b246fde4-0083-4e16-beb0-09139fb5ca9f
 # License GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
-license_guid:
+license_guid: a63afbd8-5ea3-4bac-85cc-1da438b8c8f4
 # This GUID should be generated and be unique across all exporters in the repository
 config_guid: 86733900-4e10-478c-9633-61595d0e7acb

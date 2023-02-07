@@ -25,4 +25,4 @@ mkdir -p ${aerospike_bin_dir}
 # copy binary file
 cp "${tmp_dir}/aerospike-prometheus-exporter" "${aerospike_bin_dir}/aerospike-exporter"
 # copy config file
-cp "${tmp_dir}/ape.toml" "${aerospike_bin_dir}/aerospike-config.yml.sample"
+# cp "${tmp_dir}/ape.toml" "${aerospike_bin_dir}/aerospike-config.yml.sample"

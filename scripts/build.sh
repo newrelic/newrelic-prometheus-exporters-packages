@@ -17,7 +17,7 @@ goreleaser_file="${root_dir}/scripts/pkg/.goreleaser.yml"
 goreleaser_file_template="${goreleaser_file}.template"
 
 
-echo "Loading Variables of of exporter"
+echo "Loading Variables of exporter"
 source "${root_dir}"/scripts/common_functions.sh
 loadVariables "${integration_dir}"/exporter.yml
 

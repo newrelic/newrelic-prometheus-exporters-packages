@@ -3,12 +3,52 @@ owningTeam: integrations
 integrationName: aerospike
 humanReadableIntegrationName: Aerospike
 entities:
-  - entityType: CLIENT_CONNECTIONS
+  - entityType: AEROSPIKE_NAMESPACE
     metrics:
-      - name: aerospike_node_stats_client_connections
-        type: guage
+      - name: aerospike_namespace_available_bin_names
+        type: gauge
         defaultResolution: 0
         unit: count
-        dimensions:
-          - name: type
-            type: string
+      - name: aerospike_namespace_allow_ttl_without_nsup
+        type: gauge
+        defaultResolution: 0
+        unit: count
+      - name: aerospike_namespace_appeals_records_exonerated
+        type: gauge
+        defaultResolution: 0
+        unit: count
+      - name: aerospike_namespace_appeals_rx_active
+        type: gauge
+        defaultResolution: 0
+        unit: count
+      - name: aerospike_namespace_appeals_tx_active
+        type: gauge
+        defaultResolution: 0
+        unit: count
+      - name: aerospike_namespace_appeals_tx_remaining
+        type: gauge
+        defaultResolution: 0
+        unit: count
+      - name: aerospike_namespace_available_bin_names
+        type: gauge
+        defaultResolution: 0
+        unit: count
+      - name: aerospike_namespace_cache_read_pct
+        type: gauge
+        defaultResolution: 0
+        unit: count
+  - entityType: AEROSPIKE_NODE
+    metrics:
+      - name: aerospike_node_stats_client_connections
+        type: gauge
+        defaultResolution: 0
+        unit: count
+      - name: aerospike_node_stats_cluster_clock_skew_ms
+        type: gauge
+        defaultResolution: 0
+        unit: count
+      - name: aerospike_node_stats_cluster_size
+        type: gauge
+        defaultResolution: 0
+        unit: count
+

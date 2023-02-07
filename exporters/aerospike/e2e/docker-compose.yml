@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  aerospike-server:
+      image: aerospike/aerospike-server-enterprise
+      container_name: aerospike-server
+      ports:
+          - "3000-3002:3000-3002/tcp"
+      networks:
+          vpcbr:
+              ipv4_address: 10.5.0.2
+
+  aerospike-prometheus-exporter:
+      image: aerospike/aerospike-prometheus-exporter
+      container_name: aerospike-prometheus-exporter
+      ports:
+          - "9145:9145/tcp"
+      networks:
+          vpcbr:
+              ipv4_address: 10.5.0.3
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+

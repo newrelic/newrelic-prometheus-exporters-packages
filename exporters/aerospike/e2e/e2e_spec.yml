@@ -1,33 +1,42 @@
 description: |
-  End-to-end tests for PowerDNS integration
+  End-to-end tests for Aerospike integration
 
 scenarios:
   - description: |
       This scenario will verify that metrics from aerospike prometheus exporter are correcly collected.
     before:
-    # prerequisite to have go language installed before building the binary
-      - go version
+      - docker-compose up -d
     after:
-      - go version
+      - docker-compose down -v
     integrations:
       - name: nri-aerospike
-        binary_path: ../target/bin/nri-aerospike
+        binary_path: ../target/bin/linux_amd64
         exporter_binary_path: ../target/bin/aerospike-exporter
         config:
-          aerospike_url: http://localhost:9145/metrics/
+          aerospike_cluster_name: e2e_test_cluster
+          aerospike_db_host: localhost
+          aerospike_db_port: 3000
           exporter_port: 9145
-          api_key: authoritative-secret
     tests:
       nrqls:
-        - query: "SELECT latest(aerospike_node_stats_client_connections) FROM Metric"
+        - query: "FROM Metric SELECT latest(aerospike_node_stats_client_connections)"
       entities:
-        - type: "CLIENT_CONNECTIONS"
+        - type: "AEROSPIKE_NODE"
           data_type: "Metric"
           metric_name: "aerospike_node_stats_client_connections"
+        - type: "AEROSPIKE_NAMESPACE"
+          data_type: "Metric"
+          metric_name: "aerospike_namespace_available_bin_names"
       metrics:
         - source: "aerospike.yml"
           except_entities:
-            - CLIENT_CONNECTIONS
+            - AEROSPIKE_NAMESPACE
           except_metrics:
-            - aerospike_node_stats_client_connections_opened
-            - aerospike_node_stats_client_connections_closed
+            - aerospike_namespace_available_bin_names
+            - aerospike_namespace_allow_ttl_without_nsup
+            - aerospike_namespace_appeals_records_exonerated
+            - aerospike_namespace_appeals_rx_active
+            - aerospike_namespace_appeals_tx_active
+            - aerospike_namespace_appeals_tx_remaining
+            - aerospike_namespace_available_bin_names
+            - aerospike_namespace_cache_read_pct
