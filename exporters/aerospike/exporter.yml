@@ -14,6 +14,8 @@ exporter_commit: 612e842ea3e56fdee42589dc886e5efbc5d2e639
 exporter_changelog: https://github.com/aerospike/aerospike-prometheus-exporter/blob/master/CHANGELOG.md
 # Enable packages for Linux
 package_linux: true
+# Set goarch values
+package_linux_goarchs: amd64,arm64
 # (Optional) Exporter external config files (multiple files can be added separated by commas. i.e. file1,file2)
 exporter_config_files: ape.toml
 # Enable packages for Windows
