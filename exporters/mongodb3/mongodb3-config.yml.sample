@@ -1,5 +1,5 @@
 integrations:
-    - name: nri-mongodb
+    - name: nri-mongodb3
       config:
         # User-defined name to uniquely identify the cluster being monitored. Required.
         mongodb_cluster_name:
@@ -24,16 +24,16 @@ integrations:
         collection_stats: true
 
         # Enable/Disable collection of Index metrics
-        index_stats: false
+        index_stats: true
 
         # Enable/Disable collection of Replica Set metrics
-        replicaset_stats: false
+        replicaset_stats: true
 
         # Enable/Disable collection of Top Admin metrics
-        top_stats: false
+        top_stats: true
 
         # Enable/Disable collection of Diagnostic metrics
-        diagnostic_stats: false
+        diagnostic_stats: true
 
         # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
         exporter_port: 9126
