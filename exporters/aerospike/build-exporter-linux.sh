@@ -25,9 +25,9 @@ IFS=',' read -r -a goarchs <<< "$PACKAGE_LINUX_GOARCHS"
 for goarch in "${goarchs[@]}"
 do
   echo  "Build exporter Linux ${goarch}"
-  GOARCH=${goarch} make build
+  GOARCH=${goarch} go build -o aerospike-prometheus-exporter .
   mkdir -p "${integration_bin_dir}/linux_${goarch}"
-  cp "${tmp_dir}/powerdns_exporter" "${integration_bin_dir}/linux_${goarch}/powerdns-exporter"
+  cp "${tmp_dir}/aerospike-prometheus-exporter" "${integration_bin_dir}/linux_${goarch}/aerospike-exporter"
 done
 
 # ###############################################################

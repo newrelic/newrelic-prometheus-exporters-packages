@@ -3,52 +3,3779 @@ owningTeam: integrations
 integrationName: aerospike
 humanReadableIntegrationName: Aerospike
 entities:
-  - entityType: AEROSPIKE_NAMESPACE
-    metrics:
-      - name: aerospike_namespace_available_bin_names
-        type: gauge
-        defaultResolution: 0
-        unit: count
-      - name: aerospike_namespace_allow_ttl_without_nsup
-        type: gauge
-        defaultResolution: 0
-        unit: count
-      - name: aerospike_namespace_appeals_records_exonerated
-        type: gauge
-        defaultResolution: 0
-        unit: count
-      - name: aerospike_namespace_appeals_rx_active
-        type: gauge
-        defaultResolution: 0
-        unit: count
-      - name: aerospike_namespace_appeals_tx_active
-        type: gauge
-        defaultResolution: 0
-        unit: count
-      - name: aerospike_namespace_appeals_tx_remaining
-        type: gauge
-        defaultResolution: 0
-        unit: count
-      - name: aerospike_namespace_available_bin_names
-        type: gauge
-        defaultResolution: 0
-        unit: count
-      - name: aerospike_namespace_cache_read_pct
-        type: gauge
-        defaultResolution: 0
-        unit: count
-  - entityType: AEROSPIKE_NODE
-    metrics:
-      - name: aerospike_node_stats_client_connections
-        type: gauge
-        defaultResolution: 0
-        unit: count
-      - name: aerospike_node_stats_cluster_clock_skew_ms
-        type: gauge
-        defaultResolution: 0
-        unit: count
-      - name: aerospike_node_stats_cluster_size
-        type: gauge
-        defaultResolution: 0
-        unit: count
-
+    - entityType: AEROSPIKE
+      metrics:
+        - name: aerospike_namespace_allow_ttl_without_nsup
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_appeals_records_exonerated
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_appeals_rx_active
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_appeals_tx_active
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_appeals_tx_remaining
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_available_bin_names
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_background_scan_max_rps
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_batch_sub_proxy_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_batch_sub_proxy_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_batch_sub_proxy_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_batch_sub_read_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_batch_sub_read_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_batch_sub_read_not_found
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_batch_sub_read_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_batch_sub_read_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_batch_sub_tsvc_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_batch_sub_tsvc_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_delete_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_delete_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_delete_not_found
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_delete_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_delete_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_client_lang_delete_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_lang_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_lang_read_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_lang_write_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_client_proxy_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_proxy_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_proxy_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_client_read_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_read_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_read_not_found
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_client_read_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_read_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_tsvc_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_client_tsvc_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_udf_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_udf_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_client_udf_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_udf_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_write_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_write_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_write_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_client_write_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_clock_skew_stop_writes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_conflict_resolve_writes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_current_time
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_data_in_index
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_dead_partitions
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_default_ttl
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_deleted_last_bin
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_disable_cold_start_eviction
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_disable_write_dup_res
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_disallow_null_setname
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_dup_res_ask
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_dup_res_respond_no_read
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_dup_res_respond_read
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_effective_is_quiesced
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_effective_prefer_uniform_balance
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_effective_replication_factor
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_enable_benchmarks_batch_sub
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_enable_benchmarks_ops_sub
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_enable_benchmarks_read
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_enable_benchmarks_udf
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_enable_benchmarks_udf_sub
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_enable_benchmarks_write
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_enable_hist_proxy
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_evict_hist_buckets
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_evict_tenths_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_evict_ttl
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_evict_void_time
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_evicted_objects
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_expired_objects
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_fail_client_lost_conflict
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_fail_generation
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_fail_key_busy
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_fail_record_too_big
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_fail_xdr_forbidden
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_fail_xdr_lost_conflict
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_batch_sub_read_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_batch_sub_read_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_batch_sub_read_not_found
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_batch_sub_read_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_from_proxy_batch_sub_read_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_batch_sub_tsvc_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_from_proxy_batch_sub_tsvc_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_delete_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_delete_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_delete_not_found
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_from_proxy_delete_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_delete_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_lang_delete_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_lang_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_lang_read_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_lang_write_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_read_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_from_proxy_read_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_read_not_found
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_read_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_read_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_tsvc_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_tsvc_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_udf_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_udf_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_udf_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_udf_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_write_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_write_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_write_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_from_proxy_write_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_geo2dsphere_within_earth_radius_meters
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_geo2dsphere_within_level_mod
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_geo2dsphere_within_max_cells
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_geo2dsphere_within_max_level
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_geo2dsphere_within_min_level
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_geo2dsphere_within_strict
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_geo_region_query_cells
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_geo_region_query_falsepos
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_geo_region_query_points
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_geo_region_query_reqs
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_high_water_disk_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_high_water_memory_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_hwm_breached
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_ignore_migrate_fill_delay
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_index_stage_size
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_master_objects
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_master_tombstones
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_max_record_size
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_memory_free_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_memory_size
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_memory_used_bytes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_memory_used_data_bytes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_memory_used_index_bytes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_memory_used_set_index_bytes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_memory_used_sindex_bytes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_order
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_record_receives
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_record_retransmits
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_records_skipped
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_records_transmitted
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_migrate_retransmit_ms
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_migrate_rx_instances
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_rx_partitions_active
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_rx_partitions_initial
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_rx_partitions_remaining
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_signals_active
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_migrate_signals_remaining
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_sleep
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_migrate_tx_instances
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_migrate_tx_partitions_active
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_tx_partitions_imbalance
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_migrate_tx_partitions_initial
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_migrate_tx_partitions_lead_remaining
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_migrate_tx_partitions_remaining
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_non_expirable_objects
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_non_replica_objects
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_non_replica_tombstones
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_ns_cluster_size
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_nsup_cycle_duration
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_nsup_hist_period
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_nsup_period
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_nsup_threads
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_objects
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_ops_sub_tsvc_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_ops_sub_tsvc_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_ops_sub_write_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_ops_sub_write_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_ops_sub_write_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_ops_sub_write_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_partition_tree_sprigs
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_pending_quiesce
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_prefer_uniform_balance
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_prole_objects
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_prole_tombstones
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_query_aggr_abort
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_aggr_avg_rec_count
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_aggr_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_aggr_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_basic_abort
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_query_basic_avg_rec_count
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_basic_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_basic_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_fail
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_false_positives
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_long_queue_full
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_long_reqs
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_ops_bg_abort
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_ops_bg_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_ops_bg_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_proto_compression_ratio
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_query_proto_uncompressed_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_query_reqs
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_short_queue_full
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_short_reqs
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_query_udf_bg_abort
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_query_udf_bg_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_query_udf_bg_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_rack_id
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_re_repl_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_re_repl_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_re_repl_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_record_proto_compression_ratio
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_record_proto_uncompressed_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_reject_non_xdr_writes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_reject_xdr_writes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_replication_factor
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_all_batch_sub_dup_res
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_all_delete_dup_res
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_retransmit_all_delete_repl_write
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_all_read_dup_res
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_all_udf_dup_res
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_all_udf_repl_write
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_all_write_dup_res
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_all_write_repl_write
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_ops_sub_dup_res
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_ops_sub_repl_write
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_udf_sub_dup_res
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_retransmit_udf_sub_repl_write
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_aggr_abort
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_aggr_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_scan_aggr_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_basic_abort
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_basic_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_basic_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_scan_ops_bg_abort
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_ops_bg_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_ops_bg_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_proto_compression_ratio
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_proto_uncompressed_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_udf_bg_abort
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_udf_bg_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_scan_udf_bg_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_sindex_gc_cleaned
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_sindex_num_partitions
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_single_bin
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_single_scan_threads
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_smd_evict_void_time
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_stop_writes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_stop_writes_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_strong_consistency
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_strong_consistency_allow_expunge
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_tomb_raider_eligible_age
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+        - name: aerospike_namespace_tomb_raider_period
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_tombstones
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_transaction_pending_limit
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_truncate_lut
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_truncate_threads
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_truncated_records
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_udf_sub_lang_delete_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_udf_sub_lang_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_udf_sub_lang_read_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_udf_sub_lang_write_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_udf_sub_tsvc_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_udf_sub_tsvc_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_udf_sub_udf_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_udf_sub_udf_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_udf_sub_udf_filtered_out
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_udf_sub_udf_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_unavailable_partitions
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_unreplicated_records
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_bin_cemeteries
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_bin_tombstone_ttl
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_client_delete_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_client_delete_not_found
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_client_delete_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_client_delete_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_xdr_client_write_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_client_write_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_client_write_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_xdr_from_proxy_delete_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_from_proxy_delete_not_found
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_xdr_from_proxy_delete_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_from_proxy_delete_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_xdr_from_proxy_write_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_from_proxy_write_success
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_from_proxy_write_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_tomb_raider_period
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: ns
+              type: string
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_namespace_xdr_tomb_raider_threads
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_namespace_xdr_tombstones
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: ns
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_created_buffers
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_delay
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_destroyed_buffers
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_huge_buffers
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_initiate
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_proto_compression_ratio
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_proto_uncompressed_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_timeout
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_batch_index_unused_buffers
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_client_connections
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_client_connections_closed
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_client_connections_opened
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_cluster_clock_skew_ms
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_node_stats_cluster_clock_skew_stop_writes_sec
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_cluster_generation
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_cluster_integrity
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_cluster_is_member
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_cluster_max_compatibility_id
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_cluster_min_compatibility_id
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_cluster_size
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_demarshal_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_early_tsvc_batch_sub_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_early_tsvc_client_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_early_tsvc_from_proxy_batch_sub_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_early_tsvc_from_proxy_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_early_tsvc_ops_sub_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_early_tsvc_udf_sub_error
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_node_stats_fabric_bulk_recv_rate
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_fabric_bulk_send_rate
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_fabric_connections
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_fabric_connections_closed
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_fabric_connections_opened
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_fabric_ctrl_recv_rate
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_node_stats_fabric_ctrl_send_rate
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_fabric_meta_recv_rate
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_fabric_meta_send_rate
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_fabric_rw_recv_rate
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_fabric_rw_send_rate
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_failed_best_practices
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_heap_active_kbytes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_heap_allocated_kbytes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_heap_efficiency_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_node_stats_heap_mapped_kbytes
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_heap_site_count
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_heartbeat_connections
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_heartbeat_connections_closed
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_heartbeat_connections_opened
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_heartbeat_received_foreign
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_heartbeat_received_self
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_info_complete
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_info_queue
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_migrate_allowed
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_migrate_partitions_remaining
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_node_stats_objects
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_process_cpu_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_proxy_in_progress
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_query_long_running
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_query_short_running
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_node_stats_reaped_fds
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_rw_in_progress
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_scans_active
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_system_free_mem_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_system_kernel_cpu_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: service
+              type: string
+            - name: cluster_name
+              type: string
+        - name: aerospike_node_stats_system_total_cpu_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_system_user_cpu_pct
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_threads_detached
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_threads_joinable
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_threads_pool_active
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_threads_pool_total
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_time_since_rebalance
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_tombstones
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_tree_gc_queue
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_stats_uptime
+          type: count
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+        - name: aerospike_node_ticks
+          type: count
+          defaultResolution: 15
+          unit: count
+        - name: aerospike_node_up
+          type: gauge
+          defaultResolution: 15
+          unit: count
+          dimensions:
+            - name: build
+              type: string
+            - name: cluster_name
+              type: string
+            - name: service
+              type: string
+      internalAttributes:
+        - name: newrelic.integrationName
+          type: string
+        - name: newrelic.integrationVersion
+          type: string
+        - name: newrelic.source
+          type: string
+        - name: newrelic.agentVersion
+          type: string
+      ignoredAttributes:
+        - agentName
+        - coreCount
+        - processorCount
+        - systemMemoryBytes
+      tags: []

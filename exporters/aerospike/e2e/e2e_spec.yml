@@ -10,8 +10,8 @@ scenarios:
       - docker-compose down -v
     integrations:
       - name: nri-aerospike
-        binary_path: ../target/bin/linux_amd64
-        exporter_binary_path: ../target/bin/aerospike-exporter
+        binary_path: ../target/bin/linux_amd64/nri-aerospike
+        exporter_binary_path: ../target/bin/linux_amd64/aerospike-exporter
         config:
           aerospike_cluster_name: e2e_test_cluster
           aerospike_db_host: localhost
