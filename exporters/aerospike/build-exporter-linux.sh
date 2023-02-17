@@ -29,13 +29,3 @@ do
   mkdir -p "${integration_bin_dir}/linux_${goarch}"
   cp "${tmp_dir}/aerospike-prometheus-exporter" "${integration_bin_dir}/linux_${goarch}/aerospike-exporter"
 done
-
-# ###############################################################
-#  Build exporter
-make
-
-# ###############################################################
-#  Move binary to its final path to be copied from the next step
-mkdir -p "${integration_bin_dir}"
-
-cp "${tmp_dir}/aerospike-prometheus-exporter" "${integration_bin_dir}"/aerospike-exporter
