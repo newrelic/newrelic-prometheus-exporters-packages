@@ -22,10 +22,8 @@
         "{{.config.username}}",
         {{end}}
 
-        {{ if .config.exporter_port}}
         "--ibmmq.httpListenPort",
-        "{{.config.exporter_port}}",
-        {{end}}
+        "{{.exporter_port}}",
 
         {{ if .config.monitored_queues}}
         "--ibmmq.monitoredQueues",
