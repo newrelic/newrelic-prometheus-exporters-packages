@@ -51,9 +51,7 @@
 
         "--collector.collstats-limit=0",
 
-        {{ if .config.exporter_port}}
         "--web.listen-address",
-        ":{{.config.exporter_port}}",
-        {{end}}
+        ":{{.exporter_port}}",
     ],
 }
