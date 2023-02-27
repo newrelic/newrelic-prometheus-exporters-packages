@@ -25,16 +25,13 @@ scenarios:
       nrqls:
         - query: "FROM Metric SELECT latest(aerospike_node_stats_client_connections)"
       entities:
-        - type: "AEROSPIKE_NODE"
+        - type: "AEROSPIKE"
           data_type: "Metric"
           metric_name: "aerospike_node_stats_client_connections"
-        - type: "AEROSPIKE_NAMESPACE"
-          data_type: "Metric"
-          metric_name: "aerospike_namespace_available_bin_names"
       metrics:
         - source: "aerospike.yml"
           except_entities:
-            - AEROSPIKE_NAMESPACE
+            - AEROSPIKE
           except_metrics:
             - aerospike_namespace_available_bin_names
             - aerospike_namespace_allow_ttl_without_nsup
@@ -42,5 +39,4 @@ scenarios:
             - aerospike_namespace_appeals_rx_active
             - aerospike_namespace_appeals_tx_active
             - aerospike_namespace_appeals_tx_remaining
-            - aerospike_namespace_available_bin_names
             - aerospike_namespace_cache_read_pct
