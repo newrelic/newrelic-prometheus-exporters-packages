@@ -3,7 +3,9 @@ version: "3"
 services:
     mq_server:
         platform: linux/x86_64
-        image: icr.io/ibm-messaging/mq:latest
+        # We need to re-generate testing certificates before upgrading it because queue manager certificates
+        # with the same DN as the CA are not supported anymore. See: <https://github.com/ibm-messaging/mq-container/blob/master/CHANGELOG.md#9320-2023-02>
+        image: icr.io/ibm-messaging/mq:9.3.1.0-r2
         environment:
             - LICENSE=accept
             - MQ_QMGR_NAME=QM1
@@ -73,4 +75,3 @@ services:
             - ./tls/ccdt-app.json:/ccdt.json
             - ./tls/keystore/key.kdb:/key.kdb
             - ./tls/keystore/key.sth:/key.sth
-

@@ -19,7 +19,6 @@ scenarios:
         exporter_binary_path: ../target/bin/linux_amd64/ibmmq-exporter
         config:
           queue_manager: QM1
-          exporter_port: 9157
           hostname: localhost
           port: 1414
           channel: DEV.ADMIN.SVRCONN
