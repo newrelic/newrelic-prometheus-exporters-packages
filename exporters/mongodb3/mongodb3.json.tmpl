@@ -51,9 +51,8 @@
 
         "--collector.collstats-limit=0",
 
-        {{ if .config.exporter_port}}
+        {{/* .exporter_port is filled by the config generator, it uses .config.exporter_port or a random available port if it is not defined  */}}
         "--web.listen-address",
-        ":{{.config.exporter_port}}",
-        {{end}}
+        ":{{.exporter_port}}",
     ],
 }

@@ -20,7 +20,6 @@ scenarios:
           replicaset_stats: true
           top_stats: true
           diagnostic_stats: true
-          exporter_port: 9128
     tests:
       nrqls:
         - query: "SELECT average(mongodb_dbstats_ok) FROM Metric"
