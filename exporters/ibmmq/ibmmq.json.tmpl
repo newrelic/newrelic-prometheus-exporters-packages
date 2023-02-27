@@ -22,6 +22,7 @@
         "{{.config.username}}",
         {{end}}
 
+        {{/* .exporter_port is filled by the config generator, it uses .config.exporter_port or a random available port if it is not defined  */}}
         "--ibmmq.httpListenPort",
         "{{.exporter_port}}",
 
