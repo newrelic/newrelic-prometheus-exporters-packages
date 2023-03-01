@@ -20,57 +20,6 @@ scenarios:
           label_type: development
           label_source: aerospike
           exporter_files_path: /tmp
-          namespace_metrics_allowlist:
-            - 'client_read_[a-z]*'
-            - stop_writes
-            - storage-engine.file.defrag_q
-            - client_write_success
-            - 'memory_*_bytes'
-            - objects
-            - '*_available_pct'
-          set_metrics_allowlist:
-            - objects
-            - tombstones
-          node_metrics_allowlist:
-            - uptime
-            - cluster_size
-            - 'batch_index_*'
-            - 'xdr_ship_*'
-          xdr_metrics_allowlist:
-            - success
-            - latency_ms
-            - throughput
-            - lap_us
-          job_metrics_allowlist:
-            - rps
-            - active-threads
-            - job-progress
-            - run-time
-            - recs-throttled
-            - recs-succeeded
-            - recs-failed
-            - net-io-bytes
-          sindex_metrics_allowlist:
-            - entries
-            - ibtr_memory_used
-            - nbtr_memory_used
-            - query_basic_complete
-            - query_basic_error
-            - query_basic_abort
-            - query_basic_avg_rec_count
-          namespace_metrics_blocklist:
-            - memory_used_sindex_bytes
-            - client_read_success
-          node_metrics_blocklist:
-            - 'batch_index_*_buffers'
-          user_metrics_users_allowlist:
-            - admin
-            - superuser
-            - aerospikeUser1
-            - aerospikeUser2
-          user_metrics_users_blocklist:
-            - admin
-            - superuser
 
     tests:
       nrqls:
@@ -82,5 +31,13 @@ scenarios:
       metrics:
         - source: "aerospike.yml"
           except_entities:
+            - AEROSPIKE
           except_metrics:
+            - aerospike_namespace_available_bin_names
+            - aerospike_namespace_allow_ttl_without_nsup
+            - aerospike_namespace_appeals_records_exonerated
+            - aerospike_namespace_appeals_rx_active
+            - aerospike_namespace_appeals_tx_active
+            - aerospike_namespace_appeals_tx_remaining
+            - aerospike_namespace_cache_read_pct
 
