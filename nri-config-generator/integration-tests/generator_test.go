@@ -39,6 +39,7 @@ const configPDNSTemplate = `
         "config": {
           "standalone": false,
          {{ or .pomiVerbose "" }}
+         {{ or .pomiScrapeTimeout "" }}
           "integration_metadata":{
             "name": "nri-powerdns",
             "version": "test-tag"
@@ -167,6 +168,19 @@ func TestGeneratorVerboseMode(t *testing.T) {
 	vars := map[string]string{
 		"exporterPort": exporterPort,
 		"pomiVerbose":  "\"verbose\":\"1\",",
+	}
+	expectedResponse := executeTemplate(t, pdnsTemplate, vars)
+	assert.JSONEq(t, expectedResponse, string(stdout))
+}
+
+func TestGeneratorScrapeTimeout(t *testing.T) {
+	envVars := getConfigGeneratorEnvVars("config_with_scrape_timeout.yml")
+	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, stdout)
+	vars := map[string]string{
+		"exporterPort":      exporterPort,
+		"pomiScrapeTimeout": `"scrape_timeout": "10s",`,
 	}
 	expectedResponse := executeTemplate(t, pdnsTemplate, vars)
 	assert.JSONEq(t, expectedResponse, string(stdout))

@@ -1,7 +1,0 @@
-parent:
-  child:
-    - element1: a
-    - element2: b
-ravendb_url: "http://live-test.ravendb.net"
-other: 123
-exporter_port: 3333

@@ -7,6 +7,9 @@ integrations:
         # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
         exporter_port: 9120
 
+        # How long until a scrape request times-out (defaults to 5s)
+        # scrape_timeout: 5s
+
         # API key used to connect to the PowerDNS server
         # api_key: ****-***-*****
 
@@ -16,5 +19,3 @@ integrations:
         #     - prefixes:
         #       - "go_"
         #       - "process_"
-
-
