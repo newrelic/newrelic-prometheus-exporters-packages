@@ -9,7 +9,7 @@ integrations:
         exporter_port: 9145
 
         # Cluster name is used on the aerospike.prometheus.json.template
-        aerospike_cluster_name: 
+        aerospike_cluster_name: aerospike_cluster
 
         namespace_metrics_allowlist:
           - 'client_read_[a-z]*'
