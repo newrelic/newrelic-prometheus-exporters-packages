@@ -28,6 +28,9 @@
                     "version": "{{.integration_version}}",
                     "name": "{{.integration}}"
                 },
+                {{- if .config.scrape_timeout }}
+                "scrape_timeout": "{{.config.scrape_timeout}}",
+                {{ end }}
                 "targets": [
                     {
                         "urls": [
