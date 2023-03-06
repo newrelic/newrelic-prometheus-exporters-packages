@@ -24,7 +24,9 @@
                     {{/* Add below any specific rules for this template. These will be hardcoded. */}}
                     {"add_attributes":[{"prefix":"aerospike_","attributes":{"aerospike_cluster_name": "{{.config.aerospike_cluster_name}}" }}]}
                 ],
-                "scrape_timeout": "5s",
+                {{- if .config.scrape_timeout }}
+                "scrape_timeout": "{{.config.scrape_timeout}}",
+                {{ end }}
                 "integration_metadata":{
                     "version": "{{.integration_version}}",
                     "name": "aerospike"
