@@ -51,15 +51,22 @@ func main() {
 	if len(brokenMetrics) == 0 {
 		log.Printf("Total metrics: %d", totalMetrics)
 		log.Printf("No broken metrics detected in %q", promInput)
-	} else {
-		totalBroken := len(brokenMetrics)
-		percentBroken := (float32(totalBroken) / float32(totalMetrics)) * 100
-
-		log.Printf("Total metrics: %d | Broken metrics %d | Broken Metrics(%%): %f", totalMetrics, totalBroken, percentBroken)
-		log.Printf("broken metrics detected in %q, placed in %q and the rules fixen them in %q", promInput, outputMetrics, outputRules)
-		outputBrokenMetrics(brokenMetrics, outputMetrics)
-		outputFixRules(brokenMetrics, outputRules)
+		return
 	}
+
+	totalBroken := len(brokenMetrics)
+	percentBroken := (float32(totalBroken) / float32(totalMetrics)) * 100
+
+	log.Printf("Total metrics: %d | Broken metrics %d | Broken Metrics(%%): %f", totalMetrics, totalBroken, percentBroken)
+	log.Printf("broken metrics detected in %q, placed in %q and the rules fixen them in %q", promInput, outputMetrics, outputRules)
+	if err = outputBrokenMetrics(brokenMetrics, outputMetrics); err != nil {
+		log.Errorf("error printing broken metrics: %s", err)
+	}
+
+	if err = outputFixRules(brokenMetrics, outputRules); err != nil {
+		log.Errorf("error printing fixing rules: %s", err)
+	}
+
 }
 
 func listMetricWithWrongType(metrics []prometheus.Metric) []prometheus.Metric {
@@ -112,11 +119,9 @@ func outputFixRules(metrics []prometheus.Metric, filename string) error {
 			nrMetricType = nrGauge
 		}
 
-		_, err = fmt.Fprintf(file, genericRule, m.Name, nrMetricType)
-		if err != nil {
-			if err != nil {
-				return fmt.Errorf("printing rules: %w", err)
-			}
+		if _, err = fmt.Fprintf(file, genericRule, m.Name, nrMetricType); err != nil {
+			return fmt.Errorf("printing rules: %w", err)
+
 		}
 	}
 	return nil
@@ -130,7 +135,9 @@ func outputBrokenMetrics(metrics []prometheus.Metric, filename string) error {
 	defer file.Close()
 
 	for _, m := range metrics {
-		fmt.Fprintf(file, "%s %s\n", m.MetricType, m.Name)
+		if _, err = fmt.Fprintf(file, "%s %s\n", m.MetricType, m.Name); err != nil {
+			return fmt.Errorf("writing to file: %w", err)
+		}
 	}
 	return nil
 }
