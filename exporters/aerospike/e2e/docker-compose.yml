@@ -1,8 +1,0 @@
-version: "3"
-
-services:
-  aerospike-server:
-      image: aerospike/aerospike-server-enterprise
-      container_name: aerospike-server
-      ports:
-          - "3000-3002:3000-3002/tcp"
