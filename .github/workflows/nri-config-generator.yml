@@ -18,7 +18,7 @@ jobs:
   # TODO use https://github.com/newrelic/newrelic-infra-checkers
   golangci-lint:
     name: Validate code via golangci
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: golangci-lint
@@ -28,7 +28,7 @@ jobs:
 
   test-nix:
     name: Run tests on *Nix
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
@@ -41,7 +41,7 @@ jobs:
 
   test-windows:
     name: Run unit tests on Windows
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3

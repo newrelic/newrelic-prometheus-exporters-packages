@@ -7,8 +7,7 @@ jobs:
     name: Run Repolinter
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Self
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run Repolinter
         uses: newrelic/repolinter-action@v1
         with:

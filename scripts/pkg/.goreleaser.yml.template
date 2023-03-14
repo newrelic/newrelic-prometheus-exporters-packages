@@ -4,6 +4,8 @@ builds:
     dir: nri-config-generator
     ldflags:
       - -X main.integration={{.Env.NAME}} -X main.integrationVersion={{.Tag}} -X main.gitCommit={{.Commit}} -X main.BuildDate={{.Date}}
+    env:
+      - CGO_ENABLED=0
     goos:
       - linux
     goarch: []  # This field is automatically populated from the exporter.yaml
@@ -17,19 +19,23 @@ builds:
       # Explaining this part `{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}`
       # It is because apt uses .Arch amd64 while rpm uses x86_64. We have to do an override that make this template different
       # depending in which job is running.
-      post: bash -c "cp ./dist/linux_linux_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}*/var/db/newrelic-infra/newrelic-integrations/bin/nri-{{.Env.NAME}} ./exporters/{{.Env.NAME}}/target/bin/linux_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}"
+      post:
+        - bash -c "cp ./dist/linux_linux_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}*/var/db/newrelic-infra/newrelic-integrations/bin/nri-{{.Env.NAME}} ./exporters/{{.Env.NAME}}/target/bin/linux_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}"
   - id: windows
     binary: nri-{{.Env.NAME}}  # Windows binaries add `.exe` automatically.
     dir: nri-config-generator
     ldflags:
       - -X main.integration={{.Env.NAME}} -X main.integrationVersion={{.Tag}} -X main.gitCommit={{.Commit}} -X main.BuildDate={{.Date}}
+    env:
+      - CGO_ENABLED=0
     goos:
       - windows
     goarch:
       - amd64
     hooks:
       # This is ugly but needed. Refer to the hook above.
-      post: bash -c "cp ./dist/windows_windows_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}*/nri-{{.Env.NAME}}.exe ./exporters/{{.Env.NAME}}/target/bin"
+      post:
+        - bash -c "cp ./dist/windows_windows_{{ if eq .Arch "x86_64" }}amd64{{ else }}{{ .Arch }}{{ end }}*/nri-{{.Env.NAME}}.exe ./exporters/{{.Env.NAME}}/target/bin"
 nfpms:
   - id: linux
     builds:

@@ -14,6 +14,12 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  GPG_MAIL: 'infrastructure-eng@newrelic.com'
+  OHAI_PFX_CERTIFICATE_BASE64: ${{ secrets.OHAI_PFX_CERTIFICATE_BASE64 }} # base64 encoded
+  OHAI_PFX_PASSPHRASE:  ${{ secrets.OHAI_PFX_PASSPHRASE }}
+  GORELEASER_VERSION: 'v1.13.1'
+
 ###
 ###   Checking PR # Checks the file and the info provided when an exporter is modified
 ###
@@ -27,7 +33,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@v2
+      - uses: actions/setup-go@v3
         with:
           go-version-file: nri-config-generator/go.mod
       - name: Check if exporters have been modified and if so run checks
@@ -46,7 +52,7 @@ jobs:
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: goreleaser/goreleaser-action@v4
         with:
-          version: v1.13.1
+          version: ${{ env.GORELEASER_VERSION }}
           install-only: true
       - name: Compile exporter
         if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
@@ -60,3 +66,97 @@ jobs:
           account_id: ${{ secrets.COREINT_E2E_ACCOUNT_ID }}
           api_key: ${{ secrets.COREINT_E2E_API_KEY }}
           license_key: ${{ secrets.COREINT_E2E_LICENSE_KEY }}
+
+  build_linux_artifacts:
+    name: Build Linux artifacts and packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: nri-config-generator/go.mod
+      - name: Install goreleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: ${{ env.GORELEASER_VERSION }}
+          install-only: true
+      - name: Install dependencies
+        run: |
+          sudo apt-get install rpm ruby ruby-dev rubygems build-essential rpm gnupg2 gpg-agent debsigs
+          sudo gem install --no-document fpm
+      - name: Load variables
+        id: vars
+        run : |
+          export GOPATH=$(go env GOPATH)
+          export EXPORTER_PATH=${{ needs.check_exporter_preconditions.outputs.EXPORTER_PATH }}
+          source ./scripts/common_functions.sh
+          loadVariables $EXPORTER_PATH
+          setStepOutput
+      - name: Package linux
+        id: package
+        env:
+          GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
+          GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}  # base64 encoded
+        run : |
+          make package-${{ steps.vars.outputs.NAME }}
+      - name: Test package installability
+        uses: newrelic/integrations-pkg-test-action/linux@v1
+        with:
+          tag: ${{ steps.vars.outputs.VERSION }}
+          integration: nri-${{ steps.vars.outputs.NAME }}
+          upgrade: false
+          pkgDir: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/
+
+  build_windows_artifacts:
+    name: Build Windows artifacts and packages
+    runs-on: windows-latest
+    env:
+      GOPATH: ${{ github.workspace }}
+      GOOS: windows
+    defaults:
+      run:
+        working-directory: src/repo
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          path: src/repo
+          fetch-depth: 0
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: src/repo/nri-config-generator/go.mod
+      - name: Install goreleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: ${{ env.GORELEASER_VERSION }}
+          install-only: true
+      - name: Get PFX certificate from GH secrets
+        shell: bash
+        run: printf "%s" "$OHAI_PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
+
+      - name: Load Variables
+        id: vars
+        shell: bash
+        run: |
+          choco install yq
+          export EXPORTER_PATH=${{ needs.check_exporter_preconditions.outputs.EXPORTER_PATH }}
+          source ./scripts/common_functions.sh
+          loadVariables $EXPORTER_PATH
+          setStepOutput
+      - name: Build windows binary
+        id: package
+        shell: bash
+        run : |
+          make package-${{ steps.vars.outputs.NAME }}
+
+      - name: Test win packages installation
+        uses: newrelic/integrations-pkg-test-action/windows@v1
+        with:
+          tag: ${{ steps.vars.outputs.VERSION  }}
+          integration: nri-${{ steps.vars.outputs.NAME }}
+          arch: amd64
+          pkgDir: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages
+          pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-amd64.${{ steps.vars.outputs.VERSION }}.msi
+          upgrade: false
