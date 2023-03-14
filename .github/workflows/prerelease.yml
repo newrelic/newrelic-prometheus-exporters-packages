@@ -67,9 +67,9 @@ jobs:
       EXPORTER_CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
 
   build_linux_artifacts:
-    needs: [check_exporter_preconditions]
     name: Build Linux artifacts and packages
     runs-on: ubuntu-latest
+    needs: [check_exporter_preconditions]
     if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true'}}
     steps:
       - uses: actions/checkout@v3

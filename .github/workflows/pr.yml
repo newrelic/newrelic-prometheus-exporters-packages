@@ -25,9 +25,42 @@ env:
 ###
 name: Checking PR
 jobs:
+  check_exporter_preconditions:
+    name: Test exporter e2e and output exporter variables
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: nri-config-generator/go.mod
+      - name: Check if exporters have been modified
+        id: check
+        # Running shouldDoRelease we check if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
+        # That variable is used by the following step and jobs
+        run : |
+          source ./scripts/common_functions.sh
+          shouldDoRelease
+          loadVariables $EXPORTER_PATH
+          setStepOutput
+    outputs:
+      CREATE_RELEASE: ${{ steps.check.outputs.CREATE_RELEASE }}
+      EXPORTER_PATH: ${{ steps.check.outputs.EXPORTER_PATH }}
+      PACKAGE_LINUX: ${{ steps.check.outputs.PACKAGE_LINUX }}
+      PACKAGE_WINDOWS: ${{ steps.check.outputs.PACKAGE_WINDOWS }}
+      INTEGRATION_NAME: ${{ steps.check.outputs.NAME }}
+      INTEGRATION_VERSION: ${{ steps.check.outputs.VERSION }}
+      RELEASE_TAG: ${{ steps.check.outputs.PACKAGE_NAME }}-${{ steps.check.outputs.VERSION }}
+      EXPORTER_REPO_URL: ${{ steps.check.outputs.EXPORTER_REPO_URL }}
+      EXPORTER_HEAD: ${{ steps.check.outputs.EXPORTER_HEAD }}
+      EXPORTER_CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
+
   checking_pr:
     name: Checking PR
     runs-on: ubuntu-latest
+    needs: [check_exporter_preconditions]
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true'}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -36,33 +69,18 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version-file: nri-config-generator/go.mod
-      - name: Check if exporters have been modified and if so run checks
-        id: check
-        run : |
-          source ./scripts/common_functions.sh
-          shouldDoRelease
-          loadVariables $EXPORTER_PATH
-          checkExporter
-          setStepOutput
-          if [ "$ERRORS" != "" ];then
-            echo Following errors have been found: $ERRORS
-            exit 1
-          fi
       - name: Install goreleaser
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: goreleaser/goreleaser-action@v4
         with:
           version: ${{ env.GORELEASER_VERSION }}
           install-only: true
       - name: Compile exporter
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         run : |
-          make build-${{ steps.check.outputs.NAME }}
+          make build-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
       - name: e2e-test
-        if: ${{ steps.check.outputs.CREATE_RELEASE == 'true'}}
         uses: newrelic/newrelic-integration-e2e-action@v1
         with:
-          spec_path: exporters/${{ steps.check.outputs.NAME }}/e2e/e2e_spec.yml
+          spec_path: exporters/${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}/e2e/e2e_spec.yml
           account_id: ${{ secrets.COREINT_E2E_ACCOUNT_ID }}
           api_key: ${{ secrets.COREINT_E2E_API_KEY }}
           license_key: ${{ secrets.COREINT_E2E_LICENSE_KEY }}
@@ -70,6 +88,8 @@ jobs:
   build_linux_artifacts:
     name: Build Linux artifacts and packages
     runs-on: ubuntu-latest
+    needs: [check_exporter_preconditions]
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true'}}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -86,32 +106,28 @@ jobs:
         run: |
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential rpm gnupg2 gpg-agent debsigs
           sudo gem install --no-document fpm
-      - name: Load variables
-        id: vars
-        run : |
-          export GOPATH=$(go env GOPATH)
-          export EXPORTER_PATH=${{ needs.check_exporter_preconditions.outputs.EXPORTER_PATH }}
-          source ./scripts/common_functions.sh
-          loadVariables $EXPORTER_PATH
-          setStepOutput
+
       - name: Package linux
         id: package
         env:
           GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
           GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}  # base64 encoded
         run : |
-          make package-${{ steps.vars.outputs.NAME }}
+          make package-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
+
       - name: Test package installability
         uses: newrelic/integrations-pkg-test-action/linux@v1
         with:
-          tag: ${{ steps.vars.outputs.VERSION }}
-          integration: nri-${{ steps.vars.outputs.NAME }}
+          tag: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}
+          integration: nri-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
           upgrade: false
-          pkgDir: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/
+          pkgDir: ./exporters/${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}/target/packages/
 
   build_windows_artifacts:
     name: Build Windows artifacts and packages
     runs-on: windows-latest
+    needs: [check_exporter_preconditions]
+    if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_WINDOWS == 'true' }}
     env:
       GOPATH: ${{ github.workspace }}
       GOOS: windows
@@ -132,31 +148,26 @@ jobs:
         with:
           version: ${{ env.GORELEASER_VERSION }}
           install-only: true
-      - name: Get PFX certificate from GH secrets
-        shell: bash
-        run: printf "%s" "$OHAI_PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
-
-      - name: Load Variables
-        id: vars
+      - name: Install dependencies
         shell: bash
         run: |
           choco install yq
-          export EXPORTER_PATH=${{ needs.check_exporter_preconditions.outputs.EXPORTER_PATH }}
-          source ./scripts/common_functions.sh
-          loadVariables $EXPORTER_PATH
-          setStepOutput
+
+      - name: Get PFX certificate from GH secrets
+        shell: bash
+        run: printf "%s" "$OHAI_PFX_CERTIFICATE_BASE64" | base64 -d - > mycert.pfx
       - name: Build windows binary
         id: package
         shell: bash
         run : |
-          make package-${{ steps.vars.outputs.NAME }}
+          make package-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
 
       - name: Test win packages installation
         uses: newrelic/integrations-pkg-test-action/windows@v1
         with:
-          tag: ${{ steps.vars.outputs.VERSION  }}
-          integration: nri-${{ steps.vars.outputs.NAME }}
+          tag: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION  }}
+          integration: nri-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
           arch: amd64
-          pkgDir: ${{ github.workspace }}\src\repo\exporters\${{ steps.vars.outputs.NAME }}\target\packages
-          pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-amd64.${{ steps.vars.outputs.VERSION }}.msi
+          pkgDir: ${{ github.workspace }}\src\repo\exporters\${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}\target\packages
+          pkgName: nri-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}-amd64.${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}.msi
           upgrade: false

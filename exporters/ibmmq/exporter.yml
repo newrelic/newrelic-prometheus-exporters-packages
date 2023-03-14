@@ -32,3 +32,5 @@ exporter_guid: f27b1ade-938f-4594-a752-7d4bb1daabf1
 license_guid: 2b9425a0-3b30-4122-bd09-4b375c328c75
 # This GUID should be generated and be unique across all exporters in the repository
 config_guid: 8c224fdc-70ce-4f07-b3e6-2c97b6596c41
+
+# Force execution for testing purposes.
