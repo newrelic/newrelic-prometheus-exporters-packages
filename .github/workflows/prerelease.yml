@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v4
         with:
           go-version-file: nri-config-generator/go.mod
       - name: Check if exporters have been modified
@@ -67,15 +67,15 @@ jobs:
       EXPORTER_CHANGELOG: ${{ steps.check.outputs.EXPORTER_CHANGELOG }}
 
   build_linux_artifacts:
-    needs: [check_exporter_preconditions]
     name: Build Linux artifacts and packages
     runs-on: ubuntu-latest
+    needs: [check_exporter_preconditions]
     if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true'}}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v4
         with:
           go-version-file: nri-config-generator/go.mod
       - name: Install goreleaser
@@ -136,7 +136,7 @@ jobs:
         with:
           path: src/repo
           fetch-depth: 0
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v4
         with:
           go-version-file: src/repo/nri-config-generator/go.mod
       - name: Install goreleaser
