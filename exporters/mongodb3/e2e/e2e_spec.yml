@@ -263,6 +263,8 @@ scenarios:
           top_stats: true
           diagnostic_stats: true
           exporter_port: 9127
+          collection_filters: "E2EStandaloneDB"
+          index_filters: "E2EStandaloneDB"
     tests:
       nrqls:
         - query: "SELECT average(mongodb_dbstats_ok) FROM Metric"
