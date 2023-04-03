@@ -9,7 +9,7 @@
 
         {{ if .config.collection_filters}}
         "--mongodb.collstats-colls",
-        {{.config.collection_filters}},
+        "{{.config.collection_filters}}",
         {{end}}
 
         {{ if .config.mongodb_direct_connect}}
@@ -20,7 +20,7 @@
 
         {{ if .config.index_filters}}
         "--mongodb.indexstats-colls",
-        {{.config.index_filters}},
+        "{{.config.index_filters}}",
         {{end}}
 
         {{if or (.config.database_stats) (eq .config.database_stats nil)}}
