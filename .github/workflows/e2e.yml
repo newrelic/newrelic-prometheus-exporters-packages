@@ -6,6 +6,9 @@ on:
         description: 'Name of the exporter to run e2e'
         required: true
 
+env:
+  GORELEASER_VERSION: 'v1.13.1'
+
 jobs:
   e2e-test:
     name: E2E tests for ${{ github.event.inputs.exporter }}
@@ -15,6 +18,11 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version-file: nri-config-generator/go.mod
+      - name: Install goreleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: ${{ env.GORELEASER_VERSION }}
+          install-only: true
       - name: build-${{ github.event.inputs.exporter }}
         run: make build-${{ github.event.inputs.exporter }}
       - name: e2e-test
