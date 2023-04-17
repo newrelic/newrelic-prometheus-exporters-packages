@@ -3,8 +3,6 @@
         "{{ .exporter_binary_path }}",
 
         "--config",
-        "/tmp/ape.toml",
-
-        
+        "{{ .config.exporter_files_path }}/ape.toml",
     ]
 }
