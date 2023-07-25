@@ -42,9 +42,6 @@ if [ "$goos" == "windows" ]; then
     cp "${integration_target}/bin/nri-${NAME}.exe" "${root_dir}/dist/New Relic/newrelic-infra/newrelic-integrations/bin"
     cp "${integration_dir}/${NAME}-win-definition.yml" "${root_dir}/dist/New Relic/newrelic-infra/newrelic-integrations/" || true
 
-    mkdir -p "${root_dir}/dist/New Relic/newrelic-infra/logging.d"
-    cp "${integration_dir}/${NAME}-log-win.yml" "${root_dir}/dist/New Relic/newrelic-infra/logging.d/" || true
-
     (
       # Inside a subshell so we do not change $PWD to the rest of the script
       cd "${root_dir}/dist"
