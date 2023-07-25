@@ -13,6 +13,9 @@
 on:
   pull_request:
     branches: [ main ]
+  push:
+    branches:
+      - renovate/**
 
 env:
   GPG_MAIL: 'infrastructure-eng@newrelic.com'
