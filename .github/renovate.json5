@@ -2,22 +2,31 @@
   "extends": [
     "github>newrelic/coreint-automation:renovate-base.json5"
   ],
+  "suppressNotifications": ["dependencyLookupWarnings"], // expected as some repositories use main and other repositories master
   "regexManagers": [
+    // Updates every exporter commit with the latests in the default branch.
     {
-      // Updates every exporter commit with the latests in the default branch.
       "fileMatch": ["^exporters/.+/exporter.yml$"],
       "matchStringsStrategy": "combination",
       "matchStrings": [
         "exporter_repo_url: (?<packageName>https:\/\/github\.com\/(?<depName>.+))\n",
         "exporter_commit: (?<currentDigest>.+)\n",
-        // currentValue needs to hold the reference in git-refs data sources to update the digest, we use the default
-        // branch from the changelog url.
-        "exporter_changelog: https\:\/\/github\.com.+\/blob\/(?<currentValue>.+)\/",
       ],
+      "currentValueTemplate": "main",
       "datasourceTemplate": "git-refs",
     },
     {
-      // Updates every exporter tag with the latests in the default branch.
+      "fileMatch": ["^exporters/.+/exporter.yml$"],
+      "matchStringsStrategy": "combination",
+      "matchStrings": [
+        "exporter_repo_url: (?<packageName>https:\/\/github\.com\/(?<depName>.+))\n",
+        "exporter_commit: (?<currentDigest>.+)\n",
+      ],
+      "currentValueTemplate": "master",
+      "datasourceTemplate": "git-refs",
+    },
+    // Updates every exporter tag with the latests in the default branch.
+    {
       "fileMatch": ["^exporters/.+/exporter.yml$"],
       "matchStringsStrategy": "combination",
       "matchStrings": [
