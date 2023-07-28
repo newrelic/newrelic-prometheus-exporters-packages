@@ -12,6 +12,9 @@ on:
   pull_request:
     branches: [ main ]
     paths: [ nri-config-generator/** ]
+  push:
+    branches:
+      - renovate/**
 
 jobs:
 
