@@ -648,6 +648,7 @@ scenarios:
             - mongodb_ss_wt_cache_cache_overflow_table_max_on_disk_size
             - mongodb_ss_wt_cache_cache_overflow_table_on_disk_size
             - mongodb_ss_wt_cache_cache_overflow_table_remove_calls
+            - mongodb_ss_wt_cache_maximum_page_size_at_eviction
             - mongodb_ss_wt_cache_page_written_requiring_cache_overflow_records
             - mongodb_ss_wt_cache_pages_read_into_cache_requiring_cache_overflow_entries
             - mongodb_ss_wt_cache_pages_read_into_cache_requiring_cache_overflow_for_checkpoint
