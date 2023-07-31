@@ -2,7 +2,7 @@ version: '3.8'
 services:
     mongo-1-1:
         container_name: "mongo-1-1"
-        image: mongo:4.2
+        image: mongo:6.0
         ports:
             - "${TEST_MONGODB_S1_PRIMARY_PORT:-17001}:27017"
         command: mongod --replSet rs1 --shardsvr --port 27017  --oplogSize 16
@@ -11,21 +11,21 @@ services:
 
     mongo-1-2:
         container_name: "mongo-1-2"
-        image: mongo:4.2
+        image: mongo:6.0
         ports:
             - "${TEST_MONGODB_S1_SECONDARY1_PORT:-17002}:27017"
         command: mongod --replSet rs1 --shardsvr --port 27017  --oplogSize 16
 
     mongo-1-arbiter:
         container_name: "mongo-1-arbiter"
-        image: mongo:4.2
+        image: mongo:6.0
         ports:
             - "${TEST_MONGODB_S1_ARBITER:-17011}:27017"
         command: mongod --replSet rs1 --shardsvr --port 27017  --oplogSize 16
 
     mongo-rs1-setup:
         container_name: "mongo-rs1-setup"
-        image: mongo:4.2
+        image: mongo:6.0
         depends_on:
             - "mongo-1-1"
             - "mongo-1-2"
@@ -45,14 +45,14 @@ services:
 
     mongo-2-2:
         container_name: "mongo-2-2"
-        image: mongo:4.2
+        image: mongo:6.0
         ports:
             - "${TEST_MONGODB_S2_PRIMARY_PORT:-17004}:27017"
         command: mongod --replSet rs2 --shardsvr --port 27017  --oplogSize 16
 
     mongo-2-1:
         container_name: "mongo-2-1"
-        image: mongo:4.2
+        image: mongo:6.0
         ports:
             - "${TEST_MONGODB_S2_SECONDARY2_PORT:-17006}:27017"
         command: mongod --replSet rs2 --shardsvr --port 27017  --oplogSize 16
@@ -61,14 +61,14 @@ services:
 
     mongo-2-arbiter:
         container_name: "mongo-2-arbiter"
-        image: mongo:4.2
+        image: mongo:6.0
         ports:
             - "${TEST_MONGODB_S2_ARBITER:-17012}:27017"
         command: mongod --replSet rs1 --shardsvr --port 27017  --oplogSize 16
 
     mongo-rs2-setup:
         container_name: "mongo-rs2-setup"
-        image: mongo:4.2
+        image: mongo:6.0
         depends_on:
             - "mongo-2-1"
             - "mongo-2-2"
@@ -88,14 +88,14 @@ services:
     # Config servers
     mongo-cnf-2:
         container_name: "mongo-cnf-2"
-        image: mongo:4.2
+        image: mongo:6.0
         ports:
             - "${TEST_MONGODB_CONFIGSVR1_PORT:-17007}:27017"
         command: mongod --dbpath /data/db --replSet cnf-serv --configsvr --port 27017 --oplogSize 16
 
     mongo-cnf-1:
         container_name: "mongo-cnf-1"
-        image: mongo:4.2
+        image: mongo:6.0
         ports:
             - "${TEST_MONGODB_CONFIGSVR3_PORT:-17009}:27017"
         command: mongod --dbpath /data/db --replSet cnf-serv --configsvr --port 27017 --oplogSize 16
@@ -104,7 +104,7 @@ services:
 
     mongo-cnf-setup:
         container_name: "mongo-cnf-setup"
-        image: mongo:4.2
+        image: mongo:6.0
         depends_on:
             - "mongo-cnf-1"
             - "mongo-cnf-2"
@@ -122,7 +122,7 @@ services:
 
     mongos:
         container_name: "mongos"
-        image: mongo:4.2
+        image: mongo:6.0
         ports:
             - "${TEST_MONGODB_MONGOS_PORT:-17000}:27017"
         depends_on:
@@ -140,7 +140,7 @@ services:
 
     mongo-shard-setup:
         container_name: "mongo-shard-setup"
-        image: mongo:4.2
+        image: mongo:6.0
         depends_on:
             - "mongos"
         links:
