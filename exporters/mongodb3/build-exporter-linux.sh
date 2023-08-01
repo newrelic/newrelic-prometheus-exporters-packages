@@ -30,7 +30,7 @@ IFS=',' read -r -a goarchs <<< "$PACKAGE_LINUX_GOARCHS"
 for goarch in "${goarchs[@]}"
 do
   echo  "Build exporter Linux ${goarch}"
-  GOARCH=${goarch} make build
+  CGO_ENABLED=0 GOARCH=${goarch} make build
   mkdir -p "${integration_bin_dir}/linux_${goarch}"
   cp "${tmp_dir}/mongodb_exporter" "${integration_bin_dir}/linux_${goarch}/${integration_name}-exporter"
 done
