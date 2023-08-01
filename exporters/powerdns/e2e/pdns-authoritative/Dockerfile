@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bookworm
 
 ENV PDNSCONF_LAUNCH="gmysql" 
 ENV PDNSCONF_GMYSQL_HOST="mysql" 
