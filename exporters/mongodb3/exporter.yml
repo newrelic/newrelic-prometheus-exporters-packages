@@ -7,7 +7,7 @@ exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/percona/mongodb_exporter
 # Tag of the exporter to checkout
-exporter_tag: v0.39.0
+exporter_tag: v2.37.0
 # Commit of the exporter to checkout (used if tag property is empty)
 exporter_commit:
 # Changelog to add to the new release
