@@ -106,6 +106,7 @@ scenarios:
             - mongodb_oplog_stats_wt_cache_page_written_requiring_cache_overflow_records
             - mongodb_oplog_stats_wt_cache_pages_read_into_cache_requiring_cache_overflow_entries
             - mongodb_oplog_stats_wt_reconciliation_internal_page_overflow_keys
+            - mongodb_oplog_stats_wt_reconciliation_page_checksum_matches
             - mongodb_optimes_readConcernMajorityWallTime
             - mongodb_rs_optimes_readConcernMajorityWallTime
             - mongodb_ss_flowControl_locksPerOp
@@ -122,6 +123,7 @@ scenarios:
             - mongodb_ss_locks_Global_timeAcquiringMicros_r
             - mongodb_ss_locks_Global_timeAcquiringMicros_w
             - mongodb_ss_locks_oplog_acquireCount_W
+            - mongodb_ss_locks_timeAcquiringMicros
             - mongodb_ss_metrics_commands_cloneCatalogData_failed
             - mongodb_ss_metrics_commands_cloneCatalogData_total
             - mongodb_ss_metrics_commands_cloneCollection_failed
@@ -130,6 +132,10 @@ scenarios:
             - mongodb_ss_metrics_commands_configsvrCreateCollection_total
             - mongodb_ss_metrics_commands_geoSearch_failed
             - mongodb_ss_metrics_commands_geoSearch_total
+            - mongodb_ss_metrics_commands_getFreeMonitoringStatus_failed
+            - mongodb_ss_metrics_commands_getFreeMonitoringStatus_total
+            - mongodb_ss_metrics_commands_setFreeMonitoring_failed
+            - mongodb_ss_metrics_commands_setFreeMonitoring_total
             - mongodb_ss_metrics_commands_mapreduce_shardedfinish_failed
             - mongodb_ss_metrics_commands_mapreduce_shardedfinish_total
             - mongodb_ss_metrics_commands_movePrimary_failed
@@ -192,6 +198,7 @@ scenarios:
             - mongodb_ss_wt_async_total_search_calls
             - mongodb_ss_wt_async_total_update_calls
             - mongodb_ss_wt_cache_bytes_belonging_to_the_cache_overflow_table_in_the_cache
+            - mongodb_ss_wt_cache_maximum_page_size_at_eviction
             - mongodb_ss_wt_cache_cache_overflow_cursor_application_thread_wait_time_usecs
             - mongodb_ss_wt_cache_cache_overflow_cursor_internal_thread_wait_time_usecs
             - mongodb_ss_wt_cache_cache_overflow_table_entries
@@ -563,6 +570,10 @@ scenarios:
             - mongodb_ss_metrics_commands_configsvrShardCollection_total
             - mongodb_ss_metrics_commands_geoSearch_failed
             - mongodb_ss_metrics_commands_geoSearch_total
+            - mongodb_ss_metrics_commands_getFreeMonitoringStatus_failed
+            - mongodb_ss_metrics_commands_getFreeMonitoringStatus_total
+            - mongodb_ss_metrics_commands_setFreeMonitoring_failed
+            - mongodb_ss_metrics_commands_setFreeMonitoring_total
             - mongodb_ss_metrics_commands_mapreduce_shardedfinish_failed
             - mongodb_ss_metrics_commands_mapreduce_shardedfinish_total
             - mongodb_ss_metrics_commands_moveChunk_failed
