@@ -205,18 +205,18 @@ jobs:
     steps:
       - name: Downloading Linux artifacts
         if: ${{ needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true' }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: linux-artifacts
           path: packages
       - name: Downloading Windows artifacts
         if: ${{ needs.check_exporter_preconditions.outputs.PACKAGE_WINDOWS == 'true' }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: windows-artifacts
           path: packages
       - name: Downloading Publish schema
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: publish-schema
           path: .
