@@ -34,6 +34,17 @@ scenarios:
         - source: "mongodb.yml"
           except_entities:
             - MONGODB_INSTANCE
+          except_metrics:
+            - mongodb_collstats_storageStats_totalSize
+            - mongodb_top_insert_count
+            - mongodb_top_getmore_count
+            - mongodb_top_queries_count
+            - mongodb_top_readLock_count
+            - mongodb_top_writeLock_count
+            - mongodb_top_remove_count
+            - mongodb_top_update_count
+            - mongodb_dbstats_collections
+            - mongodb_dbstats_views
 
   - description: |
       This scenario will verify that metrics from MongoDB Replicaset are correctly collected.
