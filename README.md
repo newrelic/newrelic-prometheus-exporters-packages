@@ -55,7 +55,6 @@ There are Make targets that help you build and run e2e tests locally:
 
 * Compile an integration:
 ```bash
-make fetch-resources-<exporter_name>
 make build-<exporter_name>
 ```
 
@@ -64,7 +63,8 @@ make build-<exporter_name>
 make test-e2e-<exporter_name> \
   ACCOUNT_ID=<NEWRELIC_ACCOUNT_ID> \
   API_KEY=<NEWRELIC_API_KEY> \
-  LICENSE_KEY=<NEWRELIC_LICENSE_KEY>
+  LICENSE_KEY=<NEWRELIC_LICENSE_KEY> \
+  ACCOUNT_REGION=<US,EU,Staging>
 ```
 
 ### nri-config-generator
