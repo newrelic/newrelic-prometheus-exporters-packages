@@ -2,7 +2,7 @@ version: '3.8'
 services:
   e2e_mongo-1-1:
     container_name: "e2e_mongo-1-1"
-    image: mongo:5.0
+    image: mongo:7.0
     ports:
       - "17001:27017"
     command: mongod --replSet rs1 --shardsvr --port 27017  --oplogSize 16
@@ -11,21 +11,21 @@ services:
 
   e2e_mongo-1-2:
     container_name: "e2e_mongo-1-2"
-    image: mongo:5.0
+    image: mongo:7.0
     ports:
       - "17002:27017"
     command: mongod --replSet rs1 --shardsvr --port 27017  --oplogSize 16
 
   e2e_mongo-1-arbiter:
     container_name: "e2e_mongo-1-arbiter"
-    image: mongo:5.0
+    image: mongo:7.0
     ports:
       - "17011:27017"
     command: mongod --replSet rs1 --shardsvr --port 27017  --oplogSize 16
 
   e2e_mongo-rs1-setup:
     container_name: "e2e_mongo-rs1-setup"
-    image: mongo:5.0
+    image: mongo:7.0
     depends_on:
       - "e2e_mongo-1-1"
       - "e2e_mongo-1-2"
