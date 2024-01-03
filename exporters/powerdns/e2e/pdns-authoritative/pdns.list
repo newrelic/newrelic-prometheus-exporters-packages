@@ -1,1 +1,1 @@
-deb [arch=amd64] http://repo.powerdns.com/debian buster-auth-44 main
+deb [arch=amd64 signed-by=/etc/apt/keyrings/powerdns.gpg] http://repo.powerdns.com/debian bookworm-auth-48 main
