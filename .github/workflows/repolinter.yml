@@ -1,15 +1,11 @@
+# NOTE: This file should always be named `repolinter.yml` to allow
+# workflow_dispatch to work properly
 name: Repolinter Action
 
-on: [push, workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
-  repolint:
-    name: Run Repolinter
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Repolinter
-        uses: newrelic/repolinter-action@v1
-        with:
-          config_url: https://raw.githubusercontent.com/newrelic/.github/main/repolinter-rulesets/community-plus.yml
-          output_type: issue
+  repolinter:
+    uses: newrelic/coreint-automation/.github/workflows/reusable_repolinter.yaml@v2
