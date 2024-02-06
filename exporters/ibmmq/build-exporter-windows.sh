@@ -25,8 +25,6 @@ fi
 # ###############################################################
 #  Build exporter
 
-go mod tidy
-
 curl -qsLO "https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqdev/redist/${ibmmq_client_libs_version}-IBM-MQC-Redist-Win64.zip"
 unzip "${ibmmq_client_libs_version}-IBM-MQC-Redist-Win64.zip" -d "IBM-MQC-Redist-Win64"
 export CGO_CFLAGS="-I$(cygpath -aw .)\\IBM-MQC-Redist-Win64\\tools\\c\\include -D_WIN64"

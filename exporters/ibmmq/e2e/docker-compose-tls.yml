@@ -12,6 +12,7 @@ services:
             - MQ_ENABLE_METRICS=true
             - MQ_ENABLE_EMBEDDED_WEB_SERVER=1
             - MQ_APP_PASSWORD=passw0rd
+            - MQ_ADMIN_PASSWORD=passw0rd
             # MQ_DEV generates default objects (qeues, channels, users...) used for the test.
             # More details in https://github.com/ibm-messaging/mq-container/blob/master/docs/developer-config.md
         entrypoint: [ "/bin/bash", "-c", "/usr/local/bin/entrypoint-server-tls.sh" ]
