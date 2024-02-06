@@ -7,7 +7,7 @@ set -euo pipefail -x
 root_dir=$1
 integration_dir="${root_dir}/exporters/ibmmq"
 integration_bin_dir="${integration_dir}/target/bin"
-ibmmq_client_libs_version="9.3.0.1"
+ibmmq_client_libs_version="9.3.4.0"
 
 # ###############################################################
 #  Clone exporter
