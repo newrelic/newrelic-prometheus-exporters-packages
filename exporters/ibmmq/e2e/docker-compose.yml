@@ -13,6 +13,7 @@ services:
             # More details in https://github.com/ibm-messaging/mq-container/blob/master/docs/developer-config.md
             - MQ_DEV=true
             - MQ_APP_PASSWORD=passw0rd
+            - MQ_ADMIN_PASSWORD=passw0rd
         ports:
             - "9443:9443"
             - "1414:1414"

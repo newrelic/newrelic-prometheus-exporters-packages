@@ -35,5 +35,14 @@
       ],
       "datasourceTemplate": "git-refs",
     }
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        // Skip updating ibmmq e2e images. Test are not currently running on these PR and some changes brake the tests.
+        "icr.io/ibm-messaging/mq"
+      ],
+      "enabled": false
+    }
   ]
 }

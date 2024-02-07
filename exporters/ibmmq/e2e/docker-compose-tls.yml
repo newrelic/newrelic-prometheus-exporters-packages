@@ -5,13 +5,14 @@ services:
         platform: linux/x86_64
         # We need to re-generate testing certificates before upgrading it because queue manager certificates
         # with the same DN as the CA are not supported anymore. See: <https://github.com/ibm-messaging/mq-container/blob/master/CHANGELOG.md#9320-2023-02>
-        image: icr.io/ibm-messaging/mq:9.3.3.2-r2
+        image: icr.io/ibm-messaging/mq:9.3.1.0-r2
         environment:
             - LICENSE=accept
             - MQ_QMGR_NAME=QM1
             - MQ_ENABLE_METRICS=true
             - MQ_ENABLE_EMBEDDED_WEB_SERVER=1
             - MQ_APP_PASSWORD=passw0rd
+            - MQ_ADMIN_PASSWORD=passw0rd
             # MQ_DEV generates default objects (qeues, channels, users...) used for the test.
             # More details in https://github.com/ibm-messaging/mq-container/blob/master/docs/developer-config.md
         entrypoint: [ "/bin/bash", "-c", "/usr/local/bin/entrypoint-server-tls.sh" ]
