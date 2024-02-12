@@ -38,8 +38,8 @@ integrations:
         # Port to expose scrape endpoint on, If this is not provided a random port will be used to launch the exporter
         exporter_port: 9126
 
-        # How long until a scrape request times-out (defaults to 5s)
-        # scrape_timeout: 5s
+        # How long until a scrape request times-out. If not provided the default timeout is 5s
+        scrape_timeout: 30s
 
         # transformations:
         #   - description: "General processing rules"
