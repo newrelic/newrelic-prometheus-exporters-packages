@@ -143,10 +143,10 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 	assert.JSONEq(t, expectedResponse, string(stdout))
 }
 
-// The env var interval is provided
+// The env var interval is provided by the Agent and used to set the prometheus scrape interval.
 func TestGeneratorConfigWithInterval(t *testing.T) {
 	envVars := getConfigGeneratorEnvVars("config.yml")
-	envVars = append(envVars, "interval=10s")
+	envVars = append(envVars, "NRI_CONFIG_INTERVAL=10s")
 	stdout, err := callGeneratorConfig(defaultArgs, envVars)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
