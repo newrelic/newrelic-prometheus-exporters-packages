@@ -8,7 +8,7 @@
          {
             "name": "nri-prometheus",
             {{- if .env.interval }}
-            "interval": "{{.env.interval}}",
+            "interval": "{{.env.NRI_CONFIG_INTERVAL}}",
             {{ end }}
             "config": {
                 "standalone": false,
