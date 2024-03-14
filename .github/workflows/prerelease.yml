@@ -110,7 +110,7 @@ jobs:
           upgrade: false
           pkgDir: ./exporters/${{ steps.vars.outputs.NAME }}/target/packages/
       - name: Upload assets to be released
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: linux-artifacts
           retention-days: 1
@@ -173,7 +173,7 @@ jobs:
           pkgName: ${{ steps.vars.outputs.PACKAGE_NAME }}-amd64.${{ steps.vars.outputs.VERSION }}.msi
           upgrade: false
       - name: Upload assets to be released
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: windows-artifacts
           retention-days: 1
@@ -189,7 +189,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: make create-publish-schema-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: publish-schema
           retention-days: 1
@@ -205,18 +205,18 @@ jobs:
     steps:
       - name: Downloading Linux artifacts
         if: ${{ needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true' }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: linux-artifacts
           path: packages
       - name: Downloading Windows artifacts
         if: ${{ needs.check_exporter_preconditions.outputs.PACKAGE_WINDOWS == 'true' }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: windows-artifacts
           path: packages
       - name: Downloading Publish schema
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: publish-schema
           path: .
