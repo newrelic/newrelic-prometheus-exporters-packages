@@ -15,25 +15,6 @@ services:
             vpcbr:
                 ipv4_address: 10.5.0.2
 
-    pdns-authoritative:
-        build:
-            context: pdns-authoritative
-        container_name: pdns-authoritative
-        links:
-            - "mysql:mysql"
-        ports:
-            - "5300:53"
-            - "5300:53/udp"
-            - "8081:8081"
-        environment: 
-            - PDNSCONF_DNSUPDATE=no
-            - SECALLZONES_CRONJOB=yes
-        volumes:
-            - ./pdns-authoritative/pdns.conf:/etc/powerdns/pdns.conf:ro
-        networks:
-            vpcbr:
-                ipv4_address: 10.5.0.3
-
     mysql:
         image: mysql
         environment:
