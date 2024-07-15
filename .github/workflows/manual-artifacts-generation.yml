@@ -50,7 +50,7 @@ jobs:
         with:
           go-version-file: nri-config-generator/go.mod
       - name: Install goreleaser
-        uses: goreleaser/goreleaser-action@v4
+        uses: goreleaser/goreleaser-action@v6
         with:
           version: v1.13.1
           install-only: true
