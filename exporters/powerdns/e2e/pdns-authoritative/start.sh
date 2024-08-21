@@ -42,7 +42,7 @@ mysqlcheck() {
   count=`mysql -h mysql -u "$PDNSCONF_GMYSQL_USER" -p"$PDNSCONF_GMYSQL_PASSWORD"  -e "select count(*) from information_schema.tables where table_type='BASE TABLE' and table_schema='dbns';" | tail -1`
   if [ "$count" == "0" ]; then
     echo "Database is empty. Importing PowerDNS schema..."
-    mysql -h mysql -u "$PDNSCONF_GMYSQL_USER" -p"$PDNSCONF_GMYSQL_PASSWORD"  "$PDNSCONF_GMYSQL_DBNAME" < /usr/share/doc/pdns-backend-mysql/schema.mysql.sql && echo "Import done."
+    mysql -h mysql -u "$PDNSCONF_GMYSQL_USER" -p"$PDNSCONF_GMYSQL_PASSWORD"  "$PDNSCONF_GMYSQL_DBNAME" < /usr/local/share/pdns/schema.mysql.sql && echo "Import done."
   else
     echo "database already exists..."
   fi
