@@ -8,6 +8,16 @@ scenarios:
     before:
       - docker compose up -d
     after:
+      - >-
+        docker ps --format json |
+        jq -r '.Names' |
+        xargs -I '{}' bash -c '
+          echo ===========================;
+          echo CONTAINER: {};
+          echo ===========================;
+          docker logs {};
+          echo;
+        '
       - docker compose down -v
     integrations:
       - name: nri-powerdns
@@ -48,6 +58,16 @@ scenarios:
     before:
       - docker compose up -d
     after:
+      - >-
+        docker ps --format json |
+        jq -r '.Names' |
+        xargs -I '{}' bash -c '
+          echo ===========================;
+          echo CONTAINER: {};
+          echo ===========================;
+          docker logs {};
+          echo;
+        '
       - docker compose down -v
     integrations:
       - name: nri-powerdns
@@ -82,6 +102,16 @@ scenarios:
     before:
       - docker compose up -d
     after:
+      - >-
+        docker ps --format json |
+        jq -r '.Names' |
+        xargs -I '{}' bash -c '
+          echo ===========================;
+          echo CONTAINER: {};
+          echo ===========================;
+          docker logs {};
+          echo;
+        '
       - docker compose down -v
     integrations:
       - name: nri-powerdns
