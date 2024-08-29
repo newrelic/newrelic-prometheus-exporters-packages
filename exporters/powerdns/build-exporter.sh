@@ -35,4 +35,5 @@ do
   echo  "Downloading exporter for ${os} ${goarch}"
   mkdir -p "${integration_bin_dir}/${os}_${goarch}"
   curl -qsLo "${integration_bin_dir}/${os}_${goarch}/powerdns-exporter" "${download_url}/${EXPORTER_TAG}/prometheus-powerdns_exporter_${EXPORTER_TAG}_${os}_${goarch}"
+  chmod a+x "${integration_bin_dir}/${os}_${goarch}/powerdns-exporter"
 done
