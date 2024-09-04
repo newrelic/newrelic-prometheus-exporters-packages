@@ -6,9 +6,19 @@ scenarios:
       This scenario will verify that metrics from both PDNS authoritative & PDNS recursor
       are correcly collected.
     before:
-      - docker-compose up -d
+      - docker compose up -d
     after:
-      - docker-compose down -v
+      - >-
+        docker ps --format json |
+        jq -r '.Names' |
+        xargs -I '{}' bash -c '
+          echo ===========================;
+          echo CONTAINER: {};
+          echo ===========================;
+          docker logs {};
+          echo;
+        '
+      - docker compose down -v
     integrations:
       - name: nri-powerdns
         binary_path: ../target/bin/linux_amd64/nri-powerdns
@@ -46,9 +56,19 @@ scenarios:
       This scenario will verify that metrics from PDNS authoritative
       are correcly collected.
     before:
-      - docker-compose up -d
+      - docker compose up -d
     after:
-      - docker-compose down -v
+      - >-
+        docker ps --format json |
+        jq -r '.Names' |
+        xargs -I '{}' bash -c '
+          echo ===========================;
+          echo CONTAINER: {};
+          echo ===========================;
+          docker logs {};
+          echo;
+        '
+      - docker compose down -v
     integrations:
       - name: nri-powerdns
         binary_path: ../target/bin/linux_amd64/nri-powerdns
@@ -80,9 +100,19 @@ scenarios:
       This scenario will verify that metrics froms PDNS recursor
       are correcly collected.
     before:
-      - docker-compose up -d
+      - docker compose up -d
     after:
-      - docker-compose down -v
+      - >-
+        docker ps --format json |
+        jq -r '.Names' |
+        xargs -I '{}' bash -c '
+          echo ===========================;
+          echo CONTAINER: {};
+          echo ===========================;
+          docker logs {};
+          echo;
+        '
+      - docker compose down -v
     integrations:
       - name: nri-powerdns
         binary_path: ../target/bin/linux_amd64/nri-powerdns

@@ -1,15 +1,15 @@
 # name of the exporter, should match with the folder name
 name: powerdns
 # version of the package created
-version: 0.0.10
+version: 0.0.11
 # Relative path to the License path from the repository root
 exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/lotusnoir/prometheus-powerdns_exporter
 # Tag of the exporter to checkout
-exporter_tag:
+exporter_tag: 0.3.0
 # Commit of the exporter to checkout (used if tag property is empty)
-exporter_commit: fffbd7c4768681f93988c2c3287b690db20e6ce0
+exporter_commit:
 # Changelog to add to the new release
 exporter_changelog: https://github.com/lotusnoir/prometheus-powerdns_exporter/tags
 # Enable packages for Linux

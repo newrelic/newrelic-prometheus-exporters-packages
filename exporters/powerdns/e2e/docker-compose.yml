@@ -1,5 +1,3 @@
-version: "3"
-
 services:
 
     pdns-recursor:
@@ -19,32 +17,17 @@ services:
         build:
             context: pdns-authoritative
         container_name: pdns-authoritative
-        links:
-            - "mysql:mysql"
         ports:
             - "5300:53"
             - "5300:53/udp"
             - "8081:8081"
-        environment: 
-            - PDNSCONF_DNSUPDATE=no
-            - SECALLZONES_CRONJOB=yes
         volumes:
-            - ./pdns-authoritative/pdns.conf:/etc/powerdns/pdns.conf:ro
+            - ./pdns-authoritative/pdns.conf:/usr/local/etc/pdns.conf:ro
+            - data:/data
         networks:
             vpcbr:
                 ipv4_address: 10.5.0.3
 
-    mysql:
-        image: mysql
-        environment:
-            - MYSQL_ROOT_PASSWORD=mysqlrootpw
-            - MYSQL_DATABASE=pdns
-            - MYSQL_USER=pdns
-            - MYSQL_PASSWORD=pdnspw
-        command: --default-authentication-plugin=mysql_native_password
-        networks:
-            vpcbr:
-                ipv4_address: 10.5.0.4
 networks:
   vpcbr:
     driver: bridge
@@ -52,3 +35,6 @@ networks:
      config:
        - subnet: 10.5.0.0/16
          gateway: 10.5.0.1
+
+volumes:
+  data: {}

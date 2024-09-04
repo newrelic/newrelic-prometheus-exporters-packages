@@ -27,7 +27,7 @@ func launchServerOn(port string) *http.Server {
 			log.Warn(err.Error())
 		}
 	}()
-	time.Sleep(2*time.Second)
+	time.Sleep(2 * time.Second)
 	return server
 }
 
@@ -71,6 +71,8 @@ func Test_isPortAvailable2(t *testing.T) {
 	assert.Nil(t, err)
 	port2, err := findAvailablePort()
 	assert.NotEqual(t, port, port2)
+	assert.NoError(t, err)
 	port3, err := findAvailablePort()
 	assert.NotEqual(t, port, port3)
+	assert.NoError(t, err)
 }
