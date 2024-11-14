@@ -1,6 +1,6 @@
 module github.com/newrelic/nri-config-generator
 
-go 1.23
+go 1.23.2
 
 require (
 	github.com/Masterminds/sprig/v3 v3.3.0
