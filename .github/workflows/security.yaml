@@ -12,6 +12,6 @@ on:
 
 jobs:
   security:
-    uses: newrelic/coreint-automation/.github/workflows/reusable_security.yaml@v2
+    uses: newrelic/coreint-automation/.github/workflows/reusable_security.yaml@v4
     with:
       skip-dirs: "exporters"
