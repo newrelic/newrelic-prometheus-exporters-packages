@@ -1,9 +1,11 @@
 # This Workflow creates a pre-release of the exporter that has been modified.
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types:
+      - prereleased
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
@@ -258,6 +260,7 @@ jobs:
           aws_s3_lock_bucket_name: ${{ env.AWS_S3_LOCK_BUCKET_NAME }}
           gpg_passphrase: ${{ secrets.OHAI_GPG_PASSPHRASE }}
           gpg_private_key_base64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}
+          dest_prefix: "ibmmq-ubuntu24-noble-release-test-ujwal/"
       - name: Test package installability (staging)
         uses: newrelic/integrations-pkg-test-action/linux@v1
         with:
