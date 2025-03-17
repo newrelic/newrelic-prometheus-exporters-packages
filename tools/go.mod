@@ -5,7 +5,7 @@ go 1.21.0
 toolchain go1.24.1
 
 require (
-	github.com/prometheus/client_model v0.5.0
+	github.com/prometheus/client_model v0.6.1
 	github.com/prometheus/common v0.45.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.20.0
