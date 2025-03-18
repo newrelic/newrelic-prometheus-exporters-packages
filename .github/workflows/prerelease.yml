@@ -1,11 +1,9 @@
 # This Workflow creates a pre-release of the exporter that has been modified.
 
 on:
-  release:
-    types:
-      - prereleased
-    tags:
-      - 'v*'
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write
