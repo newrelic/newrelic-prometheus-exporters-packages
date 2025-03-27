@@ -9,7 +9,7 @@ exporter_repo_url: https://github.com/aerospike/aerospike-prometheus-exporter
 # Tag of the exporter to checkout
 exporter_tag:
 # Commit of the exporter to checkout (used if tag property is empty)
-exporter_commit: 612e842ea3e56fdee42589dc886e5efbc5d2e639
+exporter_commit: 0e237ced26f4c7d9c04af1eed72e75fc2d59340e
 # Changelog to add to the new release
 exporter_changelog: https://github.com/aerospike/aerospike-prometheus-exporter/blob/master/CHANGELOG.md
 # Enable packages for Linux
