@@ -52,7 +52,7 @@ setStepOutput(){
 # shouldDoRelease checks if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
 shouldDoRelease(){
     old=$(git describe --tags --abbrev=0)  # ERROR PRONE IF THERE IS NO PREVIOUS TAG!
-    export EXPORTER_PATH=$(git --no-pager diff  --name-only $old "exporters/**/exporter.yml")
+    export EXPORTER_PATH=$(git --no-pager diff  --name-only $old "NR-356932-mongodb3-release-ubuntu-noble" -- "exporters/**/exporter.yml")
 
     echo $old
     echo $EXPORTER_PATH
