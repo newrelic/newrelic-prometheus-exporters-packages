@@ -53,8 +53,10 @@ setStepOutput(){
 shouldDoRelease(){
     old=$(git describe --tags --abbrev=0)  # ERROR PRONE IF THERE IS NO PREVIOUS TAG!
     export EXPORTER_PATH=$(git --no-pager diff  --name-only $old "exporters/**/exporter.yml")
-    CREATE_RELEASE=false
 
+    echo $old
+    echo $EXPORTER_PATH
+    echo "$EXPORTER_PATH"
     if [ -z "$EXPORTER_PATH" ]
     then
         echo "No definition has been modified"
