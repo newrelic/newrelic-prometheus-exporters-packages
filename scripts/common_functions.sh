@@ -51,7 +51,7 @@ setStepOutput(){
 
 # shouldDoRelease checks if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
 shouldDoRelease(){
-    old=$(git describe --tags --abbrev=0 2>/dev/null || echo "HEAD")  # Fallback to HEAD if no tags exist
+    old=$(git merge-base main HEAD)  # Find the common ancestor of main and the current branch
     export EXPORTER_PATH=$(git --no-pager diff --name-only $old "NR-356932-mongodb3-release-ubuntu-noble" -- "exporters/**/exporter.yml")
 
     echo "Old tag or HEAD: $old"
