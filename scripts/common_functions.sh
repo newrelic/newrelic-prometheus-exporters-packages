@@ -51,26 +51,24 @@ setStepOutput(){
 
 # shouldDoRelease checks if any exporter.yml has been modified, if so we set CREATE_RELEASE to true setting the variable EXPORTER_PATH
 shouldDoRelease(){
-    # old=$(git merge-base main HEAD)  # Find the common ancestor of main and the current branch
-    export EXPORTER_PATH="exporters/mongodb3/exporter.yml"
+    old=$(git describe --tags --abbrev=0)  # ERROR PRONE IF THERE IS NO PREVIOUS TAG!
+    export EXPORTER_PATH=$(git --no-pager diff  --name-only $old "exporters/**/exporter.yml")
+    CREATE_RELEASE=false
 
-    # echo "Old tag or HEAD: $old"
-    # echo "Detected changes in exporter.yml: $EXPORTER_PATH"
+    if [ -z "$EXPORTER_PATH" ]
+    then
+        echo "No definition has been modified"
+        echo "CREATE_RELEASE=${CREATE_RELEASE}" >> $GITHUB_OUTPUT
+        exit 0
+    fi
 
-    # if [ -z "$EXPORTER_PATH" ]
-    # then
-    #     echo "No definition has been modified"
-    #     echo "CREATE_RELEASE=${CREATE_RELEASE}" >> $GITHUB_OUTPUT
-    #     exit 0
-    # fi
-
-    # if (( $(git --no-pager diff --name-only $old "exporters/**/exporter.yml" | wc -l) > 1 ))
-    # then
-    #     echo "Only one definition should be modified at the same time"
-    #     git --no-pager diff --name-only $old "exporters/**/exporter.yml"
-    #     echo "CREATE_RELEASE=${CREATE_RELEASE}" >> $GITHUB_OUTPUT
-    #     exit 1
-    # fi
+    if (( $(git --no-pager diff  --name-only $old "exporters/**/exporter.yml"| wc -l) > 1 ))
+    then
+        echo "Only one definition should be modified at the same time"
+        git --no-pager diff  --name-only $old "exporters/**/exporter.yml"
+        echo "CREATE_RELEASE=${CREATE_RELEASE}" >> $GITHUB_OUTPUT
+        exit 1
+    fi
     CREATE_RELEASE=true
 }
 
