@@ -5,9 +5,9 @@ scenarios:
   - description: |
       This scenario will verify that metrics from MongoDB Sharded instance (mongos) are correctly collected.
     before:
-      - docker-compose -f docker-compose-sharded.yml up -d
+      - docker compose -f docker-compose-sharded.yml up -d
     after:
-      - docker-compose -f docker-compose-sharded.yml down -v
+      - docker compose -f docker-compose-sharded.yml down -v
     integrations:
       - name: nri-mongodb3
         binary_path: ../target/bin/linux_amd64/nri-mongodb3
@@ -49,9 +49,9 @@ scenarios:
   - description: |
       This scenario will verify that metrics from MongoDB Replicaset are correctly collected.
     before:
-      - docker-compose -f docker-compose-replicaset.yml up -d
+      - docker compose -f docker-compose-replicaset.yml up -d
     after:
-      - docker-compose -f docker-compose-replicaset.yml down -v
+      - docker compose -f docker-compose-replicaset.yml down -v
     integrations:
       - name: nri-mongodb3
         binary_path: ../target/bin/linux_amd64/nri-mongodb3
@@ -84,9 +84,9 @@ scenarios:
   - description: |
       This scenario will verify that metrics from MongoDB v6 Standalone instance are correctly collected.
     before:
-      - docker-compose -f docker-compose-standalone-v6.yml up -d
+      - docker compose -f docker-compose-standalone-v6.yml up -d
     after:
-      - docker-compose -f docker-compose-standalone-v6.yml down -v
+      - docker compose -f docker-compose-standalone-v6.yml down -v
     integrations:
       - name: nri-mongodb3
         binary_path: ../target/bin/linux_amd64/nri-mongodb3
@@ -122,9 +122,9 @@ scenarios:
   - description: |
       This scenario will verify that metrics from MongoDB v7 Standalone instance are correctly collected.
     before:
-      - docker-compose -f docker-compose-standalone-v7.yml up -d
+      - docker compose -f docker-compose-standalone-v7.yml up -d
     after:
-      - docker-compose -f docker-compose-standalone-v7.yml down -v
+      - docker compose -f docker-compose-standalone-v7.yml down -v
     integrations:
       - name: nri-mongodb3
         binary_path: ../target/bin/linux_amd64/nri-mongodb3
