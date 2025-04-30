@@ -9,10 +9,10 @@ scenarios:
       This scenario will verify that metrics from IBM MQ
       are correctly collected.
     before:
-      - docker-compose up -d
+      - docker compose up -d
     after:
       - docker logs e2e_mq_server_1
-      - docker-compose down -v
+      - docker compose down -v
     integrations:
       - name: nri-ibmmq
         binary_path: ../target/bin/linux_amd64/nri-ibmmq
@@ -46,10 +46,10 @@ scenarios:
       This scenario will verify that metrics from IBM MQ
       are correctly collected having mTLS configured.
     before:
-      - docker-compose -f docker-compose-tls.yml  up -d
+      - docker compose -f docker-compose-tls.yml  up -d
     after:
       - docker logs e2e_mq_server_1
-      - docker-compose -f docker-compose-tls.yml down -v
+      - docker compose -f docker-compose-tls.yml down -v
     integrations:
       - name: nri-ibmmq
         binary_path: ../target/bin/linux_amd64/nri-ibmmq
