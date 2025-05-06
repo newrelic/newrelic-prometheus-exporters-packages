@@ -1,6 +1,6 @@
 module github.com/newrelic/newrelic-prometheus-exporters-packages/tools
 
-go 1.21.0
+go 1.24.3
 
 toolchain go1.24.2
 
