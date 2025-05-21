@@ -47,3 +47,8 @@ integrations:
         #     - prefixes:
         #       - "go_"
         #       - "process_"
+
+        # The following parameters will be passed as environment variables directly to the mongodb exporter
+
+        # MONGODB_URI environment variable for the MongoDB connection URI used by the exporter.
+        # mongodb_uri: mongodb://user:pass@localhost:27017
