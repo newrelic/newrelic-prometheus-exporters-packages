@@ -2,11 +2,6 @@
     "exec": [
         "{{ .exporter_binary_path }}",
 
-        {{ if .config.mongodb_uri}}
-        "--mongodb.uri",
-        "{{.config.mongodb_uri}}",
-        {{end}}
-
         {{ if .config.collection_filters}}
         "--mongodb.collstats-colls",
         "{{.config.collection_filters}}",
@@ -55,4 +50,10 @@
         "--web.listen-address",
         ":{{.exporter_port}}",
     ],
+
+    {{- if or .config.mongodb_uri .env.MONGODB_URI }}
+    "env": {
+        "MONGODB_URI": "{{ if .config.mongodb_uri }}{{ .config.mongodb_uri }}{{ else }}{{ .env.MONGODB_URI }}{{ end }}"
+    }
+    {{- end }}
 }
