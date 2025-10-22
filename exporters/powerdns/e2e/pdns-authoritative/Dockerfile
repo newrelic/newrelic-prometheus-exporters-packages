@@ -1,4 +1,4 @@
-FROM ghcr.io/txqueuelen/powerdns-docker/powerdns:v4.9.9
+FROM ghcr.io/txqueuelen/powerdns-docker/powerdns:v4.9.11
 
 ADD start.sh /usr/local/bin/start.sh
 
