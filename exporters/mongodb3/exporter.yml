@@ -9,7 +9,7 @@ exporter_repo_url: https://github.com/percona/mongodb_exporter
 # Tag of the exporter to checkout
 exporter_tag:
 # Commit of the exporter to checkout (used if tag property is empty)
-# Commit for v0.47.1 tag
+# commit for v0.47.1 tag
 exporter_commit: 55813e29df3a0605c284f91fe2d812bdf6b947db
 # Changelog to add to the new release
 exporter_changelog: https://github.com/percona/mongodb_exporter/blob/main/CHANGELOG
