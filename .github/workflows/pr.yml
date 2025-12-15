@@ -32,7 +32,7 @@ jobs:
     name: Test exporter e2e and output exporter variables
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: actions/setup-go@v5
@@ -66,7 +66,7 @@ jobs:
     if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true'}}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: actions/setup-go@v5
@@ -94,7 +94,7 @@ jobs:
     needs: [check_exporter_preconditions]
     if: ${{ needs.check_exporter_preconditions.outputs.CREATE_RELEASE == 'true' && needs.check_exporter_preconditions.outputs.PACKAGE_LINUX == 'true'}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: actions/setup-go@v5
@@ -139,7 +139,7 @@ jobs:
         working-directory: src/repo
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: src/repo
           fetch-depth: 0
