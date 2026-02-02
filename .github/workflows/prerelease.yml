@@ -221,7 +221,7 @@ jobs:
           name: publish-schema
           path: .
       - name: Create Release for the exporter modified
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.check_exporter_preconditions.outputs.RELEASE_TAG }}
           name: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }} ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}
