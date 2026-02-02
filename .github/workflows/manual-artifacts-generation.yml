@@ -16,7 +16,7 @@ jobs:
   build_artifacts_linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-go@v5
         with:
           go-version-file: nri-config-generator/go.mod
@@ -45,7 +45,7 @@ jobs:
   build_artifacts_windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-go@v5
         with:
           go-version-file: nri-config-generator/go.mod
