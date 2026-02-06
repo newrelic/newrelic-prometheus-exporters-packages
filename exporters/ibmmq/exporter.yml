@@ -10,7 +10,7 @@ exporter_repo_url: https://github.com/ibm-messaging/mq-metric-samples
 exporter_tag:
 # Commit of the exporter to checkout (used if tag property is empty)
 # Tag v5.5.4
-exporter_commit: a0a8277b30c0635c3e19b27d0f6a21f7df7797ce
+exporter_commit: 98159584665e7d86cc61c0cf3c0cb9f7c9dafd62
 # Changelog to add to the new release
 exporter_changelog: https://github.com/ibm-messaging/mq-metric-samples/blob/master/CHANGELOG.md
 # Enable packages for Linux
