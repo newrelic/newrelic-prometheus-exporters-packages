@@ -16,6 +16,9 @@ on:
     branches:
       - renovate/**
 
+permissions:
+  contents: read
+
 jobs:
 
   # TODO use https://github.com/newrelic/newrelic-infra-checkers
