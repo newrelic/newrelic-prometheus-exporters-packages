@@ -6,6 +6,9 @@ on:
   release:
     types: [released]
 
+permissions:
+  contents: read
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   ORIGINAL_REPO_NAME: ${{ github.event.repository.full_name }}

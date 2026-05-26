@@ -17,6 +17,9 @@ on:
     branches:
       - renovate/**
 
+permissions:
+  contents: read
+
 env:
   GPG_MAIL: 'infrastructure-eng@newrelic.com'
   OHAI_PFX_CERTIFICATE_BASE64: ${{ secrets.OHAI_PFX_CERTIFICATE_BASE64 }} # base64 encoded
