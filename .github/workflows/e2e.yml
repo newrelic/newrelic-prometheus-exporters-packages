@@ -17,7 +17,7 @@ jobs:
     name: E2E tests for ${{ github.event.inputs.exporter }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-go@v5
         with:
           go-version-file: nri-config-generator/go.mod
