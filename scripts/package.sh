@@ -67,9 +67,9 @@ else
     # Another considered option was using `--skip-validate` flag, but it does not skip the tag existence validation.
     if [ "x${CI}" = "xtrue" ]; then
       git tag ${VERSION}
-      GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist
+      GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --clean
     else
-      GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --rm-dist --snapshot
+      GORELEASER_CURRENT_TAG=${VERSION} ${goreleaser_bin} release --config "${goreleaser_file}" --clean --snapshot
     fi
 
     echo "Copying packages to ${integration_target}"
