@@ -1,5 +1,3 @@
-version: 2
-
 builds:
   - id: linux
     binary: var/db/newrelic-infra/newrelic-integrations/bin/nri-{{.Env.NAME}}
@@ -74,7 +72,9 @@ nfpms:
       rpm:
         dependencies:
           - newrelic-infra >= 1.24.1
-        file_name_template: "nri-{{ .Env.NAME }}-{{ .Tag }}-1.{{ if eq .Arch \"amd64\" }}x86_64{{ else }}{{ .Arch }}{{ end }}"
+        file_name_template: "nri-{{ .Env.NAME }}-{{ .Tag }}-1.{{ .Arch }}"
+        replacements:
+          amd64: x86_64
 archives:
   - id: linux
     builds:
