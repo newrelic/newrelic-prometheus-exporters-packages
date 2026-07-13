@@ -18,7 +18,9 @@ package_linux: true
 # Set goarch values
 package_linux_goarchs: amd64,arm64
 # Enable packages for Windows
-package_windows: true
+# TODO: Windows builds disabled for v0.51.0 due to Linux-specific syscalls in percona-backup-mongodb dependency
+# See: https://github.com/percona/mongodb_exporter/issues/1296
+package_windows: false
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
 # This GUID should be generated and be unique across all exporters in the repository
 upgrade_guid: 7f8500b3-5388-4d16-931b-b898354a48da
