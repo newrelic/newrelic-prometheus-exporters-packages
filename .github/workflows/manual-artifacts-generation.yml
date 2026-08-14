@@ -41,7 +41,7 @@ jobs:
         run: |
           make package-${{ inputs.integrationName }}
       - name: Upload workflow artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Linux artifacts
           path: exporters/${{ inputs.integrationName }}/target/packages/*
@@ -76,7 +76,7 @@ jobs:
         run: |
           make package-${{ inputs.integrationName }}
       - name: Upload workflow artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Windows artifacts
           path: exporters/${{ inputs.integrationName }}/target/packages/*
