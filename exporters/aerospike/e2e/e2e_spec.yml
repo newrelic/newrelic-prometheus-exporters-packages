@@ -5,9 +5,9 @@ scenarios:
   - description: |
       This scenario will verify that metrics from aerospike prometheus exporter are correcly collected.
     before:
-      - docker-compose up -d
+      - docker compose up -d
     after:
-      - docker-compose down -v
+      - docker compose down -v
     integrations:
       - name: nri-aerospike
         binary_path: ../target/bin/linux_amd64/nri-aerospike
