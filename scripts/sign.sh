@@ -9,7 +9,7 @@ sign_rpm() {
   echo "%_signature gpg" >> ~/.rpmmacros
   echo "%_gpg_path ~/.gnupg" >> ~/.rpmmacros
   echo "%_gpgbin /usr/bin/gpg" >> ~/.rpmmacros
-  echo "%__gpg_sign_cmd   %{__gpg} gpg --no-verbose --no-armor --batch --pinentry-mode loopback --passphrase ${GPG_PASSPHRASE} --no-secmem-warning -u "%{_gpg_name}" -sbo %{__signature_filename} %{__plaintext_filename}" >> ~/.rpmmacros
+  echo "%__gpg_sign_cmd   %{__gpg} gpg --no-verbose --no-armor --batch --pinentry-mode loopback --passphrase ${GPG_PASSPHRASE} --no-secmem-warning --digest-algo sha256 -u "%{_gpg_name}" -sbo %{__signature_filename} %{__plaintext_filename}" >> ~/.rpmmacros
 
   find ${packages_dir} -regex ".*\.\(rpm\)" | while read rpm_file; do
     echo "===> Signing $rpm_file"
