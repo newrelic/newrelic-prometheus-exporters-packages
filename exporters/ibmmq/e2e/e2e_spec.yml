@@ -42,6 +42,13 @@ scenarios:
             - ibmmq_topic_publisher_count
             - ibmmq_topic_subscriber_count
             - ibmmq_topic_time_since_msg_received
+            # Since exporter v6.0.0 (mq-golang fix for duplicate QSTATUS/published-QSTAT
+            # metrics), these "time since" metrics are only emitted when the queue manager
+            # returns a non-empty LAST_PUT_TIME/LAST_GET_TIME/LAST_MSG_TIME, which this test's
+            # queue manager never populates even with continuous traffic.
+            - ibmmq_queue_time_since_put
+            - ibmmq_queue_time_since_get
+            - ibmmq_subscription_time_since_message_published
   - description: |
       This scenario will verify that metrics from IBM MQ
       are correctly collected having mTLS configured.
@@ -81,3 +88,10 @@ scenarios:
             - ibmmq_topic_publisher_count
             - ibmmq_topic_subscriber_count
             - ibmmq_topic_time_since_msg_received
+            # Since exporter v6.0.0 (mq-golang fix for duplicate QSTATUS/published-QSTAT
+            # metrics), these "time since" metrics are only emitted when the queue manager
+            # returns a non-empty LAST_PUT_TIME/LAST_GET_TIME/LAST_MSG_TIME, which this test's
+            # queue manager never populates even with continuous traffic.
+            - ibmmq_queue_time_since_put
+            - ibmmq_queue_time_since_get
+            - ibmmq_subscription_time_since_message_published
