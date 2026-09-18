@@ -1,15 +1,15 @@
 # name of the exporter, should match with the folder name
 name: aerospike
 # version of the package created
-version: 0.0.1
+version: 0.1.0
 # Relative path to the License path from the repository root
 exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/aerospike/aerospike-prometheus-exporter
 # Tag of the exporter to checkout
-exporter_tag:
+exporter_tag: v1.34.0
 # Commit of the exporter to checkout (used if tag property is empty)
-exporter_commit: 612e842ea3e56fdee42589dc886e5efbc5d2e639
+exporter_commit:
 # Changelog to add to the new release
 exporter_changelog: https://github.com/aerospike/aerospike-prometheus-exporter/blob/master/CHANGELOG.md
 # Enable packages for Linux
