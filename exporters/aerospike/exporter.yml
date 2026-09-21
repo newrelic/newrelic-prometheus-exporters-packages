@@ -17,7 +17,7 @@ package_linux: true
 # Set goarch values
 package_linux_goarchs: amd64,arm64
 # (Optional) Exporter external config files (multiple files can be added separated by commas. i.e. file1,file2)
-exporter_config_files: ape.toml
+exporter_config_files: ape.toml,gauge_stats_list.toml
 # Enable packages for Windows
 package_windows: false
 # Upgrade GUID used in the msi package. Required if package_windows is set to true
