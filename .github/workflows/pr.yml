@@ -81,6 +81,8 @@ jobs:
           version: ${{ env.GORELEASER_VERSION }}
           install-only: true
       - name: Compile exporter
+        env:
+          GOTOOLCHAIN: auto
         run : |
           make build-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
       - name: e2e-test
@@ -118,6 +120,7 @@ jobs:
         env:
           GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
           GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}  # base64 encoded
+          GOTOOLCHAIN: auto
         run : |
           make package-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
 
