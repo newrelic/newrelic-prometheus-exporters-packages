@@ -278,7 +278,7 @@ func loadTemplate(templateType string, content []byte) (*template.Template, erro
 
 func prometheusExportersBinPath(name string) string {
 	if runtime.GOOS == "windows" {
-		return strings.Replace(filepath.Join(winExportsBinPath, fmt.Sprintf("%s.exe", name)), "\\", "\\\\", -1)
+		return strings.ReplaceAll(filepath.Join(winExportsBinPath, fmt.Sprintf("%s.exe", name)), "\\", "\\\\")
 	}
 	return filepath.Join(nixExportsBinPath, name)
 }
