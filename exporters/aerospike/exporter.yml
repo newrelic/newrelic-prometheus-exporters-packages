@@ -7,7 +7,7 @@ exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/aerospike/aerospike-prometheus-exporter
 # Tag of the exporter to checkout
-exporter_tag: v1.34.0
+exporter_tag: v1.35.0
 # Commit of the exporter to checkout (used if tag property is empty)
 exporter_commit:
 # Changelog to add to the new release
