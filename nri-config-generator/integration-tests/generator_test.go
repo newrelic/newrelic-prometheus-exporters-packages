@@ -98,12 +98,36 @@ var defaultArgs = []string{
 }
 var pdnsTemplate, _ = template.New("defTemplate").Parse(configPDNSTemplate)
 
+// generatorBinPath is the compiled config generator, built once in TestMain.
+var generatorBinPath string
+
 func TestMain(m *testing.M) {
+	os.Exit(run(m))
+}
+
+func run(m *testing.M) int {
 	if err := buildGeneratorConfig(testIntegration, testIntegrationVersion); err != nil {
-		log.Fatal(err)
+		log.Error(err.Error())
+		return 1
 	}
-	exitVal := m.Run()
-	os.Exit(exitVal)
+
+	binDir, err := os.MkdirTemp("", "nri-config-generator-test")
+	if err != nil {
+		log.Error(err.Error())
+		return 1
+	}
+	defer func() {
+		if err := os.RemoveAll(binDir); err != nil {
+			log.Warn("Failed to remove temp dir %s", err)
+		}
+	}()
+
+	if generatorBinPath, err = buildGenerator(binDir); err != nil {
+		log.Error(err.Error())
+		return 1
+	}
+
+	return m.Run()
 }
 
 // Happy path
@@ -111,7 +135,7 @@ func TestGeneratorConfig(t *testing.T) {
 	templateVars := getTemplateVars(exporterPort)
 	expectedResponse := executeTemplate(t, pdnsTemplate, templateVars)
 	envVars := getConfigGeneratorEnvVars("config.yml")
-	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	stdout, err := callGeneratorConfig(generatorBinPath, defaultArgs, envVars)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	assert.JSONEq(t, expectedResponse, string(stdout))
@@ -131,7 +155,7 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 		}
 	}()
 	envVars := getConfigGeneratorEnvVars("config.yml")
-	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	stdout, err := callGeneratorConfig(generatorBinPath, defaultArgs, envVars)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	assignedPort, err := getAssignedPortToPowerDNSIntegration(stdout)
@@ -147,7 +171,7 @@ func TestGeneratorConfigPortAlreadyInUse(t *testing.T) {
 func TestGeneratorConfigWithInterval(t *testing.T) {
 	envVars := getConfigGeneratorEnvVars("config.yml")
 	envVars = append(envVars, "NRI_CONFIG_INTERVAL=10s")
-	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	stdout, err := callGeneratorConfig(generatorBinPath, defaultArgs, envVars)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	vars := map[string]string{
@@ -162,7 +186,7 @@ func TestGeneratorConfigWithInterval(t *testing.T) {
 func TestGeneratorVerboseMode(t *testing.T) {
 	envVars := getConfigGeneratorEnvVars("config.yml")
 	envVars = append(envVars, "VERBOSE=1")
-	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	stdout, err := callGeneratorConfig(generatorBinPath, defaultArgs, envVars)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	vars := map[string]string{
@@ -175,7 +199,7 @@ func TestGeneratorVerboseMode(t *testing.T) {
 
 func TestGeneratorScrapeTimeout(t *testing.T) {
 	envVars := getConfigGeneratorEnvVars("config_with_scrape_timeout.yml")
-	stdout, err := callGeneratorConfig(defaultArgs, envVars)
+	stdout, err := callGeneratorConfig(generatorBinPath, defaultArgs, envVars)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, stdout)
 	vars := map[string]string{
@@ -232,10 +256,18 @@ func executeTemplate(t *testing.T, tpl *template.Template, vars map[string]strin
 	return buf.String()
 }
 
+// exporterPath is the exporter path in the generator executable folder. The exporter is not installed in the
+// default location, so the generator falls back to it.
 func exporterPath() string {
+	name := testExporter
 	if runtime.GOOS == "windows" {
-		return fmt.Sprintf("C:\\\\Program Files\\\\Prometheus-exporters\\\\bin\\\\%s.exe", testExporter)
+		name += ".exe"
 	}
 
-	return filepath.Join("/usr/local/prometheus-exporters/bin/", testExporter)
+	path := filepath.Join(filepath.Dir(generatorBinPath), name)
+	if runtime.GOOS == "windows" {
+		return strings.ReplaceAll(path, "\\", "\\\\")
+	}
+
+	return path
 }
