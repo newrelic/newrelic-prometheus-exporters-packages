@@ -2,12 +2,15 @@ package main
 
 import (
 	"embed"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"errors"
+	"os"
 	"path"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -68,4 +71,39 @@ func Test_generateExporterConfigFile(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.FileExists(t, testOutputFile)
+}
+
+func Test_resolveExporterBinPath(t *testing.T) {
+	const name = "some-exporter"
+
+	t.Run("uses default dir when the binary exists there", func(t *testing.T) {
+		defaultDir := t.TempDir()
+		require.NoError(t, os.WriteFile(exporterBinPath(defaultDir, name), nil, 0o755))
+		executable := func() (string, error) {
+			t.Fatal("executable must not be queried when the binary exists in the default dir")
+			return "", nil
+		}
+
+		got := resolveExporterBinPath(defaultDir, name, executable)
+
+		assert.Equal(t, exporterBinPath(defaultDir, name), got)
+	})
+
+	t.Run("falls back to the executable dir when the binary is missing", func(t *testing.T) {
+		defaultDir, exeDir := t.TempDir(), t.TempDir()
+		executable := func() (string, error) { return filepath.Join(exeDir, "nri-integration"), nil }
+
+		got := resolveExporterBinPath(defaultDir, name, executable)
+
+		assert.Equal(t, exporterBinPath(exeDir, name), got)
+	})
+
+	t.Run("keeps the default path when the executable cannot be determined", func(t *testing.T) {
+		defaultDir := t.TempDir()
+		executable := func() (string, error) { return "", errors.New("boom") }
+
+		got := resolveExporterBinPath(defaultDir, name, executable)
+
+		assert.Equal(t, exporterBinPath(defaultDir, name), got)
+	})
 }

@@ -276,9 +276,47 @@ func loadTemplate(templateType string, content []byte) (*template.Template, erro
 	return t, nil
 }
 
+// prometheusExportersBinPath returns the exporter binary path. It uses the OS package install
+// location when the binary exists there, and falls back to the folder of the current executable
+// otherwise.
 func prometheusExportersBinPath(name string) string {
+	defaultDir := nixExportsBinPath
 	if runtime.GOOS == "windows" {
-		return strings.ReplaceAll(filepath.Join(winExportsBinPath, fmt.Sprintf("%s.exe", name)), "\\", "\\\\")
+		defaultDir = winExportsBinPath
 	}
-	return filepath.Join(nixExportsBinPath, name)
+
+	return resolveExporterBinPath(defaultDir, name, os.Executable)
+}
+
+// resolveExporterBinPath returns the exporter path in defaultDir if the binary exists there.
+// Otherwise it returns the one in the folder of the current executable. It keeps the default if the current
+// executable dir cannot be determined.
+func resolveExporterBinPath(defaultDir, name string, executablePath func() (string, error)) string {
+	defaultPath := exporterBinPath(defaultDir, name)
+	if _, err := os.Stat(defaultPath); err == nil {
+		return defaultPath
+	}
+	log.Debug("Exporter executable was not found in %s, falling back to the current executable folder", defaultPath)
+
+	exePath, err := executablePath()
+	if err != nil {
+		log.Error("Unable to get the current executable path, using default exporter path '%s': %s", defaultPath, err)
+		return defaultPath
+	}
+
+	return exporterBinPath(filepath.Dir(exePath), name)
+}
+
+func exporterBinPath(dir, name string) string {
+	if runtime.GOOS == "windows" {
+		name += ".exe"
+	}
+
+	binPath := filepath.Join(dir, name)
+
+	if runtime.GOOS == "windows" {
+		return strings.ReplaceAll(binPath, "\\", "\\\\")
+	}
+
+	return binPath
 }
