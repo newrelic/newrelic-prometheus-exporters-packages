@@ -293,7 +293,13 @@ func prometheusExportersBinPath(name string) string {
 // executable dir cannot be determined.
 func resolveExporterBinPath(defaultDir, name string, executablePath func() (string, error)) string {
 	defaultPath := exporterBinPath(defaultDir, name)
-	if _, err := os.Stat(defaultPath); err == nil {
+	_, err := os.Stat(defaultPath)
+	if err == nil {
+		return defaultPath
+	}
+	if !errors.Is(err, fs.ErrNotExist) {
+		// The binary may be there but unreachable (e.g. permissions): surface it instead of masking it with the fallback.
+		log.Error("Unable to check the exporter executable '%s', using it anyway: %s", defaultPath, err)
 		return defaultPath
 	}
 	log.Debug("Exporter executable was not found in %s, falling back to the current executable folder", defaultPath)
