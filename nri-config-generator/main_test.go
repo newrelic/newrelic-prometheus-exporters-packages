@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -96,6 +97,23 @@ func Test_resolveExporterBinPath(t *testing.T) {
 		got := resolveExporterBinPath(defaultDir, name, executable)
 
 		assert.Equal(t, exporterBinPath(exeDir, name), got)
+	})
+
+	t.Run("keeps the default path when the default dir cannot be accessed", func(t *testing.T) {
+		if runtime.GOOS == "windows" || os.Geteuid() == 0 {
+			t.Skip("directory permissions are not enforced on windows or for root")
+		}
+		defaultDir := t.TempDir()
+		require.NoError(t, os.Chmod(defaultDir, 0o000))
+		t.Cleanup(func() { _ = os.Chmod(defaultDir, 0o700) })
+		executable := func() (string, error) {
+			t.Fatal("executable must not be queried when the default dir cannot be accessed")
+			return "", nil
+		}
+
+		got := resolveExporterBinPath(defaultDir, name, executable)
+
+		assert.Equal(t, exporterBinPath(defaultDir, name), got)
 	})
 
 	t.Run("keeps the default path when the executable cannot be determined", func(t *testing.T) {
