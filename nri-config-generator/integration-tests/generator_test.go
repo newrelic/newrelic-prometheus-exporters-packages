@@ -118,7 +118,7 @@ func run(m *testing.M) int {
 	}
 	defer func() {
 		if err := os.RemoveAll(binDir); err != nil {
-			log.Warn("Failed to remove temp dir %s", err)
+			log.Warn("Failed to remove temp dir %s: %v", binDir, err)
 		}
 	}()
 
