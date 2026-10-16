@@ -7,7 +7,7 @@ exporter_license_path: LICENSE
 # URL to the git project hosting the exporter
 exporter_repo_url: https://github.com/ibm-messaging/mq-metric-samples
 # Tag of the exporter to checkout
-exporter_tag: v6.0.0
+exporter_tag: v6.0.1
 # Commit of the exporter to checkout (used if tag property is empty)
 # Tag v5.5.4
 exporter_commit:
