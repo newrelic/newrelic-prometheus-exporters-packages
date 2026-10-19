@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 )
 
 const (
@@ -58,18 +59,32 @@ func buildGeneratorConfig(integration string, integrationVersion string) error {
 	return nil
 }
 
-func callGeneratorConfig(args []string, env []string) ([]byte, error) {
-	baseArgs := []string{
-		"run",
-		"-ldflags",
-		fmt.Sprintf("-X main.integration=%s -X main.integrationVersion=%s", testIntegration, testIntegrationVersion),
-		"../main.go",
+// buildGenerator compiles the config generator into binDir, so its executable folder is deterministic
+// (`go run` would use a throwaway build cache folder).
+func buildGenerator(binDir string) (string, error) {
+	genName := "nri-config-generator"
+	if runtime.GOOS == "windows" {
+		genName += ".exe"
 	}
 
+	genPath := filepath.Join(binDir, genName)
 	cmd := exec.Command(
 		"go",
-		append(baseArgs, args...)...,
+		"build",
+		"-ldflags",
+		fmt.Sprintf("-X main.integration=%s -X main.integrationVersion=%s", testIntegration, testIntegrationVersion),
+		"-o", genPath,
+		"../main.go",
 	)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return "", fmt.Errorf("building generator: %w: %s", err, out)
+	}
+
+	return genPath, nil
+}
+
+func callGeneratorConfig(generatorBin string, args []string, env []string) ([]byte, error) {
+	cmd := exec.Command(generatorBin, args...)
 
 	cmd.Env = append(cmd.Environ(), env...)
 
