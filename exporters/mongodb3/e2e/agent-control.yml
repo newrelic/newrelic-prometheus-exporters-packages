@@ -1,0 +1,8 @@
+# Agent Control e2e of the exporter, run by .github/workflows/e2e_agent_control.yml. Paths are relative to this folder.
+
+# Docker compose file with the system to monitor, started before the test. Optional.
+compose_file: docker-compose-standalone-v7.yml
+# Local config of the exporter as a sub-agent of Agent Control.
+config_file: agent-control-config.yml
+# NRQL that must return data for this run. {{test_id}} is replaced with the id of the run.
+nrql_assertion: "SELECT count(mongodb_dbstats_ok) FROM Metric WHERE `test.id` = '{{test_id}}'"
