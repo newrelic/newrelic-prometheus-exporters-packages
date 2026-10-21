@@ -2,7 +2,7 @@ name: e2e Agent Control
 
 # Checks that the package of an exporter and its Agent Control agent type work together by deploying them in a
 # real Agent Control. The exporter needs exporters/<exporter>/.fleetControl and exporters/<exporter>/e2e/agent-control.yml.
-# See https://github.com/newrelic/newrelic-agent-control/pull/2998
+# See https://github.com/newrelic/newrelic-agent-control/pull/3043
 on:
   workflow_dispatch:
     inputs:

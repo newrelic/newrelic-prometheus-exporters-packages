@@ -9,4 +9,4 @@ configurationDefinitions:
         targetType: AGENT
         target: NRIMongodb3
         versions:
-          - ">3.1.8"
+          - ">3.1.9"
