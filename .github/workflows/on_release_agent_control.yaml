@@ -1,0 +1,71 @@
+name: Publish exporter to Agent Control catalog
+
+# Publishes the released exporter (tag nri-<exporter>-<version>) to the Agent Control catalog: the packages are
+# repackaged to contain only the binaries, uploaded to an OCI registry and registered in Agent Metadata.
+# An exporter is published only if it has exporters/<exporter>/agent-control.yml, adding a new exporter to the
+# catalog does not require changing this workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to process (e.g., nri-mongodb3-3.1.8)'
+        required: true
+        type: string
+      metadata_git_ref:
+        description: 'Git ref to read the agent type files from, for releases done before the exporter was onboarded. Defaults to the tag.'
+        required: false
+        default: ''
+        type: string
+  release:
+    types:
+      - released
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish to the Agent Control catalog
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve the exporter from the release tag
+        id: resolve
+        run: ./scripts/agent_control_resolve.sh "${TAG}"
+
+      - name: Repackage the release assets
+        id: package
+        if: steps.resolve.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACTS: ${{ steps.resolve.outputs.artifacts }}
+        run: |
+          ./scripts/agent_control_repackage.sh "${TAG}" "${ARTIFACTS}" "${RUNNER_TEMP}/artifacts"
+          {
+            echo "binaries_json<<EOF"
+            cat "${RUNNER_TEMP}/artifacts/binaries.json"
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Upload to Agent Metadata
+        if: steps.resolve.outputs.publish == 'true'
+        uses: newrelic/agent-metadata-action/send-metadata@v1.7.0
+        with:
+          newrelic-client-id: ${{ secrets.OHAI_NEWRELIC_CLIENT_ID }}
+          newrelic-private-key: ${{ secrets.OHAI_NEWRELIC_PRIVATE_KEY }}
+          agent-type: ${{ steps.resolve.outputs.agent_type }}
+          display-name: ${{ steps.resolve.outputs.display_name }}
+          monitoring-type: INFRA
+          version: ${{ steps.resolve.outputs.version }}
+          git-ref: ${{ inputs.metadata_git_ref || env.TAG }}
+          config-directory: ${{ steps.resolve.outputs.config_directory }}
+          oci-registry: ${{ steps.resolve.outputs.oci_registry }}
+          oci-username: ${{ secrets.OHAI_OCI_USERNAME }}
+          oci-password: ${{ secrets.OHAI_OCI_PASSWORD }}
+          newrelic-license-key: ${{ secrets.AGENT_METADATA_ACTION_LICENSE_KEY }}
+          binaries: ${{ steps.package.outputs.binaries_json }}
+          tags: '{"on-host-integration": "true"}'
