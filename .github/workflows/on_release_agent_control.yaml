@@ -27,7 +27,7 @@ jobs:
   publish:
     name: Publish to the Agent Control catalog
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
       TAG: ${{ github.event.release.tag_name || inputs.tag }}
     steps:
@@ -50,6 +50,47 @@ jobs:
             cat "${RUNNER_TEMP}/artifacts/binaries.json"
             echo "EOF"
           } >> "${GITHUB_OUTPUT}"
+
+      # Tests the repackaged Linux package together with the agent type in a real Agent Control, so a broken
+      # package is not registered in the catalog. It does not affect the release itself, which already exists.
+      # Skipped for exporters without exporters/<exporter>/e2e/agent-control.yml.
+      - name: Read the e2e definition of the exporter
+        id: e2e
+        if: steps.resolve.outputs.publish == 'true'
+        env:
+          EXPORTER: ${{ steps.resolve.outputs.name }}
+        run: |
+          definition="exporters/${EXPORTER}/e2e/agent-control.yml"
+          if [ ! -f "${definition}" ]; then
+            echo "::notice::${definition} does not exist, skipping the Agent Control e2e"
+            echo "run=false" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+          {
+            echo "run=true"
+            echo "compose_file=$(yq e '.compose_file // ""' "${definition}")"
+            echo "config_file=exporters/${EXPORTER}/e2e/$(yq e '.config_file' "${definition}")"
+            echo "nrql_assertion=$(yq e '.nrql_assertion' "${definition}")"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Start the system to monitor
+        if: steps.e2e.outputs.run == 'true' && steps.e2e.outputs.compose_file != ''
+        working-directory: exporters/${{ steps.resolve.outputs.name }}/e2e
+        run: docker compose -f "${{ steps.e2e.outputs.compose_file }}" up -d
+
+      # TODO: pin to a released ref once the action is merged (newrelic/newrelic-agent-control#3043)
+      - name: Agent Control e2e
+        if: steps.e2e.outputs.run == 'true'
+        uses: newrelic/newrelic-agent-control/.github/actions/test-ohi-agent@gsanchez/feat/e2e-action
+        with:
+          agent-type-file: exporters/${{ steps.resolve.outputs.name }}/.fleetControl/agentControl/linux.yml
+          # Both binaries are at the root of the repackaged archive, where the agent type reads them from.
+          package-file: ${{ runner.temp }}/artifacts/linux-amd64.tar.gz
+          config-file: ${{ steps.e2e.outputs.config_file }}
+          nrql-assertion: ${{ steps.e2e.outputs.nrql_assertion }}
+          nr-license-key: ${{ secrets.COREINT_E2E_LICENSE_KEY }}
+          nr-api-key: ${{ secrets.COREINT_E2E_API_KEY }}
+          nr-account-id: ${{ secrets.COREINT_E2E_ACCOUNT_ID }}
 
       - name: Upload to Agent Metadata
         if: steps.resolve.outputs.publish == 'true'

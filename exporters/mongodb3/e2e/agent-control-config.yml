@@ -1,4 +1,4 @@
-# Local config of the nri-mongodb3 sub-agent used by the Agent Control e2e (.github/workflows/e2e_agent_control.yml).
+# Local config of the nri-mongodb3 sub-agent used by the Agent Control e2e (.github/workflows/on_release_agent_control.yaml).
 # It targets the standalone MongoDB started by docker-compose-standalone-v7.yml.
 config:
   integrations:

@@ -1,4 +1,4 @@
-# Agent Control e2e of the exporter, run by .github/workflows/e2e_agent_control.yml. Paths are relative to this folder.
+# Agent Control e2e of the exporter, run by .github/workflows/on_release_agent_control.yaml before publishing. Paths are relative to this folder.
 
 # Docker compose file with the system to monitor, started before the test. Optional.
 compose_file: docker-compose-standalone-v7.yml
