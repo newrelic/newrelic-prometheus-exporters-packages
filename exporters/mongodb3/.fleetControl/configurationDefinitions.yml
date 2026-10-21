@@ -1,0 +1,12 @@
+configurationDefinitions:
+  - platform: HOST
+    type: AgentConfig
+    version: 1.0.0
+    format: yml
+    operatingSystem: LINUX
+    bindings:
+      - type: CONFIGURES
+        targetType: AGENT
+        target: NRIMongodb3
+        versions:
+          - ">3.1.8"
