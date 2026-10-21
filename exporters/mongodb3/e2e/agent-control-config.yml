@@ -1,0 +1,16 @@
+# Local config of the nri-mongodb3 sub-agent used by the Agent Control e2e (.github/workflows/e2e_agent_control.yml).
+# It targets the standalone MongoDB started by docker-compose-standalone-v7.yml.
+config:
+  integrations:
+    - name: nri-mongodb3
+      config:
+        mongodb_cluster_name: e2e_agent_control_cluster
+        mongodb_uri: mongodb://root:pass12345@localhost:17017
+        database_stats: true
+        collection_stats: true
+        replicaset_stats: true
+        top_stats: true
+        diagnostic_stats: true
+        exporter_port: 9127
+        collection_filters: "E2EStandaloneDB"
+        index_filters: "E2EStandaloneDB"
