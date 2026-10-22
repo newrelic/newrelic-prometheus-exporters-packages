@@ -6,10 +6,9 @@ packages_dir="${root_dir}/exporters/${integration}/target/packages"
 sign_rpm() {
   echo "===> Create .rpmmacros to sign rpm's from Goreleaser"
   echo "%_gpg_name ${GPG_MAIL}" >> ~/.rpmmacros
-  echo "%_signature gpg" >> ~/.rpmmacros
-  echo "%_gpg_path ~/.gnupg" >> ~/.rpmmacros
-  echo "%_gpgbin /usr/bin/gpg" >> ~/.rpmmacros
-  echo "%__gpg_sign_cmd   %{__gpg} gpg --no-verbose --no-armor --batch --pinentry-mode loopback --passphrase ${GPG_PASSPHRASE} --no-secmem-warning --digest-algo sha256 -u "%{_gpg_name}" -sbo %{__signature_filename} %{__plaintext_filename}" >> ~/.rpmmacros
+  echo "%_gpg_path ${HOME}/.gnupg" >> ~/.rpmmacros
+  echo "%_gpg_digest_algo sha256" >> ~/.rpmmacros
+  echo "%_gpg_sign_cmd_extra_args --batch --pinentry-mode loopback --passphrase ${GPG_PASSPHRASE}" >> ~/.rpmmacros
 
   find ${packages_dir} -regex ".*\.\(rpm\)" | while read rpm_file; do
     echo "===> Signing $rpm_file"
