@@ -26,7 +26,7 @@ jobs:
     name: Validate code via golangci
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
@@ -37,7 +37,7 @@ jobs:
     name: Run tests on *Nix
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
           go-version-file: 'nri-config-generator/go.mod'
@@ -50,7 +50,7 @@ jobs:
     name: Run unit tests on Windows
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
           go-version-file: 'nri-config-generator/go.mod'
