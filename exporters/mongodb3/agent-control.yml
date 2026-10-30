@@ -1,0 +1,9 @@
+# Agent Control catalog information of the exporter. When this file exists, every release of the exporter is
+# published to the catalog by .github/workflows/on_release_agent_control.yaml. The agent type files live in
+# the .fleetControl folder next to it.
+# It is not part of exporter.yml on purpose: changing that file triggers the release of the exporter.
+
+# Registered agent type name of the integration.
+agent_type: NRIMongodb3
+# Human-readable name shown in the catalog.
+display_name: MongoDB

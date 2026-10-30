@@ -1,0 +1,8 @@
+bindings:
+  - type: REQUIRES
+    targetType: AGENT
+    target: NRInfra
+    platform: HOST
+    operatingSystem: LINUX
+    versions:
+      - ">1.71.0"
