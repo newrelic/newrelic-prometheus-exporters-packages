@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: make create-publish-schema-${{ steps.release_details.outputs.INTEGRATION_NAME  }}
       - name: Publish to S3 action
-        uses: newrelic/infrastructure-publish-action@v1
+        uses: newrelic/infrastructure-publish-action@v2
         env:
           ACCESS_POINT_HOST: "production"
           AWS_S3_BUCKET_NAME: "nr-downloads-main"
