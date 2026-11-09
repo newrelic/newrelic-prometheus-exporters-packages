@@ -58,7 +58,7 @@ jobs:
           gpg_passphrase: ${{ secrets.OHAI_GPG_PASSPHRASE }}
           gpg_private_key_base64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }}
       - name: Test package from prod repo
-        uses: newrelic/integrations-pkg-test-action/linux@v1
+        uses: newrelic/integrations-pkg-test-action/linux@v2
         with:
           tag: ${{ steps.release_details.outputs.INTEGRATION_VERSION }}
           integration: nri-${{ steps.release_details.outputs.INTEGRATION_NAME }}
