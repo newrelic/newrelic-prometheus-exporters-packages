@@ -122,7 +122,7 @@ jobs:
           make package-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
 
       - name: Test package installability
-        uses: newrelic/integrations-pkg-test-action/linux@v1
+        uses: newrelic/integrations-pkg-test-action/linux@v2
         with:
           tag: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION }}
           integration: nri-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
@@ -169,7 +169,7 @@ jobs:
           make package-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
 
       - name: Test win packages installation
-        uses: newrelic/integrations-pkg-test-action/windows@v1
+        uses: newrelic/integrations-pkg-test-action/windows@v2
         with:
           tag: ${{ needs.check_exporter_preconditions.outputs.INTEGRATION_VERSION  }}
           integration: nri-${{ needs.check_exporter_preconditions.outputs.INTEGRATION_NAME }}
